@@ -44,17 +44,17 @@ def create_app(config_name=None):
     from app.routes.main import main_bp
     from app.routes.auth import auth_bp
     from app.routes.register import register_bp
-    from app.routes.admin import admin_bp
-    from app.routes.api import api_bp
+    # from app.routes.admin import admin_bp
+    # from app.routes.api import api_bp
 
     # Exempt API routes from CSRF protection
-    csrf.exempt(api_bp)
+    # csrf.exempt(api_bp)
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(register_bp, url_prefix="/register")
-    app.register_blueprint(admin_bp, url_prefix="/admin")
-    app.register_blueprint(api_bp, url_prefix="/api")
+    # app.register_blueprint(admin_bp, url_prefix="/admin")
+    # app.register_blueprint(api_bp, url_prefix="/api")
 
     # --- Template Context Processors ---
     @app.context_processor

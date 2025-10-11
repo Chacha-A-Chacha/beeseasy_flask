@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Agenda - Bee East Africa Symposium{% endblock %}
+{% block content %}
+
+<!-- Header Section -->
+<section class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+  <img src="{{ url_for('static', filename='images/honeycomb-bg.jpg') }}" alt="Bee East Africa Agenda" class="absolute inset-0 -z-10 size-full object-cover opacity-10">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+    <h1 class="text-5xl font-bold tracking-tight text-[#5C3A21] sm:text-6xl">
+      Symposium Agenda
+    </h1>
+    <p class="mt-6 text-lg text-gray-700 max-w-2xl mx-auto">
+      Explore the sessions, workshops, and keynote presentations shaping Africa’s beekeeping and agritech future.
+    </p>
+  </div>
+</section>
+
+<!-- Agenda Overview -->
+<section class="overflow-hidden bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+
+      <!-- Text Column -->
+      <div class="lg:pr-8 lg:pt-4">
+        <div class="lg:max-w-lg">
+          <p class="text-base font-semibold text-[#F5C342]">Conference Highlights</p>
+          <h2 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">
+            Three Days of Knowledge, Innovation & Collaboration
+          </h2>
+          <p class="mt-6 text-lg text-gray-700">
+            From keynote panels and research showcases to hands-on demonstrations, the Bee East Africa Symposium agenda is designed to inspire growth and strengthen partnerships in apiculture and agribusiness across the continent.
+          </p>
+
+          <dl class="mt-10 max-w-xl space-y-8 text-base text-gray-600 lg:max-w-none">
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-[#5C3A21]">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path d="M5.5 17a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 15 17H5.5Zm3.75-2.75a.75.75 0 0 0 1.5 0V9.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0l-3.25 3.5a.75.75 0 1 0 1.1 1.02l1.95-2.1v4.59Z"/>
+                </svg>
+                Keynote Addresses
+              </dt>
+              <dd class="inline">Visionary talks from regional leaders in sustainability, trade, and innovation.</dd>
+            </div>
+
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-[#5C3A21]">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Z"/>
+                </svg>
+                Workshops & Exhibitions
+              </dt>
+              <dd class="inline">Interactive learning and product showcases from innovators and researchers.</dd>
+            </div>
+
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-[#5C3A21]">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path d="M4 13a2 2 0 1 0 0 4h12a2 2 0 1 0 0-4H4Z"/>
+                </svg>
+                Networking & Collaboration
+              </dt>
+              <dd class="inline">Meet entrepreneurs, researchers, and policymakers to spark new collaborations.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Image Column -->
+      <img src="{{ url_for('static', filename='images/agenda-visual.jpg') }}" alt="Event Sessions" class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-[#5C3A21]/10 sm:w-[57rem] md:-ml-4 lg:-ml-0">
+    </div>
+  </div>
+</section>
+
+<!-- Daily Schedule -->
+<section class="bg-[#F5C342]/10 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <p class="text-base font-semibold text-[#F5C342]">Detailed Schedule</p>
+      <h2 class="mt-2 text-4xl font-bold text-[#5C3A21] sm:text-5xl">Symposium Program Overview</h2>
+      <p class="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
+        Each day of the symposium is crafted to provide participants with practical knowledge, strategic insights, and meaningful engagement opportunities.
+      </p>
+    </div>
+
+    <div class="grid gap-12 md:grid-cols-3">
+      <!-- Day 1 -->
+      <div class="rounded-2xl bg-white p-8 shadow ring-1 ring-gray-100">
+        <h3 class="text-2xl font-bold text-[#5C3A21]">Day 1: Policy & Research</h3>
+        <p class="mt-4 text-gray-600">Exploring sustainable beekeeping frameworks, regulatory policies, and environmental integration.</p>
+        <ul class="mt-6 space-y-3 text-gray-700">
+          <li><strong>09:00 AM</strong> — Opening Ceremony & Welcome Remarks</li>
+          <li><strong>10:30 AM</strong> — Keynote: “Apiculture & Climate Resilience”</li>
+          <li><strong>02:00 PM</strong> — Research Panel: Innovations in Hive Design</li>
+          <li><strong>04:00 PM</strong> — Networking Tea</li>
+        </ul>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="rounded-2xl bg-white p-8 shadow ring-1 ring-gray-100">
+        <h3 class="text-2xl font-bold text-[#5C3A21]">Day 2: Trade & Innovation</h3>
+        <p class="mt-4 text-gray-600">Market linkages, product development, and entrepreneurial scaling across Africa.</p>
+        <ul class="mt-6 space-y-3 text-gray-700">
+          <li><strong>09:00 AM</strong> — Panel: Honey Value Chains & Trade Access</li>
+          <li><strong>11:30 AM</strong> — Startup Exhibition & Pitch Forum</li>
+          <li><strong>02:30 PM</strong> — Workshop: Digital Tools for Beekeepers</li>
+          <li><strong>05:00 PM</strong> — Gala Dinner & Networking</li>
+        </ul>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="rounded-2xl bg-white p-8 shadow ring-1 ring-gray-100">
+        <h3 class="text-2xl font-bold text-[#5C3A21]">Day 3: Community & Sustainability</h3>
+        <p class="mt-4 text-gray-600">Community empowerment, youth involvement, and sustainable growth models.</p>
+        <ul class="mt-6 space-y-3 text-gray-700">
+          <li><strong>09:00 AM</strong> — Youth Forum: Next-Gen Beekeepers</li>
+          <li><strong>11:00 AM</strong> — Climate Action Dialogue</li>
+          <li><strong>02:00 PM</strong> — Collaborative Project Launch</li>
+          <li><strong>04:00 PM</strong> — Closing Ceremony</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

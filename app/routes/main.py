@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, request, flash, redirect, url_for
 from app.models import Registration  # maybe for stats
+from app.forms import ContactForm
+from app.services.contact_service import ContactService
 from app.extensions import db
 
 main_bp = Blueprint("main", __name__)
@@ -36,8 +38,31 @@ def news_detail(slug):
 
 @main_bp.route("/contact", methods=["GET", "POST"])
 def contact():
-    # If POST, handle contact form submission (send email)
-    return render_template("contact.html")
+    form = ContactForm()
+
+    if form.validate_on_submit():
+        # Collect the form data
+        form_data = {
+            "first_name": form.first_name.data.strip(),
+            "last_name": form.last_name.data.strip(),
+            "email": form.email.data.strip(),
+            "phone": form.phone.data.strip(),
+            "message": form.message.data.strip(),
+        }
+
+        # Attempt to send the message
+        success = ContactService.send_contact_message(form_data)
+
+        if success:
+            flash("Thank you! Your message has been sent successfully.", "success")
+            return redirect(url_for("main.contact"))
+        else:
+            flash("Sorry, we couldn’t send your message. Please try again later.", "error")
+
+    elif request.method == "POST":
+        flash("Please correct the errors below and try again.", "error")
+
+    return render_template("contact.html", form=form)
 
 @main_bp.route("/become-exhibitor")
 def become_exhibitor():

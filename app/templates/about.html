@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}About - Bee East Africa Symposium{% endblock %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+  <img src="{{ url_for('static', filename='images/honeycomb-bg.jpg') }}" alt="Bee East Africa" class="absolute inset-0 -z-10 size-full object-cover opacity-10">
+  
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:mx-0">
+      <h2 class="text-5xl font-bold tracking-tight text-[#5C3A21] sm:text-7xl">
+        About Bee East Africa Symposium
+      </h2>
+      <p class="mt-8 text-lg font-medium text-gray-700 sm:text-xl/8">
+        The Bee East Africa Symposium is the region’s premier platform for promoting sustainable beekeeping, trade innovation, and research collaboration across Africa. Our mission is to empower apiculture stakeholders with knowledge, market access, and technology to transform livelihoods.
+      </p>
+    </div>
+    
+    <!-- 3 Feature Cards -->
+    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8">
+      <div class="flex gap-x-4 rounded-xl bg-[#F5C342]/10 p-6 ring-1 ring-[#5C3A21]/10 backdrop-blur">
+        <svg class="h-7 w-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 2a8 8 0 1 1-8 8 8 8 0 0 1 8-8zm1 11.5a1 1 0 0 1-2 0V10a1 1 0 0 1 2 0zm-1-6a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+        </svg>
+        <div>
+          <h3 class="font-semibold text-[#5C3A21]">Knowledge Exchange</h3>
+          <p class="mt-2 text-gray-700">Global experts and regional stakeholders share research, technology, and policy solutions shaping Africa’s apiculture sector.</p>
+        </div>
+      </div>
+
+      <div class="flex gap-x-4 rounded-xl bg-[#F5C342]/10 p-6 ring-1 ring-[#5C3A21]/10 backdrop-blur">
+        <svg class="h-7 w-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 2a8 8 0 1 1-8 8 8 8 0 0 1 8-8zm3 8a3 3 0 1 0-3 3 3 3 0 0 0 3-3z"/>
+        </svg>
+        <div>
+          <h3 class="font-semibold text-[#5C3A21]">Market & Trade Opportunities</h3>
+          <p class="mt-2 text-gray-700">Connecting beekeepers, agribusinesses, and exporters to investment opportunities and fair markets across Africa.</p>
+        </div>
+      </div>
+
+      <div class="flex gap-x-4 rounded-xl bg-[#F5C342]/10 p-6 ring-1 ring-[#5C3A21]/10 backdrop-blur">
+        <svg class="h-7 w-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M4 4h12v12H4zM3 3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3z"/>
+        </svg>
+        <div>
+          <h3 class="font-semibold text-[#5C3A21]">Sustainability & Innovation</h3>
+          <p class="mt-2 text-gray-700">Promoting green technologies and sustainable practices for environmental conservation and community development.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Vision and Mission Section -->
+<div class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
+  <div class="absolute inset-0 -z-10">
+    <svg aria-hidden="true" class="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-[#F5C342]/40 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)]">
+      <defs>
+        <pattern id="bee-pattern" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+          <path d="M100 200V.5M.5 .5H200" fill="none" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#bee-pattern)" stroke-width="0" />
+    </svg>
+  </div>
+
+  <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-7xl lg:grid-cols-2 lg:items-start">
+    <div class="lg:pr-4">
+      <p class="text-base font-semibold text-[#F5C342]">Our Vision</p>
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-[#5C3A21] sm:text-5xl">Empowering Africa through Bees</h1>
+      <p class="mt-6 text-lg text-gray-700">
+        We envision an Africa where beekeeping is not just an agricultural practice, but a powerful tool for sustainability, innovation, and economic empowerment. Bee East Africa serves as a nexus for collaboration among farmers, innovators, and investors to unlock the potential of apiculture.
+      </p>
+    </div>
+
+    <div class="lg:sticky lg:top-4 lg:col-start-2 lg:overflow-hidden">
+      <img src="{{ url_for('static', filename='images/bees-collaboration.jpg') }}" alt="Bee Collaboration" class="rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 w-full max-w-lg mx-auto">
+    </div>
+
+    <div class="lg:col-span-2 lg:col-start-1 lg:mt-16">
+      <div class="max-w-xl text-base text-gray-700">
+        <p class="mb-6">
+          Through the symposium, we foster cross-sector partnerships to drive research, capacity building, and trade integration in the honey and pollination industry. Our sessions feature technical exhibitions, workshops, and discussions that advance regional collaboration.
+        </p>
+        <ul role="list" class="mt-8 space-y-8 text-gray-600">
+          <li class="flex gap-x-3">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="mt-1 size-5 flex-none text-[#F5C342]">
+              <path d="M5.5 17a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 15 17H5.5Z" />
+            </svg>
+            <span><strong class="font-semibold text-[#5C3A21]">Regional Impact.</strong> Building value chains that connect beekeepers to continental and global markets.</span>
+          </li>
+          <li class="flex gap-x-3">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="mt-1 size-5 flex-none text-[#F5C342]">
+              <path d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Z" />
+            </svg>
+            <span><strong class="font-semibold text-[#5C3A21]">Research & Innovation.</strong> Bridging the gap between academia, technology, and agribusiness for smarter ecosystems.</span>
+          </li>
+          <li class="flex gap-x-3">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="mt-1 size-5 flex-none text-[#F5C342]">
+              <path d="M4 13a2 2 0 1 0 0 4h12a2 2 0 1 0 0-4H4Z" />
+            </svg>
+            <span><strong class="font-semibold text-[#5C3A21]">Sustainability.</strong> Advocating for environmental stewardship and climate-smart apiculture.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

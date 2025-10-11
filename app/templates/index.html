@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Bee East Africa Symposium – Building a Sustainable Future{% endblock %}
+{% block content %}
+
+<!-- HERO SECTION with Parallax -->
+<section x-data="{ offsetY: 0 }" 
+         x-init="window.addEventListener('scroll', () => offsetY = window.scrollY * 0.3)"
+         class="relative isolate overflow-hidden pt-20">
+  <img src="https://images.unsplash.com/photo-1588618229754-1d82c9a2db54?auto=format&fit=crop&w=2400&q=80"
+       alt="Beekeeping" 
+       class="absolute inset-0 -z-10 w-full h-full object-cover opacity-60" 
+       :style="`transform: translateY(${offsetY}px)`">
+  <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black/10 -z-10"></div>
+
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8 py-40 text-center text-white">
+    <h1 class="text-4xl sm:text-6xl font-bold text-primary drop-shadow-md">
+      Bee East Africa Symposium 2025
+    </h1>
+    <p class="mt-6 text-lg sm:text-xl text-gray-100 max-w-2xl mx-auto">
+      Advancing sustainable beekeeping, innovation, and regional collaboration across East Africa.
+    </p>
+    <div class="mt-10 flex justify-center gap-x-6">
+      <a href="{{ url_for('register.register_attendee') }}" class="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-white shadow hover:opacity-90">
+        Register Now
+      </a>
+      <a href="#about" class="text-sm font-semibold text-white hover:text-primary transition">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="relative bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <h2 class="text-4xl font-semibold text-secondary mb-4">Why Attend?</h2>
+      <p class="text-gray-700 leading-relaxed">
+        The Bee East Africa Symposium brings together farmers, researchers, entrepreneurs, 
+        and policymakers to share insights on modern beekeeping, pollination, and innovation. 
+        Discover sustainable techniques, explore market opportunities, and contribute to the future 
+        of beekeeping in our region.
+      </p>
+      <ul class="mt-6 space-y-2 text-gray-700">
+        <li>🐝  Interactive workshops & training sessions</li>
+        <li>🌍  Networking with regional and international experts</li>
+        <li>💡  Exhibitions showcasing cutting-edge products and tech</li>
+      </ul>
+      <a href="{{ url_for('register.register_exhibitor') }}" class="mt-8 inline-block bg-secondary text-white px-6 py-3 rounded-md hover:opacity-90">
+        Become an Exhibitor
+      </a>
+    </div>
+    <div class="relative">
+      <img src="https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?auto=format&fit=crop&w=1000&q=80"
+           alt="Beekeeping session"
+           class="rounded-3xl shadow-lg w-full object-cover" />
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKERS PREVIEW -->
+<section class="bg-gray-50 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+    <h2 class="text-3xl sm:text-5xl font-semibold text-secondary">Meet Our Speakers</h2>
+    <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
+      Thought leaders from East Africa and beyond sharing their expertise in beekeeping, innovation, and environmental sustainability.
+    </p>
+
+    <div class="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      {% for i in range(1,4) %}
+      <div class="bg-white rounded-2xl shadow hover:shadow-lg transition">
+        <img src="https://source.unsplash.com/random/400x400?portrait,person,{{i}}" alt="Speaker" class="rounded-t-2xl w-full h-64 object-cover">
+        <div class="p-6">
+          <h3 class="font-semibold text-lg text-secondary">Speaker Name {{ i }}</h3>
+          <p class="text-sm text-gray-600">Expert in Beekeeping & Research</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA / SCHEDULE -->
+<section class="relative bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+    <h2 class="text-3xl sm:text-5xl font-semibold text-secondary">Program Highlights</h2>
+    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+      Two days of inspiring talks, hands-on training, and collaborative sessions focused on innovation and sustainability in beekeeping.
+    </p>
+
+    <div class="mt-16 grid lg:grid-cols-3 gap-8">
+      <div class="p-8 rounded-3xl bg-gray-50 shadow hover:shadow-lg transition">
+        <h3 class="text-lg font-semibold text-secondary mb-2">Day 1 – Innovation & Policy</h3>
+        <p class="text-gray-700 text-sm">Keynotes, policy discussions, and technology demos on modern apiculture practices.</p>
+      </div>
+      <div class="p-8 rounded-3xl bg-gray-50 shadow hover:shadow-lg transition">
+        <h3 class="text-lg font-semibold text-secondary mb-2">Day 2 – Training & Exhibition</h3>
+        <p class="text-gray-700 text-sm">Workshops on bee health, product quality, and marketing strategies with live demonstrations.</p>
+      </div>
+      <div class="p-8 rounded-3xl bg-gray-50 shadow hover:shadow-lg transition">
+        <h3 class="text-lg font-semibold text-secondary mb-2">Field Visit (Optional)</h3>
+        <p class="text-gray-700 text-sm">A guided tour to local apiaries and community projects showcasing best practices in action.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRATION CTA with PARALLAX -->
+<section x-data="{ y: 0 }"
+         x-init="window.addEventListener('scroll', () => y = window.scrollY * 0.2)"
+         class="relative isolate overflow-hidden bg-secondary py-32 text-center text-white">
+  <img src="https://images.unsplash.com/photo-1498579809087-ef1e558fd1da?auto=format&fit=crop&w=2000&q=80"
+       alt="Bee products"
+       class="absolute inset-0 w-full h-full object-cover opacity-30"
+       :style="`transform: translateY(${y}px)`">
+  <div class="relative z-10 max-w-2xl mx-auto">
+    <h2 class="text-4xl font-semibold mb-6 text-primary">Join the Movement for Sustainable Beekeeping</h2>
+    <p class="text-gray-100 mb-10">Reserve your spot today for the Bee East Africa Symposium 2025 and be part of the change.</p>
+    <a href="{{ url_for('register.register_attendee') }}" class="bg-primary text-white px-8 py-3 rounded-md font-semibold hover:opacity-90 transition">
+      Register Now
+    </a>
+  </div>
+</section>
+
+<!-- NEWS / BLOG PREVIEW -->
+<section class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+    <h2 class="text-3xl sm:text-5xl font-semibold text-secondary">Latest Updates</h2>
+    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Stay up to date with symposium news, calls for papers, and partnership announcements.</p>
+  </div>
+
+  <div class="mx-auto mt-16 max-w-7xl px-6 lg:px-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    {% for i in range(1,4) %}
+    <article class="flex flex-col bg-gray-50 rounded-2xl shadow hover:shadow-lg transition">
+      <img src="https://source.unsplash.com/random/800x600?beekeeping,{{i}}" alt="Blog post {{i}}" class="rounded-t-2xl w-full h-56 object-cover">
+      <div class="p-6 text-left flex flex-col flex-grow">
+        <time datetime="2025-01-{{10+i}}" class="text-sm text-gray-500">Jan {{10+i}}, 2025</time>
+        <h3 class="mt-2 text-lg font-semibold text-secondary">News Title {{i}}</h3>
+        <p class="mt-2 text-sm text-gray-600 flex-grow">
+          Highlights and insights from our team on preparations, partnerships, and community initiatives for the Symposium.
+        </p>
+        <a href="#" class="mt-4 text-primary font-semibold text-sm hover:underline">Read More →</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

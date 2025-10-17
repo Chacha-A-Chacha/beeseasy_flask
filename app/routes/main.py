@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, request, flash, redirect, url_for
+from flask import Blueprint, render_template, abort, request, flash, redirect, url_for, jsonify
 from app.models import Registration  # maybe for stats
 from app.forms import ContactForm
 from app.services.contact_service import ContactService
@@ -21,6 +21,11 @@ def speakers():
     # Pass a list of speakers from DB (or stub) to template
     return render_template("speakers.html")
 
+@main_bp.route("/partners")
+def partners():
+    # Pass a list of speakers from DB (or stub) to template
+    return render_template("partners.html")
+
 @main_bp.route("/agenda")
 def agenda():
     return render_template("agenda.html")
@@ -36,30 +41,56 @@ def news_detail(slug):
     # e.g. post = News.query.filter_by(slug=slug).first_or_404()
     return render_template("news_detail.html")
 
+
 @main_bp.route("/contact", methods=["GET", "POST"])
 def contact():
+    """Enhanced contact page with intelligent routing"""
     form = ContactForm()
 
     if form.validate_on_submit():
-        # Collect the form data
+        # Collect form data
         form_data = {
             "first_name": form.first_name.data.strip(),
             "last_name": form.last_name.data.strip(),
-            "email": form.email.data.strip(),
-            "phone": form.phone.data.strip(),
+            "email": form.email.data.strip().lower(),
+            "country_code": form.country_code.data,
+            "phone": form.phone.data.strip() if form.phone.data else None,
+            "inquiry_type": form.inquiry_type.data,
+            "subject": form.subject.data.strip(),
+            "organization": form.organization.data.strip() if form.organization.data else None,
+            "role": form.role.data.strip() if form.role.data else None,
             "message": form.message.data.strip(),
+            "preferred_contact_method": form.preferred_contact_method.data,
+            "newsletter_signup": form.newsletter_signup.data,
+            "privacy_consent": form.privacy_consent.data
         }
 
-        # Attempt to send the message
-        success = ContactService.send_contact_message(form_data)
+        # Send the message
+        success, message, reference = ContactService.send_contact_message(form_data)
 
         if success:
-            flash("Thank you! Your message has been sent successfully.", "success")
+            flash(f"{message}", "success")
+
+            # If AJAX request, return JSON
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return jsonify({
+                    'success': True,
+                    'message': message,
+                    'reference': reference
+                })
+
             return redirect(url_for("main.contact"))
         else:
-            flash("Sorry, we couldn’t send your message. Please try again later.", "error")
+            flash(message, "error")
+
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return jsonify({
+                    'success': False,
+                    'message': message
+                }), 400
 
     elif request.method == "POST":
+        # Form validation failed
         flash("Please correct the errors below and try again.", "error")
 
     return render_template("contact.html", form=form)

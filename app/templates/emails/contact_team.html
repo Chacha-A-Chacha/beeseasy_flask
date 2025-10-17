@@ -1,0 +1,100 @@
+<!-- templates/emails/contact_team.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #5C3A21; color: white; padding: 20px; text-align: center; }
+        .content { background: #f9f9f9; padding: 20px; margin-top: 20px; }
+        .field { margin-bottom: 15px; }
+        .label { font-weight: bold; color: #5C3A21; }
+        .value { margin-top: 5px; }
+        .message-box { background: white; padding: 15px; border-left: 4px solid #F5C342; margin-top: 10px; }
+        .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>New Contact Inquiry</h2>
+            <p>Reference: {{ reference_number }}</p>
+        </div>
+
+        <div class="content">
+            <div class="field">
+                <div class="label">Inquiry Type:</div>
+                <div class="value">{{ inquiry_type.replace('_', ' ').title() }}</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Subject:</div>
+                <div class="value">{{ subject }}</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Submitted:</div>
+                <div class="value">{{ submitted_at }}</div>
+            </div>
+
+            <hr style="margin: 20px 0;">
+
+            <h3 style="color: #5C3A21;">Contact Information</h3>
+
+            <div class="field">
+                <div class="label">Name:</div>
+                <div class="value">{{ first_name }} {{ last_name }}</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Email:</div>
+                <div class="value"><a href="mailto:{{ email }}">{{ email }}</a></div>
+            </div>
+
+            {% if full_phone %}
+            <div class="field">
+                <div class="label">Phone:</div>
+                <div class="value">{{ full_phone }}</div>
+            </div>
+            {% endif %}
+
+            {% if organization %}
+            <div class="field">
+                <div class="label">Organization:</div>
+                <div class="value">{{ organization }}</div>
+            </div>
+            {% endif %}
+
+            {% if role %}
+            <div class="field">
+                <div class="label">Role:</div>
+                <div class="value">{{ role }}</div>
+            </div>
+            {% endif %}
+
+            <div class="field">
+                <div class="label">Preferred Contact Method:</div>
+                <div class="value">{{ preferred_contact_method.title() }}</div>
+            </div>
+
+            <hr style="margin: 20px 0;">
+
+            <h3 style="color: #5C3A21;">Message</h3>
+            <div class="message-box">
+                {{ message | replace('\n', '<br>') | safe }}
+            </div>
+
+            <div class="field" style="margin-top: 20px;">
+                <div class="label">Newsletter Signup:</div>
+                <div class="value">{{ 'Yes' if newsletter_signup else 'No' }}</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Sent from {{ event_name }} Contact Form</p>
+            <p>Reply directly to this email to respond to {{ first_name }}</p>
+        </div>
+    </div>
+</body>
+</html>

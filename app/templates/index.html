@@ -1,147 +1,1075 @@
 {% extends "base.html" %}
-{% block title %}Bee East Africa Symposium – Building a Sustainable Future{% endblock %}
+{% block title %}Bee East Africa Symposium 2025 - Celebrating Pollination for Food Security{% endblock %}
 {% block content %}
 
-<!-- HERO SECTION with Parallax -->
-<section x-data="{ offsetY: 0 }" 
-         x-init="window.addEventListener('scroll', () => offsetY = window.scrollY * 0.3)"
-         class="relative isolate overflow-hidden pt-20">
-  <img src="https://images.unsplash.com/photo-1588618229754-1d82c9a2db54?auto=format&fit=crop&w=2400&q=80"
-       alt="Beekeeping" 
-       class="absolute inset-0 -z-10 w-full h-full object-cover opacity-60" 
-       :style="`transform: translateY(${offsetY}px)`">
-  <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black/10 -z-10"></div>
-
-  <div class="relative mx-auto max-w-7xl px-6 lg:px-8 py-40 text-center text-white">
-    <h1 class="text-4xl sm:text-6xl font-bold text-primary drop-shadow-md">
-      Bee East Africa Symposium 2025
-    </h1>
-    <p class="mt-6 text-lg sm:text-xl text-gray-100 max-w-2xl mx-auto">
-      Advancing sustainable beekeeping, innovation, and regional collaboration across East Africa.
-    </p>
-    <div class="mt-10 flex justify-center gap-x-6">
-      <a href="{{ url_for('register.register_attendee') }}" class="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-white shadow hover:opacity-90">
-        Register Now
-      </a>
-      <a href="#about" class="text-sm font-semibold text-white hover:text-primary transition">Learn More →</a>
-    </div>
+<!-- ============================================ -->
+<!-- SECTION 1: HERO - EVENT IDENTITY + CTA -->
+<!-- ============================================ -->
+<div class="relative isolate overflow-hidden bg-white">
+  <!-- Background Image with Parallax Effect -->
+  <div x-data="{ scrollY: 0 }"
+       x-init="window.addEventListener('scroll', () => scrollY = window.scrollY * 0.3)"
+       class="absolute inset-0 -z-10">
+    <img :style="`transform: translateY(${scrollY}px)`"
+         src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=2400&q=80"
+         alt="Beekeeping in East Africa"
+         class="size-full object-cover opacity-20 transition-transform duration-100" />
+    <div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/80"></div>
   </div>
-</section>
 
-<!-- ABOUT SECTION -->
-<section id="about" class="relative bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
-    <div>
-      <h2 class="text-4xl font-semibold text-secondary mb-4">Why Attend?</h2>
-      <p class="text-gray-700 leading-relaxed">
-        The Bee East Africa Symposium brings together farmers, researchers, entrepreneurs, 
-        and policymakers to share insights on modern beekeeping, pollination, and innovation. 
-        Discover sustainable techniques, explore market opportunities, and contribute to the future 
-        of beekeeping in our region.
-      </p>
-      <ul class="mt-6 space-y-2 text-gray-700">
-        <li>🐝  Interactive workshops & training sessions</li>
-        <li>🌍  Networking with regional and international experts</li>
-        <li>💡  Exhibitions showcasing cutting-edge products and tech</li>
-      </ul>
-      <a href="{{ url_for('register.register_exhibitor') }}" class="mt-8 inline-block bg-secondary text-white px-6 py-3 rounded-md hover:opacity-90">
-        Become an Exhibitor
-      </a>
-    </div>
-    <div class="relative">
-      <img src="https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?auto=format&fit=crop&w=1000&q=80"
-           alt="Beekeeping session"
-           class="rounded-3xl shadow-lg w-full object-cover" />
-    </div>
+  <!-- Decorative Gradient Blobs -->
+  <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+         class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#F5C342] to-[#5C3A21] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
   </div>
-</section>
 
-<!-- SPEAKERS PREVIEW -->
-<section class="bg-gray-50 py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-5xl font-semibold text-secondary">Meet Our Speakers</h2>
-    <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
-      Thought leaders from East Africa and beyond sharing their expertise in beekeeping, innovation, and environmental sustainability.
-    </p>
-
-    <div class="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-      {% for i in range(1,4) %}
-      <div class="bg-white rounded-2xl shadow hover:shadow-lg transition">
-        <img src="https://source.unsplash.com/random/400x400?portrait,person,{{i}}" alt="Speaker" class="rounded-t-2xl w-full h-64 object-cover">
-        <div class="p-6">
-          <h3 class="font-semibold text-lg text-secondary">Speaker Name {{ i }}</h3>
-          <p class="text-sm text-gray-600">Expert in Beekeeping & Research</p>
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl py-32 sm:py-48 lg:py-56">
+      <!-- Announcement Badge -->
+      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+        <div class="relative rounded-full px-4 py-1.5 text-sm/6 text-gray-700 ring-1 ring-[#5C3A21]/20 hover:ring-[#5C3A21]/30 transition-all">
+          Organized by SAADIT and partners
+          <a href="{{ url_for('main.about') }}" class="font-semibold text-[#F5C342]">
+            <span aria-hidden="true" class="absolute inset-0"></span>
+            Learn more <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
 
-<!-- AGENDA / SCHEDULE -->
-<section class="relative bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-5xl font-semibold text-secondary">Program Highlights</h2>
-    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
-      Two days of inspiring talks, hands-on training, and collaborative sessions focused on innovation and sustainability in beekeeping.
-    </p>
-
-    <div class="mt-16 grid lg:grid-cols-3 gap-8">
-      <div class="p-8 rounded-3xl bg-gray-50 shadow hover:shadow-lg transition">
-        <h3 class="text-lg font-semibold text-secondary mb-2">Day 1 – Innovation & Policy</h3>
-        <p class="text-gray-700 text-sm">Keynotes, policy discussions, and technology demos on modern apiculture practices.</p>
-      </div>
-      <div class="p-8 rounded-3xl bg-gray-50 shadow hover:shadow-lg transition">
-        <h3 class="text-lg font-semibold text-secondary mb-2">Day 2 – Training & Exhibition</h3>
-        <p class="text-gray-700 text-sm">Workshops on bee health, product quality, and marketing strategies with live demonstrations.</p>
-      </div>
-      <div class="p-8 rounded-3xl bg-gray-50 shadow hover:shadow-lg transition">
-        <h3 class="text-lg font-semibold text-secondary mb-2">Field Visit (Optional)</h3>
-        <p class="text-gray-700 text-sm">A guided tour to local apiaries and community projects showcasing best practices in action.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- REGISTRATION CTA with PARALLAX -->
-<section x-data="{ y: 0 }"
-         x-init="window.addEventListener('scroll', () => y = window.scrollY * 0.2)"
-         class="relative isolate overflow-hidden bg-secondary py-32 text-center text-white">
-  <img src="https://images.unsplash.com/photo-1498579809087-ef1e558fd1da?auto=format&fit=crop&w=2000&q=80"
-       alt="Bee products"
-       class="absolute inset-0 w-full h-full object-cover opacity-30"
-       :style="`transform: translateY(${y}px)`">
-  <div class="relative z-10 max-w-2xl mx-auto">
-    <h2 class="text-4xl font-semibold mb-6 text-primary">Join the Movement for Sustainable Beekeeping</h2>
-    <p class="text-gray-100 mb-10">Reserve your spot today for the Bee East Africa Symposium 2025 and be part of the change.</p>
-    <a href="{{ url_for('register.register_attendee') }}" class="bg-primary text-white px-8 py-3 rounded-md font-semibold hover:opacity-90 transition">
-      Register Now
-    </a>
-  </div>
-</section>
-
-<!-- NEWS / BLOG PREVIEW -->
-<section class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-5xl font-semibold text-secondary">Latest Updates</h2>
-    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Stay up to date with symposium news, calls for papers, and partnership announcements.</p>
-  </div>
-
-  <div class="mx-auto mt-16 max-w-7xl px-6 lg:px-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-    {% for i in range(1,4) %}
-    <article class="flex flex-col bg-gray-50 rounded-2xl shadow hover:shadow-lg transition">
-      <img src="https://source.unsplash.com/random/800x600?beekeeping,{{i}}" alt="Blog post {{i}}" class="rounded-t-2xl w-full h-56 object-cover">
-      <div class="p-6 text-left flex flex-col flex-grow">
-        <time datetime="2025-01-{{10+i}}" class="text-sm text-gray-500">Jan {{10+i}}, 2025</time>
-        <h3 class="mt-2 text-lg font-semibold text-secondary">News Title {{i}}</h3>
-        <p class="mt-2 text-sm text-gray-600 flex-grow">
-          Highlights and insights from our team on preparations, partnerships, and community initiatives for the Symposium.
+      <!-- Main Hero Content -->
+      <div class="text-center">
+        <h1 class="text-balance text-4xl font-bold tracking-tight text-[#5C3A21] sm:text-6xl lg:text-7xl">
+          BEES EAST AFRICA SYMPOSIUM 2025
+        </h1>
+        <p class="mt-6 text-xl font-semibold text-gray-700 sm:text-2xl">
+          Celebrating Pollination for Food Security, Biodiversity and Livelihoods
         </p>
-        <a href="#" class="mt-4 text-primary font-semibold text-sm hover:underline">Read More →</a>
+
+        <!-- Event Details -->
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 text-base sm:text-lg text-gray-600">
+          <div class="flex items-center gap-2">
+            <svg class="size-5 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium">December 2025</span>
+          </div>
+          <span class="hidden sm:inline text-gray-400">|</span>
+          <div class="flex items-center gap-2">
+            <svg class="size-5 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium">Arusha, Tanzania</span>
+          </div>
+          <span class="hidden sm:inline text-gray-400">|</span>
+          <div class="flex items-center gap-2">
+            <svg class="size-5 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium">Daily 5pm-8pm</span>
+          </div>
+        </div>
+
+        <p class="mt-4 text-base text-gray-600">
+          📍 Arusha International Conference Center (AICC)
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-10 flex items-center justify-center gap-x-6">
+          <a href="{{ url_for('register.register_attendee') }}"
+             class="rounded-md bg-[#F5C342] px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-[#e7b831] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5C342] transition-all">
+            Register as Attendee
+          </a>
+          <a href="{{ url_for('register.register_exhibitor') }}"
+             class="rounded-md bg-[#5C3A21] px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-[#4a2f1a] transition-all">
+            Register as Exhibitor
+          </a>
+        </div>
+
+        <div class="mt-8">
+          <a href="#why-bees-matter" class="text-sm/6 font-semibold text-[#5C3A21] hover:text-[#F5C342] transition-colors">
+            Learn more <span aria-hidden="true">↓</span>
+          </a>
+        </div>
       </div>
-    </article>
-    {% endfor %}
+    </div>
   </div>
-</section>
+
+  <!-- Bottom Gradient Blob -->
+  <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+         class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#F5C342] to-[#5C3A21] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: WHY BEES MATTER (Educational Hook) -->
+<!-- ============================================ -->
+<div id="why-bees-matter" class="overflow-hidden bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl md:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">
+      <div class="px-6 md:px-0 lg:pr-4 lg:pt-4">
+        <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg">
+          <h2 class="text-base/7 font-semibold text-[#F5C342]">The Importance of Pollinators</h2>
+          <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">
+            Why Bees Matter
+          </p>
+          <p class="mt-6 text-lg/8 text-gray-700">
+            Bees are the unsung heroes of East African agriculture. As nature's master pollinators, they play a vital role in increasing crop yields, sustaining ecosystems, and supporting rural livelihoods.
+          </p>
+          <dl class="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-[#5C3A21]">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z" clip-rule="evenodd" />
+                </svg>
+                Food Security.
+              </dt>
+              <dd class="inline">35% of global crop production depends on pollinators, ensuring food availability for millions across East Africa.</dd>
+            </div>
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-[#5C3A21]">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.134 1.051 2.494 2.494 0 00-.93 2.437 2.494 2.494 0 002.437-.93.75.75 0 111.186.918 3.995 3.995 0 01-4.482 1.332.75.75 0 01-.461-.461 3.994 3.994 0 011.332-4.482.75.75 0 011.052.134z" clip-rule="evenodd" />
+                  <path fill-rule="evenodd" d="M5.752 12A13.07 13.07 0 008 14.248v4.002c0 .414.336.75.75.75a5 5 0 004.797-6.414 12.984 12.984 0 005.45-10.848.75.75 0 00-.735-.735 12.984 12.984 0 00-10.849 5.45A5 5 0 001 11.25c.001.414.337.75.751.75h4.002zM13 9a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                </svg>
+                Biodiversity.
+              </dt>
+              <dd class="inline">Bees pollinate 80% of wild plants in our region, maintaining ecological balance and climate resilience.</dd>
+            </div>
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-[#5C3A21]">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path d="M10.75 16.82A7.462 7.462 0 0115 15.5c.71 0 1.396.098 2.046.282A.75.75 0 0018 15.06v-11a.75.75 0 00-.546-.721A9.006 9.006 0 0015 3a8.963 8.963 0 00-4.25 1.065V16.82zM9.25 4.065A8.963 8.963 0 005 3c-.85 0-1.673.118-2.454.339A.75.75 0 002 4.06v11a.75.75 0 00.954.721A7.506 7.506 0 015 15.5c1.579 0 3.042.487 4.25 1.32V4.065z" />
+                </svg>
+                Livelihoods.
+              </dt>
+              <dd class="inline">Over 500,000 East African farmers depend on beekeeping for income generation and rural economic development.</dd>
+            </div>
+          </dl>
+          <p class="mt-8 text-base font-semibold text-gray-700">
+            BEEASY2025 shines a spotlight on the critical importance of bees to farming, the environment, and economic opportunity in the region and beyond.
+          </p>
+        </div>
+      </div>
+      <div class="sm:px-6 lg:px-0">
+        <div class="relative isolate overflow-hidden rounded-3xl px-6 pt-8 sm:mx-auto sm:max-w-2xl sm:pl-16 sm:pr-0 sm:pt-16 lg:mx-0 lg:max-w-none">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80"
+               alt="Beekeeper working with hives"
+               class="w-full rounded-xl shadow-2xl ring-1 ring-[#5C3A21]/10" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: ABOUT THE SYMPOSIUM -->
+<!-- ============================================ -->
+<div class="bg-gray-50 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:text-center">
+      <h2 class="text-base/7 font-semibold text-[#F5C342]">BEEASY2025</h2>
+      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
+        About the Symposium
+      </p>
+      <p class="mt-6 text-lg/8 text-gray-700">
+        The Bees East Africa Symposium 2025, hosted in Arusha, Tanzania, unites farmers, beekeepers, researchers, and policymakers to promote the vital role of bees in sustainable agriculture and biodiversity.
+      </p>
+    </div>
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+        <div class="flex flex-col">
+          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
+            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM6.75 9.25a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z" clip-rule="evenodd" />
+            </svg>
+            Collaboration
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <p class="flex-auto">Foster regional partnerships and knowledge exchange among stakeholders across East Africa and beyond.</p>
+          </dd>
+        </div>
+        <div class="flex flex-col">
+          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
+            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M15.98 1.804a1 1 0 00-1.96 0l-.24 1.192a1 1 0 01-.784.785l-1.192.238a1 1 0 000 1.962l1.192.238a1 1 0 01.785.785l.238 1.192a1 1 0 001.962 0l.238-1.192a1 1 0 01.785-.785l1.192-.238a1 1 0 000-1.962l-1.192-.238a1 1 0 01-.785-.785l-.238-1.192zM6.949 5.684a1 1 0 00-1.898 0l-.683 2.051a1 1 0 01-.633.633l-2.051.683a1 1 0 000 1.898l2.051.684a1 1 0 01.633.632l.683 2.051a1 1 0 001.898 0l.683-2.051a1 1 0 01.633-.633l2.051-.683a1 1 0 000-1.898l-2.051-.683a1 1 0 01-.633-.633L6.95 5.684zM13.949 13.684a1 1 0 00-1.898 0l-.184.551a1 1 0 01-.632.633l-.551.183a1 1 0 000 1.898l.551.183a1 1 0 01.633.633l.183.551a1 1 0 001.898 0l.184-.551a1 1 0 01.632-.633l.551-.183a1 1 0 000-1.898l-.551-.184a1 1 0 01-.633-.632l-.183-.551z" />
+            </svg>
+            Innovation
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <p class="flex-auto">Showcase cutting-edge beekeeping technologies, sustainable practices, and market access solutions.</p>
+          </dd>
+        </div>
+        <div class="flex flex-col">
+          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
+            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 2c-1.716 0-3.408.106-5.07.31C3.806 2.45 3 3.414 3 4.517V17.25a.75.75 0 001.075.676L10 15.082l5.925 2.844A.75.75 0 0017 17.25V4.517c0-1.103-.806-2.068-1.93-2.207A41.403 41.403 0 0010 2z" clip-rule="evenodd" />
+            </svg>
+            Policy Impact
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <p class="flex-auto">Influence policies to enhance food security and support resilient agribusiness across the region.</p>
+          </dd>
+        </div>
+      </dl>
+    </div>
+    <div class="mt-16 text-center">
+      <p class="text-sm text-gray-600">Organized by <span class="font-semibold text-[#5C3A21]">SAADIT and partners</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: WHO SHOULD ATTEND -->
+<!-- ============================================ -->
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:text-center">
+      <h2 class="text-base/7 font-semibold text-[#F5C342]">Join the Conversation</h2>
+      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
+        Who Should Attend?
+      </p>
+      <p class="mt-6 text-lg/8 text-gray-700">
+        BEEASY2025 welcomes all stakeholders in agriculture, conservation, and sustainable development
+      </p>
+    </div>
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-7xl">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-3 lg:gap-y-16">
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-[#5C3A21]">
+            <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-[#F5C342]">
+              <svg class="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            Farmers & Beekeepers
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-600">Smallholder and commercial beekeepers seeking to improve practices and market access.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-[#5C3A21]">
+            <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-[#F5C342]">
+              <svg class="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z" clip-rule="evenodd" />
+                <path d="M3 15.055v-.684c.126.053.255.1.39.142 2.092.642 4.313.987 6.61.987 2.297 0 4.518-.345 6.61-.987.135-.041.264-.089.39-.142v.684c0 1.347-.985 2.53-2.363 2.686a41.454 41.454 0 01-9.274 0C3.985 17.585 3 16.402 3 15.055z" />
+              </svg>
+            </div>
+            Agribusinesses & Input Suppliers
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-600">Companies providing beekeeping equipment, training, and value chain services.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-[#5C3A21]">
+            <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-[#F5C342]">
+              <svg class="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+              </svg>
+            </div>
+            NGOs & Development Partners
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-600">Organizations supporting sustainable agriculture and rural development initiatives.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-[#5C3A21]">
+            <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-[#F5C342]">
+              <svg class="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+              </svg>
+            </div>
+            Researchers & Academics
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-600">Scientists studying pollinator health, crop productivity, and sustainable practices.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-[#5C3A21]">
+            <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-[#F5C342]">
+              <svg class="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            Government & Policy Leaders
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-600">Officials shaping agricultural policy and environmental conservation strategies.</dd>
+        </div>
+        <div class="relative pl-16">
+          <dt class="text-base/7 font-semibold text-[#5C3A21]">
+            <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-[#F5C342]">
+              <svg class="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
+              </svg>
+            </div>
+            Youth & Women in Agri-Innovation
+          </dt>
+          <dd class="mt-2 text-base/7 text-gray-600">Emerging entrepreneurs and innovators driving the future of beekeeping.</dd>
+        </div>
+      </dl>
+      <p class="mt-16 text-center text-lg text-gray-700">
+        <span class="font-semibold text-[#5C3A21]">If you're passionate about bees, biodiversity, food security, or rural enterprise—this event is for you.</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: KEYNOTE SPEAKER (Credibility) -->
+<!-- ============================================ -->
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div class="relative isolate overflow-hidden bg-[#5C3A21] px-6 py-20 sm:rounded-3xl sm:px-10 sm:py-24 lg:py-24 xl:px-24">
+      <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-y-0">
+        <div class="lg:row-start-2 lg:max-w-md">
+          <h2 class="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Voices Behind BEEASY2025
+          </h2>
+          <p class="mt-6 text-lg/8 text-gray-300">
+            Get inspired by thought leaders, researchers, and innovators shaping the future of beekeeping, biodiversity, and sustainable agriculture across East Africa and beyond.
+          </p>
+        </div>
+        <img width="2432" height="1442"
+             src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80"
+             alt="Rt. Hon. Mizengo K. P. Pinda"
+             class="relative -z-20 min-w-full max-w-xl rounded-xl shadow-xl ring-1 ring-white/10 lg:row-span-4 lg:w-[64rem] lg:max-w-none" />
+        <div class="max-w-xl lg:row-start-3 lg:mt-10 lg:max-w-md lg:border-t lg:border-white/10 lg:pt-10">
+          <dl class="max-w-xl space-y-8 text-base/7 text-gray-300 lg:max-w-none">
+            <div class="relative">
+              <dt class="ml-9 inline-block font-semibold text-white">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Guest of Honour & Keynote Speaker
+              </dt>
+              <dd class="inline">
+                <span class="font-semibold text-white">Rt. Hon. MIZENGO K. P. PINDA</span>
+                <br/>Former Prime Minister of the United Republic of Tanzania
+              </dd>
+            </div>
+            <div class="relative">
+              <dt class="ml-9 inline-block font-semibold text-white">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path fill-rule="evenodd" d="M10 2c-1.716 0-3.408.106-5.07.31C3.806 2.45 3 3.414 3 4.517V17.25a.75.75 0 001.075.676L10 15.082l5.925 2.844A.75.75 0 0017 17.25V4.517c0-1.103-.806-2.068-1.93-2.207A41.403 41.403 0 0010 2z" clip-rule="evenodd" />
+                </svg>
+                Champion of Sustainable Agriculture
+              </dt>
+              <dd class="inline">A visionary leader actively promoting beekeeping and nature-based livelihoods as tools for income generation and environmental conservation.</dd>
+            </div>
+            <div class="relative">
+              <dt class="ml-9 inline-block font-semibold text-white">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="absolute left-1 top-1 size-5 text-[#F5C342]">
+                  <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z" clip-rule="evenodd" />
+                </svg>
+                National Model: Pinda Farm
+              </dt>
+              <dd class="inline">The Pinda Farm in Dodoma stands as Tanzania's national model for integrated agribusiness and modern beekeeping practices.</dd>
+            </div>
+          </dl>
+          <p class="mt-8 text-sm text-gray-400 italic">
+            Join us as he shares reflections on "Harnessing Beekeeping for Food Security and Sustainable Development"
+          </p>
+        </div>
+      </div>
+      <div aria-hidden="true" class="pointer-events-none absolute left-12 top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-3xl lg:-bottom-48 lg:top-auto lg:translate-y-0">
+        <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+             class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#F5C342] to-[#ff80b5] opacity-25"></div>
+      </div>
+      <p class="mt-10 text-center text-sm font-semibold text-white lg:mt-0">
+        ⚡ More Distinguished Speakers to be Announced
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: PROGRAM OVERVIEW (Not full agenda) -->
+<!-- ============================================ -->
+<div class="bg-gray-50 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:text-center">
+      <h2 class="text-base/7 font-semibold text-[#F5C342]">What to Expect</h2>
+      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
+        Two Days of Transformation
+      </p>
+      <p class="mt-6 text-lg/8 text-gray-700">
+        Two transformative days of dialogue, discovery, and demonstration, covering pollination, biodiversity, and sustainable agri-enterprise.
+      </p>
+    </div>
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+        <div class="flex flex-col rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
+          <dt class="flex items-center gap-x-3 text-xl font-semibold text-[#5C3A21]">
+            <svg class="size-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+            </svg>
+            Day 1: Dialogue & Discovery
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Keynote Addresses from Thought Leaders
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Policy & Research Panel Discussions
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Innovation & Technology Showcases
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Regional Collaboration Forums
+              </li>
+            </ul>
+          </dd>
+        </div>
+        <div class="flex flex-col rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
+          <dt class="flex items-center gap-x-3 text-xl font-semibold text-[#5C3A21]">
+            <svg class="size-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z" clip-rule="evenodd" />
+            </svg>
+            Day 2: Demonstration & Networking
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Hands-on Workshops & Training
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Technology & Product Exhibitions
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Market Linkage & Trade Sessions
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Partnership & Networking Opportunities
+              </li>
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
+    <div class="mt-16 text-center">
+      <p class="text-base font-semibold text-gray-700">📋 Full Agenda Coming Soon</p>
+      <a href="{{ url_for('main.agenda') }}" class="mt-4 inline-block text-sm font-semibold text-[#F5C342] hover:text-[#5C3A21] transition-colors">
+        View Preliminary Program <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: VENUE & LOGISTICS -->
+<!-- ============================================ -->
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:text-center">
+      <h2 class="text-base/7 font-semibold text-[#F5C342]">Practical Information</h2>
+      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
+        Venue & Logistics
+      </p>
+    </div>
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+      <dl class="grid max-w-xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
+        <div class="flex flex-col items-center text-center">
+          <div class="mb-6 flex size-16 items-center justify-center rounded-full bg-[#F5C342]/10">
+            <svg class="size-8 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4 16.5v-13h-.25a.75.75 0 010-1.5h12.5a.75.75 0 010 1.5H16v13h.25a.75.75 0 010 1.5h-3.5a.75.75 0 01-.75-.75v-2.5a.75.75 0 00-.75-.75h-2.5a.75.75 0 00-.75.75v2.5a.75.75 0 01-.75.75h-3.5a.75.75 0 010-1.5H4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <dt class="text-lg font-semibold text-[#5C3A21]">🏛️ Venue</dt>
+          <dd class="mt-3 text-base/7 text-gray-600">
+            <p class="font-medium">Arusha International Conference Center (AICC)</p>
+            <p class="mt-2">Centrally located in the heart of Arusha, Tanzania</p>
+          </dd>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="mb-6 flex size-16 items-center justify-center rounded-full bg-[#F5C342]/10">
+            <svg class="size-8 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM6.75 9.25a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <dt class="text-lg font-semibold text-[#5C3A21]">🏨 Accommodation</dt>
+          <dd class="mt-3 text-base/7 text-gray-600">
+            <p class="font-medium">State-of-the-art hotels in city center</p>
+            <p class="mt-2">Comprehensive list of recommended hotels coming soon</p>
+          </dd>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="mb-6 flex size-16 items-center justify-center rounded-full bg-[#F5C342]/10">
+            <svg class="size-8 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8 16.25a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75z" />
+              <path fill-rule="evenodd" d="M4 4a3 3 0 013-3h6a3 3 0 013 3v12a3 3 0 01-3 3H7a3 3 0 01-3-3V4zm4-1.5v.75c0 .414.336.75.75.75h2.5a.75.75 0 00.75-.75V2.5h1A1.5 1.5 0 0114.5 4v12a1.5 1.5 0 01-1.5 1.5H7A1.5 1.5 0 015.5 16V4A1.5 1.5 0 017 2.5h1z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <dt class="text-lg font-semibold text-[#5C3A21]">🚕 Transport</dt>
+          <dd class="mt-3 text-base/7 text-gray-600">
+            <p class="font-medium">Convenient taxi access from airport and hotels</p>
+            <p class="mt-2">The AICC and most hotels are in the city center</p>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 8: DISCOVER ARUSHA (Tourism Hook) -->
+<!-- ============================================ -->
+<div class="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
+  <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=2400&q=80"
+       alt="Mount Kilimanjaro and Safari"
+       class="absolute inset-0 -z-10 size-full object-cover object-right md:object-center opacity-30" />
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:mx-0">
+      <h2 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Discover Arusha</h2>
+      <p class="mt-8 text-lg/8 text-gray-300">
+        East Africa's Gateway to Adventure
+      </p>
+    </div>
+    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-4 lg:gap-8">
+      <div class="flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10">
+        <svg class="size-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.134 1.051 2.494 2.494 0 00-.93 2.437 2.494 2.494 0 002.437-.93.75.75 0 111.186.918 3.995 3.995 0 01-4.482 1.332.75.75 0 01-.461-.461 3.994 3.994 0 011.332-4.482.75.75 0 011.052.134z" clip-rule="evenodd" />
+        </svg>
+        <div class="text-base/7">
+          <h3 class="font-semibold text-white">🦁 Safari Capital</h3>
+          <p class="mt-2 text-gray-300">Gateway to Serengeti, Ngorongoro Crater</p>
+        </div>
+      </div>
+      <div class="flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10">
+        <svg class="size-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.134 1.051 2.494 2.494 0 00-.93 2.437 2.494 2.494 0 002.437-.93.75.75 0 111.186.918 3.995 3.995 0 01-4.482 1.332.75.75 0 01-.461-.461 3.994 3.994 0 011.332-4.482.75.75 0 011.052.134z" clip-rule="evenodd" />
+        </svg>
+        <div class="text-base/7">
+          <h3 class="font-semibold text-white">🏔️ Mount Kilimanjaro</h3>
+          <p class="mt-2 text-gray-300">Africa's highest peak</p>
+        </div>
+      </div>
+      <div class="flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10">
+        <svg class="size-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.134 1.051 2.494 2.494 0 00-.93 2.437 2.494 2.494 0 002.437-.93.75.75 0 111.186.918 3.995 3.995 0 01-4.482 1.332.75.75 0 01-.461-.461 3.994 3.994 0 011.332-4.482.75.75 0 011.052.134z" clip-rule="evenodd" />
+        </svg>
+        <div class="text-base/7">
+          <h3 class="font-semibold text-white">🎭 Cultural Experiences</h3>
+          <p class="mt-2 text-gray-300">Maasai communities & traditions</p>
+        </div>
+      </div>
+      <div class="flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10">
+        <svg class="size-7 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.134 1.051 2.494 2.494 0 00-.93 2.437 2.494 2.494 0 002.437-.93.75.75 0 111.186.918 3.995 3.995 0 01-4.482 1.332.75.75 0 01-.461-.461 3.994 3.994 0 011.332-4.482.75.75 0 011.052.134z" clip-rule="evenodd" />
+        </svg>
+        <div class="text-base/7">
+          <h3 class="font-semibold text-white">🌄 Natural Wonders</h3>
+          <p class="mt-2 text-gray-300">Lakes, parks, stunning landscapes</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-10 flex">
+      <a href="#" class="rounded-md bg-[#F5C342] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#e7b831] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5C342]">
+        Extend Your Stay - Explore Tanzania
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 9: EXHIBITION & PARTNERSHIP -->
+<!-- ============================================ -->
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:text-center">
+      <h2 class="text-base/7 font-semibold text-[#F5C342]">Showcase Your Innovation</h2>
+      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
+        Exhibition & Partnership Opportunities
+      </p>
+      <p class="mt-6 text-lg/8 text-gray-700">
+        Connect with 500+ expected attendees, showcase your products, and forge strategic partnerships
+      </p>
+    </div>
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+        <div class="flex flex-col items-start rounded-2xl bg-gray-50 p-8">
+          <dt class="text-lg font-semibold text-[#5C3A21]">
+            🥉 Standard Exhibitor
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Exhibition booth space
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Product demonstrations
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Brand visibility
+              </li>
+            </ul>
+          </dd>
+        </div>
+        <div class="flex flex-col items-start rounded-2xl bg-gray-50 p-8 ring-2 ring-[#F5C342]">
+          <div class="text-xs font-semibold text-[#F5C342] uppercase tracking-wide">Popular</div>
+          <dt class="mt-2 text-lg font-semibold text-[#5C3A21]">
+            🥈 Premium Package
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Everything in Standard
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Speaking opportunity
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Priority booth location
+              </li>
+            </ul>
+          </dd>
+        </div>
+        <div class="flex flex-col items-start rounded-2xl bg-gray-50 p-8">
+          <dt class="text-lg font-semibold text-[#5C3A21]">
+            🥇 Platinum Sponsor
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
+            <ul class="mt-4 space-y-3">
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Everything in Premium
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Keynote speaking slot
+              </li>
+              <li class="flex gap-x-3">
+                <svg class="mt-1 size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+                Brand integration
+              </li>
+            </ul>
+          </dd>
+        </div>
+      </dl>
+      <div class="mt-16 flex items-center justify-center gap-x-6">
+        <a href="{{ url_for('register.register_exhibitor') }}"
+           class="rounded-md bg-[#5C3A21] px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-[#4a2f1a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C3A21]">
+          Become an Exhibitor
+        </a>
+        <a href="{{ url_for('main.contact') }}" class="text-sm/6 font-semibold text-[#5C3A21]">
+          Partnership Inquiry <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 10: LATEST NEWS / UPDATES -->
+<!-- ============================================ -->
+<div class="bg-gray-50 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-balance text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">Latest Updates</h2>
+      <p class="mt-2 text-lg/8 text-gray-600">Stay informed about symposium news and opportunities</p>
+    </div>
+    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+
+      <!-- News Item 1: Agenda Coming Soon -->
+      <article class="flex flex-col items-start justify-between">
+        <div class="relative w-full">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
+               alt="Conference Planning"
+               class="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" />
+          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+        </div>
+        <div class="flex max-w-xl grow flex-col justify-between">
+          <div class="mt-8 flex items-center gap-x-4 text-xs">
+            <time datetime="2025-10-01" class="text-gray-500">Oct 2025</time>
+            <a href="#" class="relative z-10 rounded-full bg-[#F5C342]/10 px-3 py-1.5 font-medium text-[#5C3A21] hover:bg-[#F5C342]/20">Announcement</a>
+          </div>
+          <div class="group relative grow">
+            <h3 class="mt-3 text-lg/6 font-semibold text-[#5C3A21] group-hover:text-gray-600">
+              <a href="{{ url_for('main.agenda') }}">
+                <span class="absolute inset-0"></span>
+                The Symposium 2025 Agenda Coming Soon
+              </a>
+            </h3>
+            <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">Join us for two transformative days of dialogue, discovery, and demonstration, covering pollination, biodiversity, and sustainable agri-enterprise.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- News Item 2: Call for Papers -->
+      <article class="flex flex-col items-start justify-between">
+        <div class="relative w-full">
+          <img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=800&q=80"
+               alt="Research Papers"
+               class="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" />
+          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+        </div>
+        <div class="flex max-w-xl grow flex-col justify-between">
+          <div class="mt-8 flex items-center gap-x-4 text-xs">
+            <time datetime="2025-10-05" class="text-gray-500">Oct 2025</time>
+            <a href="#" class="relative z-10 rounded-full bg-[#F5C342]/10 px-3 py-1.5 font-medium text-[#5C3A21] hover:bg-[#F5C342]/20">Research</a>
+          </div>
+          <div class="group relative grow">
+            <h3 class="mt-3 text-lg/6 font-semibold text-[#5C3A21] group-hover:text-gray-600">
+              <a href="#">
+                <span class="absolute inset-0"></span>
+                Call for Papers & Research Presentations
+              </a>
+            </h3>
+            <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">Submit your research for presentation consideration. Share your findings on beekeeping innovation, pollinator health, and sustainable agriculture.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- News Item 3: Partnership Opportunities -->
+      <article class="flex flex-col items-start justify-between">
+        <div class="relative w-full">
+          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80"
+               alt="Partnership Handshake"
+               class="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" />
+          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+        </div>
+        <div class="flex max-w-xl grow flex-col justify-between">
+          <div class="mt-8 flex items-center gap-x-4 text-xs">
+            <time datetime="2025-10-08" class="text-gray-500">Oct 2025</time>
+            <a href="#" class="relative z-10 rounded-full bg-[#F5C342]/10 px-3 py-1.5 font-medium text-[#5C3A21] hover:bg-[#F5C342]/20">Partnership</a>
+          </div>
+          <div class="group relative grow">
+            <h3 class="mt-3 text-lg/6 font-semibold text-[#5C3A21] group-hover:text-gray-600">
+              <a href="{{ url_for('register.register_exhibitor') }}">
+                <span class="absolute inset-0"></span>
+                Limited Sponsorship Packages Available
+              </a>
+            </h3>
+            <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">Secure your sponsorship package now. Limited platinum and premium partnership opportunities available for early supporters.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 11: FAQ -->
+<!-- ============================================ -->
+<div class="bg-white">
+  <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">Frequently Asked Questions</h2>
+      <dl class="mt-16 divide-y divide-gray-900/10">
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-0"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">When is the symposium?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-0" class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">The symposium is scheduled for December 2025 (specific dates to be announced). Daily sessions will run from 5pm to 8pm at the Arusha International Conference Center, Tanzania.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-1"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">Who can attend the symposium?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-1" hidden class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">BEEASY2025 welcomes all stakeholders including farmers, beekeepers, agribusinesses, NGOs, researchers, government officials, youth, women in agri-innovation, and anyone passionate about bees, biodiversity, and sustainable agriculture.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-2"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">How do I register for the event?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-2" hidden class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">You can register online through our website by selecting either "Register as Attendee" for participants or "Register as Exhibitor" for those interested in showcasing products and services. Early bird registration offers special rates.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-3"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">Where is the event taking place?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-3" hidden class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">The Bee East Africa Symposium will be held at the Arusha International Conference Center (AICC) in Arusha, Tanzania. The venue is centrally located with easy access from hotels and the airport.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-4"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">What accommodation options are available?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-4" hidden class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">Arusha offers a wide range of state-of-the-art hotels to suit every budget. A comprehensive list of recommended hotels near the conference center will be available soon. Contact us for assistance with accommodation arrangements.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-5"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">Can I exhibit my products or services?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-5" hidden class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">Yes! We offer various exhibition packages including Standard Exhibitor, Premium Package, and Platinum Sponsor options. Register as an exhibitor to showcase your innovations and connect with 500+ attendees.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <button type="button"
+                    command="--toggle"
+                    commandfor="faq-6"
+                    class="flex w-full items-start justify-between text-left text-[#5C3A21]">
+              <span class="text-base/7 font-semibold">Who should I contact for more information?</span>
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-6" hidden class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <p class="text-base/7 text-gray-600">For sponsorship opportunities, partnership inquiries, or general questions, please email us at info@beeseasy.org or use our contact form. Our team will respond within 24-48 hours.</p>
+            </dd>
+          </el-disclosure>
+        </div>
+
+      </dl>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 12: FINAL CTA (Conversion Focus) -->
+<!-- ============================================ -->
+<div class="relative isolate overflow-hidden bg-[#5C3A21] py-24 sm:py-32">
+  <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=2400&q=80"
+       alt="Beekeeping Community"
+       class="absolute inset-0 -z-10 size-full object-cover opacity-20" />
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+        Join the Movement for Sustainable Beekeeping
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-lg/8 text-gray-300">
+        Be part of East Africa's premier gathering shaping the future of apiculture. Register today and contribute to food security, biodiversity, and sustainable livelihoods across the region.
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+          <svg class="size-5 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-medium">Early Bird Registration</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+          <svg class="size-5 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+          </svg>
+          <span class="font-medium">Limited Exhibition Spaces</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+          <svg class="size-5 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
+          </svg>
+          <span class="font-medium">500+ Expected Attendees</span>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4">
+        <a href="{{ url_for('register.register_attendee') }}"
+           class="rounded-md bg-[#F5C342] px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-[#e7b831] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5C342] transition-all w-full sm:w-auto">
+          Register as Attendee
+        </a>
+        <a href="{{ url_for('register.register_exhibitor') }}"
+           class="rounded-md bg-white px-6 py-3 text-base font-semibold text-[#5C3A21] shadow-sm hover:bg-gray-100 transition-all w-full sm:w-auto">
+          Register as Exhibitor
+        </a>
+      </div>
+      <p class="mt-8 text-sm text-gray-400">
+        Questions? Contact us at <a href="mailto:info@beeseasy.org" class="font-semibold text-[#F5C342] hover:text-white transition-colors">info@beeseasy.org</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Decorative gradient -->
+  <div aria-hidden="true" class="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6">
+    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+         class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#F5C342] to-[#ff80b5] opacity-30"></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 13: PARTNERS (Optional) -->
+<!-- ============================================ -->
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <h2 class="text-center text-lg/8 font-semibold text-[#5C3A21]">Organized by SAADIT and partners</h2>
+    <div class="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+      <!-- Partner logos will be added when available -->
+      <div class="col-span-2 max-h-12 w-full object-contain lg:col-span-1 flex items-center justify-center">
+        <div class="text-center text-sm text-gray-400">Partner Logo</div>
+      </div>
+      <div class="col-span-2 max-h-12 w-full object-contain lg:col-span-1 flex items-center justify-center">
+        <div class="text-center text-sm text-gray-400">Partner Logo</div>
+      </div>
+      <div class="col-span-2 max-h-12 w-full object-contain lg:col-span-1 flex items-center justify-center">
+        <div class="text-center text-sm text-gray-400">Partner Logo</div>
+      </div>
+      <div class="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1 flex items-center justify-center">
+        <div class="text-center text-sm text-gray-400">Partner Logo</div>
+      </div>
+      <div class="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1 flex items-center justify-center">
+        <div class="text-center text-sm text-gray-400">Partner Logo</div>
+      </div>
+    </div>
+    <div class="mt-16 flex justify-center">
+      <p class="relative rounded-full bg-gray-50 px-4 py-1.5 text-sm/6 text-gray-600 ring-1 ring-inset ring-gray-900/5">
+        <span class="hidden md:inline">Interested in partnering with us?</span>
+        <a href="{{ url_for('main.contact') }}" class="font-semibold text-[#F5C342] hover:text-[#5C3A21]">
+          <span aria-hidden="true" class="absolute inset-0"></span>
+          Get in touch <span aria-hidden="true">&rarr;</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

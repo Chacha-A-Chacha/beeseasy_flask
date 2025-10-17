@@ -1,6 +1,6 @@
 # routes/register.py
 from flask import Blueprint, render_template, request, redirect, flash, url_for
-from app.forms import AttendeeRegistrationForm, ExhibitorRegistrationForm
+# from app.forms import AttendeeRegistrationForm, ExhibitorRegistrationForm
 from app.services.registration_service import RegistrationService
 
 register_bp = Blueprint("register", __name__)

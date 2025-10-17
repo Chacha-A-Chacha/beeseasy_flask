@@ -1,9 +1,57 @@
-from .registration import Registration, RegistrationType
 from .user import User, UserRole
+from app.models.registration import (
+    # Enums
+    RegistrationStatus,
+    PaymentStatus,
+    PaymentMethod,
+    AttendeeTicketType,
+    ExhibitorPackage,
+    ProfessionalCategory,
+    IndustryCategory,
+
+    # Models
+    Registration,
+    AttendeeRegistration,
+    ExhibitorRegistration,
+    TicketPrice,
+    ExhibitorPackagePrice,
+    AddOnItem,
+    AddOnPurchase,
+)
+
+from app.models.payment import (
+    Payment,
+    # PaymentType,
+    PromoCode,
+    PromoCodeUsage,
+    EmailLog,
+    ExchangeRate,
+)
 
 __all__ = [
-    "Registration", 
-    "RegistrationType", 
-    "User", 
-    "UserRole"
+    # Enums
+    'RegistrationStatus',
+    'PaymentStatus',
+    'PaymentMethod',
+    # 'PaymentType',
+    'AttendeeTicketType',
+    'ExhibitorPackage',
+    'ProfessionalCategory',
+    'IndustryCategory',
+
+    # Models
+    'Registration',
+    'AttendeeRegistration',
+    'ExhibitorRegistration',
+    'TicketPrice',
+    'ExhibitorPackagePrice',
+    'AddOnItem',
+    'AddOnPurchase',
+    'Payment',
+    'PromoCode',
+    'PromoCodeUsage',
+    'EmailLog',
+    'ExchangeRate',
+    'User',
+    'UserRole',
 ]

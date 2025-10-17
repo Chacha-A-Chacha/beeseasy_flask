@@ -1,0 +1,65 @@
+<!-- templates/emails/contact_confirmation.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #F5C342; color: white; padding: 30px; text-align: center; }
+        .content { padding: 20px; }
+        .info-box { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .cta-button { display: inline-block; background: #F5C342; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Thank You for Contacting Us!</h1>
+        </div>
+
+        <div class="content">
+            <p>Hi {{ first_name }},</p>
+
+            <p>We've received your inquiry about <strong>"{{ subject }}"</strong> and will respond within <strong>24-48 hours</strong>.</p>
+
+            <div class="info-box">
+                <strong>Your Inquiry Details:</strong><br>
+                Reference Number: <strong>{{ reference_number }}</strong><br>
+                Inquiry Type: {{ inquiry_type.replace('_', ' ').title() }}<br>
+                Submitted: {{ submitted_at }}
+            </div>
+
+            {% if inquiry_type == 'registration' %}
+                <p>Meanwhile, you can start your registration process:</p>
+                <a href="https://beeseasy.org/register" class="cta-button">Register Now</a>
+            {% elif inquiry_type == 'exhibition' %}
+                <p>Learn more about our exhibition packages:</p>
+                <a href="https://beeseasy.org/partners" class="cta-button">View Packages</a>
+            {% elif inquiry_type == 'sponsorship' %}
+                <p>Explore sponsorship opportunities:</p>
+                <a href="https://beeseasy.org/partners" class="cta-button">Partnership Options</a>
+            {% elif inquiry_type == 'speaking' %}
+                <p>Review our speaker information:</p>
+                <a href="https://beeseasy.org/speakers" class="cta-button">Speaker Guidelines</a>
+            {% endif %}
+
+            <p><strong>Alternative Contact Methods:</strong></p>
+            <ul>
+                <li>📧 Email: <a href="mailto:info@beeseasy.org">info@beeseasy.org</a></li>
+                <li>📞 Phone: +254 719 740 938</li>
+                <li>💬 WhatsApp: +254 719 740 938</li>
+            </ul>
+
+            <p>Best regards,<br>
+            <strong>The BEEASY2025 Team</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>This is an automated confirmation. Please do not reply to this email.</p>
+            <p>{{ event_name }} | Arusha, Tanzania | December 2025</p>
+        </div>
+    </div>
+</body>
+</html>

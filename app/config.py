@@ -31,6 +31,18 @@ class Config:
     REMEMBER_COOKIE_DURATION = 3600 * 24 * 7  # 1 week
     WTF_CSRF_ENABLED = True
 
+    # Stripe
+    STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+    STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+    STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+    # Bank Details
+    BANK_NAME = os.getenv('BANK_NAME', 'Your Bank')
+    BANK_ACCOUNT_NAME = os.getenv('BANK_ACCOUNT_NAME', 'BEEASY Organization')
+    BANK_ACCOUNT_NUMBER = os.getenv('BANK_ACCOUNT_NUMBER')
+    BANK_SWIFT = os.getenv('BANK_SWIFT')
+    BANK_BRANCH = os.getenv('BANK_BRANCH', 'Main Branch')
+
     # --- Other Options ---
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CORS_HEADERS = 'Content-Type'

@@ -6,18 +6,12 @@ Comprehensive forms matching the optimized database models
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, EmailField, TelField, SelectField, TextAreaField,
-    BooleanField, DateField, TimeField, IntegerField, DecimalField,
-    SelectMultipleField, HiddenField, FieldList, FormField
+    BooleanField, SelectMultipleField, HiddenField
 )
 from wtforms.validators import (
-    DataRequired, Email, Length, Optional, URL,
-    NumberRange, ValidationError, Regexp
+    DataRequired, Email, Length, Optional, ValidationError
 )
-from app.extensions import db
-from app.models import (
-    Registration, AttendeeTicketType, ExhibitorPackage,
-    ProfessionalCategory, IndustryCategory
-)
+from app.models import AttendeeTicketType, ProfessionalCategory
 
 
 # ============================================
@@ -25,7 +19,7 @@ from app.models import (
 # ============================================
 
 class AttendeeRegistrationForm(FlaskForm):
-    """Enhanced attendee registration form"""
+    """Cleaned attendee registration form - essential fields only"""
 
     # ===== SECTION 1: Basic Information =====
     first_name = StringField(
@@ -67,89 +61,56 @@ class AttendeeRegistrationForm(FlaskForm):
         render_kw={'placeholder': '712345678'}
     )
 
-    # ===== SECTION 2: Ticket Selection =====
-    ticket_type = SelectField(
-        'Ticket Type',
-        choices=[
-            ('free', 'Free Pass - $0'),
-            ('standard', 'Standard Pass - $50'),
-            ('vip', 'VIP Pass - $150'),
-            ('student', 'Student Pass - $25'),
-            ('early_bird', 'Early Bird Pass - $30'),
-        ],
-        validators=[DataRequired()],
-        render_kw={'class': 'ticket-selector'}
-    )
-
-    # ===== SECTION 3: Professional Information =====
+    # ===== SECTION 2: Professional Information =====
     organization = StringField(
-        'Organization/Company',
+        'Organization',
         validators=[Optional(), Length(max=255)],
-        render_kw={'placeholder': 'Your organization (optional)'}
+        render_kw={'placeholder': 'Company/Organization Name'}
     )
 
     job_title = StringField(
         'Job Title',
         validators=[Optional(), Length(max=150)],
-        render_kw={'placeholder': 'e.g., Beekeeper, Manager, Researcher'}
+        render_kw={'placeholder': 'e.g., Beekeeper, CEO, Researcher'}
     )
 
     professional_category = SelectField(
         'Professional Category',
         choices=[
-            ('', 'Select your category'),
-            ('beekeeper_hobbyist', 'Beekeeper (Hobbyist)'),
-            ('beekeeper_commercial', 'Beekeeper (Commercial)'),
-            ('researcher', 'Researcher/Academic'),
-            ('government', 'Government/Policy'),
-            ('equipment_supplier', 'Equipment Supplier'),
-            ('honey_processor', 'Honey Processor/Trader'),
-            ('ngo', 'NGO/Development Worker'),
-            ('student', 'Student'),
-            ('consultant', 'Consultant'),
-            ('investor', 'Investor'),
-            ('media', 'Media'),
-            ('other', 'Other'),
+            ('', 'Select category'),
+            (ProfessionalCategory.BEEKEEPER.value, 'Beekeeper/Producer'),
+            (ProfessionalCategory.COMMERCIAL.value, 'Commercial Beekeeper'),
+            (ProfessionalCategory.RESEARCHER.value, 'Researcher/Academic'),
+            (ProfessionalCategory.GOVERNMENT.value, 'Government Official'),
+            (ProfessionalCategory.EQUIPMENT_SUPPLIER.value, 'Equipment Supplier'),
+            (ProfessionalCategory.HONEY_PROCESSOR.value, 'Honey Processor/Packer'),
+            (ProfessionalCategory.NGO.value, 'NGO/Development Worker'),
+            (ProfessionalCategory.STUDENT.value, 'Student'),
+            (ProfessionalCategory.CONSULTANT.value, 'Consultant'),
+            (ProfessionalCategory.INVESTOR.value, 'Investor'),
+            (ProfessionalCategory.MEDIA.value, 'Media'),
+            (ProfessionalCategory.OTHER.value, 'Other'),
         ],
         validators=[Optional()]
     )
 
-    industry_sector = StringField(
-        'Industry/Sector',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'e.g., Commercial Beekeeping'}
-    )
-
-    years_in_beekeeping = SelectField(
-        'Years in Beekeeping',
+    # ===== SECTION 3: Ticket Selection =====
+    ticket_type = SelectField(
+        'Ticket Type',
         choices=[
-            ('', 'Select experience'),
-            ('<1', 'Less than 1 year'),
-            ('1-3', '1-3 years'),
-            ('3-5', '3-5 years'),
-            ('5-10', '5-10 years'),
-            ('10+', '10+ years'),
+            (AttendeeTicketType.FREE.value, 'Free Ticket'),
+            (AttendeeTicketType.EARLY_BIRD.value, 'Early Bird'),
+            (AttendeeTicketType.REGULAR.value, 'Regular'),
+            (AttendeeTicketType.VIP.value, 'VIP'),
         ],
-        validators=[Optional()]
+        validators=[DataRequired()]
     )
 
-    company_size = SelectField(
-        'Company Size',
+    # ===== SECTION 4: Event Preferences (Consolidated to single multi-select) =====
+    event_preferences = SelectMultipleField(
+        'What are you interested in? (Select all that apply)',
         choices=[
-            ('', 'Select size'),
-            ('1-10', '1-10 employees'),
-            ('11-50', '11-50 employees'),
-            ('51-200', '51-200 employees'),
-            ('201-500', '201-500 employees'),
-            ('500+', '500+ employees'),
-        ],
-        validators=[Optional()]
-    )
-
-    # ===== SECTION 4: Event Preferences =====
-    session_interests = SelectMultipleField(
-        'Session Interests (Select all that apply)',
-        choices=[
+            # Session interests
             ('pollinator_health', 'Pollinator Health & Conservation'),
             ('food_security', 'Food Security & Nutrition'),
             ('market_access', 'Market Access & Trade'),
@@ -158,26 +119,36 @@ class AttendeeRegistrationForm(FlaskForm):
             ('climate', 'Climate Adaptation'),
             ('queen_breeding', 'Queen Breeding'),
             ('disease_management', 'Disease & Pest Management'),
-        ],
-        validators=[Optional()]
-    )
-
-    networking_goals = SelectMultipleField(
-        'Networking Goals',
-        choices=[
-            ('find_suppliers', 'Find Suppliers/Buyers'),
+            # Networking goals
+            ('find_suppliers', 'Finding Suppliers/Buyers'),
             ('research_collaboration', 'Research Collaboration'),
             ('investment', 'Investment Opportunities'),
             ('learning', 'Learning Best Practices'),
             ('policy_advocacy', 'Policy Advocacy'),
         ],
+        validators=[Optional()],
+        render_kw={'size': 8}
+    )
+
+    # ===== SECTION 5: Special Requirements =====
+    dietary_requirement = SelectField(
+        'Dietary Requirements',
+        choices=[
+            ('', 'None'),
+            ('vegetarian', 'Vegetarian'),
+            ('vegan', 'Vegan'),
+            ('halal', 'Halal'),
+            ('kosher', 'Kosher'),
+            ('gluten_free', 'Gluten Free'),
+            ('other', 'Other (specify below)'),
+        ],
         validators=[Optional()]
     )
 
-    attendance_objectives = TextAreaField(
-        'What are your main objectives for attending?',
+    dietary_notes = TextAreaField(
+        'Dietary Notes',
         validators=[Optional(), Length(max=500)],
-        render_kw={'rows': 3, 'placeholder': 'Tell us what you hope to achieve...'}
+        render_kw={'rows': 2, 'placeholder': 'Any allergies or additional dietary needs...'}
     )
 
     accessibility_needs = TextAreaField(
@@ -189,138 +160,64 @@ class AttendeeRegistrationForm(FlaskForm):
         }
     )
 
-    tshirt_size = SelectField(
-        'T-Shirt Size',
-        choices=[
-            ('', 'Select size'),
-            ('XS', 'XS'),
-            ('S', 'S'),
-            ('M', 'M'),
-            ('L', 'L'),
-            ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL'),
-        ],
-        validators=[Optional()]
+    special_requirements = TextAreaField(
+        'Other Special Requirements',
+        validators=[Optional(), Length(max=500)],
+        render_kw={'rows': 2, 'placeholder': 'Any other needs we should know about...'}
     )
 
-    # ===== SECTION 6: Travel & Accommodation =====
-    country = StringField(
-        'Country',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'Kenya'}
-    )
-
-    city = StringField(
-        'City',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'Nairobi'}
-    )
-
+    # ===== SECTION 6: Travel Support =====
     needs_visa_letter = BooleanField(
         'I need a visa support letter',
         default=False
     )
 
-    needs_accommodation = BooleanField(
-        'I need accommodation assistance',
-        default=False
-    )
-
-    arrival_date = DateField(
-        'Arrival Date',
-        validators=[Optional()],
-        format='%Y-%m-%d'
-    )
-
-    departure_date = DateField(
-        'Departure Date',
-        validators=[Optional()],
-        format='%Y-%m-%d'
-    )
-
-    # ===== SECTION 7: Networking Profile =====
-    linkedin_url = StringField(
-        'LinkedIn Profile',
-        validators=[Optional(), URL(), Length(max=255)],
-        render_kw={'placeholder': 'https://linkedin.com/in/yourprofile'}
-    )
-
-    twitter_handle = StringField(
-        'Twitter Handle',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': '@yourusername'}
-    )
-
-    bio = TextAreaField(
-        'Short Bio (for networking)',
-        validators=[Optional(), Length(max=500)],
-        render_kw={'rows': 3, 'placeholder': 'Tell other attendees about yourself...'}
-    )
-
-    # ===== SECTION 8: Marketing & Promo =====
+    # ===== SECTION 7: Marketing & Consent =====
     referral_source = SelectField(
         'How did you hear about us?',
         choices=[
             ('', 'Select source'),
+            ('website', 'Website'),
             ('social_media', 'Social Media'),
-            ('colleague', 'Colleague/Friend'),
             ('email', 'Email Newsletter'),
-            ('association', 'Professional Association'),
-            ('previous_event', 'Previous BEEASY Event'),
-            ('web_search', 'Web Search'),
+            ('colleague', 'Colleague/Friend'),
+            ('partner_org', 'Partner Organization'),
+            ('previous_event', 'Previous Event'),
+            ('advertisement', 'Advertisement'),
             ('other', 'Other'),
         ],
         validators=[Optional()]
     )
 
-    promo_code = StringField(
-        'Promo Code',
-        validators=[Optional(), Length(max=50)],
-        render_kw={'placeholder': 'Enter promo code if you have one'}
+    newsletter_signup = BooleanField(
+        'Subscribe to event updates and beekeeping news',
+        default=True
     )
 
-    # ===== SECTION 9: Consent =====
     consent_photography = BooleanField(
-        'I consent to event photography/videography',
+        'I consent to being photographed/filmed at the event',
         default=True
     )
 
     consent_networking = BooleanField(
-        'Share my profile with other attendees for networking',
+        'I consent to my contact details being shared with other attendees for networking',
         default=True
     )
 
     consent_data_sharing = BooleanField(
-        'Share my contact info with exhibitors (for follow-up)',
+        'I consent to my data being shared with event sponsors',
         default=False
     )
 
-    newsletter_signup = BooleanField(
-        'Subscribe to BEEASY community newsletter',
-        default=True
+    # ===== PROMO CODE =====
+    promo_code = StringField(
+        'Promo Code',
+        validators=[Optional(), Length(max=50)],
+        render_kw={'placeholder': 'Enter code if you have one'}
     )
 
-    def validate_email(self, field):
-        """Check for duplicate email"""
-        existing = Registration.query.filter(
-            db.func.lower(Registration.email) == field.data.lower(),
-            Registration.registration_type == 'attendee',
-            Registration.is_deleted == False
-        ).first()
-
-        if existing:
-            raise ValidationError('This email is already registered as an attendee.')
-
-
-# ============================================
-# EXHIBITOR REGISTRATION FORM
-# ============================================
-
-
-
-
-# ============================================
-# PAYMENT FORM
-# ============================================
-
+    def validate_dietary_notes(self, field):
+        """Require dietary notes if 'other' is selected"""
+        if self.dietary_requirement.data == 'other' and not field.data:
+            raise ValidationError('Please specify your dietary requirements')
+        

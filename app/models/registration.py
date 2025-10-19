@@ -715,7 +715,7 @@ class AttendeeRegistration(Registration):
                                 lazy='joined')
 
     __table_args__ = (
-        Index('idx_attendee_ticket_status', 'ticket_type', 'status'),
+        # Index('idx_attendee_ticket_status', 'ticket_type', 'status'),
         Index('idx_attendee_checkin', 'checked_in', 'checked_in_at'),
     )
 

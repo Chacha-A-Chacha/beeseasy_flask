@@ -128,8 +128,8 @@ class ExhibitorRegistrationForm(FlaskForm):
         'Exhibition Package',
         choices=[
             ('', 'Select package'),
-            (ExhibitorPackage.STANDARD.value, 'Standard Booth'),
-            (ExhibitorPackage.PREMIUM.value, 'Premium Booth'),
+            # (ExhibitorPackage.STANDARD.value, 'Standard Booth'),
+            # (ExhibitorPackage.PREMIUM.value, 'Premium Booth'),
             (ExhibitorPackage.GOLD.value, 'Gold Package'),
             (ExhibitorPackage.PLATINUM.value, 'Platinum Package'),
         ],

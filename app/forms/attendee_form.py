@@ -78,8 +78,8 @@ class AttendeeRegistrationForm(FlaskForm):
         'Professional Category',
         choices=[
             ('', 'Select category'),
-            (ProfessionalCategory.BEEKEEPER.value, 'Beekeeper/Producer'),
-            (ProfessionalCategory.COMMERCIAL.value, 'Commercial Beekeeper'),
+            (ProfessionalCategory.BEEKEEPER_HOBBYIST.value, 'Beekeeper/Producer'),
+            (ProfessionalCategory.BEEKEEPER_COMMERCIAL.value, 'Commercial Beekeeper'),
             (ProfessionalCategory.RESEARCHER.value, 'Researcher/Academic'),
             (ProfessionalCategory.GOVERNMENT.value, 'Government Official'),
             (ProfessionalCategory.EQUIPMENT_SUPPLIER.value, 'Equipment Supplier'),
@@ -100,7 +100,7 @@ class AttendeeRegistrationForm(FlaskForm):
         choices=[
             (AttendeeTicketType.FREE.value, 'Free Ticket'),
             (AttendeeTicketType.EARLY_BIRD.value, 'Early Bird'),
-            (AttendeeTicketType.REGULAR.value, 'Regular'),
+            # (AttendeeTicketType.REGULAR.value, 'Regular'),
             (AttendeeTicketType.VIP.value, 'VIP'),
         ],
         validators=[DataRequired()]

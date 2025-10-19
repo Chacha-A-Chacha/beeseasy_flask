@@ -462,4 +462,3 @@ class RegistrationService:
 
         except Exception as e:
             logger.error(f"Failed to send confirmation email: {str(e)}", exc_info=True)
-            

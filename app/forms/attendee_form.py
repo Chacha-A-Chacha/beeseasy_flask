@@ -220,4 +220,3 @@ class AttendeeRegistrationForm(FlaskForm):
         """Require dietary notes if 'other' is selected"""
         if self.dietary_requirement.data == 'other' and not field.data:
             raise ValidationError('Please specify your dietary requirements')
-        

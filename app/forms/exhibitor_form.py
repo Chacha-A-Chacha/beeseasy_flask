@@ -6,22 +6,16 @@ Comprehensive forms matching the optimized database models
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, EmailField, TelField, SelectField, TextAreaField,
-    BooleanField, DateField, TimeField, IntegerField, DecimalField,
-    SelectMultipleField, HiddenField, FieldList, FormField
+    BooleanField, IntegerField, HiddenField
 )
 from wtforms.validators import (
-    DataRequired, Email, Length, Optional, URL,
-    NumberRange, ValidationError, Regexp
+    DataRequired, Email, Length, Optional, URL, NumberRange
 )
-from app.extensions import db
-from app.models import (
-    Registration, AttendeeTicketType, ExhibitorPackage,
-    ProfessionalCategory, IndustryCategory
-)
+from app.models import ExhibitorPackage, IndustryCategory
 
 
 class ExhibitorRegistrationForm(FlaskForm):
-    """Enhanced exhibitor registration form"""
+    """Cleaned exhibitor registration form - essential fields only"""
 
     # ===== SECTION 1: Contact Person =====
     first_name = StringField(
@@ -70,21 +64,9 @@ class ExhibitorRegistrationForm(FlaskForm):
 
     # ===== SECTION 2: Company Information =====
     company_legal_name = StringField(
-        'Company Legal Name',
+        'Company Name',
         validators=[DataRequired(), Length(min=2, max=255)],
         render_kw={'placeholder': 'Company Inc.'}
-    )
-
-    company_trading_name = StringField(
-        'Trading Name (if different)',
-        validators=[Optional(), Length(max=255)],
-        render_kw={'placeholder': 'Brand Name'}
-    )
-
-    company_registration_number = StringField(
-        'Company Registration Number',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'REG-2024-12345'}
     )
 
     company_country = StringField(
@@ -105,276 +87,104 @@ class ExhibitorRegistrationForm(FlaskForm):
         render_kw={'placeholder': 'https://www.yourcompany.com'}
     )
 
-    company_email = EmailField(
-        'Company Email',
+    # ===== SECTION 3: Alternate Contact (Single backup) =====
+    alternate_contact_email = EmailField(
+        'Alternate Contact Email (optional)',
         validators=[Optional(), Email()],
-        render_kw={'placeholder': 'info@company.com'}
+        render_kw={'placeholder': 'backup@company.com'}
     )
 
-    company_phone = TelField(
-        'Company Phone',
-        validators=[Optional(), Length(max=50)],
-        render_kw={'placeholder': '+254 700 000000'}
-    )
-
-    # ===== SECTION 3: Company Profile =====
+    # ===== SECTION 4: Company Profile =====
     industry_category = SelectField(
         'Industry Category',
         choices=[
             ('', 'Select category'),
-            ('beekeeping_equipment', 'Beekeeping Equipment'),
-            ('processing_equipment', 'Processing Equipment'),
-            ('bee_products', 'Bee Products (Honey, Wax, Propolis)'),
-            ('packaging', 'Packaging Solutions'),
-            ('technology', 'Technology/Software'),
-            ('training', 'Training/Consulting'),
-            ('financial_services', 'Financial Services'),
-            ('research', 'Research/Laboratory'),
-            ('government', 'Government/Association'),
-            ('media', 'Media/Publishing'),
-            ('other', 'Other'),
+            (IndustryCategory.BEEKEEPING_EQUIPMENT.value, 'Beekeeping Equipment'),
+            (IndustryCategory.PROCESSING_EQUIPMENT.value, 'Processing Equipment'),
+            (IndustryCategory.BEE_PRODUCTS.value, 'Bee Products (Honey, Wax, Propolis)'),
+            (IndustryCategory.PACKAGING.value, 'Packaging Solutions'),
+            (IndustryCategory.TECHNOLOGY.value, 'Technology/Software'),
+            (IndustryCategory.TRAINING.value, 'Training/Consulting'),
+            (IndustryCategory.FINANCIAL_SERVICES.value, 'Financial Services'),
+            (IndustryCategory.RESEARCH.value, 'Research/Laboratory'),
+            (IndustryCategory.GOVERNMENT.value, 'Government/Association'),
+            (IndustryCategory.MEDIA.value, 'Media/Publishing'),
+            (IndustryCategory.OTHER.value, 'Other'),
         ],
         validators=[DataRequired()]
     )
 
     company_description = TextAreaField(
-        'Company Description (for event catalog)',
-        validators=[DataRequired(), Length(min=100, max=500)],
-        render_kw={'rows': 4, 'placeholder': 'Describe your company and products/services...'}
+        'Company Description',
+        validators=[DataRequired(), Length(min=50, max=1000)],
+        render_kw={
+            'rows': 4,
+            'placeholder': 'Describe your company, products, and services...'
+        }
     )
 
-    years_in_business = SelectField(
-        'Years in Business',
-        choices=[
-            ('', 'Select range'),
-            ('<1', 'Less than 1 year'),
-            ('1-3', '1-3 years'),
-            ('3-5', '3-5 years'),
-            ('5-10', '5-10 years'),
-            ('10+', '10+ years'),
-        ],
-        validators=[Optional()]
-    )
-
-    employee_count = SelectField(
-        'Number of Employees',
-        choices=[
-            ('', 'Select range'),
-            ('1-10', '1-10'),
-            ('11-50', '11-50'),
-            ('51-200', '51-200'),
-            ('201-500', '201-500'),
-            ('500+', '500+'),
-        ],
-        validators=[Optional()]
-    )
-
-    # ===== SECTION 4: Package Selection =====
+    # ===== SECTION 5: Exhibition Details =====
     package_type = SelectField(
         'Exhibition Package',
         choices=[
-            ('bronze', 'Bronze Package - $500'),
-            ('silver', 'Silver Package - $1,000'),
-            ('gold', 'Gold Package - $2,500'),
-            ('platinum', 'Platinum Package - $5,000'),
-            ('custom', 'Custom Package (Contact Us)'),
+            ('', 'Select package'),
+            (ExhibitorPackage.STANDARD.value, 'Standard Booth'),
+            (ExhibitorPackage.PREMIUM.value, 'Premium Booth'),
+            (ExhibitorPackage.GOLD.value, 'Gold Package'),
+            (ExhibitorPackage.PLATINUM.value, 'Platinum Package'),
         ],
-        validators=[DataRequired()],
-        render_kw={'class': 'package-selector'}
+        validators=[DataRequired()]
     )
 
-    # ===== SECTION 5: Booth Preferences =====
-    booth_preference_corner = BooleanField(
-        'Corner Booth (+$200)',
-        default=False
+    products_to_exhibit = TextAreaField(
+        'Products/Services to Exhibit',
+        validators=[DataRequired(), Length(max=1000)],
+        render_kw={
+            'rows': 3,
+            'placeholder': 'List the main products or services you will showcase...'
+        }
     )
 
-    booth_preference_entrance = BooleanField(
-        'Near Entrance (+$150)',
-        default=False
-    )
-
-    booth_preference_area = StringField(
-        'Preferred Area/Location',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'e.g., Main hall, near entrance'}
-    )
-
-    booth_preference_notes = TextAreaField(
-        'Special Booth Requests',
-        validators=[Optional(), Length(max=500)],
-        render_kw={'rows': 2, 'placeholder': 'Any specific requirements...'}
-    )
-
-    # ===== SECTION 6: Booth Requirements =====
     number_of_staff = IntegerField(
-        'Number of Staff Attending',
-        validators=[Optional(), NumberRange(min=1, max=50)],
+        'Number of Staff (for badges)',
+        validators=[Optional(), NumberRange(min=1, max=20)],
         default=2,
         render_kw={'placeholder': '2'}
-    )
-
-    exhibitor_badges_needed = IntegerField(
-        'Exhibitor Badges Needed',
-        validators=[Optional(), NumberRange(min=1, max=50)],
-        default=2,
-        render_kw={'placeholder': '2'}
-    )
-
-    electricity_required = BooleanField(
-        'Electricity Required',
-        default=False
-    )
-
-    electricity_watts = IntegerField(
-        'Power Requirement (Watts)',
-        validators=[Optional(), NumberRange(min=0, max=10000)],
-        render_kw={'placeholder': 'e.g., 1000'}
-    )
-
-    water_connection_required = BooleanField(
-        'Water Connection Required',
-        default=False
-    )
-
-    internet_required = BooleanField(
-        'Internet Connection Required',
-        default=False
     )
 
     special_requirements = TextAreaField(
         'Special Requirements',
         validators=[Optional(), Length(max=1000)],
-        render_kw={'rows': 3, 'placeholder': 'Any special equipment or setup needs...'}
+        render_kw={
+            'rows': 3,
+            'placeholder': 'Electricity needs, setup requirements, etc.'
+        }
     )
 
-    # ===== SECTION 7: Secondary Contact =====
-    secondary_contact_name = StringField(
-        'Secondary Contact Name',
-        validators=[Optional(), Length(max=200)],
-        render_kw={'placeholder': 'Backup contact person'}
-    )
-
-    secondary_contact_email = EmailField(
-        'Secondary Contact Email',
-        validators=[Optional(), Email()],
-        render_kw={'placeholder': 'backup@company.com'}
-    )
-
-    secondary_contact_phone = TelField(
-        'Secondary Contact Phone',
-        validators=[Optional(), Length(max=50)],
-        render_kw={'placeholder': '+254 700 000001'}
-    )
-
-    # ===== SECTION 8: Billing Information =====
-    billing_address = TextAreaField(
-        'Billing Address (if different from company address)',
-        validators=[Optional(), Length(max=500)],
-        render_kw={'rows': 2, 'placeholder': 'Leave blank if same as company address'}
-    )
-
-    billing_contact_name = StringField(
-        'Billing Contact Name',
-        validators=[Optional(), Length(max=200)],
-        render_kw={'placeholder': 'Finance person'}
-    )
-
-    billing_contact_email = EmailField(
-        'Billing Contact Email',
-        validators=[Optional(), Email()],
-        render_kw={'placeholder': 'finance@company.com'}
-    )
-
-    tax_id = StringField(
-        'Tax ID / VAT Number',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'P051234567X'}
-    )
-
-    purchase_order_number = StringField(
-        'Purchase Order Number',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'PO-2024-001 (if applicable)'}
-    )
-
-    payment_terms = SelectField(
-        'Payment Terms',
-        choices=[
-            ('immediate', 'Pay Now'),
-            ('net_30', 'Net 30 (Invoice)'),
-            ('net_60', 'Net 60 (Invoice)'),
-        ],
-        default='immediate',
-        validators=[Optional()]
-    )
-
-    # ===== SECTION 9: Social Media & Marketing =====
-    linkedin_url = StringField(
-        'LinkedIn Company Page',
-        validators=[Optional(), URL(), Length(max=255)],
-        render_kw={'placeholder': 'https://linkedin.com/company/yourcompany'}
-    )
-
-    facebook_url = StringField(
-        'Facebook Page',
-        validators=[Optional(), URL(), Length(max=255)],
-        render_kw={'placeholder': 'https://facebook.com/yourcompany'}
-    )
-
-    twitter_handle = StringField(
-        'Twitter Handle',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': '@yourcompany'}
-    )
-
-    instagram_handle = StringField(
-        'Instagram Handle',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': '@yourcompany'}
-    )
-
-    # ===== SECTION 10: Legal & Compliance =====
-    has_liability_insurance = BooleanField(
-        'We have liability insurance',
-        default=False
-    )
-
-    insurance_policy_number = StringField(
-        'Insurance Policy Number',
-        validators=[Optional(), Length(max=100)],
-        render_kw={'placeholder': 'INS-2024-12345'}
-    )
-
-    products_comply_regulations = BooleanField(
-        'All products comply with local regulations',
-        default=False
-    )
-
-    # ===== SECTION 11: Marketing & Promo =====
+    # ===== SECTION 6: Marketing & Consent =====
     referral_source = SelectField(
         'How did you hear about this exhibition opportunity?',
         choices=[
             ('', 'Select source'),
-            ('previous_exhibitor', 'Previous Exhibitor'),
-            ('industry_partner', 'Industry Partner'),
-            ('email', 'Email Invitation'),
             ('website', 'Website'),
+            ('email', 'Email Invitation'),
+            ('partner', 'Partner Organization'),
+            ('previous_exhibitor', 'Previous Exhibition'),
             ('social_media', 'Social Media'),
+            ('colleague', 'Colleague'),
+            ('advertisement', 'Advertisement'),
             ('other', 'Other'),
         ],
         validators=[Optional()]
     )
 
-    promo_code = StringField(
-        'Promo Code',
-        validators=[Optional(), Length(max=50)],
-        render_kw={'placeholder': 'Enter promo code if you have one'}
+    newsletter_signup = BooleanField(
+        'Subscribe to exhibitor updates',
+        default=True
     )
 
-    # ===== SECTION 12: Consent =====
     consent_photography = BooleanField(
-        'We consent to event photography/videography',
+        'Consent to photography/filming at our booth',
         default=True
     )
 
@@ -383,24 +193,9 @@ class ExhibitorRegistrationForm(FlaskForm):
         default=True
     )
 
-    newsletter_signup = BooleanField(
-        'Subscribe to exhibitor updates',
-        default=True
+    # ===== PROMO CODE =====
+    promo_code = StringField(
+        'Promo Code',
+        validators=[Optional(), Length(max=50)],
+        render_kw={'placeholder': 'Enter code if you have one'}
     )
-
-    terms_accepted = BooleanField(
-        'I accept the exhibitor terms and conditions',
-        validators=[DataRequired(message='You must accept the terms and conditions')]
-    )
-
-    def validate_email(self, field):
-        """Check for duplicate email"""
-        existing = Registration.query.filter(
-            db.func.lower(Registration.email) == field.data.lower(),
-            Registration.registration_type == 'exhibitor',
-            Registration.is_deleted == False
-        ).first()
-
-        if existing:
-            raise ValidationError('This email is already registered as an exhibitor.')
-        

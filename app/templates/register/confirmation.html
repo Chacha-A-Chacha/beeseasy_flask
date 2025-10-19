@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Received{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-r from-[#F5C342] to-[#E8B030] py-8">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-[#5C3A21]">
+            {% if registration.status.value == 'confirmed' %}
+            ✓ Registration Confirmed
+            {% else %}
+            Registration Received
+            {% endif %}
+        </h1>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-3xl mx-auto">
+
+        <!-- Progress Indicator -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-400">1. Registration</span>
+                <span class="{% if registration.status.value == 'confirmed' %}text-gray-400{% else %}text-[#F5C342] font-semibold{% endif %}">2. Payment</span>
+                <span class="{% if registration.status.value == 'confirmed' %}text-[#F5C342] font-semibold{% else %}text-gray-400{% endif %}">3. Confirmation</span>
+            </div>
+            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-[#F5C342] h-2 rounded-full transition-all duration-500"
+                     style="width: {% if registration.status.value == 'confirmed' %}100{% else %}66{% endif %}%"></div>
+            </div>
+        </div>
+
+        <!-- Status Alert -->
+        {% if registration.status.value == 'confirmed' %}
+        <div class="bg-green-50 border-l-4 border-green-500 p-6 mb-6 rounded-r-lg">
+            <div class="flex items-center">
+                <svg class="w-10 h-10 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h2 class="text-xl font-bold text-green-800">Payment Confirmed!</h2>
+                    <p class="text-green-700">Your registration is complete. Welcome to BEEASY 2025!</p>
+                </div>
+            </div>
+        </div>
+
+        {% if registration.qr_code_image_url %}
+        <div class="text-center mb-8">
+            <a href="{{ url_for('main.download_badge', reference=registration.reference_number) }}"
+               class="inline-flex items-center px-8 py-4 bg-[#5C3A21] text-white font-bold rounded-lg hover:bg-[#4a2f1a] transition-colors text-lg">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                </svg>
+                Download Your Badge
+            </a>
+            <p class="text-sm text-gray-600 mt-2">Print or save to your phone</p>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-6 rounded-r-lg">
+            <div class="flex items-center">
+                <svg class="w-10 h-10 text-yellow-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h2 class="text-xl font-bold text-yellow-800">Almost There!</h2>
+                    <p class="text-yellow-700">Complete your payment to confirm your registration</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-8">
+            <a href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
+               class="inline-flex items-center px-8 py-4 bg-[#2C5F2D] text-white font-bold rounded-lg hover:bg-[#1f4520] transition-colors text-lg">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+                Complete Payment
+            </a>
+            <p class="text-sm text-gray-600 mt-2">Multiple payment methods available</p>
+        </div>
+        {% endif %}
+
+        <!-- Registration Details Card -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="border-b border-gray-200 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Registration Details</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Reference Number</p>
+                    <p class="font-bold text-gray-900 font-mono">{{ registration.reference_number }}</p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Status</p>
+                    <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                        {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800
+                        {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                        {{ registration.status.value|upper }}
+                    </span>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Name</p>
+                    <p class="font-semibold text-gray-900">{{ registration.first_name }} {{ registration.last_name }}</p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Email</p>
+                    <p class="font-semibold text-gray-900">{{ registration.email }}</p>
+                </div>
+
+                {% if registration.registration_type == 'attendee' %}
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Ticket Type</p>
+                    <p class="font-semibold text-gray-900">{{ registration.ticket_type.value|replace('_', ' ')|title }}</p>
+                </div>
+                {% if registration.organization %}
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Organization</p>
+                    <p class="font-semibold text-gray-900">{{ registration.organization }}</p>
+                </div>
+                {% endif %}
+                {% else %}
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Company</p>
+                    <p class="font-semibold text-gray-900">{{ registration.company_legal_name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Package</p>
+                    <p class="font-semibold text-gray-900">{{ registration.package_type.value|title }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Payment Summary Card -->
+        {% if payment %}
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="border-b border-gray-200 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Payment Summary</h3>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700">Total Amount</span>
+                    <span class="text-xl font-bold text-gray-900">{{ payment.currency }} {{ payment.total_amount }}</span>
+                </div>
+
+                {% if balance_due > 0 %}
+                <div class="flex justify-between items-center pt-3 border-t border-gray-200">
+                    <span class="font-semibold text-red-600">Balance Due</span>
+                    <span class="text-2xl font-bold text-red-600">{{ payment.currency }} {{ balance_due }}</span>
+                </div>
+                {% else %}
+                <div class="flex justify-between items-center pt-3 border-t border-gray-200">
+                    <span class="font-semibold text-green-600">Amount Paid</span>
+                    <span class="text-2xl font-bold text-green-600">{{ payment.currency }} {{ payment.total_amount }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Next Steps Card -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 rounded-r-lg p-6 mb-6">
+            <h3 class="text-lg font-bold text-blue-900 mb-3">What Happens Next?</h3>
+            <ol class="space-y-2 text-blue-900">
+                {% if registration.status.value != 'confirmed' %}
+                <li class="flex items-start">
+                    <span class="font-bold mr-2">1.</span>
+                    <span>Complete payment using the button above</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="font-bold mr-2">2.</span>
+                    <span>Receive confirmation email with your event badge</span>
+                </li>
+                {% else %}
+                <li class="flex items-start">
+                    <span class="font-bold mr-2">1.</span>
+                    <span>Download and print your badge (or save to mobile)</span>
+                </li>
+                {% endif %}
+                <li class="flex items-start">
+                    <span class="font-bold mr-2">{% if registration.status.value != 'confirmed' %}3{% else %}2{% endif %}.</span>
+                    <span>Check your email for event details and updates</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="font-bold mr-2">{% if registration.status.value != 'confirmed' %}4{% else %}3{% endif %}.</span>
+                    <span>Join our WhatsApp group for real-time updates</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="font-bold mr-2">{% if registration.status.value != 'confirmed' %}5{% else %}4{% endif %}.</span>
+                    <span>Arrive 30 minutes early on event day for check-in</span>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Email Notice -->
+        <div class="text-center bg-gray-50 rounded-lg p-6">
+            <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            <p class="text-gray-700 font-medium mb-1">Check Your Email</p>
+            <p class="text-sm text-gray-600">Confirmation sent to <span class="font-semibold">{{ registration.email }}</span></p>
+            <p class="text-xs text-gray-500 mt-3">
+                Questions? Email <a href="mailto:info@beeseasy.org" class="text-[#5C3A21] hover:underline">info@beeseasy.org</a> or call +254 719 740 938
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% if registration.status.value != 'confirmed' %}
+<script>
+let checkCount = 0;
+const maxChecks = 60;
+
+function checkPaymentStatus() {
+    if (checkCount >= maxChecks) return;
+
+    fetch('/register/api/payment-status/{{ registration.reference_number }}')
+        .then(r => r.json())
+        .then(data => {
+            if (data.is_confirmed) {
+                location.reload();
+            } else {
+                checkCount++;
+                setTimeout(checkPaymentStatus, 5000);
+            }
+        })
+        .catch(err => console.error('Status check failed:', err));
+}
+
+setTimeout(checkPaymentStatus, 10000);
+</script>
+{% endif %}
+{% endblock %}

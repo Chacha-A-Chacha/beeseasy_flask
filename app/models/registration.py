@@ -673,88 +673,68 @@ class AttendeeRegistration(Registration):
                             index=True)
     ticket_price_id = db.Column(db.Integer, db.ForeignKey('ticket_prices.id'))
 
-    # Professional information
+    # Professional information (simplified)
     professional_category = db.Column(db.Enum(ProfessionalCategory), index=True)
-    industry_sector = db.Column(db.String(100))
-    years_in_beekeeping = db.Column(db.String(20))
-    company_size = db.Column(db.String(50))
 
-    # Event preferences (stored as JSON for flexibility)
-    session_interests = db.Column(JSONB)
-    networking_goals = db.Column(JSONB)
-    workshop_preferences = db.Column(JSONB)
-    topics_of_interest = db.Column(JSONB)
+    # Event preferences (consolidated from 4 fields to 1)
+    event_preferences = db.Column(JSONB)  # Combines: session_interests, networking_goals, workshop_preferences, topics_of_interest
 
+    # Dietary and accessibility (operational - keep)
+    dietary_requirement = db.Column(db.String(50))
+    dietary_notes = db.Column(db.Text)
     accessibility_needs = db.Column(db.Text)
     special_requirements = db.Column(db.Text)
 
-    # Travel and accommodation
+    # Travel and visa (operational - keep)
     needs_visa_letter = db.Column(db.Boolean, default=False)
     visa_letter_sent = db.Column(db.Boolean, default=False)
     visa_letter_sent_at = db.Column(db.DateTime)
-
-    # needs_accommodation = db.Column(db.Boolean, default=False)
-    # accommodation_type = db.Column(db.String(50))
-    # arrival_date = db.Column(db.Date)
-    # departure_date = db.Column(db.Date)
-
-    # Networking profile
-    # linkedin_url = db.Column(db.String(255))
-    # twitter_handle = db.Column(db.String(100))
-    # bio = db.Column(db.Text)
-    # profile_photo_url = db.Column(db.String(500))
-
-    # Conference materials
-    # tshirt_size = db.Column(db.String(10))
-
-    # Objectives
-    # attendance_objectives = db.Column(db.Text)
-    # expectations = db.Column(db.Text)
 
     # Check-in tracking
     checked_in = db.Column(db.Boolean, default=False, index=True)
     checked_in_at = db.Column(db.DateTime)
     checked_in_by = db.Column(db.String(255))
+    badge_printed = db.Column(db.Boolean, default=False)
 
-    # Certificate
-    certificate_issued = db.Column(db.Boolean, default=False)
-    certificate_url = db.Column(db.String(500))
-    certificate_issued_at = db.Column(db.DateTime)
+    # Consent and preferences
+    consent_photography = db.Column(db.Boolean, default=True)
+    consent_networking = db.Column(db.Boolean, default=True)
+    consent_data_sharing = db.Column(db.Boolean, default=False)
+    newsletter_signup = db.Column(db.Boolean, default=True)
 
-    # Engagement tracking
-    # sessions_attended = db.Column(JSONB)
-    # feedback_submitted = db.Column(db.Boolean, default=False)
-    # nps_score = db.Column(db.Integer)  # Net Promoter Score
+    # Referral tracking
+    referral_source = db.Column(db.String(100))
 
     __mapper_args__ = {
         'polymorphic_identity': 'attendee',
     }
 
     # Relationships
-    ticket_price = relationship('TicketPrice', backref='attendee_registrations', lazy='joined')
+    ticket_price = relationship('TicketPrice',
+                                backref='attendee_registrations',
+                                lazy='joined')
 
     __table_args__ = (
-        # Index('idx_attendee_ticket_status', 'ticket_type', 'status'),
+        Index('idx_attendee_ticket_status', 'ticket_type', 'status'),
         Index('idx_attendee_checkin', 'checked_in', 'checked_in_at'),
-        # CheckConstraint(  `
-        #     "tshirt_size IN ('XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL') OR tshirt_size IS NULL",
-        #     name='check_valid_tshirt_size'
-        # ),
     )
 
-    def get_ticket_price(self) -> Decimal:
-        """Get the current price for this ticket"""
+    def get_base_price(self) -> Decimal:
+        """Get base ticket price"""
         if self.ticket_price:
-            return self.ticket_price.get_current_price()
+            return Decimal(str(self.ticket_price.price))
         return Decimal('0.00')
 
     def get_total_amount_due(self) -> Decimal:
         """Calculate total amount due for attendee"""
-        base_price = self.get_ticket_price()
+        base_price = self.get_base_price()
+
+        # Add add-ons
         addons_total = sum(
             Decimal(str(addon.total_price))
             for addon in self.addon_purchases
         )
+
         return base_price + addons_total
 
     def check_in(self, checked_in_by: str):
@@ -768,7 +748,7 @@ class AttendeeRegistration(Registration):
 
 
 # ============================================
-# EXHIBITOR REGISTRATION MODEL
+# EXHIBITOR REGISTRATION MODEL - CLEANED
 # ============================================
 
 class ExhibitorRegistration(Registration):
@@ -777,129 +757,58 @@ class ExhibitorRegistration(Registration):
 
     id = db.Column(db.Integer, db.ForeignKey('registrations.id'), primary_key=True)
 
-    # Company information (required)
+    # Company information (simplified - single name only)
     company_legal_name = db.Column(db.String(255), nullable=False, index=True)
-    company_trading_name = db.Column(db.String(255))
-    # company_registration_number = db.Column(db.String(100))
     company_country = db.Column(db.String(100), nullable=False)
-    # tax_id = db.Column(db.String(100))
-    # vat_number = db.Column(db.String(100))
-
-    # Contact details
     company_address = db.Column(db.Text, nullable=False)
-    billing_address = db.Column(db.Text)
     company_website = db.Column(db.String(255))
-    company_email = db.Column(db.String(255))
-    company_phone = db.Column(db.String(50))
 
-    # Secondary contact
-    secondary_contact_name = db.Column(db.String(200))
-    secondary_contact_email = db.Column(db.String(255))
-    secondary_contact_phone = db.Column(db.String(50))
-    secondary_contact_title = db.Column(db.String(100))
-
-    # Billing contact
-    billing_contact_name = db.Column(db.String(200))
-    billing_contact_email = db.Column(db.String(255))
-    billing_contact_phone = db.Column(db.String(50))
+    # Simplified contacts - remove duplicate company email/phone (use primary contact)
+    # Remove secondary and billing contacts - too much
+    alternate_contact_email = db.Column(db.String(255))  # Single backup contact
 
     # Company profile
     industry_category = db.Column(db.Enum(IndustryCategory), nullable=False, index=True)
     company_description = db.Column(db.Text, nullable=False)
-    products_services = db.Column(JSONB)
-    target_customers = db.Column(JSONB)
-    years_in_business = db.Column(db.String(20))
-    employee_count = db.Column(db.String(50))
-
-    # Media assets
-    # company_logo_url = db.Column(db.String(500))
-    # company_video_url = db.Column(db.String(500))
-    # brochure_url = db.Column(db.String(500))
-    # product_images = db.Column(JSONB)
-
-    # Social media
-    # facebook_url = db.Column(db.String(255))
-    # instagram_handle = db.Column(db.String(100))
-    # linkedin_url = db.Column(db.String(255))
-    # twitter_handle = db.Column(db.String(100))
-    # youtube_channel = db.Column(db.String(255))
 
     # Package selection
     package_type = db.Column(db.Enum(ExhibitorPackage), nullable=False, index=True)
     package_price_id = db.Column(db.Integer, db.ForeignKey('exhibitor_package_prices.id'))
 
-    # Booth preferences
-    # booth_preference_corner = db.Column(db.Boolean, default=False)
-    # booth_preference_entrance = db.Column(db.Boolean, default=False)
-    # booth_preference_area = db.Column(db.String(100))
-    # booth_preference_notes = db.Column(db.Text)
-
-    # Booth assignment
+    # Booth assignment (operational - keep)
     booth_number = db.Column(db.String(20), index=True)
     booth_assigned = db.Column(db.Boolean, default=False)
     booth_assigned_at = db.Column(db.DateTime)
     booth_assigned_by = db.Column(db.String(255))
 
-    # Booth requirements
+    # Booth requirements (operational - keep)
     number_of_staff = db.Column(db.Integer, default=2)
     exhibitor_badges_needed = db.Column(db.Integer, default=2)
     badges_generated = db.Column(db.Boolean, default=False)
 
-    # electricity_required = db.Column(db.Boolean, default=False)
-    # electricity_watts = db.Column(db.Integer)
-    # water_connection_required = db.Column(db.Boolean, default=False)
-    # internet_required = db.Column(db.Boolean, default=False)
-
-    # Products to exhibit
-    products_to_exhibit = db.Column(JSONB)
-    product_demonstrations = db.Column(JSONB)
-
-    # Special requests
+    # Products and requirements (simplified)
+    products_to_exhibit = db.Column(db.Text)  # Changed from JSONB to simple text
     special_requirements = db.Column(db.Text)
 
-    # Setup and logistics
-    # setup_date = db.Column(db.Date)
-    # setup_time = db.Column(db.Time)
-    # teardown_date = db.Column(db.Date)
-    # needs_storage = db.Column(db.Boolean, default=False)
-
-    # Shipping details
-    # shipping_method = db.Column(db.String(100))
-    # expected_delivery_date = db.Column(db.Date)
-    # delivery_contact_name = db.Column(db.String(200))
-    # delivery_contact_phone = db.Column(db.String(50))
-    # tracking_number = db.Column(db.String(100))
-
-    # Accommodation
-    # accommodation_rooms_needed = db.Column(db.Integer, default=0)
-    # accommodation_checkin = db.Column(db.Date)
-    # accommodation_checkout = db.Column(db.Date)
-    # accommodation_notes = db.Column(db.Text)
-
-    # Legal and compliance
-    # has_liability_insurance = db.Column(db.Boolean, default=False)
-    # insurance_policy_number = db.Column(db.String(100))
-    # insurance_coverage_amount = db.Column(db.Numeric(12, 2))
-    # insurance_expiry_date = db.Column(db.Date)
-
-    # products_comply_regulations = db.Column(db.Boolean, default=False)
-    # has_import_permits = db.Column(db.Boolean, default=False)
-
-    # Payment
-    # purchase_order_number = db.Column(db.String(100))
-    # payment_terms = db.Column(db.String(50))  # e.g., "Net 30"
-
-    # Admin management
+    # Admin management (operational - keep)
     exhibitor_manual_sent = db.Column(db.Boolean, default=False)
     exhibitor_manual_sent_at = db.Column(db.DateTime)
     contract_signed = db.Column(db.Boolean, default=False)
     contract_signed_at = db.Column(db.DateTime)
     contract_url = db.Column(db.String(500))
 
-    # Lead tracking
+    # Lead tracking (operational - keep)
     lead_retrieval_access = db.Column(db.Boolean, default=False)
     lead_retrieval_activated = db.Column(db.Boolean, default=False)
     total_leads_captured = db.Column(db.Integer, default=0)
+
+    # Consent
+    consent_photography = db.Column(db.Boolean, default=True)
+    consent_catalog = db.Column(db.Boolean, default=True)
+    newsletter_signup = db.Column(db.Boolean, default=True)
+
+    # Referral tracking
+    referral_source = db.Column(db.String(100))
 
     __mapper_args__ = {
         'polymorphic_identity': 'exhibitor',
@@ -911,7 +820,6 @@ class ExhibitorRegistration(Registration):
                                  lazy='joined')
 
     __table_args__ = (
-        # Index('idx_exhibitor_package_status', 'package_type', 'status'),
         Index('idx_exhibitor_booth', 'booth_number', 'booth_assigned'),
         Index('idx_exhibitor_company', 'company_legal_name'),
     )
@@ -925,12 +833,6 @@ class ExhibitorRegistration(Registration):
     def get_total_amount_due(self) -> Decimal:
         """Calculate total amount due for exhibitor"""
         base_price = self.get_base_price()
-
-        # Add booth upgrades
-        if self.booth_preference_corner:
-            base_price += Decimal('200.00')
-        if self.booth_preference_entrance:
-            base_price += Decimal('150.00')
 
         # Add add-ons
         addons_total = sum(

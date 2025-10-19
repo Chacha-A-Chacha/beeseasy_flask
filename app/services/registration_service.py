@@ -214,9 +214,6 @@ class RegistrationService:
                 currency=ticket_price.currency,
             )
 
-            # Calculate tax (16% VAT)
-            tax_rate = Decimal('0.16')
-            payment.calculate_tax(float(tax_rate))
             payment.calculate_total()
 
             db.session.add(payment)

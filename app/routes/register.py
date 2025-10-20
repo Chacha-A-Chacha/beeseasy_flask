@@ -30,7 +30,11 @@ register_bp = Blueprint('register', __name__)
 @register_bp.route('/')
 def index():
     """Registration type selection page"""
-    return render_template('register/index.html')
+
+    # Get active tickets and packages
+    tickets = TicketPrice.query.filter_by(is_active=True).order_by(TicketPrice.price).all()
+    packages = ExhibitorPackagePrice.query.filter_by(is_active=True).order_by(ExhibitorPackagePrice.price).all()
+    return render_template('register/index.html', tickets=tickets, packages=packages)
 
 
 # ============================================

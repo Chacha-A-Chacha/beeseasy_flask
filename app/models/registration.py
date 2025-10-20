@@ -488,8 +488,9 @@ class Registration(db.Model):
     deleted_by = db.Column(db.String(255))
 
     # Timestamps
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False, index=True)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    created_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True, index=True)
     confirmed_at = db.Column(db.DateTime)
 
     # Optimistic locking
@@ -497,7 +498,6 @@ class Registration(db.Model):
 
     # Polymorphic configuration
     __mapper_args__ = {
-        'polymorphic_identity': 'registration',
         'polymorphic_on': registration_type,
         'version_id_col': version,
         'version_id_generator': False,
@@ -514,13 +514,14 @@ class Registration(db.Model):
     email_logs = relationship('EmailLog', back_populates='registration',
                               cascade='all, delete-orphan',
                               lazy='select')
+    created_by = relationship('User', back_populates='registrations')
 
     __table_args__ = (
         UniqueConstraint('email', 'registration_type', 'is_deleted',
                          name='uq_email_type_active'),
-        CheckConstraint("email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'",
+        CheckConstraint(r"email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'",
                         name='check_valid_email'),
-        CheckConstraint("phone_country_code ~ '^\+[0-9]{1,4}$'",
+        CheckConstraint(r"phone_country_code ~ '^\+[0-9]{1,4}$'",
                         name='check_valid_country_code'),
         Index('idx_status_created', 'status', 'created_at'),
         Index('idx_email_lower', func.lower('email')),
@@ -696,15 +697,6 @@ class AttendeeRegistration(Registration):
     checked_in_by = db.Column(db.String(255))
     badge_printed = db.Column(db.Boolean, default=False)
 
-    # Consent and preferences
-    consent_photography = db.Column(db.Boolean, default=True)
-    consent_networking = db.Column(db.Boolean, default=True)
-    consent_data_sharing = db.Column(db.Boolean, default=False)
-    newsletter_signup = db.Column(db.Boolean, default=True)
-
-    # Referral tracking
-    referral_source = db.Column(db.String(100))
-
     __mapper_args__ = {
         'polymorphic_identity': 'attendee',
     }
@@ -801,14 +793,6 @@ class ExhibitorRegistration(Registration):
     lead_retrieval_access = db.Column(db.Boolean, default=False)
     lead_retrieval_activated = db.Column(db.Boolean, default=False)
     total_leads_captured = db.Column(db.Integer, default=0)
-
-    # Consent
-    consent_photography = db.Column(db.Boolean, default=True)
-    consent_catalog = db.Column(db.Boolean, default=True)
-    newsletter_signup = db.Column(db.Boolean, default=True)
-
-    # Referral tracking
-    referral_source = db.Column(db.String(100))
 
     __mapper_args__ = {
         'polymorphic_identity': 'exhibitor',
@@ -923,5 +907,3 @@ class AddOnPurchase(db.Model):
     def __repr__(self):
         addon_name = self.addon_item.name if self.addon_item else "Unknown"
         return f'<AddOnPurchase {addon_name} x{self.quantity}>'
-
-# Continue in next artifact due to length...

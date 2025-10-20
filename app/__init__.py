@@ -23,6 +23,8 @@ def create_app(config_name=None):
     # --- Flask App Initialization ---
     app = Flask(__name__, instance_relative_config=True)
 
+    os.makedirs(app.instance_path, exist_ok=True)
+
     # Use chosen config (default to development)
     config_name = config_name or os.getenv("FLASK_ENV", "development")
     app.config.from_object(config[config_name])
@@ -58,6 +60,20 @@ def create_app(config_name=None):
     # app.register_blueprint(admin_bp, url_prefix="/admin")
     # app.register_blueprint(api_bp, url_prefix="/api")
 
+    # --- Register CLI Commands ---
+    from app.cli import register_cli_commands
+    register_cli_commands(app)
+
+    # Auto-create tables (development only)
+    # if app.config.get('ENV') == 'development':
+    #     with app.app_context():
+    #         # Import models so SQLAlchemy knows about them
+    #         from app.models import (
+    #             User, Registration, AttendeeRegistration, ExhibitorRegistration,
+    #             TicketPrice, ExhibitorPackagePrice, AddOnItem, Payment
+    #         )
+    #         db.create_all()
+
     # --- Template Context Processors ---
     @app.context_processor
     def inject_globals():
@@ -83,8 +99,20 @@ def create_app(config_name=None):
     # --- Shell Context (for Flask CLI) ---
     @app.shell_context_processor
     def make_shell_context():
-        from app.models.user import User
-        from app.models.registration import Registration
-        return {'db': db, 'User': User, 'Registration': Registration}
+        from app.models import (
+            User, Registration, AttendeeRegistration, ExhibitorRegistration,
+            TicketPrice, ExhibitorPackagePrice, AddOnItem, Payment
+        )
+        return {
+            'db': db,
+            'User': User,
+            'Registration': Registration,
+            'AttendeeRegistration': AttendeeRegistration,
+            'ExhibitorRegistration': ExhibitorRegistration,
+            'TicketPrice': TicketPrice,
+            'ExhibitorPackagePrice': ExhibitorPackagePrice,
+            'AddOnItem': AddOnItem,
+            'Payment': Payment,
+        }
 
     return app

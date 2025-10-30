@@ -1,595 +1,1309 @@
-{% extends "base.html" %}
-{% block title %}Agenda - Bee East Africa Symposium 2025{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Agenda - Pollination Africa Symposium
+2025{% endblock %} {% block content %}
 
 <!-- ============================================ -->
 <!-- SECTION 1: HERO - HEADER -->
 <!-- ============================================ -->
 <div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
-  <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2400&q=80&blend=111827&sat=-100&exp=15&blend-mode=screen"
-       alt="Conference Agenda"
-       class="absolute inset-0 -z-10 size-full object-cover opacity-10" />
+    <img
+        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2400&q=80&blend=111827&sat=-100&exp=15&blend-mode=screen"
+        alt="Conference Agenda"
+        class="absolute inset-0 -z-10 size-full object-cover opacity-10"
+    />
 
-  <!-- Decorative Gradients -->
-  <div class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl">
-    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-         class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#F5C342] to-[#5C3A21] opacity-15"></div>
-  </div>
-  <div class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0">
-    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-         class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#F5C342] to-[#5C3A21] opacity-15"></div>
-  </div>
-
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl lg:mx-0">
-      <h2 class="text-5xl font-semibold tracking-tight text-[#5C3A21] sm:text-7xl">Event Agenda</h2>
-      <p class="mt-8 text-pretty text-lg font-medium text-gray-600 sm:text-xl/8">
-        Two days of inspiring talks, hands-on training, and collaborative sessions focused on innovation and sustainability in beekeeping
-      </p>
+    <!-- Decorative Gradients -->
+    <div
+        class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
+        ></div>
+    </div>
+    <div
+        class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
+        ></div>
     </div>
 
-    <!-- Quick Info Cards -->
-    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8">
-      <div class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-[#5C3A21]/10 backdrop-blur">
-        <svg class="h-7 w-5 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-        </svg>
-        <div class="text-base/7">
-          <h3 class="font-semibold text-[#5C3A21]">When</h3>
-          <p class="mt-2 text-gray-700">December 2025<br/>Dates: To be announced</p>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+            <h2
+                class="text-5xl font-semibold tracking-tight text-primary-dark sm:text-7xl"
+            >
+                Event Agenda
+            </h2>
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-600 sm:text-xl/8"
+            >
+                Two days of inspiring talks, hands-on training, and
+                collaborative sessions focused on innovation and sustainability
+                in pollinator conservation
+            </p>
         </div>
-      </div>
 
-      <div class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-[#5C3A21]/10 backdrop-blur">
-        <svg class="h-7 w-5 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-        </svg>
-        <div class="text-base/7">
-          <h3 class="font-semibold text-[#5C3A21]">Duration</h3>
-          <p class="mt-2 text-gray-700">2 Days<br/>Daily: 5:00 PM - 8:00 PM</p>
-        </div>
-      </div>
+        <!-- Quick Info Cards -->
+        <div
+            class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8"
+        >
+            <div
+                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-accent-brown backdrop-blur"
+            >
+                <svg
+                    class="h-7 w-5 flex-none text-accent-yellow"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                <div class="text-base/7">
+                    <h3 class="font-semibold text-primary-dark">When</h3>
+                    <p class="mt-2 text-gray-700">
+                        December 2025<br />Dates: To be announced
+                    </p>
+                </div>
+            </div>
 
-      <div class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-[#5C3A21]/10 backdrop-blur">
-        <svg class="h-7 w-5 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-        </svg>
-        <div class="text-base/7">
-          <h3 class="font-semibold text-[#5C3A21]">Location</h3>
-          <p class="mt-2 text-gray-700">AICC<br/>Arusha, Tanzania</p>
+            <div
+                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-accent-brown backdrop-blur"
+            >
+                <svg
+                    class="h-7 w-5 flex-none text-accent-yellow"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                <div class="text-base/7">
+                    <h3 class="font-semibold text-primary-dark">Duration</h3>
+                    <p class="mt-2 text-gray-700">
+                        2 Days<br />Daily: 5:00 PM - 8:00 PM
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-accent-brown backdrop-blur"
+            >
+                <svg
+                    class="h-7 w-5 flex-none text-accent-yellow"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                <div class="text-base/7">
+                    <h3 class="font-semibold text-primary-dark">Location</h3>
+                    <p class="mt-2 text-gray-700">AICC<br />Arusha, Tanzania</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 2: PROGRAM OVERVIEW -->
 <!-- ============================================ -->
 <div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl lg:text-center">
-      <h2 class="text-base/7 font-semibold text-[#F5C342]">Program Framework</h2>
-      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
-        Two Days of Transformation
-      </p>
-      <p class="mt-6 text-lg/8 text-gray-700">
-        Each day is carefully designed to provide a mix of learning, networking, and practical engagement
-      </p>
-    </div>
-
-    <!-- Day Cards -->
-    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-
-      <!-- Day 1 -->
-      <div class="relative overflow-hidden rounded-3xl bg-gray-900 px-8 py-10">
-        <img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?auto=format&fit=crop&w=1200&q=80"
-             alt="Day 1"
-             class="absolute inset-0 -z-10 size-full object-cover opacity-30" />
-        <div class="relative">
-          <div class="flex items-center gap-x-4">
-            <div class="rounded-full bg-[#F5C342] px-3 py-1 text-sm font-semibold text-white">Day 1</div>
-            <time class="text-sm text-gray-300">December 2025 (Date TBA)</time>
-          </div>
-          <h3 class="mt-6 text-3xl font-semibold text-white">Innovation & Policy</h3>
-          <p class="mt-4 text-base text-gray-300">
-            Focusing on policy frameworks, regulatory support, and technological innovations shaping the future of apiculture in East Africa
-          </p>
-
-          <dl class="mt-8 space-y-4">
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">5:00 PM</span> - Opening Keynote: Rt. Hon. Mizengo K. P. Pinda
-              </dd>
-            </div>
-
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">6:00 PM</span> - Policy Panel Discussions <span class="text-gray-400">(Speakers TBA)</span>
-              </dd>
-            </div>
-
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">7:15 PM</span> - Innovation Showcase & Exhibition
-              </dd>
-            </div>
-
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">7:45 PM</span> - Networking Reception
-              </dd>
-            </div>
-          </dl>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:text-center">
+            <h2 class="text-base/7 font-semibold text-accent-yellow">
+                Program Framework
+            </h2>
+            <p
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl lg:text-balance"
+            >
+                Two Days of Transformation
+            </p>
+            <p class="mt-6 text-lg/8 text-gray-700">
+                Each day is carefully designed to provide a mix of learning,
+                networking, and practical engagement
+            </p>
         </div>
-      </div>
 
-      <!-- Day 2 -->
-      <div class="relative overflow-hidden rounded-3xl bg-gray-900 px-8 py-10">
-        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80"
-             alt="Day 2"
-             class="absolute inset-0 -z-10 size-full object-cover opacity-30" />
-        <div class="relative">
-          <div class="flex items-center gap-x-4">
-            <div class="rounded-full bg-[#F5C342] px-3 py-1 text-sm font-semibold text-white">Day 2</div>
-            <time class="text-sm text-gray-300">December 2025 (Date TBA)</time>
-          </div>
-          <h3 class="mt-6 text-3xl font-semibold text-white">Practice & Markets</h3>
-          <p class="mt-4 text-base text-gray-300">
-            Hands-on workshops, market access strategies, and practical demonstrations connecting beekeepers to opportunities
-          </p>
+        <!-- Day Cards -->
+        <div
+            class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2"
+        >
+            <!-- Day 1 -->
+            <div
+                class="relative overflow-hidden rounded-3xl bg-gray-900 px-8 py-10"
+            >
+                <img
+                    src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?auto=format&fit=crop&w=1200&q=80"
+                    alt="Day 1"
+                    class="absolute inset-0 -z-10 size-full object-cover opacity-30"
+                />
+                <div class="relative">
+                    <div class="flex items-center gap-x-4">
+                        <div
+                            class="rounded-full bg-accent-yellow px-3 py-1 text-sm font-semibold text-white"
+                        >
+                            Day 1
+                        </div>
+                        <time class="text-sm text-gray-300"
+                            >December 2025 (Date TBA)</time
+                        >
+                    </div>
+                    <h3 class="mt-6 text-3xl font-semibold text-white">
+                        Innovation & Policy
+                    </h3>
+                    <p class="mt-4 text-base text-gray-300">
+                        Focusing on policy frameworks, regulatory support, and
+                        technological innovations shaping the future of
+                        pollinator conservation in East Africa
+                    </p>
 
-          <dl class="mt-8 space-y-4">
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">5:00 PM</span> - Parallel Workshop Sessions <span class="text-gray-400">(Topics TBA)</span>
-              </dd>
+                    <dl class="mt-8 space-y-4">
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-yellow"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >5:00 PM</span
+                                >
+                                - Opening Keynote: Rt. Hon. Mizengo K. P. Pinda
+                            </dd>
+                        </div>
+
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-yellow"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >6:00 PM</span
+                                >
+                                - Policy Panel Discussions
+                                <span class="text-gray-400"
+                                    >(Speakers TBA)</span
+                                >
+                            </dd>
+                        </div>
+
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-yellow"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >7:00 PM</span
+                                >
+                                - Innovation Showcase & Technology Exhibits
+                            </dd>
+                        </div>
+
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-yellow"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >7:30 PM</span
+                                >
+                                - Networking Reception
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
             </div>
 
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">6:30 PM</span> - Market Linkage & Trade Fair
-              </dd>
-            </div>
+            <!-- Day 2 -->
+            <div
+                class="relative overflow-hidden rounded-3xl bg-gray-900 px-8 py-10"
+            >
+                <img
+                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80"
+                    alt="Day 2"
+                    class="absolute inset-0 -z-10 size-full object-cover opacity-30"
+                />
+                <div class="relative">
+                    <div class="flex items-center gap-x-4">
+                        <div
+                            class="rounded-full bg-accent-orange px-3 py-1 text-sm font-semibold text-white"
+                        >
+                            Day 2
+                        </div>
+                        <time class="text-sm text-gray-300"
+                            >December 2025 (Date TBA)</time
+                        >
+                    </div>
+                    <h3 class="mt-6 text-3xl font-semibold text-white">
+                        Practice & Partnership
+                    </h3>
+                    <p class="mt-4 text-base text-gray-300">
+                        Hands-on workshops, practical demonstrations, and
+                        collaborative opportunities to build sustainable
+                        pollinator management systems
+                    </p>
 
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">7:15 PM</span> - Technology Demonstrations
-              </dd>
-            </div>
+                    <dl class="mt-8 space-y-4">
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-orange"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >5:00 PM</span
+                                >
+                                - Hands-on Workshops (Multiple Tracks)
+                            </dd>
+                        </div>
 
-            <div class="flex items-start gap-x-3">
-              <dt class="flex-none">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#F5C342]/20">
-                  <svg class="h-4 w-4 text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              </dt>
-              <dd class="text-sm text-gray-300">
-                <span class="font-semibold text-white">7:45 PM</span> - Closing Ceremony & Commitments
-              </dd>
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-orange"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >6:00 PM</span
+                                >
+                                - Technology & Product Demonstrations
+                            </dd>
+                        </div>
+
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-orange"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >7:00 PM</span
+                                >
+                                - Market Linkage & Trade Sessions
+                            </dd>
+                        </div>
+
+                        <div class="flex items-start gap-x-3">
+                            <dt class="flex-none">
+                                <span
+                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
+                                >
+                                    <svg
+                                        class="h-4 w-4 text-accent-orange"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </dt>
+                            <dd class="text-sm text-gray-300">
+                                <span class="font-semibold text-white"
+                                    >7:30 PM</span
+                                >
+                                - Partnership & Collaboration Forum
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
             </div>
-          </dl>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 3: SESSION TYPES -->
+<!-- SECTION 3: KEY THEMES -->
 <!-- ============================================ -->
 <div class="bg-gray-50 py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl lg:text-center">
-      <h2 class="text-base/7 font-semibold text-[#F5C342]">What to Expect</h2>
-      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
-        Diverse Session Formats
-      </p>
-      <p class="mt-6 text-lg/8 text-gray-700">
-        Experience a variety of engaging formats designed to maximize learning and collaboration
-      </p>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:text-center">
+            <h2 class="text-base/7 font-semibold text-accent-orange">
+                Focus Areas
+            </h2>
+            <p
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl lg:text-balance"
+            >
+                What We'll Cover
+            </p>
+            <p class="mt-6 text-lg/8 text-gray-700">
+                The agenda addresses critical topics across the entire
+                pollinator conservation ecosystem
+            </p>
+        </div>
+
+        <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <dl
+                class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3"
+            >
+                <!-- Theme 1 -->
+                <div class="flex flex-col">
+                    <dt
+                        class="flex items-center gap-x-3 text-base/7 font-semibold text-primary-dark"
+                    >
+                        <div
+                            class="rounded-lg bg-accent-yellow p-2 ring-1 ring-accent-brown"
+                        >
+                            <svg
+                                class="h-5 w-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z"
+                                />
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        Pollinator Economics & Markets
+                    </dt>
+                    <dd
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-700"
+                    >
+                        <p class="flex-auto">
+                            Market access strategies, value chain development,
+                            pricing mechanisms, and trade opportunities for
+                            pollinator-dependent products
+                        </p>
+                    </dd>
+                </div>
+
+                <!-- Theme 2 -->
+                <div class="flex flex-col">
+                    <dt
+                        class="flex items-center gap-x-3 text-base/7 font-semibold text-primary-dark"
+                    >
+                        <div
+                            class="rounded-lg bg-accent-yellow p-2 ring-1 ring-accent-brown"
+                        >
+                            <svg
+                                class="h-5 w-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        Technology & Innovation
+                    </dt>
+                    <dd
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-700"
+                    >
+                        <p class="flex-auto">
+                            Digital tools, monitoring systems, habitat mapping
+                            technologies, and innovations in pollinator-friendly
+                            agriculture
+                        </p>
+                    </dd>
+                </div>
+
+                <!-- Theme 3 -->
+                <div class="flex flex-col">
+                    <dt
+                        class="flex items-center gap-x-3 text-base/7 font-semibold text-primary-dark"
+                    >
+                        <div
+                            class="rounded-lg bg-accent-yellow p-2 ring-1 ring-accent-brown"
+                        >
+                            <svg
+                                class="h-5 w-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        Conservation & Biodiversity
+                    </dt>
+                    <dd
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-700"
+                    >
+                        <p class="flex-auto">
+                            Habitat restoration, native pollinator protection,
+                            climate resilience strategies, and ecosystem-based
+                            approaches
+                        </p>
+                    </dd>
+                </div>
+
+                <!-- Theme 4 -->
+                <div class="flex flex-col">
+                    <dt
+                        class="flex items-center gap-x-3 text-base/7 font-semibold text-primary-dark"
+                    >
+                        <div
+                            class="rounded-lg bg-accent-orange p-2 ring-1 ring-accent-brown"
+                        >
+                            <svg
+                                class="h-5 w-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        Policy & Regulation
+                    </dt>
+                    <dd
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-700"
+                    >
+                        <p class="flex-auto">
+                            Policy frameworks, regulatory harmonization, land
+                            use planning, and incentive mechanisms for
+                            pollinator conservation
+                        </p>
+                    </dd>
+                </div>
+
+                <!-- Theme 5 -->
+                <div class="flex flex-col">
+                    <dt
+                        class="flex items-center gap-x-3 text-base/7 font-semibold text-primary-dark"
+                    >
+                        <div
+                            class="rounded-lg bg-accent-orange p-2 ring-1 ring-accent-brown"
+                        >
+                            <svg
+                                class="h-5 w-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
+                                />
+                            </svg>
+                        </div>
+                        Capacity Building
+                    </dt>
+                    <dd
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-700"
+                    >
+                        <p class="flex-auto">
+                            Training programs, knowledge transfer, extension
+                            services, and empowering the next generation of
+                            pollinator stewards
+                        </p>
+                    </dd>
+                </div>
+
+                <!-- Theme 6 -->
+                <div class="flex flex-col">
+                    <dt
+                        class="flex items-center gap-x-3 text-base/7 font-semibold text-primary-dark"
+                    >
+                        <div
+                            class="rounded-lg bg-accent-orange p-2 ring-1 ring-accent-brown"
+                        >
+                            <svg
+                                class="h-5 w-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                                />
+                            </svg>
+                        </div>
+                        Regional Collaboration
+                    </dt>
+                    <dd
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-700"
+                    >
+                        <p class="flex-auto">
+                            Cross-border partnerships, knowledge exchange
+                            platforms, regional research networks, and
+                            coordinated conservation efforts
+                        </p>
+                    </dd>
+                </div>
+            </dl>
+        </div>
     </div>
-
-    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-
-        <div class="flex flex-col">
-          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
-            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-            </svg>
-            Keynote Addresses
-          </dt>
-          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
-            <p class="flex-auto">Inspiring talks from regional leaders, former government officials, and industry pioneers sharing vision and strategic direction for sustainable apiculture.</p>
-          </dd>
-        </div>
-
-        <div class="flex flex-col">
-          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
-            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-            </svg>
-            Technical Workshops
-          </dt>
-          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
-            <p class="flex-auto">Hands-on training sessions covering modern beekeeping techniques, hive management, disease control, and quality honey production practices.</p>
-          </dd>
-        </div>
-
-        <div class="flex flex-col">
-          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
-            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 2c-1.716 0-3.408.106-5.07.31C3.806 2.45 3 3.414 3 4.517V17.25a.75.75 0 001.075.676L10 15.082l5.925 2.844A.75.75 0 0017 17.25V4.517c0-1.103-.806-2.068-1.93-2.207A41.403 41.403 0 0010 2z" clip-rule="evenodd" />
-            </svg>
-            Panel Discussions
-          </dt>
-          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
-            <p class="flex-auto">Expert panels addressing critical issues in beekeeping policy, market access, climate adaptation, and value chain development across the region.</p>
-          </dd>
-        </div>
-
-        <div class="flex flex-col">
-          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
-            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z" clip-rule="evenodd" />
-            </svg>
-            Exhibition & Demos
-          </dt>
-          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
-            <p class="flex-auto">Live demonstrations of beekeeping equipment, processing technologies, and innovative products from leading suppliers and manufacturers.</p>
-          </dd>
-        </div>
-
-        <div class="flex flex-col">
-          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
-            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-            </svg>
-            Networking Sessions
-          </dt>
-          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
-            <p class="flex-auto">Structured networking opportunities including B2B matchmaking, stakeholder forums, and informal receptions for relationship building.</p>
-          </dd>
-        </div>
-
-        <div class="flex flex-col">
-          <dt class="flex items-center gap-x-3 text-base/7 font-semibold text-[#5C3A21]">
-            <svg class="size-5 flex-none text-[#F5C342]" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
-            </svg>
-            Research Presentations
-          </dt>
-          <dd class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600">
-            <p class="flex-auto">Academic papers and research findings on pollinator health, bee ecology, sustainable practices, and agricultural productivity.</p>
-          </dd>
-        </div>
-      </dl>
-    </div>
-  </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 4: THEMATIC TRACKS -->
+<!-- SECTION 4: WORKSHOP TRACKS -->
 <!-- ============================================ -->
 <div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl lg:text-center">
-      <h2 class="text-base/7 font-semibold text-[#F5C342]">Program Themes</h2>
-      <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl lg:text-balance">
-        Five Thematic Pillars
-      </p>
-      <p class="mt-6 text-lg/8 text-gray-700">
-        All sessions are organized around these core themes aligned with our symposium objectives
-      </p>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:text-center">
+            <h2 class="text-base/7 font-semibold text-accent-yellow">
+                Day 2 Workshops
+            </h2>
+            <p
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl lg:text-balance"
+            >
+                Choose Your Learning Track
+            </p>
+            <p class="mt-6 text-lg/8 text-gray-700">
+                Select from parallel workshop sessions based on your interests
+                and experience level
+            </p>
+        </div>
+
+        <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <!-- Track 1 -->
+                <div
+                    class="rounded-3xl bg-gray-50 p-8 ring-1 ring-accent-brown/10"
+                >
+                    <div class="flex items-center gap-x-3">
+                        <div class="rounded-lg bg-accent-yellow p-2">
+                            <svg
+                                class="h-6 w-6 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-primary-dark">
+                            Beginner Track
+                        </h3>
+                    </div>
+                    <p class="mt-4 text-base text-gray-700">
+                        Perfect for newcomers to pollinator conservation
+                    </p>
+                    <ul class="mt-6 space-y-3">
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-yellow"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Introduction to Pollinator Diversity</span
+                            >
+                        </li>
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-yellow"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Basic Habitat Management Practices</span
+                            >
+                        </li>
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-yellow"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Understanding Pollination Services</span
+                            >
+                        </li>
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-yellow"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Starting a Pollinator-Friendly Farm</span
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Track 2 -->
+                <div
+                    class="rounded-3xl bg-gray-50 p-8 ring-1 ring-accent-brown/10"
+                >
+                    <div class="flex items-center gap-x-3">
+                        <div class="rounded-lg bg-accent-orange p-2">
+                            <svg
+                                class="h-6 w-6 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z"
+                                />
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-primary-dark">
+                            Advanced Track
+                        </h3>
+                    </div>
+                    <p class="mt-4 text-base text-gray-700">
+                        For experienced practitioners and researchers
+                    </p>
+                    <ul class="mt-6 space-y-3">
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-orange"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Advanced Pollinator Monitoring Techniques</span
+                            >
+                        </li>
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-orange"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Landscape-Scale Habitat Restoration</span
+                            >
+                        </li>
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-orange"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Integrated Pest & Pollinator Management</span
+                            >
+                        </li>
+                        <li class="flex gap-x-3">
+                            <svg
+                                class="h-6 w-5 flex-none text-accent-orange"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            <span class="text-gray-700"
+                                >Economic Valuation of Pollination
+                                Services</span
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="mx-auto mt-16 max-w-7xl">
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-5">
-
-        <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5C342]/10">
-            <svg class="h-8 w-8 text-[#F5C342]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-            </svg>
-          </div>
-          <h3 class="mt-6 text-base font-semibold text-[#5C3A21]">Pollinator Health & Biodiversity</h3>
-          <p class="mt-2 text-sm text-gray-600">Bee biology, disease management, conservation strategies</p>
-        </div>
-
-        <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5C342]/10">
-            <svg class="h-8 w-8 text-[#F5C342]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-            </svg>
-          </div>
-          <h3 class="mt-6 text-base font-semibold text-[#5C3A21]">Food Security & Nutrition</h3>
-          <p class="mt-2 text-sm text-gray-600">Pollination services, crop productivity, nutritional value</p>
-        </div>
-
-        <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5C342]/10">
-            <svg class="h-8 w-8 text-[#F5C342]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-            </svg>
-          </div>
-          <h3 class="mt-6 text-base font-semibold text-[#5C3A21]">Enterprise & Markets</h3>
-          <p class="mt-2 text-sm text-gray-600">Value chains, quality standards, export opportunities</p>
-        </div>
-
-        <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5C342]/10">
-            <svg class="h-8 w-8 text-[#F5C342]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-            </svg>
-          </div>
-          <h3 class="mt-6 text-base font-semibold text-[#5C3A21]">Innovation & Technology</h3>
-          <p class="mt-2 text-sm text-gray-600">Modern hives, digital tools, research breakthroughs</p>
-        </div>
-
-        <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5C342]/10">
-            <svg class="h-8 w-8 text-[#F5C342]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-            </svg>
-          </div>
-          <h3 class="mt-6 text-base font-semibold text-[#5C3A21]">Policy & Institutions</h3>
-          <p class="mt-2 text-sm text-gray-600">Regulatory frameworks, trade policies, capacity building</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 5: CONFIRMED HIGHLIGHTS -->
+<!-- SECTION 5: EXHIBITION & NETWORKING -->
 <!-- ============================================ -->
-<div class="relative isolate overflow-hidden bg-[#5C3A21] py-24 sm:py-32">
-  <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=2400&q=80"
-       alt="Keynote Speaker"
-       class="absolute inset-0 -z-10 size-full object-cover opacity-20" />
+<div class="bg-primary-dark py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:text-center">
+            <h2 class="text-base/7 font-semibold text-accent-yellow">
+                Throughout Both Days
+            </h2>
+            <p
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance"
+            >
+                Exhibition & Networking
+            </p>
+            <p class="mt-6 text-lg/8 text-gray-300">
+                Connect with innovators, explore cutting-edge solutions, and
+                build lasting partnerships
+            </p>
+        </div>
 
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl lg:mx-0">
-      <h2 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Confirmed Highlights</h2>
-      <p class="mt-8 text-lg/8 text-gray-300">
-        Here's what we can already confirm for the symposium program
-      </p>
+        <div
+            class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-10"
+        >
+            <!-- Feature 1 -->
+            <div class="flex flex-col items-start">
+                <div class="rounded-lg bg-accent-yellow p-3">
+                    <svg
+                        class="h-6 w-6 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z"
+                        />
+                        <path
+                            fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </div>
+                <h3 class="mt-6 text-base font-semibold text-white">
+                    Technology Exhibition
+                </h3>
+                <p class="mt-2 text-base text-gray-300">
+                    Explore the latest tools, equipment, and innovations for
+                    pollinator management and conservation from leading
+                    companies
+                </p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="flex flex-col items-start">
+                <div class="rounded-lg bg-accent-yellow p-3">
+                    <svg
+                        class="h-6 w-6 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                        />
+                    </svg>
+                </div>
+                <h3 class="mt-6 text-base font-semibold text-white">
+                    B2B Matchmaking
+                </h3>
+                <p class="mt-2 text-base text-gray-300">
+                    Pre-scheduled one-on-one meetings with potential partners,
+                    buyers, suppliers, and collaborators in the pollination
+                    sector
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="flex flex-col items-start">
+                <div class="rounded-lg bg-accent-yellow p-3">
+                    <svg
+                        class="h-6 w-6 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </div>
+                <h3 class="mt-6 text-base font-semibold text-white">
+                    Networking Sessions
+                </h3>
+                <p class="mt-2 text-base text-gray-300">
+                    Informal gatherings, coffee breaks, and evening receptions
+                    designed to foster connections among participants
+                </p>
+            </div>
+        </div>
     </div>
-    <dl class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 text-white sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-      <div class="flex flex-col gap-y-3 border-l border-white/20 pl-6">
-        <dt class="text-sm/6 text-gray-300">Opening Keynote</dt>
-        <dd class="order-first text-3xl font-semibold tracking-tight">✓ Confirmed</dd>
-        <dd class="text-sm text-gray-400">Rt. Hon. Mizengo K. P. Pinda</dd>
-      </div>
-      <div class="flex flex-col gap-y-3 border-l border-white/20 pl-6">
-        <dt class="text-sm/6 text-gray-300">Workshop Sessions</dt>
-        <dd class="order-first text-3xl font-semibold tracking-tight">6+</dd>
-        <dd class="text-sm text-gray-400">Topics being finalized</dd>
-      </div>
-      <div class="flex flex-col gap-y-3 border-l border-white/20 pl-6">
-        <dt class="text-sm/6 text-gray-300">Panel Discussions</dt>
-        <dd class="order-first text-3xl font-semibold tracking-tight">4+</dd>
-        <dd class="text-sm text-gray-400">Expert speakers TBA</dd>
-      </div>
-      <div class="flex flex-col gap-y-3 border-l border-white/20 pl-6">
-        <dt class="text-sm/6 text-gray-300">Exhibitor Booths</dt>
-        <dd class="order-first text-3xl font-semibold tracking-tight">20+</dd>
-        <dd class="text-sm text-gray-400">Limited spaces available</dd>
-      </div>
-    </dl>
-  </div>
-
-  <!-- Decorative gradient -->
-  <div aria-hidden="true" class="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6">
-    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-         class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#F5C342] to-[#ff80b5] opacity-30"></div>
-  </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 6: FAQ -->
 <!-- ============================================ -->
 <div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-4xl">
-      <h2 class="text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">Frequently Asked Questions</h2>
-      <p class="mt-6 text-lg/8 text-gray-600">
-        Get answers to common questions about the symposium agenda and participation
-      </p>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-4xl divide-y divide-gray-900/10">
+            <h2
+                class="text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl"
+            >
+                Agenda FAQs
+            </h2>
+            <dl class="mt-10 space-y-8 divide-y divide-gray-900/10">
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        When will the full detailed agenda be released?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            The complete day-by-day agenda with confirmed
+                            speakers, session times, and workshop details will
+                            be released in stages starting 60 days before the
+                            event. Subscribe below to receive immediate updates
+                            when new sessions are announced.
+                        </p>
+                    </dd>
+                </div>
 
-      <dl class="mt-16 space-y-8">
-        <div>
-          <dt class="text-lg font-semibold text-[#5C3A21]">When will the full agenda be available?</dt>
-          <dd class="mt-2 text-base text-gray-600">
-            We're finalizing session details and speaker confirmations. The complete agenda with timings, session titles, and speaker information will be published 8-10 weeks before the event. Sign up below to be notified when it's released.
-          </dd>
-        </div>
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        Can I attend specific sessions only?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            Registration covers access to all sessions during
+                            both days. While attendance at individual sessions
+                            is optional, we encourage full participation to
+                            maximize your learning and networking opportunities.
+                            All registered participants will receive the full
+                            agenda with session details.
+                        </p>
+                    </dd>
+                </div>
 
-        <div>
-          <dt class="text-lg font-semibold text-[#5C3A21]">Can I attend just one day?</dt>
-          <dd class="mt-2 text-base text-gray-600">
-            Yes! While we encourage attending both days for the full experience, you can register for individual days based on your interests and availability. Registration options for single-day passes will be available.
-          </dd>
-        </div>
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        How do I choose which workshop track to attend?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            When the detailed agenda is released, you'll receive
+                            information about each workshop's content and level.
+                            You'll be able to pre-register for specific
+                            workshops through your participant portal. Some
+                            workshops may have limited capacity and operate on a
+                            first-come, first-served basis.
+                        </p>
+                    </dd>
+                </div>
 
-        <div>
-          <dt class="text-lg font-semibold text-[#5C3A21]">Will sessions be recorded?</dt>
-          <dd class="mt-2 text-base text-gray-600">
-            Selected sessions including keynotes and major panel discussions will be recorded and made available to registered participants after the event. Workshop sessions are typically not recorded due to their interactive nature.
-          </dd>
-        </div>
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        Will sessions be recorded?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            Selected sessions including keynotes and major panel
+                            discussions will be recorded and made available to
+                            registered participants after the event. Workshop
+                            sessions are typically not recorded due to their
+                            interactive nature.
+                        </p>
+                    </dd>
+                </div>
 
-        <div>
-          <dt class="text-lg font-semibold text-[#5C3A21]">Can I propose a workshop or presentation topic?</dt>
-          <dd class="mt-2 text-base text-gray-600">
-            Absolutely! We welcome proposals from practitioners, researchers, and innovators. Please contact us at <a href="mailto:info@beeseasy.org" class="font-semibold text-[#F5C342] hover:text-[#5C3A21]">info@beeseasy.org</a> with your proposal including title, abstract, and speaker information.
-          </dd>
-        </div>
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        Can I propose a workshop or presentation topic?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            Absolutely! We welcome proposals from practitioners,
+                            researchers, and innovators. Please contact us at
+                            <a
+                                href="mailto:info@pollinationafrica.org"
+                                class="font-semibold text-accent-yellow hover:text-accent-orange transition-colors"
+                                >info@pollinationafrica.org</a
+                            >
+                            with your proposal including title, abstract, and
+                            speaker information.
+                        </p>
+                    </dd>
+                </div>
 
-        <div>
-          <dt class="text-lg font-semibold text-[#5C3A21]">Are there networking opportunities between sessions?</dt>
-          <dd class="mt-2 text-base text-gray-600">
-            Yes! We've built in dedicated networking time including structured B2B matchmaking sessions, informal receptions, and exhibition viewing periods where you can connect with fellow attendees, speakers, and exhibitors.
-          </dd>
-        </div>
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        Are there networking opportunities between sessions?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            Yes! We've built in dedicated networking time
+                            including structured B2B matchmaking sessions,
+                            informal receptions, and exhibition viewing periods
+                            where you can connect with fellow attendees,
+                            speakers, and exhibitors.
+                        </p>
+                    </dd>
+                </div>
 
-        <div>
-          <dt class="text-lg font-semibold text-[#5C3A21]">What language will sessions be conducted in?</dt>
-          <dd class="mt-2 text-base text-gray-600">
-            All main sessions will be conducted in English with Swahili interpretation available for select sessions. Workshop sessions may be offered in both English and Swahili depending on facilitator and participant needs.
-          </dd>
+                <div class="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                    <dt
+                        class="text-lg font-semibold text-primary-dark lg:col-span-5"
+                    >
+                        What language will sessions be conducted in?
+                    </dt>
+                    <dd class="mt-4 lg:col-span-7 lg:mt-0">
+                        <p class="text-base text-gray-600">
+                            All main sessions will be conducted in English with
+                            Swahili interpretation available for select
+                            sessions. Workshop sessions may be offered in both
+                            English and Swahili depending on facilitator and
+                            participant needs.
+                        </p>
+                    </dd>
+                </div>
+            </dl>
         </div>
-      </dl>
     </div>
-  </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 7: STAY UPDATED CTA -->
 <!-- ============================================ -->
 <div class="bg-gray-50 py-16 sm:py-24">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-balance text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">
-        Get Agenda Updates
-      </h2>
-      <p class="mx-auto mt-6 max-w-xl text-lg/8 text-gray-700">
-        Be the first to know when we release the detailed agenda, confirm new speakers, and announce special sessions
-      </p>
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <div class="w-full max-w-md">
-          <label for="email-address" class="sr-only">Email address</label>
-          <input id="email-address"
-                 name="email"
-                 type="email"
-                 autocomplete="email"
-                 required
-                 class="min-w-0 flex-auto rounded-md border-0 bg-white px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#F5C342] sm:text-sm/6 w-full"
-                 placeholder="Enter your email" />
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+            <h2
+                class="text-balance text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl"
+            >
+                Get Agenda Updates
+            </h2>
+            <p class="mx-auto mt-6 max-w-xl text-lg/8 text-gray-700">
+                Be the first to know when we release the detailed agenda,
+                confirm new speakers, and announce special sessions
+            </p>
+            <div
+                class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
+                <div class="w-full max-w-md">
+                    <label for="email-address" class="sr-only"
+                        >Email address</label
+                    >
+                    <input
+                        id="email-address"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        required
+                        class="min-w-0 flex-auto rounded-md border-0 bg-white px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-yellow sm:text-sm/6 w-full"
+                        placeholder="Enter your email"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="flex-none rounded-md bg-accent-orange px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange transition-all"
+                >
+                    Notify Me
+                </button>
+            </div>
+            <p class="mt-6 text-sm text-gray-600">
+                By subscribing, you'll receive updates about the agenda,
+                speakers, and important event information. We respect your
+                privacy.
+            </p>
         </div>
-        <button type="submit"
-                class="flex-none rounded-md bg-[#F5C342] px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#e7b831] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5C342] transition-all">
-          Notify Me
-        </button>
-      </div>
-      <p class="mt-6 text-sm text-gray-600">
-        By subscribing, you'll receive updates about the agenda, speakers, and important event information. We respect your privacy.
-      </p>
+
+        <div
+            class="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-6 sm:mt-20 lg:max-w-none lg:grid-cols-3"
+        >
+            <div
+                class="flex gap-x-4 rounded-xl bg-white p-6 ring-1 ring-accent-brown/10"
+            >
+                <svg
+                    class="h-7 w-5 flex-none text-accent-yellow"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                <div class="text-base/7">
+                    <h3 class="font-semibold text-primary-dark">
+                        Weekly Updates
+                    </h3>
+                    <p class="mt-2 text-gray-700">
+                        Receive agenda announcements as sessions are confirmed
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="flex gap-x-4 rounded-xl bg-white p-6 ring-1 ring-accent-brown/10"
+            >
+                <svg
+                    class="h-7 w-5 flex-none text-accent-yellow"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z"
+                    />
+                </svg>
+                <div class="text-base/7">
+                    <h3 class="font-semibold text-primary-dark">
+                        Speaker Alerts
+                    </h3>
+                    <p class="mt-2 text-gray-700">
+                        Know when new speakers and panelists are announced
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="flex gap-x-4 rounded-xl bg-white p-6 ring-1 ring-accent-brown/10"
+            >
+                <svg
+                    class="h-7 w-5 flex-none text-accent-yellow"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                <div class="text-base/7">
+                    <h3 class="font-semibold text-primary-dark">
+                        Early Access
+                    </h3>
+                    <p class="mt-2 text-gray-700">
+                        Get the full agenda PDF before public release
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-6 sm:mt-20 lg:max-w-none lg:grid-cols-3">
-      <div class="flex gap-x-4 rounded-xl bg-white p-6 ring-1 ring-[#5C3A21]/10">
-        <svg class="h-7 w-5 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
-        </svg>
-        <div class="text-base/7">
-          <h3 class="font-semibold text-[#5C3A21]">Weekly Updates</h3>
-          <p class="mt-2 text-gray-700">Receive agenda announcements as sessions are confirmed</p>
-        </div>
-      </div>
-
-      <div class="flex gap-x-4 rounded-xl bg-white p-6 ring-1 ring-[#5C3A21]/10">
-        <svg class="h-7 w-5 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-        </svg>
-        <div class="text-base/7">
-          <h3 class="font-semibold text-[#5C3A21]">Speaker Alerts</h3>
-          <p class="mt-2 text-gray-700">Know when new speakers and panelists are announced</p>
-        </div>
-      </div>
-
-      <div class="flex gap-x-4 rounded-xl bg-white p-6 ring-1 ring-[#5C3A21]/10">
-        <svg class="h-7 w-5 flex-none text-[#F5C342]" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z" clip-rule="evenodd" />
-        </svg>
-        <div class="text-base/7">
-          <h3 class="font-semibold text-[#5C3A21]">Early Access</h3>
-          <p class="mt-2 text-gray-700">Get the full agenda PDF before public release</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 8: REGISTER CTA -->
 <!-- ============================================ -->
 <div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-balance text-4xl font-semibold tracking-tight text-[#5C3A21] sm:text-5xl">
-        Ready to Join Us?
-      </h2>
-      <p class="mx-auto mt-6 max-w-xl text-lg/8 text-gray-700">
-        Don't wait for the final agenda—secure your spot now and be part of East Africa's premier beekeeping symposium
-      </p>
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4">
-        <a href="{{ url_for('register.register_attendee') }}"
-           class="rounded-md bg-[#F5C342] px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-[#e7b831] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5C342] transition-all w-full sm:w-auto">
-          Register as Attendee
-        </a>
-        <a href="{{ url_for('register.register_exhibitor') }}"
-           class="rounded-md bg-[#5C3A21] px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-[#4a2f1a] transition-all w-full sm:w-auto">
-          Register as Exhibitor
-        </a>
-      </div>
-      <p class="mt-8 text-sm text-gray-600">
-        Questions about the agenda? <a href="{{ url_for('main.contact') }}" class="font-semibold text-[#F5C342] hover:text-[#5C3A21] transition-colors">Contact us</a>
-      </p>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+            <h2
+                class="text-balance text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl"
+            >
+                Ready to Join Us?
+            </h2>
+            <p class="mx-auto mt-6 max-w-xl text-lg/8 text-gray-700">
+                Don't wait for the final agenda—secure your spot now and be part
+                of East Africa's premier pollinator conservation symposium
+            </p>
+            <div
+                class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4"
+            >
+                <a
+                    href="{{ url_for('register.register_attendee') }}"
+                    class="rounded-md bg-accent-orange px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange transition-all w-full sm:w-auto"
+                >
+                    Register as Attendee
+                </a>
+                <a
+                    href="{{ url_for('register.register_exhibitor') }}"
+                    class="rounded-md bg-primary-dark px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-medium transition-all w-full sm:w-auto"
+                >
+                    Register as Exhibitor
+                </a>
+            </div>
+            <p class="mt-8 text-sm text-gray-600">
+                Questions about the agenda?
+                <a
+                    href="{{ url_for('main.contact') }}"
+                    class="font-semibold text-accent-yellow hover:text-accent-orange transition-colors"
+                    >Contact us</a
+                >
+            </p>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock %}

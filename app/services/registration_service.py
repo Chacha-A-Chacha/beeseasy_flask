@@ -30,7 +30,7 @@ from app.models import (
 from app.services.badge_service import BadgeService
 from app.utils.model_utils import ValidationHelpers
 
-logger = logging.getLogger('registration_service')
+logger = logging.getLogger("registration_service")
 
 
 class RegistrationService:
@@ -41,21 +41,23 @@ class RegistrationService:
     # ---------------------------------------------------------
 
     @staticmethod
-    def register_attendee(data: Dict[str, Any]) -> Tuple[bool, str, Optional[AttendeeRegistration]]:
+    def register_attendee(
+        data: Dict[str, Any],
+    ) -> Tuple[bool, str, Optional[AttendeeRegistration]]:
         """Register new attendee, create payment, send registration email"""
         try:
             logger.info(f"Starting attendee registration for {data.get('email')}")
 
             # Validate email
-            email = data.get('email', '').lower().strip()
+            email = data.get("email", "").lower().strip()
             is_available, msg = ValidationHelpers.check_email_availability(
-                email=email, registration_type='attendee'
+                email=email, registration_type="attendee"
             )
             if not is_available:
                 return False, msg, None
 
             # Get and validate ticket
-            ticket_type = data.get('ticket_type')
+            ticket_type = data.get("ticket_type")
             if isinstance(ticket_type, str):
                 try:
                     ticket_type = AttendeeTicketType[ticket_type.upper()]
@@ -75,27 +77,27 @@ class RegistrationService:
 
             # Create registration
             attendee = AttendeeRegistration(
-                first_name=data.get('first_name').strip(),
-                last_name=data.get('last_name').strip(),
+                first_name=data.get("first_name").strip(),
+                last_name=data.get("last_name").strip(),
                 email=email,
-                phone_country_code=data.get('phone_country_code', '+254'),
-                phone_number=data.get('phone_number', '').strip(),
+                phone_country_code=data.get("phone_country_code", "+254"),
+                phone_number=data.get("phone_number", "").strip(),
                 ticket_type=ticket_type,
                 ticket_price_id=ticket_price.id,
-                organization=data.get('organization', '').strip() or None,
-                job_title=data.get('job_title', '').strip() or None,
-                professional_category=data.get('professional_category'),
-                event_preferences=data.get('event_preferences'),
-                dietary_requirement=data.get('dietary_requirement'),
-                dietary_notes=data.get('dietary_notes'),
-                accessibility_needs=data.get('accessibility_needs'),
-                special_requirements=data.get('special_requirements'),
-                needs_visa_letter=data.get('needs_visa_letter', False),
-                referral_source=data.get('referral_source'),
-                consent_photography=data.get('consent_photography', True),
-                consent_networking=data.get('consent_networking', True),
-                consent_data_sharing=data.get('consent_data_sharing', False),
-                newsletter_signup=data.get('newsletter_signup', True),
+                organization=data.get("organization", "").strip() or None,
+                job_title=data.get("job_title", "").strip() or None,
+                professional_category=data.get("professional_category"),
+                event_preferences=data.get("event_preferences"),
+                dietary_requirement=data.get("dietary_requirement"),
+                dietary_notes=data.get("dietary_notes"),
+                accessibility_needs=data.get("accessibility_needs"),
+                special_requirements=data.get("special_requirements"),
+                needs_visa_letter=data.get("needs_visa_letter", False),
+                referral_source=data.get("referral_source"),
+                consent_photography=data.get("consent_photography", True),
+                consent_networking=data.get("consent_networking", True),
+                consent_data_sharing=data.get("consent_data_sharing", False),
+                newsletter_signup=data.get("newsletter_signup", True),
                 status=RegistrationStatus.PENDING,
             )
 
@@ -108,7 +110,7 @@ class RegistrationService:
             db.session.flush()
 
             # Apply promo code if provided
-            promo_code = data.get('promo_code', '').strip()
+            promo_code = data.get("promo_code", "").strip()
             if promo_code:
                 success, message = RegistrationService._apply_promo_code(
                     registration=attendee, payment=payment, promo_code=promo_code
@@ -116,13 +118,59 @@ class RegistrationService:
                 if success:
                     logger.info(f"Promo code applied: {promo_code}")
 
-            db.session.commit()
+            # Check if free ticket - auto-complete and generate badge
+            if payment.total_amount <= 0:
+                logger.info(
+                    f"Free ticket detected for {attendee.reference_number} - auto-completing"
+                )
 
-            # Send registration received email with checkout link
-            RegistrationService._send_registration_email(attendee, payment)
+                # Mark payment as completed
+                payment.payment_status = PaymentStatus.COMPLETED
+                payment.payment_method = PaymentMethod.FREE
+                payment.transaction_id = f"FREE-{attendee.reference_number}"
+                payment.paid_at = datetime.utcnow()
 
-            logger.info(f"Attendee registered: {attendee.reference_number}")
-            return True, "Registration successful!", attendee
+                # Confirm registration
+                attendee.status = RegistrationStatus.CONFIRMED
+                attendee.confirmed_at = datetime.utcnow()
+
+                db.session.commit()
+
+                # Generate badge immediately
+                badge_success, badge_message, badge_url = BadgeService.generate_badge(
+                    attendee.id
+                )
+                if not badge_success:
+                    logger.error(
+                        f"Badge generation failed for free ticket: {badge_message}"
+                    )
+                    # Continue anyway - badge can be regenerated later
+
+                # Send confirmation email WITH badge
+                RegistrationService._send_confirmation_email(attendee, badge_url)
+
+                logger.info(
+                    f"Free ticket registration completed: {attendee.reference_number}"
+                )
+                return (
+                    True,
+                    "Registration successful! Check your email for your badge.",
+                    attendee,
+                )
+
+            else:
+                # Paid ticket - send registration received email with checkout link
+                db.session.commit()
+                RegistrationService._send_registration_email(attendee, payment)
+
+                logger.info(
+                    f"Paid ticket registration created: {attendee.reference_number}"
+                )
+                return (
+                    True,
+                    "Registration successful! Please complete payment to receive your badge.",
+                    attendee,
+                )
 
         except SQLAlchemyError as e:
             db.session.rollback()
@@ -138,21 +186,23 @@ class RegistrationService:
     # ---------------------------------------------------------
 
     @staticmethod
-    def register_exhibitor(data: Dict[str, Any]) -> Tuple[bool, str, Optional[ExhibitorRegistration]]:
+    def register_exhibitor(
+        data: Dict[str, Any],
+    ) -> Tuple[bool, str, Optional[ExhibitorRegistration]]:
         """Register new exhibitor, create payment, send registration email"""
         try:
             logger.info(f"Starting exhibitor registration for {data.get('email')}")
 
             # Validate email
-            email = data.get('email', '').lower().strip()
+            email = data.get("email", "").lower().strip()
             is_available, msg = ValidationHelpers.check_email_availability(
-                email=email, registration_type='exhibitor'
+                email=email, registration_type="exhibitor"
             )
             if not is_available:
                 return False, msg, None
 
             # Get and validate package
-            package_type = data.get('package_type')
+            package_type = data.get("package_type")
             if isinstance(package_type, str):
                 try:
                     package_type = ExhibitorPackage[package_type.upper()]
@@ -174,28 +224,28 @@ class RegistrationService:
 
             # Create registration
             exhibitor = ExhibitorRegistration(
-                first_name=data.get('first_name').strip(),
-                last_name=data.get('last_name').strip(),
+                first_name=data.get("first_name").strip(),
+                last_name=data.get("last_name").strip(),
                 email=email,
-                phone_country_code=data.get('phone_country_code', '+254'),
-                phone_number=data.get('phone_number', '').strip(),
-                job_title=data.get('job_title'),
-                company_legal_name=data.get('company_legal_name').strip(),
-                company_country=data.get('company_country'),
-                company_address=data.get('company_address'),
-                industry_category=data.get('industry_category'),
-                company_description=data.get('company_description'),
-                company_website=data.get('company_website'),
-                alternate_contact_email=data.get('alternate_contact_email'),
+                phone_country_code=data.get("phone_country_code", "+254"),
+                phone_number=data.get("phone_number", "").strip(),
+                job_title=data.get("job_title"),
+                company_legal_name=data.get("company_legal_name").strip(),
+                company_country=data.get("company_country"),
+                company_address=data.get("company_address"),
+                industry_category=data.get("industry_category"),
+                company_description=data.get("company_description"),
+                company_website=data.get("company_website"),
+                alternate_contact_email=data.get("alternate_contact_email"),
                 package_type=package_type,
                 package_price_id=package_price.id,
-                products_to_exhibit=data.get('products_to_exhibit'),
-                number_of_staff=data.get('number_of_staff', 2),
-                special_requirements=data.get('special_requirements'),
-                referral_source=data.get('referral_source'),
-                consent_photography=data.get('consent_photography', True),
-                consent_catalog=data.get('consent_catalog', True),
-                newsletter_signup=data.get('newsletter_signup', True),
+                products_to_exhibit=data.get("products_to_exhibit"),
+                number_of_staff=data.get("number_of_staff", 2),
+                special_requirements=data.get("special_requirements"),
+                referral_source=data.get("referral_source"),
+                consent_photography=data.get("consent_photography", True),
+                consent_catalog=data.get("consent_catalog", True),
+                newsletter_signup=data.get("newsletter_signup", True),
                 status=RegistrationStatus.PENDING,
             )
 
@@ -208,7 +258,7 @@ class RegistrationService:
             db.session.flush()
 
             # Apply promo code if provided
-            promo_code = data.get('promo_code', '').strip()
+            promo_code = data.get("promo_code", "").strip()
             if promo_code:
                 success, message = RegistrationService._apply_promo_code(
                     registration=exhibitor, payment=payment, promo_code=promo_code
@@ -239,9 +289,7 @@ class RegistrationService:
 
     @staticmethod
     def process_payment_completion(
-        payment_id: int,
-        transaction_id: str,
-        payment_method: PaymentMethod
+        payment_id: int, transaction_id: str, payment_method: PaymentMethod
     ) -> Tuple[bool, str]:
         """
         Process payment completion: confirm registration, generate badge, send confirmation
@@ -303,21 +351,19 @@ class RegistrationService:
         payment = Payment(
             registration_id=registration.id,
             subtotal=total_amount,
-            tax_amount=Decimal('0.00'),
+            tax_amount=Decimal("0.00"),
             total_amount=total_amount,
-            currency='USD',
+            currency="USD",
             payment_method=PaymentMethod.CARD,  # Default, updated at checkout
             payment_status=PaymentStatus.PENDING,
-            payment_due_date=due_date
+            payment_due_date=due_date,
         )
 
         return payment
 
     @staticmethod
     def _apply_promo_code(
-        registration,
-        payment: Payment,
-        promo_code: str
+        registration, payment: Payment, promo_code: str
     ) -> Tuple[bool, str]:
         """Apply promo code discount to payment"""
         try:
@@ -329,9 +375,15 @@ class RegistrationService:
                 return False, "You have already used this promo code"
 
             # Check applicability
-            if registration.registration_type == 'attendee' and not promo.applicable_to_attendees:
+            if (
+                registration.registration_type == "attendee"
+                and not promo.applicable_to_attendees
+            ):
                 return False, "Code not valid for attendees"
-            if registration.registration_type == 'exhibitor' and not promo.applicable_to_exhibitors:
+            if (
+                registration.registration_type == "exhibitor"
+                and not promo.applicable_to_exhibitors
+            ):
                 return False, "Code not valid for exhibitors"
 
             # Calculate and apply discount
@@ -349,7 +401,7 @@ class RegistrationService:
                 payment_id=payment.id,
                 discount_amount=discount,
                 original_amount=payment.subtotal,
-                final_amount=payment.total_amount
+                final_amount=payment.total_amount,
             )
             db.session.add(usage)
             promo.use_code()
@@ -375,29 +427,29 @@ class RegistrationService:
             email_service = EnhancedEmailService(current_app)
 
             checkout_url = url_for(
-                'payments.checkout',
-                ref=registration.reference_number,
-                _external=True
+                "payments.checkout", ref=registration.reference_number, _external=True
             )
 
             context = {
-                'registration': registration,
-                'payment': payment,
-                'checkout_url': checkout_url,
-                'amount_due': float(payment.total_amount),
-                'currency': payment.currency,
-                'due_date': payment.payment_due_date.strftime('%B %d, %Y') if payment.payment_due_date else None,
-                'event_name': 'BEEASY 2025 - Bee East Africa Symposium',
-                'event_date': 'March 15-17, 2025',
+                "registration": registration,
+                "payment": payment,
+                "checkout_url": checkout_url,
+                "amount_due": float(payment.total_amount),
+                "currency": payment.currency,
+                "due_date": payment.payment_due_date.strftime("%B %d, %Y")
+                if payment.payment_due_date
+                else None,
+                "event_name": "BEEASY 2025 - Bee East Africa Symposium",
+                "event_date": "March 15-17, 2025",
             }
 
             # Select template
-            if registration.registration_type == 'attendee':
-                template = 'registration_received_attendee'
-                subject = 'Registration Received - Complete Payment'
+            if registration.registration_type == "attendee":
+                template = "registration_received_attendee"
+                subject = "Registration Received - Complete Payment"
             else:
-                template = 'registration_received_exhibitor'
-                subject = 'Exhibitor Registration Received - Complete Payment'
+                template = "registration_received_exhibitor"
+                subject = "Exhibitor Registration Received - Complete Payment"
 
             # Send via enhanced email service
             email_service.send_notification(
@@ -405,7 +457,7 @@ class RegistrationService:
                 template=template,
                 subject=subject,
                 template_context=context,
-                priority=1  # Normal priority
+                priority=1,  # Normal priority
             )
 
             logger.info(f"Registration email queued for {registration.email}")
@@ -426,28 +478,28 @@ class RegistrationService:
             badge_download_url = None
             if badge_url:
                 badge_download_url = url_for(
-                    'main.download_badge',
+                    "main.download_badge",
                     reference=registration.reference_number,
-                    _external=True
+                    _external=True,
                 )
 
             context = {
-                'registration': registration,
-                'badge_url': badge_download_url,
-                'event_name': 'BEEASY 2025 - Bee East Africa Symposium',
-                'event_date': 'March 15-17, 2025',
-                'event_location': 'Kenyatta International Convention Centre, Nairobi',
-                'event_time': '9:00 AM - 5:00 PM',
-                'whatsapp': '+254 719 740 938',
+                "registration": registration,
+                "badge_url": badge_download_url,
+                "event_name": "BEEASY 2025 - Bee East Africa Symposium",
+                "event_date": "March 15-17, 2025",
+                "event_location": "Kenyatta International Convention Centre, Nairobi",
+                "event_time": "9:00 AM - 5:00 PM",
+                "whatsapp": "+254 719 740 938",
             }
 
             # Select template
-            if registration.registration_type == 'attendee':
-                template = 'payment_confirmed_attendee'
-                subject = 'Payment Confirmed - Your Badge is Ready!'
+            if registration.registration_type == "attendee":
+                template = "payment_confirmed_attendee"
+                subject = "Payment Confirmed - Your Badge is Ready!"
             else:
-                template = 'payment_confirmed_exhibitor'
-                subject = 'Payment Confirmed - Exhibitor Badge Ready'
+                template = "payment_confirmed_exhibitor"
+                subject = "Payment Confirmed - Exhibitor Badge Ready"
 
             # Send via enhanced email service with high priority
             email_service.send_notification(
@@ -455,7 +507,7 @@ class RegistrationService:
                 template=template,
                 subject=subject,
                 template_context=context,
-                priority=0  # High priority for confirmations
+                priority=0,  # High priority for confirmations
             )
 
             logger.info(f"Confirmation email queued for {registration.email}")

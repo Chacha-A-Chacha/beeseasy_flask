@@ -1,234 +1,659 @@
-<!-- file: app/templates/register/exhibitor.html -->
-
-{% extends "base.html" %}
-
-{% block title %}Exhibitor Registration{% endblock %}
-
-{% block content %}
-<div class="bg-gradient-to-r from-[#2C5F2D] to-[#1f4520] py-8">
+{% extends "base.html" %} {% block title %}Complete Exhibition Registration -
+Pollination Africa Symposium{% endblock %} {% block content %}
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-primary-dark to-primary-medium py-8">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Exhibitor Registration</h1>
-        <p class="text-gray-100">Showcase Your Business at BEEASY 2025</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
+            Complete Exhibition Registration
+        </h1>
+        <p class="text-accent-yellow">
+            Pollination Africa Symposium 2025 • December 2025 • Arusha, Tanzania
+        </p>
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-12">
-    <div class="max-w-2xl mx-auto">
-
-        <!-- Progress Indicator -->
-        <div class="mb-8">
+<!-- Progress Indicator -->
+<div class="bg-white border-b border-gray-200">
+    <div class="container mx-auto px-4 py-6">
+        <div class="max-w-6xl mx-auto">
             <div class="flex items-center justify-between text-sm">
-                <span class="text-[#2C5F2D] font-semibold">1. Registration</span>
-                <span class="text-gray-400">2. Payment</span>
-                <span class="text-gray-400">3. Confirmation</span>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-400"
+                    >
+                        1
+                    </div>
+                    <span class="ml-2 text-gray-400">Select Package</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-accent-yellow mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold"
+                    >
+                        2
+                    </div>
+                    <span class="ml-2 font-semibold text-primary-dark"
+                        >Registration</span
+                    >
+                </div>
+                <div class="flex-1 h-0.5 bg-gray-200 mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-400"
+                    >
+                        3
+                    </div>
+                    <span class="ml-2 text-gray-400">Confirmation</span>
+                </div>
             </div>
-            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-[#2C5F2D] h-2 rounded-full" style="width: 33%"></div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <form method="POST" action="{{ url_for('register.register_exhibitor') }}" id="exhibitorForm">
-                {{ form.hidden_tag() }}
-
-                <!-- Contact Person -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Primary Contact Person
-                    </h2>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            {{ form.first_name.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.first_name(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                            {% if form.first_name.errors %}
-                                <p class="text-red-600 text-xs mt-1">{{ form.first_name.errors[0] }}</p>
-                            {% endif %}
-                        </div>
-
-                        <div>
-                            {{ form.last_name.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.last_name(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                            {% if form.last_name.errors %}
-                                <p class="text-red-600 text-xs mt-1">{{ form.last_name.errors[0] }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.email.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.email(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                        {% if form.email.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.email.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div class="md:col-span-1">
-                            {{ form.phone_country_code.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.phone_country_code(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                        </div>
-
-                        <div class="md:col-span-2">
-                            {{ form.phone_number.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.phone_number(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                            {% if form.phone_number.errors %}
-                                <p class="text-red-600 text-xs mt-1">{{ form.phone_number.errors[0] }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.job_title.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.job_title(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                    </div>
-                </div>
-
-                <!-- Company Information -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Company Information
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.company_legal_name.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.company_legal_name(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                        {% if form.company_legal_name.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.company_legal_name.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.company_country.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.company_country(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                        {% if form.company_country.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.company_country.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.company_address.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.company_address(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]", rows="2") }}
-                        {% if form.company_address.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.company_address.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.company_website.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.company_website(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.industry_category.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.industry_category(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                        {% if form.industry_category.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.industry_category.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.company_description.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.company_description(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]", rows="4") }}
-                        {% if form.company_description.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.company_description.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Package Selection -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Select Your Package
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.package_type.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.package_type(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                        {% if form.package_type.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.package_type.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Exhibition Details -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Exhibition Details
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.products_to_exhibit.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.products_to_exhibit(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]", rows="3") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.number_of_staff.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.number_of_staff(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.special_requirements.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.special_requirements(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]", rows="3") }}
-                    </div>
-                </div>
-
-                <!-- Promo Code -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Promo Code
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.promo_code.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.promo_code(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#2C5F2D] focus:border-[#2C5F2D]") }}
-                    </div>
-                </div>
-
-                <!-- Consent -->
-                <div class="mb-8">
-                    <div class="space-y-3">
-                        <label class="flex items-start">
-                            {{ form.consent_photography(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.consent_photography.label.text }}</span>
-                        </label>
-
-                        <label class="flex items-start">
-                            {{ form.consent_catalog(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.consent_catalog.label.text }}</span>
-                        </label>
-
-                        <label class="flex items-start">
-                            {{ form.newsletter_signup(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.newsletter_signup.label.text }}</span>
-                        </label>
-
-                        <label class="flex items-start">
-                            {{ form.terms_accepted(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.terms_accepted.label.text }} <span class="text-red-600">*</span></span>
-                        </label>
-                        {% if form.terms_accepted.errors %}
-                            <p class="text-red-600 text-xs">{{ form.terms_accepted.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="text-center">
-                    <button type="submit"
-                            class="w-full md:w-auto px-8 py-3 bg-[#2C5F2D] text-white font-semibold rounded-lg hover:bg-[#1f4520] transition-colors">
-                        Proceed to Payment
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Back Link -->
-        <div class="text-center mt-6">
-            <a href="{{ url_for('register.index') }}" class="text-gray-600 hover:text-[#2C5F2D] text-sm">
-                ← Back to Package Selection
-            </a>
         </div>
     </div>
 </div>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- LEFT SIDEBAR - Package Info Card (Sticky) -->
+            <div class="lg:col-span-1">
+                <div
+                    class="bg-white rounded-lg shadow-lg border-2 border-accent-orange sticky top-6"
+                >
+                    <div
+                        class="bg-gradient-to-r from-primary-dark to-primary-medium p-4"
+                    >
+                        <h3 class="text-lg font-bold text-white">
+                            Your Package
+                        </h3>
+                    </div>
+
+                    <div class="p-6">
+                        {% if selected_package %}
+                        <!-- Package Details -->
+                        <div class="mb-4">
+                            <h4
+                                class="text-xl font-bold text-primary-dark mb-2"
+                            >
+                                {{ selected_package.name }}
+                            </h4>
+                            {% if selected_package.description %}
+                            <p class="text-sm text-gray-600 mb-3">
+                                {{ selected_package.description }}
+                            </p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-4 p-4 bg-accent-orange/10 rounded-lg">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-sm text-gray-600"
+                                    >Package Price</span
+                                >
+                                <div>
+                                    <span
+                                        class="text-2xl font-bold text-accent-orange"
+                                        >${{
+                                        "%.2f"|format(selected_package.price)
+                                        }}</span
+                                    >
+                                    <span class="text-sm text-gray-600 ml-1"
+                                        >{{ selected_package.currency }}</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Booth Size -->
+                        <div
+                            class="mb-4 p-3 bg-accent-yellow/5 rounded-lg border border-accent-yellow/20"
+                        >
+                            <div class="flex items-center text-sm">
+                                <svg
+                                    class="w-5 h-5 text-accent-orange mr-2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                                    />
+                                </svg>
+                                <span class="font-semibold text-primary-dark"
+                                    >Booth: {{ selected_package.booth_size
+                                    }}</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Features -->
+                        <div class="mb-4">
+                            <h5
+                                class="text-sm font-semibold text-primary-dark mb-2"
+                            >
+                                Package Includes
+                            </h5>
+                            <ul class="space-y-2">
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    {{ selected_package.included_passes }}
+                                    exhibitor passes
+                                </li>
+                                {% if selected_package.includes_electricity %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    Electricity connection
+                                </li>
+                                {% endif %} {% if selected_package.includes_wifi
+                                %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    WiFi access
+                                </li>
+                                {% endif %} {% if
+                                selected_package.includes_speaking_slot %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    Speaking opportunity
+                                </li>
+                                {% endif %} {% if selected_package.features %}
+                                {% for feature in selected_package.features %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    {{ feature }}
+                                </li>
+                                {% endfor %} {% endif %}
+                            </ul>
+                        </div>
+
+                        {% else %}
+                        <!-- No package selected -->
+                        <div class="text-center py-8">
+                            <svg
+                                class="w-12 h-12 text-gray-300 mx-auto mb-3"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                                />
+                            </svg>
+                            <p class="text-sm text-gray-600">
+                                No package selected
+                            </p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Change Selection -->
+                        <div class="pt-4 border-t border-gray-200">
+                            <a
+                                href="{{ url_for('register.exhibitor_index') }}"
+                                class="text-sm text-accent-orange hover:text-accent-yellow transition-colors flex items-center"
+                            >
+                                <svg
+                                    class="w-4 h-4 mr-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                    />
+                                </svg>
+                                Change package selection
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Help Section -->
+                <div class="mt-6 bg-primary-dark/5 rounded-lg p-4 text-center">
+                    <p class="text-sm text-gray-600 mb-2">
+                        Need a custom package?
+                    </p>
+                    <a
+                        href="{{ url_for('main.contact') }}"
+                        class="text-sm text-accent-orange hover:text-accent-yellow font-semibold"
+                    >
+                        Contact Sales →
+                    </a>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE - Registration Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <form
+                        method="POST"
+                        action="{{ url_for('register.register_exhibitor_form') }}"
+                        id="exhibitorForm"
+                    >
+                        {{ form.hidden_tag() }}
+
+                        <!-- Hidden package type field -->
+                        {{ form.package_type(type="hidden") }}
+
+                        <!-- Contact Person -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
+                            >
+                                Primary Contact Person
+                            </h2>
+
+                            <div
+                                class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+                            >
+                                <div>
+                                    {{ form.first_name.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.first_name(class="w-full px-3.5
+                                    py-2 border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.first_name.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.first_name.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    {{ form.last_name.label(class="block text-sm
+                                    font-medium text-primary-dark mb-1") }} {{
+                                    form.last_name(class="w-full px-3.5 py-2
+                                    border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.last_name.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.last_name.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.email.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.email(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }} {% if
+                                form.email.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.email.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div
+                                class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"
+                            >
+                                <div class="md:col-span-1">
+                                    {{
+                                    form.phone_country_code.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.phone_country_code(class="w-full
+                                    px-3.5 py-2 border border-gray-300
+                                    rounded-md focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }}
+                                </div>
+
+                                <div class="md:col-span-2">
+                                    {{ form.phone_number.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.phone_number(class="w-full px-3.5
+                                    py-2 border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.phone_number.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.phone_number.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.job_title.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.job_title(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+                        </div>
+
+                        <!-- Company Information -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
+                            >
+                                Company Information
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.company_legal_name.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.company_legal_name(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }} {% if
+                                form.company_legal_name.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.company_legal_name.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.company_country.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.company_country(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }} {% if
+                                form.company_country.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.company_country.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.company_address.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.company_address(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="2") }} {% if
+                                form.company_address.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.company_address.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.company_website.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.company_website(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }} {% if
+                                form.company_website.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.company_website.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.industry_category.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.industry_category(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }} {% if
+                                form.industry_category.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.industry_category.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.company_description.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.company_description(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="4") }} {% if
+                                form.company_description.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.company_description.errors[0] }}
+                                </p>
+                                {% endif %}
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Minimum 50 characters
+                                </p>
+                            </div>
+
+                            {% if form.alternate_contact_email %}
+                            <div class="mb-4">
+                                {{
+                                form.alternate_contact_email.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.alternate_contact_email(class="w-full
+                                px-3.5 py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Exhibition Details -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
+                            >
+                                Exhibition Details
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.products_to_exhibit.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.products_to_exhibit(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="3") }} {% if
+                                form.products_to_exhibit.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.products_to_exhibit.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.number_of_staff.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.number_of_staff(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", type="number",
+                                min="1", max="20") }} {% if
+                                form.number_of_staff.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.number_of_staff.errors[0] }}
+                                </p>
+                                {% endif %}
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Additional passes included in your package
+                                </p>
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.special_requirements.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.special_requirements(class="w-full
+                                px-3.5 py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="3") }}
+                                <p class="text-xs text-gray-500 mt-1">
+                                    e.g., additional electricity, special
+                                    lighting, booth equipment
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Promo Code -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
+                            >
+                                Promo Code
+                                <span class="text-sm font-normal text-gray-500"
+                                    >(Optional)</span
+                                >
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.promo_code.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.promo_code(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+                        </div>
+
+                        <!-- Marketing & Consent -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
+                            >
+                                Marketing & Consent
+                            </h2>
+
+                            <div class="space-y-3">
+                                {% if form.referral_source %}
+                                <div class="mb-4">
+                                    {{ form.referral_source.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.referral_source(class="w-full
+                                    px-3.5 py-2 border border-gray-300
+                                    rounded-md focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }}
+                                </div>
+                                {% endif %}
+
+                                <label class="flex items-start">
+                                    {{ form.consent_photography(class="mt-1 mr-2
+                                    text-accent-yellow focus:ring-accent-yellow
+                                    rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.consent_photography.label.text
+                                        }}</span
+                                    >
+                                </label>
+
+                                <label class="flex items-start">
+                                    {{ form.consent_catalog(class="mt-1 mr-2
+                                    text-accent-yellow focus:ring-accent-yellow
+                                    rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.consent_catalog.label.text
+                                        }}</span
+                                    >
+                                </label>
+
+                                <label class="flex items-start">
+                                    {{ form.newsletter_signup(class="mt-1 mr-2
+                                    text-accent-yellow focus:ring-accent-yellow
+                                    rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.newsletter_signup.label.text
+                                        }}</span
+                                    >
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button
+                                type="submit"
+                                class="flex-1 px-8 py-3 bg-accent-orange text-white font-semibold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg"
+                            >
+                                Complete Registration →
+                            </button>
+                            <a
+                                href="{{ url_for('register.exhibitor_index') }}"
+                                class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-accent-orange hover:text-primary-dark transition-all text-center"
+                            >
+                                Back
+                            </a>
+                        </div>
+
+                        <p class="text-xs text-gray-500 mt-4 text-center">
+                            By completing registration, you agree to our
+                            exhibitor terms and conditions.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

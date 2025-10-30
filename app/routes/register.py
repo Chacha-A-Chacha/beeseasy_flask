@@ -10,9 +10,7 @@ from flask import (
     redirect,
     url_for,
     flash,
-    session,
     jsonify,
-    current_app,
 )
 from app.forms import AttendeeRegistrationForm, ExhibitorRegistrationForm
 from app.services.registration_service import RegistrationService
@@ -194,7 +192,7 @@ def validate_email():
     existing = Registration.query.filter(
         db.func.lower(Registration.email) == email,
         Registration.registration_type == registration_type,
-        Registration.is_deleted == False,
+        not Registration.is_deleted,
     ).first()
 
     if existing:

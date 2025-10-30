@@ -1,194 +1,610 @@
-<!-- file: app/templates/register/attendee.html -->
-
-{% extends "base.html" %}
-
-{% block title %}Attendee Registration{% endblock %}
-
-{% block content %}
-<div class="bg-gradient-to-r from-[#F5C342] to-[#E8B030] py-8">
+{% extends "base.html" %} {% block title %}Complete Registration - Pollination
+Africa Symposium{% endblock %} {% block content %}
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-accent-yellow to-accent-orange py-8">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#5C3A21] mb-2">Attendee Registration</h1>
-        <p class="text-[#5C3A21]">Join BEEASY 2025 • March 15-17, 2025</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-primary-dark mb-2">
+            Complete Your Registration
+        </h1>
+        <p class="text-primary-dark">
+            Pollination Africa Symposium 2025 • December 2025 • Arusha, Tanzania
+        </p>
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-12">
-    <div class="max-w-2xl mx-auto">
-
-        <!-- Progress Indicator -->
-        <div class="mb-8">
+<!-- Progress Indicator -->
+<div class="bg-white border-b border-gray-200">
+    <div class="container mx-auto px-4 py-6">
+        <div class="max-w-6xl mx-auto">
             <div class="flex items-center justify-between text-sm">
-                <span class="text-[#F5C342] font-semibold">1. Registration</span>
-                <span class="text-gray-400">2. Payment</span>
-                <span class="text-gray-400">3. Confirmation</span>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-400"
+                    >
+                        1
+                    </div>
+                    <span class="ml-2 text-gray-400">Select Ticket</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-accent-yellow mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold"
+                    >
+                        2
+                    </div>
+                    <span class="ml-2 font-semibold text-primary-dark"
+                        >Registration</span
+                    >
+                </div>
+                <div class="flex-1 h-0.5 bg-gray-200 mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-400"
+                    >
+                        3
+                    </div>
+                    <span class="ml-2 text-gray-400">Confirmation</span>
+                </div>
             </div>
-            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-[#F5C342] h-2 rounded-full" style="width: 33%"></div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <form method="POST" action="{{ url_for('register.register_attendee') }}" id="attendeeForm">
-                {{ form.hidden_tag() }}
-
-                <!-- Personal Information -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Personal Information
-                    </h2>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            {{ form.first_name.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.first_name(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                            {% if form.first_name.errors %}
-                                <p class="text-red-600 text-xs mt-1">{{ form.first_name.errors[0] }}</p>
-                            {% endif %}
-                        </div>
-
-                        <div>
-                            {{ form.last_name.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.last_name(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                            {% if form.last_name.errors %}
-                                <p class="text-red-600 text-xs mt-1">{{ form.last_name.errors[0] }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.email.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.email(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                        {% if form.email.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.email.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="md:col-span-1">
-                            {{ form.phone_country_code.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.phone_country_code(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                        </div>
-
-                        <div class="md:col-span-2">
-                            {{ form.phone_number.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                            {{ form.phone_number(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                            {% if form.phone_number.errors %}
-                                <p class="text-red-600 text-xs mt-1">{{ form.phone_number.errors[0] }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ticket Selection -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Select Your Ticket
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.ticket_type.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.ticket_type(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                        {% if form.ticket_type.errors %}
-                            <p class="text-red-600 text-xs mt-1">{{ form.ticket_type.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Professional Information -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Professional Information
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.organization.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.organization(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.job_title.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.job_title(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.professional_category.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.professional_category(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                    </div>
-                </div>
-
-                <!-- Special Requirements -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Special Requirements (Optional)
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.dietary_requirement.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.dietary_requirement(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.accessibility_needs.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.accessibility_needs(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]", rows="3") }}
-                    </div>
-                </div>
-
-                <!-- Promo Code -->
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                        Promo Code
-                    </h2>
-
-                    <div class="mb-4">
-                        {{ form.promo_code.label(class="block text-sm font-medium text-gray-700 mb-1") }}
-                        {{ form.promo_code(class="w-full px-3.5 py-2 border border-gray-300 rounded-md focus:ring-[#F5C342] focus:border-[#F5C342]") }}
-                    </div>
-                </div>
-
-                <!-- Consent -->
-                <div class="mb-8">
-                    <div class="space-y-3">
-                        <label class="flex items-start">
-                            {{ form.consent_photography(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.consent_photography.label.text }}</span>
-                        </label>
-
-                        <label class="flex items-start">
-                            {{ form.consent_networking(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.consent_networking.label.text }}</span>
-                        </label>
-
-                        <label class="flex items-start">
-                            {{ form.newsletter_signup(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.newsletter_signup.label.text }}</span>
-                        </label>
-
-                        <label class="flex items-start">
-                            {{ form.terms_accepted(class="mt-1 mr-2") }}
-                            <span class="text-sm text-gray-700">{{ form.terms_accepted.label.text }} <span class="text-red-600">*</span></span>
-                        </label>
-                        {% if form.terms_accepted.errors %}
-                            <p class="text-red-600 text-xs">{{ form.terms_accepted.errors[0] }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="text-center">
-                    <button type="submit"
-                            class="w-full md:w-auto px-8 py-3 bg-[#5C3A21] text-white font-semibold rounded-lg hover:bg-[#4a2f1a] transition-colors">
-                        Proceed to Payment
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Back Link -->
-        <div class="text-center mt-6">
-            <a href="{{ url_for('register.index') }}" class="text-gray-600 hover:text-[#5C3A21] text-sm">
-                ← Back to Ticket Selection
-            </a>
         </div>
     </div>
 </div>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- LEFT SIDEBAR - Ticket Info Card (Sticky) -->
+            <div class="lg:col-span-1">
+                <div
+                    class="bg-white rounded-lg shadow-lg border-2 border-accent-yellow sticky top-6"
+                >
+                    <div
+                        class="bg-gradient-to-r from-accent-yellow to-accent-orange p-4"
+                    >
+                        <h3 class="text-lg font-bold text-primary-dark">
+                            Your Selection
+                        </h3>
+                    </div>
+
+                    <div class="p-6">
+                        {% if selected_ticket %}
+                        <!-- Ticket Details -->
+                        <div class="mb-4">
+                            <h4
+                                class="text-xl font-bold text-primary-dark mb-2"
+                            >
+                                {{ selected_ticket.name }}
+                            </h4>
+                            {% if selected_ticket.description %}
+                            <p class="text-sm text-gray-600 mb-3">
+                                {{ selected_ticket.description }}
+                            </p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-4 p-4 bg-accent-yellow/10 rounded-lg">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-sm text-gray-600">Price</span>
+                                <div>
+                                    <span
+                                        class="text-2xl font-bold text-accent-orange"
+                                        >${{
+                                        "%.2f"|format(selected_ticket.get_current_price())
+                                        }}</span
+                                    >
+                                    <span class="text-sm text-gray-600 ml-1"
+                                        >{{ selected_ticket.currency }}</span
+                                    >
+                                </div>
+                            </div>
+                            {% if selected_ticket.early_bird_price and
+                            selected_ticket.early_bird_price <
+                            selected_ticket.price %}
+                            <div class="mt-2 text-xs">
+                                <span class="text-gray-500 line-through"
+                                    >${{ "%.2f"|format(selected_ticket.price)
+                                    }}</span
+                                >
+                                <span
+                                    class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                                >
+                                    Early Bird Savings
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Features -->
+                        <div class="mb-4">
+                            <h5
+                                class="text-sm font-semibold text-primary-dark mb-2"
+                            >
+                                Included Benefits
+                            </h5>
+                            <ul class="space-y-2">
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    Full symposium access
+                                </li>
+                                {% if selected_ticket.includes_lunch %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    Lunch & refreshments
+                                </li>
+                                {% endif %} {% if
+                                selected_ticket.includes_materials %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    Conference materials
+                                </li>
+                                {% endif %} {% if
+                                selected_ticket.includes_certificate %}
+                                <li
+                                    class="flex items-start text-sm text-gray-700"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-accent-yellow mt-0.5 mr-2 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    Certificate of attendance
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        {% else %}
+                        <!-- No ticket selected -->
+                        <div class="text-center py-8">
+                            <svg
+                                class="w-12 h-12 text-gray-300 mx-auto mb-3"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                                />
+                            </svg>
+                            <p class="text-sm text-gray-600">
+                                No ticket selected
+                            </p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Change Selection -->
+                        <div class="pt-4 border-t border-gray-200">
+                            <a
+                                href="{{ url_for('register.attendee_index') }}"
+                                class="text-sm text-accent-orange hover:text-accent-yellow transition-colors flex items-center"
+                            >
+                                <svg
+                                    class="w-4 h-4 mr-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                    />
+                                </svg>
+                                Change ticket selection
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Help Section -->
+                <div class="mt-6 bg-primary-dark/5 rounded-lg p-4 text-center">
+                    <p class="text-sm text-gray-600 mb-2">Need help?</p>
+                    <a
+                        href="{{ url_for('main.contact') }}"
+                        class="text-sm text-accent-orange hover:text-accent-yellow font-semibold"
+                    >
+                        Contact Support →
+                    </a>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE - Registration Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <form
+                        method="POST"
+                        action="{{ url_for('register.register_attendee_form') }}"
+                        id="attendeeForm"
+                    >
+                        {{ form.hidden_tag() }}
+
+                        <!-- Hidden ticket type field -->
+                        {{ form.ticket_type(type="hidden") }}
+
+                        <!-- Personal Information -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Personal Information
+                            </h2>
+
+                            <div
+                                class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+                            >
+                                <div>
+                                    {{ form.first_name.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.first_name(class="w-full px-3.5
+                                    py-2 border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.first_name.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.first_name.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    {{ form.last_name.label(class="block text-sm
+                                    font-medium text-primary-dark mb-1") }} {{
+                                    form.last_name(class="w-full px-3.5 py-2
+                                    border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.last_name.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.last_name.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.email.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.email(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }} {% if
+                                form.email.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.email.errors[0] }}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="md:col-span-1">
+                                    {{
+                                    form.phone_country_code.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.phone_country_code(class="w-full
+                                    px-3.5 py-2 border border-gray-300
+                                    rounded-md focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }}
+                                </div>
+
+                                <div class="md:col-span-2">
+                                    {{ form.phone_number.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.phone_number(class="w-full px-3.5
+                                    py-2 border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.phone_number.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.phone_number.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Professional Information -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Professional Information
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.organization.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.organization(class="w-full px-3.5 py-2
+                                border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.job_title.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.job_title(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form.professional_category.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.professional_category(class="w-full
+                                px-3.5 py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+                        </div>
+
+                        <!-- Event Preferences -->
+                        {% if form.event_preferences %}
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Event Preferences
+                                <span class="text-sm font-normal text-gray-500"
+                                    >(Optional)</span
+                                >
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.event_preferences.label(class="block
+                                text-sm font-medium text-primary-dark mb-2") }}
+                                <div
+                                    class="border border-gray-300 rounded-md p-3 max-h-64 overflow-y-auto"
+                                >
+                                    {% for choice in
+                                    form.event_preferences.choices %}
+                                    <label
+                                        class="flex items-start py-2 hover:bg-gray-50 px-2 rounded cursor-pointer"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="event_preferences"
+                                            value="{{ choice[0] }}"
+                                            class="mt-1 mr-3 text-accent-yellow focus:ring-accent-yellow rounded"
+                                            {%
+                                            if
+                                            choice[0]
+                                            in
+                                            form.event_preferences.data
+                                            %}checked{%
+                                            endif
+                                            %}
+                                        />
+                                        <span class="text-sm text-gray-700"
+                                            >{{ choice[1] }}</span
+                                        >
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Special Requirements -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Special Requirements
+                                <span class="text-sm font-normal text-gray-500"
+                                    >(Optional)</span
+                                >
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.dietary_requirement.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.dietary_requirement(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+
+                            {% if form.dietary_notes %}
+                            <div class="mb-4">
+                                {{ form.dietary_notes.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.dietary_notes(class="w-full px-3.5 py-2
+                                border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="2") }}
+                            </div>
+                            {% endif %}
+
+                            <div class="mb-4">
+                                {{ form.accessibility_needs.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.accessibility_needs(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="3") }}
+                            </div>
+
+                            {% if form.special_requirements %}
+                            <div class="mb-4">
+                                {{ form.special_requirements.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
+                                {{ form.special_requirements(class="w-full
+                                px-3.5 py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", rows="2") }}
+                            </div>
+                            {% endif %} {% if form.needs_visa_letter %}
+                            <label class="flex items-start mt-4">
+                                {{ form.needs_visa_letter(class="mt-1 mr-2
+                                text-accent-yellow focus:ring-accent-yellow
+                                rounded") }}
+                                <span class="text-sm text-gray-700"
+                                    >{{ form.needs_visa_letter.label.text
+                                    }}</span
+                                >
+                            </label>
+                            {% endif %}
+                        </div>
+
+                        <!-- Promo Code -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Promo Code
+                                <span class="text-sm font-normal text-gray-500"
+                                    >(Optional)</span
+                                >
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.promo_code.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.promo_code(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+                            </div>
+                        </div>
+
+                        <!-- Marketing & Consent -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Preferences & Consent
+                            </h2>
+
+                            <div class="space-y-3">
+                                {% if form.referral_source %}
+                                <div class="mb-4">
+                                    {{ form.referral_source.label(class="block
+                                    text-sm font-medium text-primary-dark mb-1")
+                                    }} {{ form.referral_source(class="w-full
+                                    px-3.5 py-2 border border-gray-300
+                                    rounded-md focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }}
+                                </div>
+                                {% endif %}
+
+                                <label class="flex items-start">
+                                    {{ form.consent_photography(class="mt-1 mr-2
+                                    text-accent-yellow focus:ring-accent-yellow
+                                    rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.consent_photography.label.text
+                                        }}</span
+                                    >
+                                </label>
+
+                                {% if form.consent_networking %}
+                                <label class="flex items-start">
+                                    {{ form.consent_networking(class="mt-1 mr-2
+                                    text-accent-yellow focus:ring-accent-yellow
+                                    rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.consent_networking.label.text
+                                        }}</span
+                                    >
+                                </label>
+                                {% endif %} {% if form.consent_data_sharing %}
+                                <label class="flex items-start">
+                                    {{ form.consent_data_sharing(class="mt-1
+                                    mr-2 text-accent-yellow
+                                    focus:ring-accent-yellow rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.consent_data_sharing.label.text
+                                        }}</span
+                                    >
+                                </label>
+                                {% endif %}
+
+                                <label class="flex items-start">
+                                    {{ form.newsletter_signup(class="mt-1 mr-2
+                                    text-accent-yellow focus:ring-accent-yellow
+                                    rounded") }}
+                                    <span class="text-sm text-gray-700"
+                                        >{{ form.newsletter_signup.label.text
+                                        }}</span
+                                    >
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button
+                                type="submit"
+                                class="flex-1 px-8 py-3 bg-accent-orange text-white font-semibold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg"
+                            >
+                                Complete Registration →
+                            </button>
+                            <a
+                                href="{{ url_for('register.attendee_index') }}"
+                                class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-accent-yellow hover:text-primary-dark transition-all text-center"
+                            >
+                                Back
+                            </a>
+                        </div>
+
+                        <p class="text-xs text-gray-500 mt-4 text-center">
+                            By completing registration, you agree to our terms
+                            and conditions.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -53,18 +53,22 @@ def attendee_index():
 # ============================================
 
 
-@register_bp.route("/attendee", methods=["GET", "POST"])
-def register_attendee():
-    """Single-page attendee registration"""
+@register_bp.route("/attendee/form", methods=["GET", "POST"])
+def register_attendee_form():
+    """Single-page attendee registration form with pre-selected ticket"""
     form = AttendeeRegistrationForm()
     tickets = TicketPrice.query.filter_by(is_active=True).all()
+
+    # Pre-select ticket if passed via query parameter
+    selected_ticket = request.args.get("ticket_type")
+    if selected_ticket and request.method == "GET":
+        form.ticket_type.data = selected_ticket
 
     if form.validate_on_submit():
         success, message, attendee = RegistrationService.register_attendee(form.data)
 
         if success:
             flash(message, "success")
-            # Always redirect to confirmation (email sent with checkout link)
             return redirect(
                 url_for("register.confirmation", ref=attendee.reference_number)
             )
@@ -79,6 +83,27 @@ def register_attendee():
 # ============================================
 
 
+@register_bp.route("/exhibitor")
+def exhibitor_index():
+    """Exhibitor package selection landing page"""
+    packages = (
+        ExhibitorPackagePrice.query.filter_by(is_active=True)
+        .order_by(ExhibitorPackagePrice.price)
+        .all()
+    )
+
+    # Check if floor plan is available (you can implement this logic)
+    floor_plan_available = False  # Set to True when you upload floor plan
+    floor_plan_url = None  # Set to actual URL when available
+
+    return render_template(
+        "register/exhibitor_index.html",
+        packages=packages,
+        floor_plan_available=floor_plan_available,
+        floor_plan_url=floor_plan_url,
+    )
+
+
 @register_bp.route("/exhibitor", methods=["GET", "POST"])
 def register_exhibitor():
     """Single-page exhibitor registration"""
@@ -91,6 +116,31 @@ def register_exhibitor():
         if success:
             flash(message, "success")
             # Always redirect to confirmation (email sent with checkout link)
+            return redirect(
+                url_for("register.confirmation", ref=exhibitor.reference_number)
+            )
+        else:
+            flash(message, "error")
+
+    return render_template("register/exhibitor.html", form=form, packages=packages)
+
+
+@register_bp.route("/exhibitor/form", methods=["GET", "POST"])
+def register_exhibitor_form():
+    """Single-page exhibitor registration form with pre-selected package"""
+    form = ExhibitorRegistrationForm()
+    packages = ExhibitorPackagePrice.query.filter_by(is_active=True).all()
+
+    # Pre-select package if passed via query parameter
+    selected_package = request.args.get("package_type")
+    if selected_package and request.method == "GET":
+        form.package_type.data = selected_package
+
+    if form.validate_on_submit():
+        success, message, exhibitor = RegistrationService.register_exhibitor(form.data)
+
+        if success:
+            flash(message, "success")
             return redirect(
                 url_for("register.confirmation", ref=exhibitor.reference_number)
             )

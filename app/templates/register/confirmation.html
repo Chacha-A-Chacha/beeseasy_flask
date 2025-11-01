@@ -1,140 +1,510 @@
-<!-- file: app/templates/register/confirmation.html -->
-
-{% extends "base.html" %}
-
-{% block title %}Registration Received{% endblock %}
-
-{% block content %}
-<div class="bg-gradient-to-r from-[#F5C342] to-[#E8B030] py-8">
+{% extends "base.html" %} {% block title %} {% if registration.status.value ==
+'confirmed' %} Registration Confirmed - Pollination Africa Symposium {% else %}
+Complete Payment - Pollination Africa Symposium {% endif %} {% endblock %} {%
+block content %}
+<!-- Hero Section -->
+<div
+    class="{% if registration.status.value == 'confirmed' %}bg-gradient-to-r from-green-500 to-green-600{% else %}bg-gradient-to-r from-accent-yellow to-accent-orange{% endif %} py-8"
+>
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#5C3A21]">
-            {% if registration.status.value == 'confirmed' %}
-            ✓ Registration Confirmed
-            {% else %}
-            Registration Received
-            {% endif %}
+        <h1
+            class="text-3xl md:text-4xl font-bold {% if registration.status.value == 'confirmed' %}text-white{% else %}text-primary-dark{% endif %} mb-2"
+        >
+            {% if registration.status.value == 'confirmed' %} ✓ Registration
+            Confirmed! {% else %} Registration Received {% endif %}
         </h1>
+        <p
+            class="{% if registration.status.value == 'confirmed' %}text-green-100{% else %}text-primary-dark{% endif %}"
+        >
+            Pollination Africa Symposium 2025 • December 2025 • Arusha, Tanzania
+        </p>
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-12">
-    <div class="max-w-3xl mx-auto">
-
-        <!-- Progress Indicator -->
-        <div class="mb-8">
+<!-- Progress Indicator -->
+<div class="bg-white border-b border-gray-200">
+    <div class="container mx-auto px-4 py-6">
+        <div class="max-w-3xl mx-auto">
             <div class="flex items-center justify-between text-sm">
-                <span class="text-gray-400">1. Registration</span>
-                <span class="{% if registration.status.value == 'confirmed' %}text-gray-400{% else %}text-[#F5C342] font-semibold{% endif %}">2. Payment</span>
-                <span class="{% if registration.status.value == 'confirmed' %}text-[#F5C342] font-semibold{% else %}text-gray-400{% endif %}">3. Confirmation</span>
-            </div>
-            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-[#F5C342] h-2 rounded-full transition-all duration-500"
-                     style="width: {% if registration.status.value == 'confirmed' %}100{% else %}66{% endif %}%"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white"
+                    >
+                        ✓
+                    </div>
+                    <span class="ml-2 text-gray-600">Registration</span>
+                </div>
+                <div
+                    class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-accent-yellow{% endif %} mx-4"
+                ></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-accent-yellow text-primary-dark font-bold{% endif %}"
+                    >
+                        {% if registration.status.value == 'confirmed' %}✓{%
+                        else %}2{% endif %}
+                    </div>
+                    <span
+                        class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}font-semibold text-primary-dark{% endif %}"
+                    >
+                        {% if payment and payment.total_amount > 0 %}Payment{%
+                        else %}Confirmation{% endif %}
+                    </span>
+                </div>
+                <div
+                    class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-gray-200{% endif %} mx-4"
+                ></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-400{% endif %}"
+                    >
+                        {% if registration.status.value == 'confirmed' %}✓{%
+                        else %}3{% endif %}
+                    </div>
+                    <span
+                        class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}text-gray-400{% endif %}"
+                        >Complete</span
+                    >
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Status Alert -->
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <!-- ========================================== -->
+        <!-- CONFIRMED STATUS (Free Attendees Only) -->
+        <!-- ========================================== -->
         {% if registration.status.value == 'confirmed' %}
-        <div class="bg-green-50 border-l-4 border-green-500 p-6 mb-6 rounded-r-lg">
-            <div class="flex items-center">
-                <svg class="w-10 h-10 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+
+        <!-- Success Alert -->
+        <div
+            class="bg-green-50 border-l-4 border-green-500 p-6 mb-8 rounded-r-lg shadow-md"
+        >
+            <div class="flex items-start">
+                <svg
+                    class="w-12 h-12 text-green-500 mr-4 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
                 </svg>
                 <div>
-                    <h2 class="text-xl font-bold text-green-800">Payment Confirmed!</h2>
-                    <p class="text-green-700">Your registration is complete. Welcome to BEEASY 2025!</p>
+                    <h2 class="text-2xl font-bold text-green-800 mb-2">
+                        You're All Set!
+                    </h2>
+                    <p class="text-green-700 text-lg mb-3">
+                        Your registration is complete. Welcome to Pollination
+                        Africa Symposium 2025!
+                    </p>
+                    <p class="text-green-600 text-sm">
+                        <svg
+                            class="w-5 h-5 inline mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                            ></path>
+                        </svg>
+                        Your event badge has been sent to
+                        <strong>{{ registration.email }}</strong>
+                    </p>
                 </div>
             </div>
         </div>
 
+        <!-- Badge Download -->
         {% if registration.qr_code_image_url %}
-        <div class="text-center mb-8">
-            <a href="{{ url_for('main.download_badge', reference=registration.reference_number) }}"
-               class="inline-flex items-center px-8 py-4 bg-[#5C3A21] text-white font-bold rounded-lg hover:bg-[#4a2f1a] transition-colors text-lg">
-                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+        <div
+            class="bg-white rounded-lg shadow-lg p-8 mb-8 text-center border-2 border-green-200"
+        >
+            <h3 class="text-xl font-bold text-primary-dark mb-4">
+                Your Event Badge
+            </h3>
+            <p class="text-gray-600 mb-6">
+                Didn't receive the email? Download your badge here as a backup.
+            </p>
+            <a
+                href="{{ url_for('main.download_badge', reference=registration.reference_number) }}"
+                class="inline-flex items-center px-8 py-4 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg text-lg"
+            >
+                <svg
+                    class="w-6 h-6 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                    ></path>
                 </svg>
-                Download Your Badge
+                Download Badge (PDF)
             </a>
-            <p class="text-sm text-gray-600 mt-2">Print or save to your phone</p>
+            <p class="text-sm text-gray-500 mt-3">
+                💡 Print or save to your phone for event check-in
+            </p>
         </div>
         {% endif %}
 
-        {% else %}
-        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-6 rounded-r-lg">
-            <div class="flex items-center">
-                <svg class="w-10 h-10 text-yellow-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        <!-- What's Next - Attendees Confirmed -->
+        <div
+            class="bg-gradient-to-br from-primary-dark to-primary-medium rounded-lg p-8 mb-8 text-white"
+        >
+            <h3 class="text-2xl font-bold mb-6 flex items-center">
+                <svg
+                    class="w-8 h-8 mr-3 text-accent-yellow"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                    ></path>
                 </svg>
-                <div>
-                    <h2 class="text-xl font-bold text-yellow-800">Almost There!</h2>
-                    <p class="text-yellow-700">Complete your payment to confirm your registration</p>
+                What Happens Next
+            </h3>
+
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >1</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Check Your Email</h4>
+                        <p class="text-white/90 text-sm">
+                            Your badge and full event details have been sent to
+                            {{ registration.email }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >2</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Save Your Badge</h4>
+                        <p class="text-white/90 text-sm">
+                            Print your badge or save it to your phone for quick
+                            check-in at the event
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >3</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Join Event Updates</h4>
+                        <p class="text-white/90 text-sm">
+                            Stay connected via WhatsApp for real-time symposium
+                            updates and networking
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >4</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Event Day</h4>
+                        <p class="text-white/90 text-sm">
+                            Arrive 30 minutes early for check-in • December 2025
+                            • Arusha International Conference Center
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mb-8">
-            <a href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
-               class="inline-flex items-center px-8 py-4 bg-[#2C5F2D] text-white font-bold rounded-lg hover:bg-[#1f4520] transition-colors text-lg">
-                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+        <!-- ========================================== -->
+        <!-- PENDING STATUS (Paid Attendees & All Exhibitors) -->
+        <!-- ========================================== -->
+        {% else %}
+
+        <!-- Pending Payment Alert -->
+        <div
+            class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-8 rounded-r-lg shadow-md"
+        >
+            <div class="flex items-start">
+                <svg
+                    class="w-12 h-12 text-yellow-500 mr-4 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
                 </svg>
-                Complete Payment
-            </a>
-            <p class="text-sm text-gray-600 mt-2">Multiple payment methods available</p>
+                <div>
+                    <h2 class="text-2xl font-bold text-yellow-800 mb-2">
+                        Almost There!
+                    </h2>
+                    <p class="text-yellow-700 text-lg mb-3">
+                        {% if registration.registration_type == 'attendee' %}
+                        Complete your payment to receive your event badge and
+                        confirmation {% else %} Complete your payment to receive
+                        your exhibitor badge and booth details {% endif %}
+                    </p>
+                    <p class="text-yellow-600 text-sm">
+                        Your registration has been saved. Badge will be emailed
+                        once payment is verified.
+                    </p>
+                </div>
+            </div>
         </div>
+
+        <!-- Payment Button -->
+        <div class="text-center mb-8">
+            <a
+                href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
+                class="inline-flex items-center px-10 py-5 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg hover:shadow-xl text-xl"
+            >
+                <svg
+                    class="w-7 h-7 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    ></path>
+                </svg>
+                Complete Payment Now
+            </a>
+            <p class="text-sm text-gray-600 mt-3">
+                Secure payment • Multiple payment methods available
+            </p>
+        </div>
+
+        <!-- What Happens After Payment -->
+        <div
+            class="bg-gradient-to-br from-primary-dark to-primary-medium rounded-lg p-8 mb-8 text-white"
+        >
+            <h3 class="text-2xl font-bold mb-6 flex items-center">
+                <svg
+                    class="w-8 h-8 mr-3 text-accent-yellow"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                    ></path>
+                </svg>
+                After Payment Confirmation
+            </h3>
+
+            <div class="space-y-4">
+                {% if registration.registration_type == 'attendee' %}
+                <!-- Attendee Next Steps -->
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >1</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Instant Badge Delivery</h4>
+                        <p class="text-white/90 text-sm">
+                            Your event badge will be automatically generated and
+                            emailed to {{ registration.email }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >2</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Event Details</h4>
+                        <p class="text-white/90 text-sm">
+                            Receive full symposium schedule, session details,
+                            and speaker information
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >3</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Join the Community</h4>
+                        <p class="text-white/90 text-sm">
+                            Get WhatsApp group invite for networking and
+                            real-time updates
+                        </p>
+                    </div>
+                </div>
+
+                {% else %}
+                <!-- Exhibitor Next Steps -->
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >1</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Exhibitor Badge Delivery</h4>
+                        <p class="text-white/90 text-sm">
+                            Your exhibitor badge will be automatically generated
+                            and emailed to {{ registration.email }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >2</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Booth Assignment</h4>
+                        <p class="text-white/90 text-sm">
+                            Your booth location will be assigned and confirmed
+                            via email
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >3</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Exhibitor Manual</h4>
+                        <p class="text-white/90 text-sm">
+                            Receive detailed exhibitor manual with setup
+                            schedule, logistics, and team badge instructions
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                        >4</span
+                    >
+                    <div>
+                        <h4 class="font-bold mb-1">Team Badges</h4>
+                        <p class="text-white/90 text-sm">
+                            Instructions on requesting additional badges for
+                            your {{ registration.number_of_staff }} team members
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
         {% endif %}
 
         <!-- Registration Details Card -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
             <div class="border-b border-gray-200 pb-3 mb-4">
-                <h3 class="text-lg font-bold text-gray-900">Registration Details</h3>
+                <h3 class="text-lg font-bold text-primary-dark">
+                    Registration Summary
+                </h3>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Reference Number</p>
-                    <p class="font-bold text-gray-900 font-mono">{{ registration.reference_number }}</p>
+                    <p class="font-bold text-primary-dark font-mono text-lg">
+                        {{ registration.reference_number }}
+                    </p>
                 </div>
 
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Status</p>
-                    <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                        {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800
-                        {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                    <span
+                        class="inline-block px-3 py-1 rounded-full text-sm font-semibold {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800 {% else %}bg-yellow-100 text-yellow-800{% endif %}"
+                    >
                         {{ registration.status.value|upper }}
                     </span>
                 </div>
 
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Name</p>
-                    <p class="font-semibold text-gray-900">{{ registration.first_name }} {{ registration.last_name }}</p>
+                    <p class="font-semibold text-primary-dark">
+                        {{ registration.first_name }} {{ registration.last_name
+                        }}
+                    </p>
                 </div>
 
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Email</p>
-                    <p class="font-semibold text-gray-900">{{ registration.email }}</p>
+                    <p class="font-semibold text-primary-dark">
+                        {{ registration.email }}
+                    </p>
                 </div>
 
                 {% if registration.registration_type == 'attendee' %}
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Ticket Type</p>
-                    <p class="font-semibold text-gray-900">{{ registration.ticket_type.value|replace('_', ' ')|title }}</p>
+                    <p class="font-semibold text-primary-dark">
+                        {{ registration.ticket_type.value|replace('_', '
+                        ')|title }}
+                    </p>
                 </div>
                 {% if registration.organization %}
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Organization</p>
-                    <p class="font-semibold text-gray-900">{{ registration.organization }}</p>
+                    <p class="font-semibold text-primary-dark">
+                        {{ registration.organization }}
+                    </p>
                 </div>
-                {% endif %}
-                {% else %}
+                {% endif %} {% else %}
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Company</p>
-                    <p class="font-semibold text-gray-900">{{ registration.company_legal_name }}</p>
+                    <p class="font-semibold text-primary-dark">
+                        {{ registration.company_legal_name }}
+                    </p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Package</p>
-                    <p class="font-semibold text-gray-900">{{ registration.package_type.value|title }}</p>
+                    <p class="font-semibold text-primary-dark">
+                        {{ registration.package_type.value|title }}
+                    </p>
                 </div>
                 {% endif %}
             </div>
@@ -144,101 +514,129 @@
         {% if payment %}
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
             <div class="border-b border-gray-200 pb-3 mb-4">
-                <h3 class="text-lg font-bold text-gray-900">Payment Summary</h3>
+                <h3 class="text-lg font-bold text-primary-dark">
+                    Payment Summary
+                </h3>
             </div>
 
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-700">Total Amount</span>
-                    <span class="text-xl font-bold text-gray-900">{{ payment.currency }} {{ payment.total_amount }}</span>
+                    <span class="text-gray-700">
+                        {% if registration.registration_type == 'attendee'
+                        %}Ticket Price{% else %}Package Price{% endif %}
+                    </span>
+                    <span class="text-xl font-bold text-primary-dark"
+                        >{{ payment.currency }} {{
+                        "%.2f"|format(payment.total_amount) }}</span
+                    >
                 </div>
 
                 {% if balance_due > 0 %}
-                <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-                    <span class="font-semibold text-red-600">Balance Due</span>
-                    <span class="text-2xl font-bold text-red-600">{{ payment.currency }} {{ balance_due }}</span>
+                <div
+                    class="flex justify-between items-center pt-3 border-t border-gray-200"
+                >
+                    <span class="font-semibold text-red-600">Amount Due</span>
+                    <span class="text-2xl font-bold text-red-600"
+                        >{{ payment.currency }} {{ "%.2f"|format(balance_due)
+                        }}</span
+                    >
                 </div>
                 {% else %}
-                <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-                    <span class="font-semibold text-green-600">Amount Paid</span>
-                    <span class="text-2xl font-bold text-green-600">{{ payment.currency }} {{ payment.total_amount }}</span>
+                <div
+                    class="flex justify-between items-center pt-3 border-t border-gray-200"
+                >
+                    <span class="font-semibold text-green-600">
+                        {% if payment.total_amount == 0 %}Free Admission{% else
+                        %}Paid in Full{% endif %}
+                    </span>
+                    <span class="text-2xl font-bold text-green-600"
+                        >{{ payment.currency }} {{
+                        "%.2f"|format(payment.total_amount) }}</span
+                    >
                 </div>
                 {% endif %}
             </div>
         </div>
         {% endif %}
 
-        <!-- Next Steps Card -->
-        <div class="bg-blue-50 border-l-4 border-blue-500 rounded-r-lg p-6 mb-6">
-            <h3 class="text-lg font-bold text-blue-900 mb-3">What Happens Next?</h3>
-            <ol class="space-y-2 text-blue-900">
-                {% if registration.status.value != 'confirmed' %}
-                <li class="flex items-start">
-                    <span class="font-bold mr-2">1.</span>
-                    <span>Complete payment using the button above</span>
-                </li>
-                <li class="flex items-start">
-                    <span class="font-bold mr-2">2.</span>
-                    <span>Receive confirmation email with your event badge</span>
-                </li>
-                {% else %}
-                <li class="flex items-start">
-                    <span class="font-bold mr-2">1.</span>
-                    <span>Download and print your badge (or save to mobile)</span>
-                </li>
-                {% endif %}
-                <li class="flex items-start">
-                    <span class="font-bold mr-2">{% if registration.status.value != 'confirmed' %}3{% else %}2{% endif %}.</span>
-                    <span>Check your email for event details and updates</span>
-                </li>
-                <li class="flex items-start">
-                    <span class="font-bold mr-2">{% if registration.status.value != 'confirmed' %}4{% else %}3{% endif %}.</span>
-                    <span>Join our WhatsApp group for real-time updates</span>
-                </li>
-                <li class="flex items-start">
-                    <span class="font-bold mr-2">{% if registration.status.value != 'confirmed' %}5{% else %}4{% endif %}.</span>
-                    <span>Arrive 30 minutes early on event day for check-in</span>
-                </li>
-            </ol>
-        </div>
-
-        <!-- Email Notice -->
-        <div class="text-center bg-gray-50 rounded-lg p-6">
-            <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        <!-- Email Confirmation Notice -->
+        <div
+            class="text-center bg-gray-50 rounded-lg p-6 border border-gray-200"
+        >
+            <svg
+                class="w-12 h-12 text-gray-400 mx-auto mb-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                ></path>
             </svg>
-            <p class="text-gray-700 font-medium mb-1">Check Your Email</p>
-            <p class="text-sm text-gray-600">Confirmation sent to <span class="font-semibold">{{ registration.email }}</span></p>
-            <p class="text-xs text-gray-500 mt-3">
-                Questions? Email <a href="mailto:info@beeseasy.org" class="text-[#5C3A21] hover:underline">info@beeseasy.org</a> or call +254 719 740 938
+            <p class="text-gray-700 font-medium mb-1">
+                {% if registration.status.value == 'confirmed' %} Badge Sent to
+                Your Email {% else %} Confirmation Email Sent {% endif %}
+            </p>
+            <p class="text-sm text-gray-600 mb-4">
+                Check
+                <span class="font-semibold">{{ registration.email }}</span> for
+                {% if registration.status.value == 'confirmed' %}your badge and
+                event details{% else %}payment instructions{% endif %}
+            </p>
+            <p class="text-xs text-gray-500 border-t border-gray-200 pt-4">
+                Questions? Email
+                <a
+                    href="mailto:info@pollination.africa"
+                    class="text-accent-orange hover:text-accent-yellow font-semibold"
+                    >info@pollination.africa</a
+                >
+                or WhatsApp
+                <a
+                    href="https://wa.me/254719740938"
+                    class="text-accent-orange hover:text-accent-yellow font-semibold"
+                    >+254 719 740 938</a
+                >
             </p>
         </div>
-
     </div>
 </div>
 
+<!-- Auto-refresh for pending payments -->
 {% if registration.status.value != 'confirmed' %}
 <script>
-let checkCount = 0;
-const maxChecks = 60;
+    let checkCount = 0;
+    const maxChecks = 60; // Check for 5 minutes (60 checks × 5 seconds)
 
-function checkPaymentStatus() {
-    if (checkCount >= maxChecks) return;
+    function checkPaymentStatus() {
+        if (checkCount >= maxChecks) {
+            console.log("Payment status check timeout");
+            return;
+        }
 
-    fetch('/register/api/payment-status/{{ registration.reference_number }}')
-        .then(r => r.json())
-        .then(data => {
-            if (data.is_confirmed) {
-                location.reload();
-            } else {
+        fetch(
+            "/register/api/payment-status/{{ registration.reference_number }}",
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.is_confirmed) {
+                    console.log("Payment confirmed! Reloading page...");
+                    location.reload();
+                } else {
+                    checkCount++;
+                    setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
+                }
+            })
+            .catch((error) => {
+                console.error("Payment status check failed:", error);
                 checkCount++;
-                setTimeout(checkPaymentStatus, 5000);
-            }
-        })
-        .catch(err => console.error('Status check failed:', err));
-}
+                setTimeout(checkPaymentStatus, 10000); // Retry after 10 seconds on error
+            });
+    }
 
-setTimeout(checkPaymentStatus, 10000);
+    // Start checking after 10 seconds (gives time for webhook to process)
+    setTimeout(checkPaymentStatus, 10000);
 </script>
-{% endif %}
-{% endblock %}
+{% endif %} {% endblock %}

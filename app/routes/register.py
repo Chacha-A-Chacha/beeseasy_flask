@@ -102,27 +102,6 @@ def exhibitor_index():
     )
 
 
-@register_bp.route("/exhibitor", methods=["GET", "POST"])
-def register_exhibitor():
-    """Single-page exhibitor registration"""
-    form = ExhibitorRegistrationForm()
-    packages = ExhibitorPackagePrice.query.filter_by(is_active=True).all()
-
-    if form.validate_on_submit():
-        success, message, exhibitor = RegistrationService.register_exhibitor(form.data)
-
-        if success:
-            flash(message, "success")
-            # Always redirect to confirmation (email sent with checkout link)
-            return redirect(
-                url_for("register.confirmation", ref=exhibitor.reference_number)
-            )
-        else:
-            flash(message, "error")
-
-    return render_template("register/exhibitor.html", form=form, packages=packages)
-
-
 @register_bp.route("/exhibitor/form", methods=["GET", "POST"])
 def register_exhibitor_form():
     """Single-page exhibitor registration form with pre-selected package"""

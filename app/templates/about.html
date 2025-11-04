@@ -8,8 +8,11 @@
     <img
         src="{{ url_for('static', filename='images/photo_2025-10-28_00-15-18.jpg') }}"
         alt="Pollinators in East Africa"
-        class="absolute inset-0 -z-10 size-full object-cover opacity-20"
+        class="absolute inset-0 -z-10 size-full object-cover opacity-60"
     />
+    <div
+        class="absolute -z-10 inset-0 bg-gradient-to-b from-green-950/60 via-green-950/40 to-green-950/80"
+    ></div>
 
     <!-- Decorative Gradients -->
     <div
@@ -36,7 +39,7 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
     <div
@@ -63,19 +66,19 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:mx-0">
             <h2
-                class="text-5xl font-semibold tracking-tight text-primary-dark sm:text-7xl"
+                class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
             >
                 About Pollination Africa 2025
             </h2>
             <p
-                class="mt-8 text-pretty text-lg font-medium text-gray-600 sm:text-xl/8"
+                class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
             >
                 Celebrating All Pollinators for Food Security, Biodiversity and
                 Livelihoods
@@ -84,27 +87,36 @@
 
         <div class="mx-auto mt-16 max-w-2xl lg:mx-0 lg:max-w-none">
             <div
-                class="grid grid-cols-1 gap-x-8 gap-y-6 text-base/7 text-gray-700 lg:grid-cols-2"
+                class="grid grid-cols-1 gap-x-12 gap-y-6 text-base/7 text-gray-100 lg:grid-cols-2"
             >
-                <p>
-                    The
-                    <strong class="font-semibold text-primary-dark"
-                        >Pollination Africa Symposium 2025</strong
-                    >
-                    is East Africa's premier platform dedicated to advancing
-                    pollinator conservation, promoting biodiversity, and
-                    strengthening food security across the region.
-                </p>
-                <p>
-                    Hosted in
-                    <strong class="font-semibold text-primary-dark"
-                        >Arusha, Tanzania</strong
-                    >, this symposium brings together farmers, conservationists,
-                    researchers, policymakers, and development partners to
-                    harness the power of all pollinators—from bees and
-                    butterflies to birds and bats—for sustainable development
-                    and economic transformation.
-                </p>
+                <div
+                    class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
+                >
+                    <p>
+                        The
+                        <strong class="font-semibold text-primary-dark"
+                            >Pollination Africa Symposium 2025</strong
+                        >
+                        is East Africa's premier platform dedicated to advancing
+                        pollinator conservation, promoting biodiversity, and
+                        strengthening food security across the region.
+                    </p>
+                </div>
+                <div
+                    class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
+                >
+                    <p>
+                        Hosted in
+                        <strong class="font-semibold text-primary-dark"
+                            >Arusha, Tanzania</strong
+                        >, this symposium brings together farmers,
+                        conservationists, researchers, policymakers, and
+                        development partners to harness the power of all
+                        pollinators—from bees and butterflies to birds and
+                        bats—for sustainable development and economic
+                        transformation.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -116,7 +128,7 @@
 <div
     class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0"
 >
-    <div class="absolute inset-0 -z-10 overflow-hidden">
+    <!--<div class="absolute inset-0 -z-10 overflow-hidden">
         <svg
             aria-hidden="true"
             class="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)]"
@@ -145,6 +157,25 @@
                 fill="url(#pollinator-pattern)"
                 stroke-width="0"
             />
+        </svg>
+    </div>-->
+
+    <div class="absolute inset-0 opacity-10">
+        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern
+                    id="pollinators"
+                    x="0"
+                    y="0"
+                    width="100"
+                    height="100"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <circle cx="25" cy="25" r="2" fill="#F5C342" />
+                    <circle cx="75" cy="75" r="2" fill="#F5C342" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#pollinators)" />
         </svg>
     </div>
 
@@ -300,119 +331,217 @@
 <!-- ============================================ -->
 <!-- SECTION 3: KEY EVENT DETAILS -->
 <!-- ============================================ -->
-<div class="bg-primary-dark py-24 sm:py-32">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+<!-- Event at a Glance Section - Vibrant -->
+<div
+    class="bg-gradient-to-br from-[#2C5F2D] via-[#5C3A21] to-[#2C5F2D] py-24 sm:py-32 relative overflow-hidden"
+>
+    <!-- Decorative background pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern
+                    id="pollinators"
+                    x="0"
+                    y="0"
+                    width="100"
+                    height="100"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <circle cx="25" cy="25" r="2" fill="#F5C342" />
+                    <circle cx="75" cy="75" r="2" fill="#F5C342" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#pollinators)" />
+        </svg>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+        <!-- Section Header -->
         <div class="mx-auto max-w-2xl lg:text-center">
-            <h2 class="text-base/7 font-semibold text-accent-orange">
+            <h2 class="text-base/7 font-semibold text-[#F5C342]">
                 December 2025
             </h2>
             <p
-                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-accent-yellow sm:text-5xl lg:text-balance"
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance"
             >
                 Event at a Glance
             </p>
-            <p class="mt-6 text-lg/8 text-gray-300">
+            <p class="mt-6 text-lg/8 text-gray-200">
                 Two transformative days bringing together the pollinator
                 conservation community
             </p>
         </div>
 
+        <!-- Info Cards Grid -->
         <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
             <dl
-                class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2"
+                class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 lg:max-w-none lg:grid-cols-2"
             >
+                <!-- When Card -->
                 <div
-                    class="flex gap-x-4 rounded-xl bg-primary-medium/50 backdrop-blur p-6 ring-1 ring-accent-brown/20"
+                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
                 >
-                    <svg
-                        class="h-7 w-5 flex-none text-accent-yellow"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                    <div
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
                     >
-                        <path
-                            fill-rule="evenodd"
-                            d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z"
-                            clip-rule="evenodd"
-                        />
-                    </svg>
+                        <svg
+                            class="size-7 text-[#5C3A21]"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </div>
                     <div class="text-base/7">
-                        <h3 class="font-semibold text-accent-yellow">When</h3>
-                        <p class="mt-2 text-gray-300">
-                            December 2025<br />Two Full Days | 5pm-8pm Daily
+                        <h3 class="font-bold text-[#F5C342] text-lg">When</h3>
+                        <p class="mt-2 text-white font-semibold">
+                            December 2025
+                        </p>
+                        <p class="text-gray-300 text-sm">
+                            Two Full Days | 5pm-8pm Daily
                         </p>
                     </div>
                 </div>
 
+                <!-- Where Card -->
                 <div
-                    class="flex gap-x-4 rounded-xl bg-primary-medium/50 backdrop-blur p-6 ring-1 ring-accent-brown/20"
+                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
                 >
-                    <svg
-                        class="h-7 w-5 flex-none text-accent-yellow"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                    <div
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
                     >
-                        <path
-                            fill-rule="evenodd"
-                            d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"
-                            clip-rule="evenodd"
-                        />
-                    </svg>
+                        <svg
+                            class="size-7 text-[#5C3A21]"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </div>
                     <div class="text-base/7">
-                        <h3 class="font-semibold text-accent-yellow">Where</h3>
-                        <p class="mt-2 text-gray-300">
-                            Arusha International Conference Center (AICC)<br />Arusha,
-                            Tanzania
+                        <h3 class="font-bold text-[#F5C342] text-lg">Where</h3>
+                        <p class="mt-2 text-white font-semibold">
+                            Arusha International Conference Center
+                        </p>
+                        <p class="text-gray-300 text-sm">
+                            (AICC) Arusha, Tanzania
                         </p>
                     </div>
                 </div>
 
+                <!-- Who Card -->
                 <div
-                    class="flex gap-x-4 rounded-xl bg-primary-medium/50 backdrop-blur p-6 ring-1 ring-accent-brown/20"
+                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
                 >
-                    <svg
-                        class="h-7 w-5 flex-none text-accent-yellow"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                    <div
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
                     >
-                        <path
-                            d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z"
-                        />
-                    </svg>
+                        <svg
+                            class="size-7 text-[#5C3A21]"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z"
+                            />
+                        </svg>
+                    </div>
                     <div class="text-base/7">
-                        <h3 class="font-semibold text-accent-yellow">Who</h3>
-                        <p class="mt-2 text-gray-300">
-                            500+ Expected Attendees<br />Regional &
-                            International
+                        <h3 class="font-bold text-[#F5C342] text-lg">Who</h3>
+                        <p class="mt-2 text-white font-semibold">
+                            500+ Expected Attendees
+                        </p>
+                        <p class="text-gray-300 text-sm">
+                            Regional & International Participants
                         </p>
                     </div>
                 </div>
 
+                <!-- What Card -->
                 <div
-                    class="flex gap-x-4 rounded-xl bg-primary-medium/50 backdrop-blur p-6 ring-1 ring-accent-brown/20"
+                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
                 >
-                    <svg
-                        class="h-7 w-5 flex-none text-accent-yellow"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                    <div
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
                     >
-                        <path
-                            fill-rule="evenodd"
-                            d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z"
-                            clip-rule="evenodd"
-                        />
-                        <path
-                            d="M3 15.055v-.684c.126.053.255.1.39.142 2.092.642 4.313.987 6.61.987 2.297 0 4.518-.345 6.61-.987.135-.041.264-.089.39-.142v.684c0 1.347-.985 2.53-2.363 2.686a41.454 41.454 0 01-9.274 0C3.985 17.585 3 16.402 3 15.055z"
-                        />
-                    </svg>
+                        <svg
+                            class="size-7 text-[#5C3A21]"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M6 3.75A2.75 2.75 0 018.75 1h2.5A2.75 2.75 0 0114 3.75v.443c.572.055 1.14.122 1.706.2C17.053 4.582 18 5.75 18 7.07v3.469c0 1.126-.694 2.191-1.83 2.54-1.952.599-4.024.921-6.17.921s-4.219-.322-6.17-.921C2.694 12.73 2 11.665 2 10.539V7.07c0-1.321.947-2.489 2.294-2.676A41.047 41.047 0 016 4.193V3.75zm6.5 0v.325a41.622 41.622 0 00-5 0V3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25zM10 10a1 1 0 00-1 1v.01a1 1 0 001 1h.01a1 1 0 001-1V11a1 1 0 00-1-1H10z"
+                                clip-rule="evenodd"
+                            />
+                            <path
+                                d="M3 15.055v-.684c.126.053.255.1.39.142 2.092.642 4.313.987 6.61.987 2.297 0 4.518-.345 6.61-.987.135-.041.264-.089.39-.142v.684c0 1.347-.985 2.53-2.363 2.686a41.454 41.454 0 01-9.274 0C3.985 17.585 3 16.402 3 15.055z"
+                            />
+                        </svg>
+                    </div>
                     <div class="text-base/7">
-                        <h3 class="font-semibold text-accent-yellow">What</h3>
-                        <p class="mt-2 text-gray-300">
-                            Exhibitions, Keynotes, Workshops<br />Networking &
-                            Demonstrations
+                        <h3 class="font-bold text-[#F5C342] text-lg">What</h3>
+                        <p class="mt-2 text-white font-semibold">
+                            Exhibitions, Keynotes, Workshops
+                        </p>
+                        <p class="text-gray-300 text-sm">
+                            Networking & Hands-on Demonstrations
                         </p>
                     </div>
                 </div>
             </dl>
+        </div>
+
+        <!-- CTA Section -->
+        <div
+            class="mt-16 flex flex-col sm:flex-row gap-x-6 justify-center items-center"
+        >
+            <a
+                href="{{ url_for('register.attendee_index') }}"
+                class="inline-flex items-center px-8 py-3 bg-accent-orange text-white font-semibold rounded-full hover:bg-[#E8B030] transition-all duration-300 transform hover:scale-102 shadow-2xl shadow-[#F5C342]/30"
+            >
+                Register Now
+                <svg
+                    class="ml-2 w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                </svg>
+            </a>
+            <a
+                href="{{ url_for('main.agenda') }}"
+                class="inline-flex items-center px-8 py-3 bg-transparent border-1 border-[#F5C342] text-[#F5C342] font-semibold rounded-full transition-all duration-300 transform hover:scale-102"
+            >
+                View Full Agenda
+                <svg
+                    class="ml-2 w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                </svg>
+            </a>
         </div>
     </div>
 </div>
@@ -486,41 +615,49 @@
 <!-- ============================================ -->
 <!-- SECTION 5: POLLINATOR DIVERSITY SHOWCASE -->
 <!-- ============================================ -->
+<!-- Meet the Pollinators Section - With Images -->
 <div class="bg-primary-dark py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <!-- Section Header -->
         <div class="mx-auto max-w-2xl lg:text-center">
-            <h2 class="text-base/7 font-semibold text-accent-orange">
+            <h2 class="text-base/7 font-semibold text-[#F5C342]">
                 Meet the Pollinators
             </h2>
             <p
-                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-accent-yellow sm:text-5xl lg:text-balance"
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance"
             >
                 Beyond Bees: Africa's Diverse Pollinators
             </p>
-            <p class="mt-6 text-lg/8 text-gray-300">
+            <p class="mt-6 text-lg/8 text-gray-200">
                 From tiny insects to magnificent birds, Africa's pollinators
                 work together to ensure our food security and ecosystem health.
             </p>
         </div>
 
+        <!-- Pollinators Grid -->
         <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
             <dl
                 class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-4"
             >
-                <div class="flex flex-col items-center text-center">
+                <!-- Bees -->
+                <div class="flex flex-col items-center text-center group">
                     <dt class="flex flex-col items-center gap-y-4">
-                        <div
-                            class="flex size-20 items-center justify-center rounded-full bg-accent-yellow text-5xl"
-                        >
-                            🐝
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img
+                                src="{{ url_for('static', filename='images/photo_2025-11-04_14-53-59.jpg') }}"
+                                alt="African bee on flower"
+                                class="size-full object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#F5C342]/20 to-transparent"
+                            ></div>
                         </div>
-                        <span
-                            class="text-base/7 font-semibold text-accent-yellow"
-                            >Bees</span
-                        >
+                        <span class="text-xl font-bold text-[#F5C342]">
+                            Bees
+                        </span>
                     </dt>
                     <dd
-                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-300"
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-200"
                     >
                         <p class="flex-auto">
                             Honeybees, bumblebees, carpenter bees, and over
@@ -530,20 +667,25 @@
                     </dd>
                 </div>
 
-                <div class="flex flex-col items-center text-center">
+                <!-- Butterflies & Moths -->
+                <div class="flex flex-col items-center text-center group">
                     <dt class="flex flex-col items-center gap-y-4">
-                        <div
-                            class="flex size-20 items-center justify-center rounded-full bg-accent-yellow text-5xl"
-                        >
-                            🦋
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img
+                                src="{{ url_for('static', filename='images/photo_2025-11-04_14-54-06.jpg') }}"
+                                alt="Butterfly pollinating"
+                                class="size-full object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#F5C342]/20 to-transparent"
+                            ></div>
                         </div>
-                        <span
-                            class="text-base/7 font-semibold text-accent-yellow"
-                            >Butterflies & Moths</span
-                        >
+                        <span class="text-xl font-bold text-[#F5C342]">
+                            Butterflies & Moths
+                        </span>
                     </dt>
                     <dd
-                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-300"
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-200"
                     >
                         <p class="flex-auto">
                             Lepidoptera species provide essential pollination
@@ -553,20 +695,25 @@
                     </dd>
                 </div>
 
-                <div class="flex flex-col items-center text-center">
+                <!-- Birds -->
+                <div class="flex flex-col items-center text-center group">
                     <dt class="flex flex-col items-center gap-y-4">
-                        <div
-                            class="flex size-20 items-center justify-center rounded-full bg-accent-yellow text-5xl"
-                        >
-                            🐦
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img
+                                src="{{ url_for('static', filename='images/photo_2025-11-04_14-54-05.jpg') }}"
+                                alt="Sunbird pollinating"
+                                class="size-full object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#F5C342]/20 to-transparent"
+                            ></div>
                         </div>
-                        <span
-                            class="text-base/7 font-semibold text-accent-yellow"
-                            >Birds</span
-                        >
+                        <span class="text-xl font-bold text-[#F5C342]">
+                            Birds
+                        </span>
                     </dt>
                     <dd
-                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-300"
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-200"
                     >
                         <p class="flex-auto">
                             Sunbirds, hummingbirds, and other avian pollinators
@@ -576,20 +723,25 @@
                     </dd>
                 </div>
 
-                <div class="flex flex-col items-center text-center">
+                <!-- Bats & More -->
+                <div class="flex flex-col items-center text-center group">
                     <dt class="flex flex-col items-center gap-y-4">
-                        <div
-                            class="flex size-20 items-center justify-center rounded-full bg-accent-yellow text-5xl"
-                        >
-                            🦇
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img
+                                src="{{ url_for('static', filename='images/photo_2025-11-04_14-54-03.jpg') }}"
+                                alt="Fruit bat"
+                                class="size-full object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#F5C342]/20 to-transparent"
+                            ></div>
                         </div>
-                        <span
-                            class="text-base/7 font-semibold text-accent-yellow"
-                            >Bats & More</span
-                        >
+                        <span class="text-xl font-bold text-[#F5C342]">
+                            Bats & More
+                        </span>
                     </dt>
                     <dd
-                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-300"
+                        class="mt-4 flex flex-auto flex-col text-base/7 text-gray-200"
                     >
                         <p class="flex-auto">
                             Fruit bats, beetles, flies, and other species
@@ -599,13 +751,53 @@
                 </div>
             </dl>
         </div>
+
+        <!-- Statistics or CTA -->
+        <!--<div class="mt-16 border-t border-[#F5C342]/20 pt-12">
+            <div class="mx-auto max-w-4xl text-center">
+                <p class="text-2xl font-semibold text-white">Did You Know?</p>
+                <p class="mt-4 text-lg text-gray-300">
+                    Over
+                    <span class="text-[#F5C342] font-bold"
+                        >75% of global crop species</span
+                    >
+                    depend on animal pollination. In Africa, pollinators
+                    contribute an estimated
+                    <span class="text-[#F5C342] font-bold"
+                        >$5 billion annually</span
+                    >
+                    to agricultural production.
+                </p>
+                <div class="mt-8">
+                    <a
+                        href="{{ url_for('main.about') }}"
+                        class="inline-flex items-center px-6 py-3 bg-[#F5C342] text-[#5C3A21] font-semibold rounded-lg hover:bg-[#E8B030] transition-all duration-300 shadow-lg"
+                    >
+                        Learn More About Pollination
+                        <svg
+                            class="ml-2 w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>-->
     </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 6: WHO WE SERVE -->
 <!-- ============================================ -->
-<div class="bg-white py-24 sm:py-32">
+<!--<div class="bg-white py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:text-center">
             <h2 class="text-base/7 font-semibold text-accent-orange">
@@ -794,20 +986,26 @@
             </dl>
         </div>
     </div>
-</div>
+</div>-->
 
 <!-- ============================================ -->
 <!-- SECTION 7: CALL TO ACTION -->
 <!-- ============================================ -->
-<div class="bg-primary-dark">
-    <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
-        <div class="mx-auto max-w-2xl text-center">
+
+<!-- Join the Movement CTA Section -->
+<div class="bg-white">
+    <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
+        <div
+            class="relative isolate overflow-hidden bg-primary-dark px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16"
+        >
             <h2
-                class="text-4xl font-semibold tracking-tight text-accent-yellow sm:text-5xl"
+                class="text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl"
             >
                 Join the Pollination Africa Movement
             </h2>
-            <p class="mx-auto mt-6 max-w-xl text-lg/8 text-gray-300">
+            <p
+                class="mx-auto mt-6 max-w-xl text-pretty text-lg/8 text-gray-300"
+            >
                 Be part of East Africa's premier gathering shaping the future of
                 pollinator conservation. Register today and contribute to food
                 security, biodiversity, and sustainable livelihoods across the
@@ -815,18 +1013,39 @@
             </p>
             <div class="mt-10 flex items-center justify-center gap-x-6">
                 <a
-                    href="{{ url_for('register.index') }}"
+                    href="{{ url_for('register.attendee_index') }}"
                     class="rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"
                 >
                     Register Now
                 </a>
                 <a
                     href="{{ url_for('main.contact') }}"
-                    class="text-base font-semibold text-accent-yellow hover:text-accent-orange transition-colors"
+                    class="text-base font-semibold text-white hover:text-accent-orange transition-colors"
                 >
                     Contact Us <span aria-hidden="true">→</span>
                 </a>
             </div>
+
+            <!-- Decorative SVG Background -->
+            <svg
+                viewBox="0 0 1024 1024"
+                aria-hidden="true"
+                class="absolute left-1/2 top-1/2 -z-10 size-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+            >
+                <circle
+                    r="512"
+                    cx="512"
+                    cy="512"
+                    fill="url(#pollination-gradient)"
+                    fill-opacity="0.7"
+                />
+                <defs>
+                    <radialGradient id="pollination-gradient">
+                        <stop stop-color="#F5C342" />
+                        <stop offset="1" stop-color="#2C5F2D" />
+                    </radialGradient>
+                </defs>
+            </svg>
         </div>
     </div>
 </div>

@@ -1,142 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Pollination Africa Symposium 2025 - Celebrating All Pollinators for Food Security, Biodiversity and Livelihoods. December 2025, Arusha, Tanzania."
+        />
+        <title>
+            {% block title %}Pollination Africa Symposium 2025{% endblock %}
+        </title>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Pollination Africa Symposium 2025 - Celebrating All Pollinators for Food Security, Biodiversity and Livelihoods. December 2025, Arusha, Tanzania." />
-    <title>{% block title %}Pollination Africa Symposium 2025{% endblock %}</title>
+        <!-- Tailwind CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='src/output.css') }}"
+        />
 
-    <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='src/output.css') }}" />
+        <!-- Tailwind Plus Elements (for advanced components) -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1"
+            type="module"
+        ></script>
 
-    <!-- Tailwind Plus Elements (for advanced components) -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+        <!-- Alpine.js -->
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
 
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <!-- Favicon -->
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/logo_mark.png') }}"
+        />
 
-    <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='images/logo_mark.png') }}" />
+        <style>
+            /* Pollination Africa Theme - Nature's Night Garden */
+            :root {
+                /* Primary Colors */
+                --color-primary-dark: #142601; /* Very Dark Green - Main background */
+                --color-primary-medium: #25400a; /* Dark Forest Green - Alt background */
+                --color-accent-yellow: #f2c12e; /* Golden Yellow - Primary accent */
+                --color-accent-orange: #bf7e04; /* Orange/Amber - Secondary accent */
+                --color-accent-brown: #8c5c03; /* Brown/Burnt Orange - Borders */
 
-    <style>
-        /* Pollination Africa Theme - Nature's Night Garden */
-        :root {
-            /* Primary Colors */
-            --color-primary-dark: #142601;        /* Very Dark Green - Main background */
-            --color-primary-medium: #25400A;      /* Dark Forest Green - Alt background */
-            --color-accent-yellow: #F2C12E;       /* Golden Yellow - Primary accent */
-            --color-accent-orange: #BF7E04;       /* Orange/Amber - Secondary accent */
-            --color-accent-brown: #8C5C03;        /* Brown/Burnt Orange - Borders */
-            
-            /* Functional Colors */
-            --color-text-primary: #FFFFFF;        /* White text */
-            --color-text-secondary: #F2C12E;      /* Golden Yellow text */
-            --color-background: #142601;          /* Main background */
-            --color-background-alt: #25400A;      /* Alternate background */
-            --color-cta: #BF7E04;                /* Call-to-action */
-            --color-border: #8C5C03;             /* Borders */
-        }
+                /* Functional Colors */
+                --color-text-primary: #ffffff; /* White text */
+                --color-text-secondary: #f2c12e; /* Golden Yellow text */
+                --color-background: #142601; /* Main background */
+                --color-background-alt: #25400a; /* Alternate background */
+                --color-cta: #bf7e04; /* Call-to-action */
+                --color-border: #8c5c03; /* Borders */
+            }
 
-        /* Theme Color Classes */
-        .text-primary-yellow { color: var(--color-accent-yellow); }
-        .bg-primary-dark { background-color: var(--color-primary-dark); }
-        .bg-primary-medium { background-color: var(--color-primary-medium); }
-        .bg-accent-yellow { background-color: var(--color-accent-yellow); }
-        .bg-accent-orange { background-color: var(--color-accent-orange); }
-        .text-accent-orange { color: var(--color-accent-orange); }
-        .border-accent-yellow { border-color: var(--color-accent-yellow); }
-        .border-accent-orange { border-color: var(--color-accent-orange); }
-        .border-accent-brown { border-color: var(--color-accent-brown); }
-        .ring-accent-yellow { --tw-ring-color: var(--color-accent-yellow); }
-        
-        /* Active nav link */
-        .nav-link.active {
-            color: var(--color-accent-yellow);
-            font-weight: 600;
-            border-bottom: 2px solid var(--color-accent-yellow);
-        }
-        
-        .nav-link {
-            position: relative;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: var(--color-accent-yellow);
-        }
+            /* Theme Color Classes */
+            .text-primary-yellow {
+                color: var(--color-accent-yellow);
+            }
+            .bg-primary-dark {
+                background-color: var(--color-primary-dark);
+            }
+            .bg-primary-medium {
+                background-color: var(--color-primary-medium);
+            }
+            .bg-accent-yellow {
+                background-color: var(--color-accent-yellow);
+            }
+            .bg-accent-orange {
+                background-color: var(--color-accent-orange);
+            }
+            .text-accent-orange {
+                color: var(--color-accent-orange);
+            }
+            .border-accent-yellow {
+                border-color: var(--color-accent-yellow);
+            }
+            .border-accent-orange {
+                border-color: var(--color-accent-orange);
+            }
+            .border-accent-brown {
+                border-color: var(--color-accent-brown);
+            }
+            .ring-accent-yellow {
+                --tw-ring-color: var(--color-accent-yellow);
+            }
 
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
+            /* Active nav link */
+            .nav-link.active {
+                color: var(--color-accent-yellow);
+                font-weight: 600;
+                border-bottom: 2px solid var(--color-accent-yellow);
+            }
 
-        /* Header scroll animation */
-        .header-visible {
-            transform: translateY(0);
-            transition: transform 0.3s ease-in-out;
-        }
+            .nav-link {
+                position: relative;
+                transition: color 0.3s ease;
+            }
 
-        .header-hidden {
-            transform: translateY(-100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        /* Flash Message Styling with Theme Colors */
-        .flash-success {
-            background-color: rgba(37, 64, 10, 0.95); /* Dark Forest Green with transparency */
-            border-left: 4px solid var(--color-accent-yellow);
-            color: #FFFFFF;
-        }
-        
-        .flash-error {
-            background-color: rgba(140, 44, 44, 0.95); /* Dark red with transparency */
-            border-left: 4px solid #EF4444;
-            color: #FFFFFF;
-        }
-        
-        .flash-info {
-            background-color: rgba(20, 38, 1, 0.95); /* Very Dark Green with transparency */
-            border-left: 4px solid var(--color-accent-orange);
-            color: #FFFFFF;
-        }
-        
-        /* Button hover effects */
-        .btn-primary {
-            background-color: var(--color-accent-orange);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--color-accent-yellow);
-            color: var(--color-primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(242, 193, 46, 0.3);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            border: 2px solid var(--color-accent-yellow);
-            color: var(--color-accent-yellow);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--color-accent-yellow);
-            color: var(--color-primary-dark);
-        }
-    </style>
-</head>
+            .nav-link:hover {
+                color: var(--color-accent-yellow);
+            }
 
-<body class="flex min-h-full flex-col bg-primary-dark">
+            /* Smooth scroll behavior */
+            html {
+                scroll-behavior: smooth;
+            }
 
-    <!-- Header with Scroll Effect -->
-    <header
-        x-data="{
+            /* Header scroll animation */
+            .header-visible {
+                transform: translateY(0);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .header-hidden {
+                transform: translateY(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            /* Flash Message Styling with Theme Colors */
+            .flash-success {
+                background-color: rgba(
+                    37,
+                    64,
+                    10,
+                    0.95
+                ); /* Dark Forest Green with transparency */
+                border-left: 4px solid var(--color-accent-yellow);
+                color: #ffffff;
+            }
+
+            .flash-error {
+                background-color: rgba(
+                    140,
+                    44,
+                    44,
+                    0.95
+                ); /* Dark red with transparency */
+                border-left: 4px solid #ef4444;
+                color: #ffffff;
+            }
+
+            .flash-info {
+                background-color: rgba(
+                    20,
+                    38,
+                    1,
+                    0.95
+                ); /* Very Dark Green with transparency */
+                border-left: 4px solid var(--color-accent-orange);
+                color: #ffffff;
+            }
+
+            /* Button hover effects */
+            .btn-primary {
+                background-color: var(--color-accent-orange);
+                color: white;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background-color: var(--color-accent-yellow);
+                color: var(--color-primary-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(242, 193, 46, 0.3);
+            }
+
+            .btn-secondary {
+                background-color: transparent;
+                border: 2px solid var(--color-accent-yellow);
+                color: var(--color-accent-yellow);
+                transition: all 0.3s ease;
+            }
+
+            .btn-secondary:hover {
+                background-color: var(--color-accent-yellow);
+                color: var(--color-primary-dark);
+            }
+        </style>
+    </head>
+
+    <body class="flex min-h-full flex-col bg-primary-dark">
+        <!-- Header with Scroll Effect -->
+        <header
+            x-data="{
             lastScroll: 0,
             showHeader: true,
             init() {
@@ -147,278 +200,477 @@
                 });
             }
         }"
-        :class="showHeader ? 'header-visible' : 'header-hidden'"
-        class="fixed top-0 z-50 w-full bg-primary-dark shadow-lg border-b border-accent-brown">
+            :class="showHeader ? 'header-visible' : 'header-hidden'"
+            class="fixed top-0 z-50 w-full bg-primary-dark shadow-lg border-b border-accent-brown"
+        >
+            <nav
+                aria-label="Global"
+                class="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8"
+            >
+                <!-- Logo -->
+                <a
+                    href="{{ url_for('main.index') }}"
+                    class="-m-1.5 p-1.5 flex items-center gap-2"
+                >
+                    <span class="sr-only">Pollination Africa Symposium</span>
+                    <img
+                        src="{{ url_for('static', filename='images/logo.png') }}"
+                        alt="Pollination Africa Logo"
+                        class="h-10 w-auto"
+                        onerror="this.style.display='none'"
+                    />
+                </a>
 
-        <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8">
-            <!-- Logo -->
-            <a href="{{ url_for('main.index') }}" class="-m-1.5 p-1.5 flex items-center gap-2">
-                <span class="sr-only">Pollination Africa Symposium</span>
-                <img src="{{ url_for('static', filename='images/logo.png') }}"
-                     alt="Pollination Africa Logo"
-                     class="h-10 w-auto"
-                     onerror="this.style.display='none'" />
-            </a>
-
-            <!-- Mobile menu button -->
-            <div class="flex lg:hidden">
-                <button type="button"
+                <!-- Mobile menu button -->
+                <div class="flex lg:hidden">
+                    <button
+                        type="button"
                         command="show-modal"
                         commandfor="mobile-menu"
-                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white hover:bg-primary-medium">
-                    <span class="sr-only">Open main menu</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
-                        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-            </div>
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white hover:bg-primary-medium"
+                    >
+                        <span class="sr-only">Open main menu</span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            aria-hidden="true"
+                            class="size-6"
+                        >
+                            <path
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                    </button>
+                </div>
 
-            <!-- Desktop Navigation -->
-            <div class="hidden lg:flex lg:items-center lg:gap-x-8">
-                <a href="{{ url_for('main.index') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.index' %}active{% endif %}">
-                    Home
-                </a>
-                <a href="{{ url_for('main.about') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.about' %}active{% endif %}">
-                    About
-                </a>
-                <a href="{{ url_for('main.partners') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.partners' %}active{% endif %}">
-                    Partners
-                </a>
-                <a href="{{ url_for('main.speakers') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.speakers' %}active{% endif %}">
-                    Speakers
-                </a>
-                <a href="{{ url_for('main.agenda') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.agenda' %}active{% endif %}">
-                    Agenda
-                </a>
-                <a href="{{ url_for('main.contact') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.contact' %}active{% endif %}">
-                    Contact
-                </a>
-                <a href="{{ url_for('main.news') }}"
-                   class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.news' %}active{% endif %}">
-                    News
-                </a>
-            </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex lg:items-center lg:gap-x-8">
+                    <a
+                        href="{{ url_for('main.index') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.index' %}active{% endif %}"
+                    >
+                        Home
+                    </a>
+                    <a
+                        href="{{ url_for('main.about') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.about' %}active{% endif %}"
+                    >
+                        About
+                    </a>
+                    <a
+                        href="{{ url_for('main.partners') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.partners' %}active{% endif %}"
+                    >
+                        Partners
+                    </a>
+                    <a
+                        href="{{ url_for('main.speakers') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.speakers' %}active{% endif %}"
+                    >
+                        Speakers
+                    </a>
+                    <a
+                        href="{{ url_for('main.agenda') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.agenda' %}active{% endif %}"
+                    >
+                        Agenda
+                    </a>
+                    <a
+                        href="{{ url_for('main.contact') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.contact' %}active{% endif %}"
+                    >
+                        Contact
+                    </a>
+                    <!--<a
+                        href="{{ url_for('main.news') }}"
+                        class="nav-link text-sm/6 font-semibold text-white hover:text-primary-yellow transition-colors {% if request.endpoint=='main.news' %}active{% endif %}"
+                    >
+                        News
+                    </a>-->
+                </div>
 
-            <!-- CTA Buttons -->
-            <div class="hidden lg:flex lg:items-center lg:gap-x-4">
-                <a href="{{ url_for('register.attendee_index') }}"
-                   class="rounded-full px-6 py-2.5 text-sm font-semibold bg-accent-orange text-white hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg">
-                    Register
-                </a>
-                <a href="{{ url_for('register.exhibitor_index') }}"
-                   class="rounded-full px-6 py-2.5 text-sm font-semibold border-2 border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300">
-                    Exhibit
-                </a>
-            </div>
-        </nav>
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex lg:items-center lg:gap-x-4">
+                    <a
+                        href="{{ url_for('register.attendee_index') }}"
+                        class="rounded-full px-6 py-2 text-sm font-semibold bg-accent-orange text-white hover:bg-[#E8B030] hover:text-primary-dark transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg"
+                    >
+                        Register
+                    </a>
+                    <a
+                        href="{{ url_for('register.exhibitor_index') }}"
+                        class="rounded-full px-6 py-2 text-sm font-semibold border-1 border-[#E8B030] text-[#E8B030] transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                        Exhibit
+                    </a>
+                </div>
+            </nav>
 
-        <!-- Mobile Menu Dialog -->
-        <el-dialog id="mobile-menu" class="lg:hidden">
-            <dialog class="fixed inset-0 z-50">
-                <div class="fixed inset-0 bg-black/50" command="hide-modal" commandfor="mobile-menu"></div>
-                <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-primary-dark px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-accent-brown">
-                    <el-dialog-panel>
-                        <!-- Close button -->
-                        <div class="flex items-center justify-between">
-                            <a href="{{ url_for('main.index') }}" class="-m-1.5 p-1.5 flex items-center gap-2">
-                                <span class="sr-only">Pollination Africa</span>
-                                <img src="{{ url_for('static', filename='images/logo.png') }}"
-                                     alt="Pollination Africa Logo"
-                                     class="h-8 w-auto"
-                                     onerror="this.style.display='none'" />
-                            </a>
-                            <button type="button"
+            <!-- Mobile Menu Dialog -->
+            <el-dialog id="mobile-menu" class="lg:hidden">
+                <dialog class="fixed inset-0 z-50">
+                    <div
+                        class="fixed inset-0 bg-black/50"
+                        command="hide-modal"
+                        commandfor="mobile-menu"
+                    ></div>
+                    <div
+                        class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-primary-dark px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-accent-brown"
+                    >
+                        <el-dialog-panel>
+                            <!-- Close button -->
+                            <div class="flex items-center justify-between">
+                                <a
+                                    href="{{ url_for('main.index') }}"
+                                    class="-m-1.5 p-1.5 flex items-center gap-2"
+                                >
+                                    <span class="sr-only"
+                                        >Pollination Africa</span
+                                    >
+                                    <img
+                                        src="{{ url_for('static', filename='images/logo.png') }}"
+                                        alt="Pollination Africa Logo"
+                                        class="h-8 w-auto"
+                                        onerror="this.style.display='none'"
+                                    />
+                                </a>
+                                <button
+                                    type="button"
                                     command="hide-modal"
                                     commandfor="mobile-menu"
-                                    class="-m-2.5 rounded-md p-2.5 text-white hover:bg-primary-medium">
-                                <span class="sr-only">Close menu</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
-                                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+                                    class="-m-2.5 rounded-md p-2.5 text-white hover:bg-primary-medium"
+                                >
+                                    <span class="sr-only">Close menu</span>
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        aria-hidden="true"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            d="M6 18L18 6M6 6l12 12"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Mobile Navigation -->
+                            <div class="mt-6 flow-root">
+                                <div class="-my-6 divide-y divide-accent-brown">
+                                    <div class="space-y-2 py-6">
+                                        <a
+                                            href="{{ url_for('main.index') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.index' %}text-primary-yellow{% endif %}"
+                                        >
+                                            Home
+                                        </a>
+                                        <a
+                                            href="{{ url_for('main.about') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.about' %}text-primary-yellow{% endif %}"
+                                        >
+                                            About
+                                        </a>
+                                        <a
+                                            href="{{ url_for('main.partners') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.partners' %}text-primary-yellow{% endif %}"
+                                        >
+                                            Partners
+                                        </a>
+                                        <a
+                                            href="{{ url_for('main.speakers') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.speakers' %}text-primary-yellow{% endif %}"
+                                        >
+                                            Speakers
+                                        </a>
+                                        <a
+                                            href="{{ url_for('main.agenda') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.agenda' %}text-primary-yellow{% endif %}"
+                                        >
+                                            Agenda
+                                        </a>
+                                        <a
+                                            href="{{ url_for('main.contact') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.contact' %}text-primary-yellow{% endif %}"
+                                        >
+                                            Contact
+                                        </a>
+                                        <a
+                                            href="{{ url_for('main.news') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.news' %}text-primary-yellow{% endif %}"
+                                        >
+                                            News
+                                        </a>
+                                    </div>
+                                    <div class="py-6 space-y-2">
+                                        <a
+                                            href="{{ url_for('register.attendee_index') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold bg-accent-orange text-white hover:bg-accent-yellow hover:text-primary-dark text-center"
+                                        >
+                                            Register Now
+                                        </a>
+                                        <a
+                                            href="{{ url_for('register.exhibitor_index') }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold border-2 border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-primary-dark text-center"
+                                        >
+                                            Become an Exhibitor
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </el-dialog-panel>
+                    </div>
+                </dialog>
+            </el-dialog>
+        </header>
+
+        <!-- Main Content Area (with top padding for fixed header) -->
+        <main class="flex-grow pt-10">
+            <!-- Flash Messages with Alpine.js -->
+            {% with messages = get_flashed_messages(with_categories=true) %} {%
+            if messages %}
+            <div class="fixed top-24 right-4 z-50 w-full max-w-sm space-y-4">
+                {% for category, message in messages %}
+                <div
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-init="setTimeout(() => show = false, 7000)"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-y-2"
+                    x-transition:enter-end="opacity-100 transform translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="rounded-lg shadow-xl p-4 {% if category == 'success' %}flash-success {% elif category == 'error' %}flash-error {% else %}flash-info{% endif %}"
+                >
+                    <div class="flex items-start">
+                        <div class="shrink-0">
+                            {% if category == 'success' %}
+                            <svg
+                                class="h-5 w-5 text-accent-yellow"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            {% elif category == 'error' %}
+                            <svg
+                                class="h-5 w-5 text-red-400"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            {% else %}
+                            <svg
+                                class="h-5 w-5 text-accent-orange"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-white">
+                                {{ message }}
+                            </p>
+                        </div>
+                        <div class="ml-auto pl-3">
+                            <button
+                                @click="show = false"
+                                type="button"
+                                class="inline-flex rounded-md p-1.5 text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-accent-yellow focus:ring-offset-2 focus:ring-offset-primary-dark transition-colors"
+                            >
+                                <span class="sr-only">Dismiss</span>
+                                <svg
+                                    class="h-5 w-5"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+                                    />
                                 </svg>
                             </button>
                         </div>
-
-                        <!-- Mobile Navigation -->
-                        <div class="mt-6 flow-root">
-                            <div class="-my-6 divide-y divide-accent-brown">
-                                <div class="space-y-2 py-6">
-                                    <a href="{{ url_for('main.index') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.index' %}text-primary-yellow{% endif %}">
-                                        Home
-                                    </a>
-                                    <a href="{{ url_for('main.about') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.about' %}text-primary-yellow{% endif %}">
-                                        About
-                                    </a>
-                                    <a href="{{ url_for('main.partners') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.partners' %}text-primary-yellow{% endif %}">
-                                        Partners
-                                    </a>
-                                    <a href="{{ url_for('main.speakers') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.speakers' %}text-primary-yellow{% endif %}">
-                                        Speakers
-                                    </a>
-                                    <a href="{{ url_for('main.agenda') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.agenda' %}text-primary-yellow{% endif %}">
-                                        Agenda
-                                    </a>
-                                    <a href="{{ url_for('main.contact') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.contact' %}text-primary-yellow{% endif %}">
-                                        Contact
-                                    </a>
-                                    <a href="{{ url_for('main.news') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-primary-medium {% if request.endpoint=='main.news' %}text-primary-yellow{% endif %}">
-                                        News
-                                    </a>
-                                </div>
-                                <div class="py-6 space-y-2">
-                                    <a href="{{ url_for('register.attendee_index') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold bg-accent-orange text-white hover:bg-accent-yellow hover:text-primary-dark text-center">
-                                        Register Now
-                                    </a>
-                                    <a href="{{ url_for('register.exhibitor_index') }}"
-                                       class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold border-2 border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-primary-dark text-center">
-                                        Become an Exhibitor
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </el-dialog-panel>
-                </div>
-            </dialog>
-        </el-dialog>
-    </header>
-
-    <!-- Main Content Area (with top padding for fixed header) -->
-    <main class="flex-grow pt-10">
-        <!-- Flash Messages with Alpine.js -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="fixed top-24 right-4 z-50 w-full max-w-sm space-y-4">
-            {% for category, message in messages %}
-            <div x-data="{ show: true }"
-                 x-show="show"
-                 x-init="setTimeout(() => show = false, 7000)"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 transform translate-y-2"
-                 x-transition:enter-end="opacity-100 transform translate-y-0"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="rounded-lg shadow-xl p-4
-                 {% if category == 'success' %}flash-success
-                 {% elif category == 'error' %}flash-error
-                 {% else %}flash-info{% endif %}">
-                <div class="flex items-start">
-                    <div class="shrink-0">
-                        {% if category == 'success' %}
-                        <svg class="h-5 w-5 text-accent-yellow" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-                        </svg>
-                        {% elif category == 'error' %}
-                        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                        </svg>
-                        {% else %}
-                        <svg class="h-5 w-5 text-accent-orange" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
-                        </svg>
-                        {% endif %}
-                    </div>
-                    <div class="ml-3 flex-1">
-                        <p class="text-sm font-medium text-white">
-                            {{ message }}
-                        </p>
-                    </div>
-                    <div class="ml-auto pl-3">
-                        <button @click="show = false"
-                                type="button"
-                                class="inline-flex rounded-md p-1.5 text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-accent-yellow focus:ring-offset-2 focus:ring-offset-primary-dark transition-colors">
-                            <span class="sr-only">Dismiss</span>
-                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
+            {% endif %} {% endwith %}
 
-        <!-- Page Content -->
-        {% block content %}
-        {% endblock %}
-    </main>
+            <!-- Page Content -->
+            {% block content %} {% endblock %}
+        </main>
 
-    <!-- Footer -->
-    <footer class="bg-primary-dark border-t border-accent-brown mt-16">
-        <div class="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-            <!-- Footer Navigation -->
-            <nav aria-label="Footer" class="-mb-6 flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm/6">
-                <a href="{{ url_for('main.about') }}" class="text-gray-300 hover:text-primary-yellow transition-colors">About</a>
-                <a href="{{ url_for('main.agenda') }}" class="text-gray-300 hover:text-primary-yellow transition-colors">Agenda</a>
-                <a href="{{ url_for('main.speakers') }}" class="text-gray-300 hover:text-primary-yellow transition-colors">Speakers</a>
-                <a href="{{ url_for('main.news') }}" class="text-gray-300 hover:text-primary-yellow transition-colors">News</a>
-                <a href="{{ url_for('main.contact') }}" class="text-gray-300 hover:text-primary-yellow transition-colors">Contact</a>
-                <a href="{{ url_for('main.become_exhibitor') }}" class="text-gray-300 hover:text-primary-yellow transition-colors">Partners</a>
-            </nav>
+        <!-- Footer -->
+        <footer class="bg-primary-dark">
+            <div
+                class="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8"
+            >
+                <!-- Footer Navigation -->
+                <nav
+                    aria-label="Footer"
+                    class="-mb-6 flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm/6"
+                >
+                    <a
+                        href="{{ url_for('main.about') }}"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                        >About</a
+                    >
+                    <a
+                        href="{{ url_for('main.agenda') }}"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                        >Agenda</a
+                    >
+                    <a
+                        href="{{ url_for('main.speakers') }}"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                        >Speakers</a
+                    >
+                    <a
+                        href="{{ url_for('main.news') }}"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                        >News</a
+                    >
+                    <a
+                        href="{{ url_for('main.contact') }}"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                        >Contact</a
+                    >
+                    <a
+                        href="{{ url_for('main.become_exhibitor') }}"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                        >Partners</a
+                    >
+                </nav>
 
-            <!-- Social Media Links -->
-            <div class="mt-16 flex justify-center gap-x-10">
-                <a href="https://facebook.com/pollinationafrica" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-primary-yellow transition-colors">
-                    <span class="sr-only">Facebook</span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-6">
-                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" fill-rule="evenodd" />
-                    </svg>
-                </a>
-                <a href="https://instagram.com/pollinationafrica" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-primary-yellow transition-colors">
-                    <span class="sr-only">Instagram</span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-6">
-                        <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" fill-rule="evenodd" />
-                    </svg>
-                </a>
-                <a href="https://twitter.com/pollinationafrica" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-primary-yellow transition-colors">
-                    <span class="sr-only">X (Twitter)</span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-6">
-                        <path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z" />
-                    </svg>
-                </a>
-                <a href="https://youtube.com/@pollinationafrica" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-primary-yellow transition-colors">
-                    <span class="sr-only">YouTube</span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-6">
-                        <path d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd" fill-rule="evenodd" />
-                    </svg>
-                </a>
+                <!-- Social Media Links -->
+                <div class="mt-16 flex justify-center gap-x-10">
+                    <a
+                        href="https://facebook.com/pollinationafrica"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                    >
+                        <span class="sr-only">Facebook</span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                            class="size-6"
+                        >
+                            <path
+                                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd"
+                            />
+                        </svg>
+                    </a>
+                    <a
+                        href="https://instagram.com/pollinationafrica"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                    >
+                        <span class="sr-only">Instagram</span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                            class="size-6"
+                        >
+                            <path
+                                d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd"
+                            />
+                        </svg>
+                    </a>
+                    <a
+                        href="https://twitter.com/pollinationafrica"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                    >
+                        <span class="sr-only">X (Twitter)</span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                            class="size-6"
+                        >
+                            <path
+                                d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z"
+                            />
+                        </svg>
+                    </a>
+                    <a
+                        href="https://youtube.com/@pollinationafrica"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 hover:text-primary-yellow transition-colors"
+                    >
+                        <span class="sr-only">YouTube</span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                            class="size-6"
+                        >
+                            <path
+                                d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd"
+                            />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Divider -->
+                <div class="mt-10 border-t border-accent-brown pt-8">
+                    <!-- Tagline -->
+                    <p
+                        class="text-center text-sm text-accent-orange font-medium mb-4"
+                    >
+                        Celebrating All Pollinators for Food Security,
+                        Biodiversity and Livelihoods
+                    </p>
+
+                    <!-- Copyright -->
+                    <p class="text-center text-sm/6 text-gray-300">
+                        &copy; {{ now.year if now else '2025' }} Pollination
+                        Africa Symposium. Organized by SAADIT and partners. All
+                        rights reserved.
+                    </p>
+
+                    <!-- Location & Date -->
+                    <p class="mt-2 text-center text-xs text-gray-400">
+                        December 2025 | Arusha International Conference Center,
+                        Tanzania
+                    </p>
+                </div>
             </div>
-
-            <!-- Divider -->
-            <div class="mt-10 border-t border-accent-brown pt-8">
-                <!-- Tagline -->
-                <p class="text-center text-sm text-accent-yellow font-medium mb-4">
-                    Celebrating All Pollinators for Food Security, Biodiversity and Livelihoods
-                </p>
-                
-                <!-- Copyright -->
-                <p class="text-center text-sm/6 text-gray-300">
-                    &copy; {{ now.year if now else '2025' }} Pollination Africa Symposium. Organized by SAADIT and partners. All rights reserved.
-                </p>
-                
-                <!-- Location & Date -->
-                <p class="mt-2 text-center text-xs text-gray-400">
-                    December 2025 | Arusha International Conference Center, Tanzania
-                </p>
-            </div>
-        </div>
-    </footer>
-
-</body>
-
+        </footer>
+    </body>
 </html>

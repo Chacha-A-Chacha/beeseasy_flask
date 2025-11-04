@@ -8,8 +8,12 @@
     <img
         src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2400&q=80&blend=111827&sat=-100&exp=15&blend-mode=screen"
         alt="Conference Agenda"
-        class="absolute inset-0 -z-10 size-full object-cover opacity-10"
+        class="absolute inset-0 -z-10 size-full object-cover opacity-60"
     />
+
+    <div
+        class="absolute -z-10 inset-0 bg-gradient-to-b from-green-950/60 via-green-950/40 to-green-950/80"
+    ></div>
 
     <!-- Decorative Gradients -->
     <div
@@ -36,7 +40,7 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA700] opacity-15"
         ></div>
     </div>
     <div
@@ -63,19 +67,19 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA700] opacity-15"
         ></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:mx-0">
             <h2
-                class="text-5xl font-semibold tracking-tight text-primary-dark sm:text-7xl"
+                class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
             >
                 Event Agenda
             </h2>
             <p
-                class="mt-8 text-pretty text-lg font-medium text-gray-600 sm:text-xl/8"
+                class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
             >
                 Two days of inspiring talks, hands-on training, and
                 collaborative sessions focused on innovation and sustainability
@@ -88,10 +92,10 @@
             class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8"
         >
             <div
-                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-accent-brown backdrop-blur"
+                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
             >
                 <svg
-                    class="h-7 w-5 flex-none text-accent-yellow"
+                    class="h-7 w-5 flex-none text-[#FFD700]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                 >
@@ -102,18 +106,18 @@
                     />
                 </svg>
                 <div class="text-base/7">
-                    <h3 class="font-semibold text-primary-dark">When</h3>
-                    <p class="mt-2 text-gray-700">
+                    <h3 class="font-semibold text-white">When</h3>
+                    <p class="mt-2 text-gray-100">
                         December 2025<br />Dates: To be announced
                     </p>
                 </div>
             </div>
 
             <div
-                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-accent-brown backdrop-blur"
+                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
             >
                 <svg
-                    class="h-7 w-5 flex-none text-accent-yellow"
+                    class="h-7 w-5 flex-none text-[#FFD700]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                 >
@@ -124,18 +128,18 @@
                     />
                 </svg>
                 <div class="text-base/7">
-                    <h3 class="font-semibold text-primary-dark">Duration</h3>
-                    <p class="mt-2 text-gray-700">
+                    <h3 class="font-semibold text-white">Duration</h3>
+                    <p class="mt-2 text-gray-100">
                         2 Days<br />Daily: 5:00 PM - 8:00 PM
                     </p>
                 </div>
             </div>
 
             <div
-                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-accent-brown backdrop-blur"
+                class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
             >
                 <svg
-                    class="h-7 w-5 flex-none text-accent-yellow"
+                    class="h-7 w-5 flex-none text-[#FFD700]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                 >
@@ -146,8 +150,8 @@
                     />
                 </svg>
                 <div class="text-base/7">
-                    <h3 class="font-semibold text-primary-dark">Location</h3>
-                    <p class="mt-2 text-gray-700">AICC<br />Arusha, Tanzania</p>
+                    <h3 class="font-semibold text-white">Location</h3>
+                    <p class="mt-2 text-gray-100">AICC<br />Arusha, Tanzania</p>
                 </div>
             </div>
         </div>
@@ -1282,13 +1286,13 @@
                 class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4"
             >
                 <a
-                    href="{{ url_for('register.register_attendee') }}"
+                    href="{{ url_for('register.attendee_index') }}"
                     class="rounded-md bg-accent-orange px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange transition-all w-full sm:w-auto"
                 >
                     Register as Attendee
                 </a>
                 <a
-                    href="{{ url_for('register.register_exhibitor') }}"
+                    href="{{ url_for('register.exhibitor_index') }}"
                     class="rounded-md bg-primary-dark px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-medium transition-all w-full sm:w-auto"
                 >
                     Register as Exhibitor

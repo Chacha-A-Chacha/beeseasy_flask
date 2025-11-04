@@ -8,8 +8,12 @@ Symposium 2025{% endblock %} {% block content %}
     <img
         src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=2400&q=80&blend=111827&sat=-100&exp=15&blend-mode=screen"
         alt="Conference Speakers"
-        class="absolute inset-0 -z-10 size-full object-cover opacity-10"
+        class="absolute inset-0 -z-10 size-full object-cover opacity-60"
     />
+
+    <div
+        class="absolute -z-10 inset-0 bg-gradient-to-b from-green-950/60 via-green-950/40 to-green-950/80"
+    ></div>
 
     <!-- Decorative Gradients -->
     <div
@@ -70,12 +74,12 @@ Symposium 2025{% endblock %} {% block content %}
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:mx-0">
             <h2
-                class="text-5xl font-semibold tracking-tight text-primary-dark sm:text-7xl"
+                class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
             >
                 Symposium Speakers
             </h2>
             <p
-                class="mt-8 text-pretty text-lg font-medium text-gray-600 sm:text-xl/8"
+                class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
             >
                 Meet the thought leaders, innovators, and practitioners shaping
                 the future of pollinator conservation in East Africa and beyond.
@@ -94,7 +98,7 @@ Symposium 2025{% endblock %} {% block content %}
                 Featured Speaker
             </h2>
             <p
-                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-accent-yellow sm:text-5xl lg:text-balance"
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance"
             >
                 Guest of Honour
             </p>
@@ -108,7 +112,7 @@ Symposium 2025{% endblock %} {% block content %}
                     <!-- Image -->
                     <div class="relative h-80 lg:h-auto">
                         <img
-                            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80"
+                            src="{{ url_for('static', filename='images/photo_2025-11-04_17-06-10.jpg') }}"
                             alt="Rt. Hon. Mizengo K. P. Pinda"
                             class="size-full object-cover"
                         />
@@ -125,9 +129,7 @@ Symposium 2025{% endblock %} {% block content %}
                             >
                                 Guest of Honour & Keynote Speaker
                             </p>
-                            <h3
-                                class="mt-2 text-3xl font-bold text-accent-yellow"
-                            >
+                            <h3 class="mt-2 text-3xl font-bold text-white">
                                 Rt. Hon. MIZENGO K. P. PINDA
                             </h3>
                             <p class="mt-2 text-base text-gray-300">
@@ -156,17 +158,17 @@ Symposium 2025{% endblock %} {% block content %}
 
                         <div class="mt-8 flex flex-wrap gap-2">
                             <span
-                                class="inline-flex items-center rounded-full bg-accent-yellow/10 px-3 py-1 text-xs font-medium text-accent-yellow ring-1 ring-inset ring-accent-yellow/20"
+                                class="inline-flex items-center rounded-full bg-accent-orange/10 px-3 py-1 text-xs font-medium text-accent-orange ring-1 ring-inset ring-accent-orange/20"
                             >
                                 Sustainable Agriculture
                             </span>
                             <span
-                                class="inline-flex items-center rounded-full bg-accent-yellow/10 px-3 py-1 text-xs font-medium text-accent-yellow ring-1 ring-inset ring-accent-yellow/20"
+                                class="inline-flex items-center rounded-full bg-accent-orange/10 px-3 py-1 text-xs font-medium text-accent-orange ring-1 ring-inset ring-accent-orange/20"
                             >
                                 Policy Leadership
                             </span>
                             <span
-                                class="inline-flex items-center rounded-full bg-accent-yellow/10 px-3 py-1 text-xs font-medium text-accent-yellow ring-1 ring-inset ring-accent-yellow/20"
+                                class="inline-flex items-center rounded-full bg-accent-orange/10 px-3 py-1 text-xs font-medium text-accent-orange ring-1 ring-inset ring-accent-orange/20"
                             >
                                 Rural Development
                             </span>
@@ -357,7 +359,7 @@ Symposium 2025{% endblock %} {% block content %}
             >
                 <div class="flex flex-col">
                     <dt class="text-lg font-semibold text-primary-dark">
-                        🐝 Pollinator Health & Conservation
+                        Pollinator Health & Conservation
                     </dt>
                     <dd
                         class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600"
@@ -374,7 +376,7 @@ Symposium 2025{% endblock %} {% block content %}
 
                 <div class="flex flex-col">
                     <dt class="text-lg font-semibold text-primary-dark">
-                        🌾 Sustainable Agriculture & Food Security
+                        Sustainable Agriculture & Food Security
                     </dt>
                     <dd
                         class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600"
@@ -390,7 +392,7 @@ Symposium 2025{% endblock %} {% block content %}
 
                 <div class="flex flex-col">
                     <dt class="text-lg font-semibold text-primary-dark">
-                        💼 Market Development & Value Chains
+                        Market Development & Value Chains
                     </dt>
                     <dd
                         class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600"
@@ -406,7 +408,7 @@ Symposium 2025{% endblock %} {% block content %}
 
                 <div class="flex flex-col">
                     <dt class="text-lg font-semibold text-primary-dark">
-                        🔬 Innovation & Technology
+                        Innovation & Technology
                     </dt>
                     <dd
                         class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600"
@@ -422,7 +424,7 @@ Symposium 2025{% endblock %} {% block content %}
 
                 <div class="flex flex-col">
                     <dt class="text-lg font-semibold text-primary-dark">
-                        📜 Policy & Institutional Frameworks
+                        Policy & Institutional Frameworks
                     </dt>
                     <dd
                         class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600"
@@ -437,7 +439,7 @@ Symposium 2025{% endblock %} {% block content %}
 
                 <div class="flex flex-col">
                     <dt class="text-lg font-semibold text-primary-dark">
-                        🌍 Biodiversity & Ecosystem Services
+                        Biodiversity & Ecosystem Services
                     </dt>
                     <dd
                         class="mt-4 flex flex-auto flex-col text-base/7 text-gray-600"
@@ -462,7 +464,7 @@ Symposium 2025{% endblock %} {% block content %}
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
             <h2
-                class="text-4xl font-semibold tracking-tight text-accent-yellow sm:text-5xl"
+                class="text-4xl font-semibold tracking-tight text-white sm:text-5xl"
             >
                 Share Your Expertise
             </h2>
@@ -474,13 +476,13 @@ Symposium 2025{% endblock %} {% block content %}
             <div class="mt-10 flex items-center justify-center gap-x-6">
                 <a
                     href="{{ url_for('main.contact') }}"
-                    class="rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"
+                    class="rounded-full bg-accent-orange px-8 py-3 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"
                 >
                     Submit Your Proposal
                 </a>
                 <a
                     href="{{ url_for('main.agenda') }}"
-                    class="text-sm/6 font-semibold text-accent-yellow hover:text-accent-orange transition-colors"
+                    class="text-sm/6 font-semibold text-white"
                 >
                     View Program <span aria-hidden="true">→</span>
                 </a>
@@ -563,7 +565,7 @@ Symposium 2025{% endblock %} {% block content %}
                 <a
                     href="#"
                     class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
-                    >Twitter</a
+                    >X</a
                 >,
                 <a
                     href="#"

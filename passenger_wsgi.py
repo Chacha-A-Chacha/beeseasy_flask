@@ -3,8 +3,8 @@ import importlib.util
 import os
 import sys
 
-
 sys.path.insert(0, os.path.dirname(__file__))
+
 
 def load_source(modname, filename):
     loader = importlib.machinery.SourceFileLoader(modname, filename)
@@ -13,5 +13,6 @@ def load_source(modname, filename):
     loader.exec_module(module)
     return module
 
-wsgi = load_source('wsgi', 'run.py')
+
+wsgi = load_source("wsgi", "run.py")
 application = wsgi.application

@@ -4,15 +4,15 @@ Run with: python run.py
 """
 
 import os
+
 from app import create_app
 
 # Create Flask app instance
-app = create_app(os.getenv('FLASK_ENV', 'development'))
+app = create_app(os.getenv("FLASK_ENV", "development"))
 
-if __name__ == '__main__':
+# For production deployment (WSGI)
+application = app
+
+if __name__ == "__main__":
     # Development server settings
-    app.run(
-        host='0.0.0.0',
-        port=5000,
-        debug=app.config.get('DEBUG', True)
-    )
+    app.run(host="0.0.0.0", port=5000, debug=app.config.get("DEBUG", True))

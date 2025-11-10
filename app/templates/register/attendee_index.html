@@ -118,7 +118,7 @@ Africa Symposium{% endblock %} {% block content %}
                                 <span
                                     class="text-4xl font-bold text-accent-orange ml-2"
                                     >{{
-                                    "{:,.2f}"|format(ticket.get_current_price())
+                                    "%.2f"|format(ticket.get_current_price())
                                     }}</span
                                 >
                             </div>
@@ -127,7 +127,7 @@ Africa Symposium{% endblock %} {% block content %}
                             <div class="mt-1">
                                 <span class="text-sm text-gray-500 line-through"
                                     >{{ ticket.currency }} {{
-                                    "{:,.2f}"|format(ticket.price) }}</span
+                                    "%.2f"|format(ticket.price) }}</span
                                 >
                                 <span
                                     class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"

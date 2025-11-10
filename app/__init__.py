@@ -1,17 +1,60 @@
 import os
-from flask import Flask, render_template
-from flask_wtf.csrf import CSRFProtect
 
-# Import extensions
-from app.extensions import (
-    db, migrate, login_manager, bcrypt, mail, cors
-)
+from flask import Flask, render_template, request
+from flask_wtf.csrf import CSRFProtect
+from sqlalchemy import inspect
 
 # Import config dictionary
 from app.config import config
 
+# Import extensions
+from app.extensions import bcrypt, cors, db, login_manager, mail, migrate
+
 # Initialize CSRF separately for fine-grained control
 csrf = CSRFProtect()
+
+
+def ensure_tables_exist(app):
+    """
+    Check if tables exist and create them if they don't.
+    Safe to run in all environments.
+    """
+    with app.app_context():
+        # Import all models to ensure SQLAlchemy knows about them
+        from app.models import (
+            AddOnItem,
+            AddOnPurchase,
+            AttendeeRegistration,
+            EmailLog,
+            ExchangeRate,
+            ExhibitorPackagePrice,
+            ExhibitorRegistration,
+            Payment,
+            PromoCode,
+            PromoCodeUsage,
+            Registration,
+            TicketPrice,
+            User,
+        )
+
+        # Check if tables exist using inspector
+        inspector = inspect(db.engine)
+        existing_tables = inspector.get_table_names()
+
+        # Get all model table names
+        model_tables = [table.name for table in db.Model.metadata.tables.values()]
+
+        # Find missing tables
+        missing_tables = [
+            table for table in model_tables if table not in existing_tables
+        ]
+
+        if missing_tables:
+            app.logger.info(f"Creating missing tables: {', '.join(missing_tables)}")
+            db.create_all()
+            app.logger.info("✅ Database tables created successfully")
+        else:
+            app.logger.info("✅ All database tables already exist")
 
 
 def create_app(config_name=None):
@@ -43,10 +86,10 @@ def create_app(config_name=None):
     login_manager.login_message_category = "info"
 
     # --- Register Blueprints ---
-    from app.routes.main import main_bp
     from app.routes.auth import auth_bp
-    from app.routes.register import register_bp
+    from app.routes.main import main_bp
     from app.routes.payment import payments_bp
+    from app.routes.register import register_bp
     # from app.routes.admin import admin_bp
     # from app.routes.api import api_bp
 
@@ -62,17 +105,35 @@ def create_app(config_name=None):
 
     # --- Register CLI Commands ---
     from app.cli import register_cli_commands
+
     register_cli_commands(app)
 
-    # Auto-create tables (development only)
-    # if app.config.get('ENV') == 'development':
-    #     with app.app_context():
-    #         # Import models so SQLAlchemy knows about them
-    #         from app.models import (
-    #             User, Registration, AttendeeRegistration, ExhibitorRegistration,
-    #             TicketPrice, ExhibitorPackagePrice, AddOnItem, Payment
-    #         )
-    #         db.create_all()
+    # --- Auto-create tables if they don't exist ---
+    # Safe to run in all environments - only creates missing tables
+    ensure_tables_exist(app)
+
+    # --- Database Wake-up Hook (for Neon scale-to-zero) ---
+    @app.before_request
+    def ensure_db_awake():
+        """
+        Ensure database is awake before processing requests.
+        This prevents connection errors when Neon scales to zero.
+        """
+        # Skip for static files
+        if request.endpoint and "static" in request.endpoint:
+            return None
+
+        # Check if we need database for this request
+        # (Most requests will need it, but some might not)
+        from app.utils.database import ensure_database_connection
+
+        # Try to ensure connection (with retry logic built-in)
+        if not ensure_database_connection():
+            # If we can't establish connection after retries, log it
+            app.logger.error("Failed to establish database connection for request")
+            # Don't block the request - let it fail naturally with better error handling
+
+        return None
 
     # --- Template Context Processors ---
     @app.context_processor
@@ -84,7 +145,7 @@ def create_app(config_name=None):
         return dict(
             event_name="Bee East Africa Symposium",
             organization_name="Bee Easy Africa",
-            contact_email="info@beeseasy.org"
+            contact_email="info@beeseasy.org",
         )
 
     # --- Error Handlers ---
@@ -100,19 +161,26 @@ def create_app(config_name=None):
     @app.shell_context_processor
     def make_shell_context():
         from app.models import (
-            User, Registration, AttendeeRegistration, ExhibitorRegistration,
-            TicketPrice, ExhibitorPackagePrice, AddOnItem, Payment
+            AddOnItem,
+            AttendeeRegistration,
+            ExhibitorPackagePrice,
+            ExhibitorRegistration,
+            Payment,
+            Registration,
+            TicketPrice,
+            User,
         )
+
         return {
-            'db': db,
-            'User': User,
-            'Registration': Registration,
-            'AttendeeRegistration': AttendeeRegistration,
-            'ExhibitorRegistration': ExhibitorRegistration,
-            'TicketPrice': TicketPrice,
-            'ExhibitorPackagePrice': ExhibitorPackagePrice,
-            'AddOnItem': AddOnItem,
-            'Payment': Payment,
+            "db": db,
+            "User": User,
+            "Registration": Registration,
+            "AttendeeRegistration": AttendeeRegistration,
+            "ExhibitorRegistration": ExhibitorRegistration,
+            "TicketPrice": TicketPrice,
+            "ExhibitorPackagePrice": ExhibitorPackagePrice,
+            "AddOnItem": AddOnItem,
+            "Payment": Payment,
         }
 
     return app

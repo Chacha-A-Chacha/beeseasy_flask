@@ -1,4 +1,6 @@
 import os
+import re
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -16,11 +18,17 @@ def _get_database_uri():
     if turso_url and turso_token:
         return f"{turso_url}?authToken={turso_token}"
 
-    # Fall back to DATABASE_URL or SQLite
-    return os.getenv(
-        "DATABASE_URL",
-        f"sqlite:///{os.path.abspath(os.path.join(basedir, '..', 'instance', 'app.db'))}",
-    )
+    # Check for Neon/PostgreSQL DATABASE_URL
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        # Convert postgresql:// to postgresql+psycopg2:// for Flask-SQLAlchemy sync operations
+        # If you need async support, explicitly set DATABASE_URL with postgresql+asyncpg://
+        if database_url.startswith("postgresql://"):
+            return re.sub(r"^postgresql://", "postgresql+psycopg2://", database_url)
+        return database_url
+
+    # Fall back to SQLite
+    return f"sqlite:///{os.path.abspath(os.path.join(basedir, '..', 'instance', 'app.db'))}"
 
 
 class Config:
@@ -30,6 +38,25 @@ class Config:
     SECRET_KEY: str = os.getenv("SECRET_KEY", "super-secret-key")
     SQLALCHEMY_DATABASE_URI: str = _get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
+
+    # --- Database Connection Pool Settings (for Neon scale-to-zero) ---
+    SQLALCHEMY_ENGINE_OPTIONS: dict = {
+        # Test connections before using them from the pool (handles stale connections)
+        "pool_pre_ping": True,
+        # Recycle connections after 5 minutes (before Neon's scale-to-zero)
+        "pool_recycle": 300,
+        # Increase connection timeout to allow for database wake-up (default is 10s)
+        "connect_args": {
+            "connect_timeout": 30,
+            "keepalives": 1,
+            "keepalives_idle": 30,
+            "keepalives_interval": 10,
+            "keepalives_count": 5,
+        },
+        # Connection pool sizing
+        "pool_size": 5,
+        "max_overflow": 10,
+    }
 
     # --- Mail (SMTP) Configuration ---
     MAIL_SERVER: str = os.getenv("MAIL_SERVER", "smtp.gmail.com")

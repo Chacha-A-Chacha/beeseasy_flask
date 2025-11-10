@@ -180,12 +180,12 @@ Africa Symposium{% endblock %} {% block content %}
                         <!-- Price -->
                         <div class="mb-6">
                             <div class="flex items-baseline">
-                                <span
-                                    class="text-4xl font-bold text-accent-orange"
-                                    >${{ "%.2f"|format(package.price) }}</span
-                                >
                                 <span class="ml-2 text-gray-600"
                                     >{{ package.currency }}</span
+                                >
+                                <span
+                                    class="text-4xl font-bold text-accent-orange ml-2"
+                                    >{{ "{:,.2f}"|format(package.price) }}</span
                                 >
                             </div>
                         </div>

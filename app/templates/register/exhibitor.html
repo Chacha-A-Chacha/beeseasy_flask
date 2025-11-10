@@ -90,14 +90,14 @@ Pollination Africa Symposium{% endblock %} {% block content %}
                                     >Package Price</span
                                 >
                                 <div>
+                                    <span class="text-sm text-gray-600 mr-1"
+                                        >{{ selected_package.currency }}</span
+                                    >
                                     <span
                                         class="text-2xl font-bold text-accent-orange"
-                                        >${{
-                                        "%.2f"|format(selected_package.price)
+                                        >{{
+                                        "{:,.2f}"|format(selected_package.price)
                                         }}</span
-                                    >
-                                    <span class="text-sm text-gray-600 ml-1"
-                                        >{{ selected_package.currency }}</span
                                     >
                                 </div>
                             </div>

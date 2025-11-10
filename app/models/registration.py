@@ -19,12 +19,10 @@ import secrets
 import string
 import re
 
-from sqlalchemy import (
-    CheckConstraint, Index, UniqueConstraint, event, func, and_, or_
-)
+from sqlalchemy import CheckConstraint, Index, UniqueConstraint, event, func, and_, or_
 from sqlalchemy.orm import validates, relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import JSON
 from enum import Enum
 
 from app.extensions import db
@@ -34,8 +32,10 @@ from app.extensions import db
 # ENUMS FOR CONSISTENT DATA
 # ============================================
 
+
 class RegistrationStatus(Enum):
     """Registration workflow status"""
+
     DRAFT = "draft"  # Started but not submitted
     PENDING = "pending"  # Submitted, awaiting payment
     PAYMENT_PENDING = "payment_pending"  # Payment initiated
@@ -48,6 +48,7 @@ class RegistrationStatus(Enum):
 
 class PaymentStatus(Enum):
     """Payment processing status"""
+
     PENDING = "pending"
     PROCESSING = "processing"
     COMPLETED = "completed"
@@ -59,6 +60,7 @@ class PaymentStatus(Enum):
 
 class PaymentMethod(Enum):
     """Available payment methods"""
+
     CARD = "card"
     MOBILE_MONEY = "mobile_money"
     BANK_TRANSFER = "bank_transfer"
@@ -69,6 +71,7 @@ class PaymentMethod(Enum):
 
 class PaymentType(Enum):
     """Type of payment transaction"""
+
     INITIAL = "initial"
     PARTIAL = "partial"
     BALANCE = "balance"
@@ -78,6 +81,7 @@ class PaymentType(Enum):
 
 class AttendeeTicketType(Enum):
     """Attendee ticket categories"""
+
     FREE = "free"
     STANDARD = "standard"
     VIP = "vip"
@@ -90,6 +94,7 @@ class AttendeeTicketType(Enum):
 
 class ExhibitorPackage(Enum):
     """Exhibitor booth packages"""
+
     BRONZE = "bronze"
     SILVER = "silver"
     GOLD = "gold"
@@ -99,6 +104,7 @@ class ExhibitorPackage(Enum):
 
 class ProfessionalCategory(Enum):
     """Professional categories"""
+
     BEEKEEPER_HOBBYIST = "beekeeper_hobbyist"
     BEEKEEPER_COMMERCIAL = "beekeeper_commercial"
     RESEARCHER = "researcher"
@@ -115,6 +121,7 @@ class ProfessionalCategory(Enum):
 
 class IndustryCategory(Enum):
     """Industry categories for exhibitors"""
+
     BEEKEEPING_EQUIPMENT = "beekeeping_equipment"
     PROCESSING_EQUIPMENT = "processing_equipment"
     BEE_PRODUCTS = "bee_products"
@@ -132,10 +139,13 @@ class IndustryCategory(Enum):
 # HELPER FUNCTIONS
 # ============================================
 
+
 def generate_reference_number(prefix: str = "BEE") -> str:
     """Generate unique reference number"""
-    timestamp = datetime.now().strftime('%Y%m%d')
-    random_str = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+    timestamp = datetime.now().strftime("%Y%m%d")
+    random_str = "".join(
+        secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6)
+    )
     return f"{prefix}{timestamp}{random_str}"
 
 
@@ -146,29 +156,31 @@ def generate_confirmation_code() -> str:
 
 def validate_email_format(email: str) -> bool:
     """Validate email format"""
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     return bool(re.match(pattern, email))
 
 
 def sanitize_phone(phone: str) -> str:
     """Sanitize phone number"""
-    return re.sub(r'[^\d+\-\s]', '', phone).strip()
+    return re.sub(r"[^\d+\-\s]", "", phone).strip()
 
 
 # ============================================
 # PRICING CONFIGURATION MODELS
 # ============================================
 
+
 class TicketPrice(db.Model):
     """Ticket pricing configuration with inventory management"""
-    __tablename__ = 'ticket_prices'
+
+    __tablename__ = "ticket_prices"
 
     id = db.Column(db.Integer, primary_key=True)
     ticket_type = db.Column(db.Enum(AttendeeTicketType), nullable=False, unique=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False, default=0.0)
-    currency = db.Column(db.String(3), default='TSH', nullable=False)
+    currency = db.Column(db.String(3), default="TSH", nullable=False)
 
     # Availability
     is_active = db.Column(db.Boolean, default=True, nullable=False, index=True)
@@ -193,21 +205,22 @@ class TicketPrice(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
-        CheckConstraint('price >= 0', name='check_ticket_price_positive'),
-        CheckConstraint('current_quantity >= 0', name='check_current_quantity_positive'),
-        CheckConstraint("currency IN ('USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP')",
-                        name='check_valid_currency'),
-        Index('idx_ticket_active_type', 'is_active', 'ticket_type'),
+        CheckConstraint("price >= 0", name="check_ticket_price_positive"),
+        CheckConstraint(
+            "current_quantity >= 0", name="check_current_quantity_positive"
+        ),
+        CheckConstraint(
+            "currency IN ('USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP')",
+            name="check_valid_currency",
+        ),
+        Index("idx_ticket_active_type", "is_active", "ticket_type"),
     )
 
-    __mapper_args__ = {
-        'version_id_col': version,
-        'version_id_generator': False
-    }
+    __mapper_args__ = {"version_id_col": version, "version_id_generator": False}
 
-    @validates('currency')
+    @validates("currency")
     def validate_currency(self, key, value):
-        valid_currencies = ['USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP']
+        valid_currencies = ["USD", "KES", "TZS", "UGX", "EUR", "GBP"]
         if value not in valid_currencies:
             raise ValueError(f"Currency must be one of {valid_currencies}")
         return value
@@ -239,12 +252,12 @@ class TicketPrice(db.Model):
                 TicketPrice.is_active == True,
                 or_(
                     TicketPrice.max_quantity.is_(None),
-                    TicketPrice.current_quantity + quantity <= TicketPrice.max_quantity
-                )
+                    TicketPrice.current_quantity + quantity <= TicketPrice.max_quantity,
+                ),
             )
             .values(
                 current_quantity=TicketPrice.current_quantity + quantity,
-                version=TicketPrice.version + 1
+                version=TicketPrice.version + 1,
             )
         )
 
@@ -257,31 +270,29 @@ class TicketPrice(db.Model):
         """Release claimed tickets (e.g., on cancellation)"""
         result = db.session.execute(
             db.update(TicketPrice)
-            .where(
-                TicketPrice.id == self.id,
-                TicketPrice.current_quantity >= quantity
-            )
+            .where(TicketPrice.id == self.id, TicketPrice.current_quantity >= quantity)
             .values(
                 current_quantity=TicketPrice.current_quantity - quantity,
-                version=TicketPrice.version + 1
+                version=TicketPrice.version + 1,
             )
         )
         return result.rowcount > 0
 
     def __repr__(self):
-        return f'<TicketPrice {self.name} - {self.currency}{self.price}>'
+        return f"<TicketPrice {self.name} - {self.currency}{self.price}>"
 
 
 class ExhibitorPackagePrice(db.Model):
     """Exhibitor package pricing with inventory management"""
-    __tablename__ = 'exhibitor_package_prices'
+
+    __tablename__ = "exhibitor_package_prices"
 
     id = db.Column(db.Integer, primary_key=True)
     package_type = db.Column(db.Enum(ExhibitorPackage), nullable=False, unique=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False)
-    currency = db.Column(db.String(3), default='TSH', nullable=False)
+    currency = db.Column(db.String(3), default="TSH", nullable=False)
 
     # Booth specifications
     booth_size = db.Column(db.String(50))
@@ -297,7 +308,7 @@ class ExhibitorPackagePrice(db.Model):
     includes_workshop = db.Column(db.Boolean, default=False)
 
     # Features stored as JSON for flexibility
-    features = db.Column(JSONB)
+    features = db.Column(JSON)
 
     # Availability
     is_active = db.Column(db.Boolean, default=True, nullable=False, index=True)
@@ -309,20 +320,23 @@ class ExhibitorPackagePrice(db.Model):
 
     # Metadata
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    __table_args__ = (
-        CheckConstraint('price >= 0', name='check_package_price_positive'),
-        CheckConstraint('current_quantity >= 0', name='check_package_quantity_positive'),
-        CheckConstraint("currency IN ('USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP')",
-                        name='check_package_valid_currency'),
-        Index('idx_package_active_type', 'is_active', 'package_type'),
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
 
-    __mapper_args__ = {
-        'version_id_col': version,
-        'version_id_generator': False
-    }
+    __table_args__ = (
+        CheckConstraint("price >= 0", name="check_package_price_positive"),
+        CheckConstraint(
+            "current_quantity >= 0", name="check_package_quantity_positive"
+        ),
+        CheckConstraint(
+            "currency IN ('USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP')",
+            name="check_package_valid_currency",
+        ),
+        Index("idx_package_active_type", "is_active", "package_type"),
+    )
+
+    __mapper_args__ = {"version_id_col": version, "version_id_generator": False}
 
     def is_available(self) -> bool:
         """Check if package is still available"""
@@ -341,12 +355,13 @@ class ExhibitorPackagePrice(db.Model):
                 ExhibitorPackagePrice.is_active == True,
                 or_(
                     ExhibitorPackagePrice.max_quantity.is_(None),
-                    ExhibitorPackagePrice.current_quantity < ExhibitorPackagePrice.max_quantity
-                )
+                    ExhibitorPackagePrice.current_quantity
+                    < ExhibitorPackagePrice.max_quantity,
+                ),
             )
             .values(
                 current_quantity=ExhibitorPackagePrice.current_quantity + 1,
-                version=ExhibitorPackagePrice.version + 1
+                version=ExhibitorPackagePrice.version + 1,
             )
         )
 
@@ -361,28 +376,29 @@ class ExhibitorPackagePrice(db.Model):
             db.update(ExhibitorPackagePrice)
             .where(
                 ExhibitorPackagePrice.id == self.id,
-                ExhibitorPackagePrice.current_quantity > 0
+                ExhibitorPackagePrice.current_quantity > 0,
             )
             .values(
                 current_quantity=ExhibitorPackagePrice.current_quantity - 1,
-                version=ExhibitorPackagePrice.version + 1
+                version=ExhibitorPackagePrice.version + 1,
             )
         )
         return result.rowcount > 0
 
     def __repr__(self):
-        return f'<ExhibitorPackage {self.name} - {self.currency}{self.price}>'
+        return f"<ExhibitorPackage {self.name} - {self.currency}{self.price}>"
 
 
 class AddOnItem(db.Model):
     """Add-on items/services available for purchase"""
-    __tablename__ = 'addon_items'
+
+    __tablename__ = "addon_items"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False)
-    currency = db.Column(db.String(3), default='USD', nullable=False)
+    currency = db.Column(db.String(3), default="USD", nullable=False)
 
     # Applicability
     for_attendees = db.Column(db.Boolean, default=False)
@@ -399,13 +415,22 @@ class AddOnItem(db.Model):
 
     # Metadata
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     __table_args__ = (
-        CheckConstraint('price >= 0', name='check_addon_price_positive'),
-        CheckConstraint("currency IN ('USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP')",
-                        name='check_addon_valid_currency'),
-        Index('idx_addon_active_applicability', 'is_active', 'for_attendees', 'for_exhibitors'),
+        CheckConstraint("price >= 0", name="check_addon_price_positive"),
+        CheckConstraint(
+            "currency IN ('USD', 'KES', 'TZS', 'UGX', 'EUR', 'GBP')",
+            name="check_addon_valid_currency",
+        ),
+        Index(
+            "idx_addon_active_applicability",
+            "is_active",
+            "for_attendees",
+            "for_exhibitors",
+        ),
     )
 
     def is_available(self) -> bool:
@@ -420,19 +445,21 @@ class AddOnItem(db.Model):
         return True
 
     def __repr__(self):
-        return f'<AddOn {self.name} - {self.currency}{self.price}>'
+        return f"<AddOn {self.name} - {self.currency}{self.price}>"
 
 
 # ============================================
 # BASE REGISTRATION MODEL
 # ============================================
 
+
 class Registration(db.Model):
     """
     Base registration model using Joined Table Inheritance (JTI)
     Contains only shared fields across all registration types
     """
-    __tablename__ = 'registrations'
+
+    __tablename__ = "registrations"
 
     id = db.Column(db.Integer, primary_key=True)
 
@@ -444,17 +471,19 @@ class Registration(db.Model):
     registration_type = db.Column(db.String(20), nullable=False, index=True)
 
     # Status tracking
-    status = db.Column(db.Enum(RegistrationStatus),
-                       default=RegistrationStatus.PENDING,
-                       nullable=False,
-                       index=True)
+    status = db.Column(
+        db.Enum(RegistrationStatus),
+        default=RegistrationStatus.PENDING,
+        nullable=False,
+        index=True,
+    )
 
     # Contact Information
     first_name = db.Column(db.String(100), nullable=False, index=True)
     last_name = db.Column(db.String(100), nullable=False, index=True)
 
     email = db.Column(db.String(255), nullable=False, index=True)
-    phone_country_code = db.Column(db.String(10), default='+254')
+    phone_country_code = db.Column(db.String(10), default="+254")
     phone_number = db.Column(db.String(20))
 
     # Organization (optional for attendees, required for exhibitors)
@@ -480,7 +509,7 @@ class Registration(db.Model):
 
     # Admin management
     admin_notes = db.Column(db.Text)
-    internal_tags = db.Column(JSONB)  # For admin categorization
+    internal_tags = db.Column(JSON)  # For admin categorization
 
     # Soft delete
     is_deleted = db.Column(db.Boolean, default=False, nullable=False, index=True)
@@ -488,9 +517,13 @@ class Registration(db.Model):
     deleted_by = db.Column(db.String(255))
 
     # Timestamps
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False, index=True)
+    created_at = db.Column(
+        db.DateTime, default=datetime.now, nullable=False, index=True
+    )
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    created_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True, index=True)
+    created_by_id = db.Column(
+        db.Integer, db.ForeignKey("users.id"), nullable=True, index=True
+    )
     confirmed_at = db.Column(db.DateTime)
 
     # Optimistic locking
@@ -498,36 +531,49 @@ class Registration(db.Model):
 
     # Polymorphic configuration
     __mapper_args__ = {
-        'polymorphic_on': registration_type,
-        'version_id_col': version,
-        'version_id_generator': False,
-        'with_polymorphic': '*'
+        "polymorphic_on": registration_type,
+        "version_id_col": version,
+        "version_id_generator": False,
+        "with_polymorphic": "*",
     }
 
     # Relationships
-    payments = relationship('Payment', back_populates='registration',
-                            cascade='all, delete-orphan',
-                            lazy='select')
-    addon_purchases = relationship('AddOnPurchase', back_populates='registration',
-                                   cascade='all, delete-orphan',
-                                   lazy='select')
-    email_logs = relationship('EmailLog', back_populates='registration',
-                              cascade='all, delete-orphan',
-                              lazy='select')
-    created_by = relationship('User', back_populates='registrations')
+    payments = relationship(
+        "Payment",
+        back_populates="registration",
+        cascade="all, delete-orphan",
+        lazy="select",
+    )
+    addon_purchases = relationship(
+        "AddOnPurchase",
+        back_populates="registration",
+        cascade="all, delete-orphan",
+        lazy="select",
+    )
+    email_logs = relationship(
+        "EmailLog",
+        back_populates="registration",
+        cascade="all, delete-orphan",
+        lazy="select",
+    )
+    created_by = relationship("User", back_populates="registrations")
 
     __table_args__ = (
-        UniqueConstraint('email', 'registration_type', 'is_deleted',
-                         name='uq_email_type_active'),
-        CheckConstraint(r"email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'",
-                        name='check_valid_email'),
-        CheckConstraint(r"phone_country_code ~ '^\+[0-9]{1,4}$'",
-                        name='check_valid_country_code'),
-        Index('idx_status_created', 'status', 'created_at'),
-        Index('idx_email_lower', func.lower('email')),
-        Index('idx_reference_number', 'reference_number'),
-        Index('idx_type_status', 'registration_type', 'status'),
-        Index('idx_deleted', 'is_deleted', 'deleted_at'),
+        UniqueConstraint(
+            "email", "registration_type", "is_deleted", name="uq_email_type_active"
+        ),
+        CheckConstraint(
+            r"email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'",
+            name="check_valid_email",
+        ),
+        CheckConstraint(
+            r"phone_country_code ~ '^\+[0-9]{1,4}$'", name="check_valid_country_code"
+        ),
+        Index("idx_status_created", "status", "created_at"),
+        Index("idx_email_lower", func.lower("email")),
+        Index("idx_reference_number", "reference_number"),
+        Index("idx_type_status", "registration_type", "status"),
+        Index("idx_deleted", "is_deleted", "deleted_at"),
     )
 
     def __init__(self, **kwargs):
@@ -549,7 +595,7 @@ class Registration(db.Model):
             return f"{self.phone_country_code} {self.phone_number}"
         return None
 
-    @validates('email')
+    @validates("email")
     def validate_email(self, key, value):
         """Validate and normalize email"""
         if not value:
@@ -562,14 +608,14 @@ class Registration(db.Model):
 
         return value
 
-    @validates('phone_number')
+    @validates("phone_number")
     def validate_phone_number(self, key, value):
         """Sanitize phone number"""
         if value:
             return sanitize_phone(value)
         return value
 
-    @validates('first_name', 'last_name')
+    @validates("first_name", "last_name")
     def validate_names(self, key, value):
         """Validate name fields"""
         if value:
@@ -595,7 +641,8 @@ class Registration(db.Model):
         return sum(
             Decimal(str(p.refund_amount))
             for p in self.payments
-            if p.payment_status in [PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED]
+            if p.payment_status
+            in [PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED]
         )
 
     def get_balance_due(self) -> Decimal:
@@ -630,55 +677,69 @@ class Registration(db.Model):
             "registration_type": self.registration_type,
             "status": self.status.value,
             "created_at": self.created_at.isoformat(),
-            "confirmed_at": self.confirmed_at.isoformat() if self.confirmed_at else None,
+            "confirmed_at": self.confirmed_at.isoformat()
+            if self.confirmed_at
+            else None,
         }
 
         if include_pii:
-            data.update({
-                "first_name": self.first_name,
-                "last_name": self.last_name,
-                "email": self.email,
-                "phone": self.full_phone,
-                "organization": self.organization,
-                "country": self.country,
-                "city": self.city,
-            })
+            data.update(
+                {
+                    "first_name": self.first_name,
+                    "last_name": self.last_name,
+                    "email": self.email,
+                    "phone": self.full_phone,
+                    "organization": self.organization,
+                    "country": self.country,
+                    "city": self.city,
+                }
+            )
         else:
             # Redact PII
-            data.update({
-                "first_name": self.first_name[0] + "***",
-                "last_name": self.last_name[0] + "***",
-                "email": self.email.split('@')[0][:2] + "***@" + self.email.split('@')[1],
-            })
+            data.update(
+                {
+                    "first_name": self.first_name[0] + "***",
+                    "last_name": self.last_name[0] + "***",
+                    "email": self.email.split("@")[0][:2]
+                    + "***@"
+                    + self.email.split("@")[1],
+                }
+            )
 
         return data
 
     def __repr__(self):
-        return f'<Registration {self.reference_number[:15]}... - {self.status.value}>'
+        return f"<Registration {self.reference_number[:15]}... - {self.status.value}>"
 
 
 # ============================================
 # ATTENDEE REGISTRATION MODEL
 # ============================================
 
+
 class AttendeeRegistration(Registration):
     """Attendee-specific registration details using Joined Table Inheritance"""
-    __tablename__ = 'attendee_registrations'
 
-    id = db.Column(db.Integer, db.ForeignKey('registrations.id'), primary_key=True)
+    __tablename__ = "attendee_registrations"
+
+    id = db.Column(db.Integer, db.ForeignKey("registrations.id"), primary_key=True)
 
     # Ticket information
-    ticket_type = db.Column(db.Enum(AttendeeTicketType),
-                            nullable=False,
-                            default=AttendeeTicketType.FREE,
-                            index=True)
-    ticket_price_id = db.Column(db.Integer, db.ForeignKey('ticket_prices.id'))
+    ticket_type = db.Column(
+        db.Enum(AttendeeTicketType),
+        nullable=False,
+        default=AttendeeTicketType.FREE,
+        index=True,
+    )
+    ticket_price_id = db.Column(db.Integer, db.ForeignKey("ticket_prices.id"))
 
     # Professional information (simplified)
     professional_category = db.Column(db.Enum(ProfessionalCategory), index=True)
 
     # Event preferences (consolidated from 4 fields to 1)
-    event_preferences = db.Column(JSONB)  # Combines: session_interests, networking_goals, workshop_preferences, topics_of_interest
+    event_preferences = db.Column(
+        JSON
+    )  # Combines: session_interests, networking_goals, workshop_preferences, topics_of_interest
 
     # Dietary and accessibility (operational - keep)
     dietary_requirement = db.Column(db.String(50))
@@ -698,24 +759,24 @@ class AttendeeRegistration(Registration):
     badge_printed = db.Column(db.Boolean, default=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'attendee',
+        "polymorphic_identity": "attendee",
     }
 
     # Relationships
-    ticket_price = relationship('TicketPrice',
-                                backref='attendee_registrations',
-                                lazy='joined')
+    ticket_price = relationship(
+        "TicketPrice", backref="attendee_registrations", lazy="joined"
+    )
 
     __table_args__ = (
         # Index('idx_attendee_ticket_status', 'ticket_type', 'status'),
-        Index('idx_attendee_checkin', 'checked_in', 'checked_in_at'),
+        Index("idx_attendee_checkin", "checked_in", "checked_in_at"),
     )
 
     def get_base_price(self) -> Decimal:
         """Get base ticket price"""
         if self.ticket_price:
             return Decimal(str(self.ticket_price.price))
-        return Decimal('0.00')
+        return Decimal("0.00")
 
     def get_total_amount_due(self) -> Decimal:
         """Calculate total amount due for attendee"""
@@ -723,8 +784,7 @@ class AttendeeRegistration(Registration):
 
         # Add add-ons
         addons_total = sum(
-            Decimal(str(addon.total_price))
-            for addon in self.addon_purchases
+            Decimal(str(addon.total_price)) for addon in self.addon_purchases
         )
 
         return base_price + addons_total
@@ -736,18 +796,20 @@ class AttendeeRegistration(Registration):
         self.checked_in_by = checked_in_by
 
     def __repr__(self):
-        return f'<AttendeeRegistration {self.reference_number[:15]}... - {self.ticket_type.value}>'
+        return f"<AttendeeRegistration {self.reference_number[:15]}... - {self.ticket_type.value}>"
 
 
 # ============================================
 # EXHIBITOR REGISTRATION MODEL - CLEANED
 # ============================================
 
+
 class ExhibitorRegistration(Registration):
     """Exhibitor-specific registration details using Joined Table Inheritance"""
-    __tablename__ = 'exhibitor_registrations'
 
-    id = db.Column(db.Integer, db.ForeignKey('registrations.id'), primary_key=True)
+    __tablename__ = "exhibitor_registrations"
+
+    id = db.Column(db.Integer, db.ForeignKey("registrations.id"), primary_key=True)
 
     # Company information (simplified - single name only)
     company_legal_name = db.Column(db.String(255), nullable=False, index=True)
@@ -765,7 +827,9 @@ class ExhibitorRegistration(Registration):
 
     # Package selection
     package_type = db.Column(db.Enum(ExhibitorPackage), nullable=False, index=True)
-    package_price_id = db.Column(db.Integer, db.ForeignKey('exhibitor_package_prices.id'))
+    package_price_id = db.Column(
+        db.Integer, db.ForeignKey("exhibitor_package_prices.id")
+    )
 
     # Booth assignment (operational - keep)
     booth_number = db.Column(db.String(20), index=True)
@@ -795,24 +859,24 @@ class ExhibitorRegistration(Registration):
     total_leads_captured = db.Column(db.Integer, default=0)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'exhibitor',
+        "polymorphic_identity": "exhibitor",
     }
 
     # Relationships
-    package_price = relationship('ExhibitorPackagePrice',
-                                 backref='exhibitor_registrations',
-                                 lazy='joined')
+    package_price = relationship(
+        "ExhibitorPackagePrice", backref="exhibitor_registrations", lazy="joined"
+    )
 
     __table_args__ = (
-        Index('idx_exhibitor_booth', 'booth_number', 'booth_assigned'),
-        Index('idx_exhibitor_company', 'company_legal_name'),
+        Index("idx_exhibitor_booth", "booth_number", "booth_assigned"),
+        Index("idx_exhibitor_company", "company_legal_name"),
     )
 
     def get_base_price(self) -> Decimal:
         """Get base package price"""
         if self.package_price:
             return Decimal(str(self.package_price.price))
-        return Decimal('0.00')
+        return Decimal("0.00")
 
     def get_total_amount_due(self) -> Decimal:
         """Calculate total amount due for exhibitor"""
@@ -820,8 +884,7 @@ class ExhibitorRegistration(Registration):
 
         # Add add-ons
         addons_total = sum(
-            Decimal(str(addon.total_price))
-            for addon in self.addon_purchases
+            Decimal(str(addon.total_price)) for addon in self.addon_purchases
         )
 
         return base_price + addons_total
@@ -834,27 +897,31 @@ class ExhibitorRegistration(Registration):
         self.booth_assigned_by = assigned_by
 
     def __repr__(self):
-        return f'<ExhibitorRegistration {self.reference_number[:15]}... - {self.company_legal_name[:30]}>'
+        return f"<ExhibitorRegistration {self.reference_number[:15]}... - {self.company_legal_name[:30]}>"
 
 
 # ============================================
 # ADD-ON PURCHASE MODEL
 # ============================================
 
+
 class AddOnPurchase(db.Model):
     """Track add-on items purchased with registration"""
-    __tablename__ = 'addon_purchases'
+
+    __tablename__ = "addon_purchases"
 
     id = db.Column(db.Integer, primary_key=True)
-    registration_id = db.Column(db.Integer, db.ForeignKey('registrations.id'),
-                                nullable=False, index=True)
-    addon_id = db.Column(db.Integer, db.ForeignKey('addon_items.id'),
-                         nullable=False, index=True)
+    registration_id = db.Column(
+        db.Integer, db.ForeignKey("registrations.id"), nullable=False, index=True
+    )
+    addon_id = db.Column(
+        db.Integer, db.ForeignKey("addon_items.id"), nullable=False, index=True
+    )
 
     quantity = db.Column(db.Integer, default=1, nullable=False)
     unit_price = db.Column(db.Numeric(10, 2), nullable=False)
     total_price = db.Column(db.Numeric(10, 2), nullable=False)
-    currency = db.Column(db.String(3), default='USD', nullable=False)
+    currency = db.Column(db.String(3), default="USD", nullable=False)
 
     # Status
     approved = db.Column(db.Boolean, default=True)
@@ -872,17 +939,19 @@ class AddOnPurchase(db.Model):
 
     # Timestamps
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     # Relationships
-    addon_item = relationship('AddOnItem', backref='purchases', lazy='joined')
-    registration = relationship('Registration', back_populates='addon_purchases')
+    addon_item = relationship("AddOnItem", backref="purchases", lazy="joined")
+    registration = relationship("Registration", back_populates="addon_purchases")
 
     __table_args__ = (
-        CheckConstraint('quantity > 0', name='check_addon_quantity_positive'),
-        CheckConstraint('unit_price >= 0', name='check_addon_unit_price_positive'),
-        CheckConstraint('total_price >= 0', name='check_addon_total_price_positive'),
-        Index('idx_addon_purchase_registration', 'registration_id', 'addon_id'),
+        CheckConstraint("quantity > 0", name="check_addon_quantity_positive"),
+        CheckConstraint("unit_price >= 0", name="check_addon_unit_price_positive"),
+        CheckConstraint("total_price >= 0", name="check_addon_total_price_positive"),
+        Index("idx_addon_purchase_registration", "registration_id", "addon_id"),
     )
 
     def __init__(self, **kwargs):
@@ -906,4 +975,4 @@ class AddOnPurchase(db.Model):
 
     def __repr__(self):
         addon_name = self.addon_item.name if self.addon_item else "Unknown"
-        return f'<AddOnPurchase {addon_name} x{self.quantity}>'
+        return f"<AddOnPurchase {addon_name} x{self.quantity}>"

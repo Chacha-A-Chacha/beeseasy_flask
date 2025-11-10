@@ -3,29 +3,31 @@ Updated registration routes for BEEASY2025
 Single-page forms with AJAX validation
 """
 
+import logging
+from decimal import Decimal
+
 from flask import (
     Blueprint,
-    render_template,
-    request,
-    redirect,
-    url_for,
     flash,
     jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
 )
+
+from app.extensions import db
 from app.forms import AttendeeRegistrationForm, ExhibitorRegistrationForm
-from app.services.registration_service import RegistrationService
 from app.models import (
-    Registration,
-    TicketPrice,
-    ExhibitorPackagePrice,
     AttendeeTicketType,
     ExhibitorPackage,
+    ExhibitorPackagePrice,
     PromoCode,
+    Registration,
     RegistrationStatus,
+    TicketPrice,
 )
-from app.extensions import db
-from decimal import Decimal
-import logging
+from app.services.registration_service import RegistrationService
 
 logger = logging.getLogger(__name__)
 
@@ -55,15 +57,37 @@ def attendee_index():
 def register_attendee_form():
     """Single-page attendee registration form with pre-selected ticket"""
     form = AttendeeRegistrationForm()
+
+    # Dynamically populate ticket choices from database
+    form.populate_ticket_choices()
+
     tickets = TicketPrice.query.filter_by(is_active=True).all()
 
     # Pre-select ticket if passed via query parameter
-    selected_ticket = request.args.get("ticket_type")
-    if selected_ticket and request.method == "GET":
-        form.ticket_type.data = selected_ticket
+    selected_ticket_type = request.args.get("ticket_type")
+    selected_ticket = None
+
+    if selected_ticket_type and request.method == "GET":
+        form.ticket_type.data = selected_ticket_type
+        # Get the actual ticket object for sidebar display
+        try:
+            ticket_enum = AttendeeTicketType(selected_ticket_type)
+            selected_ticket = TicketPrice.query.filter_by(
+                ticket_type=ticket_enum, is_active=True
+            ).first()
+        except (ValueError, AttributeError):
+            logger.warning(f"Invalid ticket type: {selected_ticket_type}")
 
     if form.validate_on_submit():
-        success, message, attendee = RegistrationService.register_attendee(form.data)
+        # Process phone data from enhanced or fallback inputs
+        country_code, phone_number = form.process_phone_data()
+
+        # Update form data with processed phone values
+        form_data = form.data.copy()
+        form_data["phone_country_code"] = country_code
+        form_data["phone_number"] = phone_number
+
+        success, message, attendee = RegistrationService.register_attendee(form_data)
 
         if success:
             flash(message, "success")
@@ -73,7 +97,12 @@ def register_attendee_form():
         else:
             flash(message, "error")
 
-    return render_template("register/attendee.html", form=form, tickets=tickets)
+    return render_template(
+        "register/attendee.html",
+        form=form,
+        tickets=tickets,
+        selected_ticket=selected_ticket,
+    )
 
 
 # ============================================
@@ -106,15 +135,37 @@ def exhibitor_index():
 def register_exhibitor_form():
     """Single-page exhibitor registration form with pre-selected package"""
     form = ExhibitorRegistrationForm()
+
+    # Dynamically populate package choices from database
+    form.populate_package_choices()
+
     packages = ExhibitorPackagePrice.query.filter_by(is_active=True).all()
 
     # Pre-select package if passed via query parameter
-    selected_package = request.args.get("package_type")
-    if selected_package and request.method == "GET":
-        form.package_type.data = selected_package
+    selected_package_type = request.args.get("package_type")
+    selected_package = None
+
+    if selected_package_type and request.method == "GET":
+        form.package_type.data = selected_package_type
+        # Get the actual package object for sidebar display
+        try:
+            package_enum = ExhibitorPackage(selected_package_type)
+            selected_package = ExhibitorPackagePrice.query.filter_by(
+                package_type=package_enum, is_active=True
+            ).first()
+        except (ValueError, AttributeError):
+            logger.warning(f"Invalid package type: {selected_package_type}")
 
     if form.validate_on_submit():
-        success, message, exhibitor = RegistrationService.register_exhibitor(form.data)
+        # Process phone data from enhanced or fallback inputs
+        country_code, phone_number = form.process_phone_data()
+
+        # Update form data with processed phone values
+        form_data = form.data.copy()
+        form_data["phone_country_code"] = country_code
+        form_data["phone_number"] = phone_number
+
+        success, message, exhibitor = RegistrationService.register_exhibitor(form_data)
 
         if success:
             flash(message, "success")
@@ -124,7 +175,12 @@ def register_exhibitor_form():
         else:
             flash(message, "error")
 
-    return render_template("register/exhibitor.html", form=form, packages=packages)
+    return render_template(
+        "register/exhibitor.html",
+        form=form,
+        packages=packages,
+        selected_package=selected_package,
+    )
 
 
 # ============================================

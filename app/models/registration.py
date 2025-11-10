@@ -12,21 +12,28 @@ Key Features:
 - Multi-payment support
 """
 
-from datetime import datetime, date, time
-from decimal import Decimal
-from typing import Optional, List, Dict, Any
+import re
 import secrets
 import string
-import re
-
-from sqlalchemy import CheckConstraint, Index, UniqueConstraint, event, func, and_, or_
-from sqlalchemy.orm import validates, relationship, backref
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import JSON
+from datetime import date, datetime, time
+from decimal import Decimal
 from enum import Enum
+from typing import Any, Dict, List, Optional
+
+from sqlalchemy import (
+    JSON,
+    CheckConstraint,
+    Index,
+    UniqueConstraint,
+    and_,
+    event,
+    func,
+    or_,
+)
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import backref, relationship, validates
 
 from app.extensions import db
-
 
 # ============================================
 # ENUMS FOR CONSISTENT DATA
@@ -103,35 +110,46 @@ class ExhibitorPackage(Enum):
 
 
 class ProfessionalCategory(Enum):
-    """Professional categories"""
+    """Professional categories - broad classifications"""
 
-    BEEKEEPER_HOBBYIST = "beekeeper_hobbyist"
-    BEEKEEPER_COMMERCIAL = "beekeeper_commercial"
-    RESEARCHER = "researcher"
-    GOVERNMENT = "government"
-    EQUIPMENT_SUPPLIER = "equipment_supplier"
-    HONEY_PROCESSOR = "honey_processor"
-    NGO = "ngo"
+    FARMER = "farmer"
+    RESEARCHER_ACADEMIC = "researcher_academic"
     STUDENT = "student"
+    GOVERNMENT_OFFICIAL = "government_official"
+    NGO_NONPROFIT = "ngo_nonprofit"
+    PRIVATE_SECTOR = "private_sector"
+    ENTREPRENEUR = "entrepreneur"
     CONSULTANT = "consultant"
+    EXTENSION_OFFICER = "extension_officer"
+    COOPERATIVE_MEMBER = "cooperative_member"
     INVESTOR = "investor"
-    MEDIA = "media"
+    MEDIA_JOURNALIST = "media_journalist"
+    POLICY_MAKER = "policy_maker"
+    CONSERVATIONIST = "conservationist"
+    EDUCATOR = "educator"
     OTHER = "other"
 
 
 class IndustryCategory(Enum):
-    """Industry categories for exhibitors"""
+    """Industry categories for exhibitors - broad classifications"""
 
-    BEEKEEPING_EQUIPMENT = "beekeeping_equipment"
-    PROCESSING_EQUIPMENT = "processing_equipment"
-    BEE_PRODUCTS = "bee_products"
-    PACKAGING = "packaging"
-    TECHNOLOGY = "technology"
-    TRAINING = "training"
+    AGRICULTURE_INPUTS = "agriculture_inputs"
+    EQUIPMENT_MACHINERY = "equipment_machinery"
+    PROCESSING_PACKAGING = "processing_packaging"
+    TECHNOLOGY_INNOVATION = "technology_innovation"
     FINANCIAL_SERVICES = "financial_services"
-    RESEARCH = "research"
-    GOVERNMENT = "government"
-    MEDIA = "media"
+    TRAINING_EDUCATION = "training_education"
+    RESEARCH_DEVELOPMENT = "research_development"
+    CONSULTING_ADVISORY = "consulting_advisory"
+    CONSERVATION_ENVIRONMENT = "conservation_environment"
+    CERTIFICATION_STANDARDS = "certification_standards"
+    LOGISTICS_SUPPLY_CHAIN = "logistics_supply_chain"
+    MARKETING_TRADE = "marketing_trade"
+    GOVERNMENT_AGENCY = "government_agency"
+    NGO_DEVELOPMENT = "ngo_development"
+    MEDIA_COMMUNICATIONS = "media_communications"
+    HEALTHCARE_NUTRITION = "healthcare_nutrition"
+    TOURISM_HOSPITALITY = "tourism_hospitality"
     OTHER = "other"
 
 
@@ -180,7 +198,7 @@ class TicketPrice(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False, default=0.0)
-    currency = db.Column(db.String(3), default="TSH", nullable=False)
+    currency = db.Column(db.String(3), default="TZS", nullable=False)
 
     # Availability
     is_active = db.Column(db.Boolean, default=True, nullable=False, index=True)

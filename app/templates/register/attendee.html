@@ -267,7 +267,12 @@ Africa Symposium{% endblock %} {% block content %}
                         {{ form.hidden_tag() }}
 
                         <!-- Hidden ticket type field -->
-                        {{ form.ticket_type(type="hidden") }}
+                        <input
+                            type="hidden"
+                            name="ticket_type"
+                            value="{{ form.ticket_type.data or '' }}"
+                            id="ticket_type"
+                        />
 
                         <!-- Personal Information -->
                         <div class="mb-8">
@@ -323,31 +328,73 @@ Africa Symposium{% endblock %} {% block content %}
                                 {% endif %}
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="md:col-span-1">
-                                    {{
-                                    form.phone_country_code.label(class="block
-                                    text-sm font-medium text-primary-dark mb-1")
-                                    }} {{ form.phone_country_code(class="w-full
-                                    px-3.5 py-2 border border-gray-300
-                                    rounded-md focus:ring-accent-yellow
-                                    focus:border-accent-yellow") }}
-                                </div>
+                            <!-- Enhanced Phone Input with Progressive Enhancement -->
+                            <div class="phone-input-container">
+                                {{ form.phone_international.label(class="block
+                                text-sm font-medium text-primary-dark mb-1") }}
 
-                                <div class="md:col-span-2">
-                                    {{ form.phone_number.label(class="block
-                                    text-sm font-medium text-primary-dark mb-1")
-                                    }} {{ form.phone_number(class="w-full px-3.5
-                                    py-2 border border-gray-300 rounded-md
-                                    focus:ring-accent-yellow
-                                    focus:border-accent-yellow") }} {% if
-                                    form.phone_number.errors %}
-                                    <p class="text-red-600 text-xs mt-1">
-                                        {{ form.phone_number.errors[0] }}
-                                    </p>
-                                    {% endif %}
-                                </div>
+                                <!-- Enhanced phone input (JavaScript-enabled) -->
+                                {{ form.phone_international(class="w-full px-3.5
+                                py-2 border border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow") }}
+
+                                <!-- Hidden fields (populated by JavaScript) -->
+                                <input
+                                    type="hidden"
+                                    name="phone_international_value"
+                                    id="phone_international_value"
+                                    value="{{ form.phone_international.data or '' }}"
+                                />
+                                {{ form.phone_country_code }} {{
+                                form.phone_number }}
+
+                                <!-- Error message placeholder -->
+                                <p
+                                    class="phone-error hidden text-red-600 text-xs mt-1"
+                                ></p>
+
+                                {% if form.phone_international.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.phone_international.errors[0] }}
+                                </p>
+                                {% endif %}
                             </div>
+
+                            <!-- Fallback for no-JavaScript users -->
+                            <noscript>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"
+                                >
+                                    <div class="md:col-span-1">
+                                        {{
+                                        form.phone_country_code_fallback.label(class="block
+                                        text-sm font-medium text-primary-dark
+                                        mb-1") }} {{
+                                        form.phone_country_code_fallback(class="w-full
+                                        px-3.5 py-2 border border-gray-300
+                                        rounded-md focus:ring-accent-yellow
+                                        focus:border-accent-yellow") }}
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        {{
+                                        form.phone_number_fallback.label(class="block
+                                        text-sm font-medium text-primary-dark
+                                        mb-1") }} {{
+                                        form.phone_number_fallback(class="w-full
+                                        px-3.5 py-2 border border-gray-300
+                                        rounded-md focus:ring-accent-yellow
+                                        focus:border-accent-yellow") }} {% if
+                                        form.phone_number_fallback.errors %}
+                                        <p class="text-red-600 text-xs mt-1">
+                                            {{
+                                            form.phone_number_fallback.errors[0]
+                                            }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </noscript>
                         </div>
 
                         <!-- Professional Information -->
@@ -416,6 +463,8 @@ Africa Symposium{% endblock %} {% block content %}
                                             class="mt-1 mr-3 text-accent-yellow focus:ring-accent-yellow rounded"
                                             {%
                                             if
+                                            form.event_preferences.data
+                                            and
                                             choice[0]
                                             in
                                             form.event_preferences.data

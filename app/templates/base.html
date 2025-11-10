@@ -41,7 +41,92 @@
             href="{{ url_for('static', filename='images/logo_mark.png') }}"
         />
 
+        <!-- International Telephone Input CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/intl-tel-input@19/build/css/intlTelInput.css"
+        />
+
         <style>
+            /* International Telephone Input Custom Styling */
+            .iti {
+                width: 100%;
+            }
+
+            .iti__input {
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+                border: 1px solid #d1d5db;
+                border-radius: 0.375rem;
+                transition: all 0.2s;
+            }
+
+            .iti__input:focus {
+                outline: none;
+                border-color: #f2c12e; /* accent-yellow */
+                box-shadow: 0 0 0 3px rgba(242, 193, 46, 0.1);
+            }
+
+            .iti__input.border-green-500 {
+                border-color: #10b981;
+            }
+
+            .iti__input.border-red-500 {
+                border-color: #ef4444;
+            }
+
+            .iti__country-list {
+                box-shadow:
+                    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                border: 1px solid #e5e7eb;
+                border-radius: 0.375rem;
+                max-height: 300px;
+            }
+
+            .iti__search-input {
+                width: calc(100% - 1rem);
+                margin: 0.5rem;
+                padding: 0.5rem;
+                border: 1px solid #d1d5db;
+                border-radius: 0.25rem;
+            }
+
+            .iti__search-input:focus {
+                outline: none;
+                border-color: #f2c12e; /* accent-yellow */
+            }
+
+            .iti__country.iti__highlight {
+                background-color: rgba(
+                    242,
+                    193,
+                    46,
+                    0.1
+                ); /* accent-yellow with opacity */
+            }
+
+            .iti__country:hover {
+                background-color: rgba(242, 193, 46, 0.05);
+            }
+
+            .iti__selected-dial-code {
+                color: #25400a; /* primary-medium */
+                font-weight: 600;
+            }
+
+            .iti__divider {
+                border-bottom: 1px solid #e5e7eb;
+                margin: 0.25rem 0;
+            }
+
+            /* Phone error message styling */
+            .phone-error {
+                color: #ef4444;
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
+            }
+
             /* Pollination Africa Theme - Nature's Night Garden */
             :root {
                 /* Primary Colors */
@@ -672,5 +757,159 @@
                 </div>
             </div>
         </footer>
+
+        <!-- International Telephone Input JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19/build/js/intlTelInput.min.js"></script>
+
+        <!-- Custom Phone Input Initialization -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize intl-tel-input on all phone input fields
+                const phoneInputs = document.querySelectorAll(
+                    'input[type="tel"][data-intl-tel-input]',
+                );
+
+                phoneInputs.forEach(function (input) {
+                    const iti = window.intlTelInput(input, {
+                        // Initial country (Kenya - event location)
+                        initialCountry: "ke",
+
+                        // Preferred countries (East Africa priority)
+                        preferredCountries: ["ke", "tz", "ug", "rw", "bi"],
+
+                        // Show dial code separately (+254)
+                        separateDialCode: true,
+
+                        // Auto-format as user types
+                        formatOnDisplay: true,
+
+                        // Always use international format
+                        nationalMode: false,
+
+                        // Show placeholder with example number
+                        autoPlaceholder: "aggressive",
+
+                        // Enable country search in dropdown
+                        countrySearch: true,
+
+                        // Load validation utilities (lazy loaded)
+                        utilsScript:
+                            "https://cdn.jsdelivr.net/npm/intl-tel-input@19/build/js/utils.js",
+                    });
+
+                    // Store reference for form validation
+                    input.intlTelInputInstance = iti;
+
+                    // Update hidden fields when country changes
+                    input.addEventListener("countrychange", function () {
+                        updateHiddenFields(input, iti);
+                    });
+
+                    // Update hidden fields on blur
+                    input.addEventListener("blur", function () {
+                        updateHiddenFields(input, iti);
+                        validatePhoneNumber(input, iti);
+                    });
+
+                    // Initialize with current value if exists
+                    if (input.value) {
+                        updateHiddenFields(input, iti);
+                    }
+                });
+
+                // Helper function to update hidden fields
+                function updateHiddenFields(input, iti) {
+                    const countryData = iti.getSelectedCountryData();
+                    const fullNumber = iti.getNumber();
+
+                    // Update phone_international hidden field
+                    const internationalField = document.getElementById(
+                        "phone_international_value",
+                    );
+                    if (internationalField) {
+                        internationalField.value = fullNumber;
+                    }
+
+                    // Update phone_country_code hidden field
+                    const countryCodeField =
+                        document.getElementById("phone_country_code");
+                    if (countryCodeField) {
+                        countryCodeField.value = "+" + countryData.dialCode;
+                    }
+
+                    // Update phone_number hidden field (national number only)
+                    const phoneNumberField =
+                        document.getElementById("phone_number");
+                    if (phoneNumberField && fullNumber) {
+                        // Remove country code to get national number
+                        const nationalNumber = fullNumber
+                            .replace("+" + countryData.dialCode, "")
+                            .trim();
+                        phoneNumberField.value = nationalNumber;
+                    }
+                }
+
+                // Helper function to validate phone number
+                function validatePhoneNumber(input, iti) {
+                    const errorMsg =
+                        input.parentElement.querySelector(".phone-error");
+                    const isValid = iti.isValidNumber();
+
+                    if (input.value.trim() === "") {
+                        // Empty is okay (unless required - handled by form validation)
+                        input.classList.remove(
+                            "border-red-500",
+                            "border-green-500",
+                        );
+                        if (errorMsg) errorMsg.classList.add("hidden");
+                        return;
+                    }
+
+                    if (isValid) {
+                        input.classList.remove("border-red-500");
+                        input.classList.add("border-green-500");
+                        if (errorMsg) errorMsg.classList.add("hidden");
+                    } else {
+                        input.classList.remove("border-green-500");
+                        input.classList.add("border-red-500");
+                        if (errorMsg) {
+                            errorMsg.classList.remove("hidden");
+                            errorMsg.textContent =
+                                "Please enter a valid phone number";
+                        }
+                    }
+                }
+
+                // Form submission validation
+                document.querySelectorAll("form").forEach(function (form) {
+                    form.addEventListener("submit", function (e) {
+                        let isValid = true;
+
+                        phoneInputs.forEach(function (input) {
+                            const iti = input.intlTelInputInstance;
+                            if (iti && input.value.trim() !== "") {
+                                if (!iti.isValidNumber()) {
+                                    isValid = false;
+                                    validatePhoneNumber(input, iti);
+                                } else {
+                                    // Update hidden fields one final time before submit
+                                    updateHiddenFields(input, iti);
+                                }
+                            }
+                        });
+
+                        if (!isValid) {
+                            e.preventDefault();
+                            alert(
+                                "Please correct the phone number errors before submitting.",
+                            );
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <!-- Page-specific scripts -->
+        {% block extra_js %}{% endblock %}
     </body>
 </html>

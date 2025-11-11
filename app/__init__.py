@@ -18,43 +18,51 @@ def ensure_tables_exist(app):
     """
     Check if tables exist and create them if they don't.
     Safe to run in all environments.
+    Gracefully handles database connection errors (e.g., Neon auto-suspend).
     """
     with app.app_context():
-        # Import all models to ensure SQLAlchemy knows about them
-        from app.models import (
-            AddOnItem,
-            AddOnPurchase,
-            AttendeeRegistration,
-            EmailLog,
-            ExchangeRate,
-            ExhibitorPackagePrice,
-            ExhibitorRegistration,
-            Payment,
-            PromoCode,
-            PromoCodeUsage,
-            Registration,
-            TicketPrice,
-            User,
-        )
+        try:
+            # Import all models to ensure SQLAlchemy knows about them
+            from app.models import (
+                AddOnItem,
+                AddOnPurchase,
+                AttendeeRegistration,
+                EmailLog,
+                ExchangeRate,
+                ExhibitorPackagePrice,
+                ExhibitorRegistration,
+                Payment,
+                PromoCode,
+                PromoCodeUsage,
+                Registration,
+                TicketPrice,
+                User,
+            )
 
-        # Check if tables exist using inspector
-        inspector = inspect(db.engine)
-        existing_tables = inspector.get_table_names()
+            # Check if tables exist using inspector
+            inspector = inspect(db.engine)
+            existing_tables = inspector.get_table_names()
 
-        # Get all model table names
-        model_tables = [table.name for table in db.Model.metadata.tables.values()]
+            # Get all model table names
+            model_tables = [table.name for table in db.Model.metadata.tables.values()]
 
-        # Find missing tables
-        missing_tables = [
-            table for table in model_tables if table not in existing_tables
-        ]
+            # Find missing tables
+            missing_tables = [
+                table for table in model_tables if table not in existing_tables
+            ]
 
-        if missing_tables:
-            app.logger.info(f"Creating missing tables: {', '.join(missing_tables)}")
-            db.create_all()
-            app.logger.info("✅ Database tables created successfully")
-        else:
-            app.logger.info("✅ All database tables already exist")
+            if missing_tables:
+                app.logger.info(f"Creating missing tables: {', '.join(missing_tables)}")
+                db.create_all()
+                app.logger.info("✅ Database tables created successfully")
+            else:
+                app.logger.info("✅ All database tables already exist")
+        except Exception as e:
+            # Log warning but don't crash - database might be sleeping (Neon scale-to-zero)
+            app.logger.warning(
+                f"⚠️ Could not verify database tables at startup: {str(e)}"
+            )
+            app.logger.warning("Database will be initialized on first request")
 
 
 def create_app(config_name=None):
@@ -125,13 +133,18 @@ def create_app(config_name=None):
 
         # Check if we need database for this request
         # (Most requests will need it, but some might not)
-        from app.utils.database import ensure_database_connection
+        try:
+            from app.utils.database import ensure_database_connection
 
-        # Try to ensure connection (with retry logic built-in)
-        if not ensure_database_connection():
-            # If we can't establish connection after retries, log it
-            app.logger.error("Failed to establish database connection for request")
-            # Don't block the request - let it fail naturally with better error handling
+            # Try to ensure connection (with retry logic built-in)
+            if not ensure_database_connection():
+                # If we can't establish connection after retries, log it
+                app.logger.error("Failed to establish database connection for request")
+                # Don't block the request - let it fail naturally with better error handling
+        except Exception as e:
+            # Gracefully handle any errors in the database wake-up process
+            app.logger.warning(f"Database wake-up check failed: {str(e)}")
+            # Continue with request - database errors will be handled by route handlers
 
         return None
 

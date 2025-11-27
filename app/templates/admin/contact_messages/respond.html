@@ -1,0 +1,165 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Respond to Message - {{ message.reference_number }}{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Communications', 'url': url_for('admin.list_contact_messages')},
+    {'name': 'Contact Submissions', 'url': url_for('admin.list_contact_messages')},
+    {'name': 'Message #' + message.reference_number, 'url': url_for('admin.view_contact_message', id=message.id)},
+    {'name': 'Respond'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h1 class="text-2xl font-semibold text-gray-900">Respond to Contact Message</h1>
+            <p class="mt-2 text-sm text-gray-700">
+                Send an email response to <span class="font-medium">{{ message.first_name }} {{ message.last_name }}</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <!-- Left Column: Response Form -->
+        <div class="lg:col-span-2">
+            <form method="POST" class="space-y-6">
+                {{ form.hidden_tag() }}
+
+                <div class="bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                    <!-- Email Response -->
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Email Response</h3>
+
+                        <!-- To Field (Read-only) -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium leading-6 text-gray-900">To</label>
+                            <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-700 ring-1 ring-inset ring-gray-200">
+                                {{ message.first_name }} {{ message.last_name }} &lt;{{ message.email }}&gt;
+                            </div>
+                        </div>
+
+                        <!-- Subject Field (Read-only) -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Subject</label>
+                            <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-700 ring-1 ring-inset ring-gray-200">
+                                Re: {{ message.subject }}
+                            </div>
+                        </div>
+
+                        <!-- Response Message -->
+                        <div class="mb-6">
+                            <label for="response" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.response.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.response(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6", rows="12") }}
+                            {% if form.response.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.response.errors[0] }}</p>
+                            {% endif %}
+                            <p class="mt-2 text-sm text-gray-500">This message will be sent to the user's email address</p>
+                        </div>
+
+                        <!-- Internal Notes -->
+                        <div>
+                            <label for="internal_notes" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.internal_notes.label.text }}
+                            </label>
+                            {{ form.internal_notes(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6", rows="3") }}
+                            {% if form.internal_notes.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.internal_notes.errors[0] }}</p>
+                            {% endif %}
+                            <p class="mt-2 text-sm text-gray-500">Internal notes (not sent to user)</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                        <div class="flex justify-end gap-x-3">
+                            <a href="{{ url_for('admin.view_contact_message', id=message.id) }}"
+                               class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                Cancel
+                            </a>
+                            {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Column: Original Message -->
+        <div>
+            <div class="bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Original Message</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <!-- Message Details -->
+                    <dl class="space-y-4">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-900">From</dt>
+                            <dd class="mt-1 text-sm text-gray-700">
+                                {{ message.first_name }} {{ message.last_name }}<br>
+                                <a href="mailto:{{ message.email }}" class="text-green-600 hover:text-green-500">{{ message.email }}</a>
+                            </dd>
+                        </div>
+                        {% if message.organization %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-900">Organization</dt>
+                            <dd class="mt-1 text-sm text-gray-700">{{ message.organization }}</dd>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-900">Date</dt>
+                            <dd class="mt-1 text-sm text-gray-700">{{ message.submitted_at.strftime('%b %d, %Y at %H:%M') }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-900">Inquiry Type</dt>
+                            <dd class="mt-1">
+                                <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                                    {{ message.inquiry_type|replace('_', ' ')|title }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-900">Reference</dt>
+                            <dd class="mt-1 text-sm text-gray-700 font-mono">{{ message.reference_number }}</dd>
+                        </div>
+                    </dl>
+
+                    <!-- Original Message Content -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h4 class="text-sm font-medium text-gray-900 mb-2">Message</h4>
+                        <div class="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded-md p-3">{{ message.message }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Preview Info -->
+            <div class="mt-6 rounded-md bg-blue-50 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">Email Information</h3>
+                        <div class="mt-2 text-sm text-blue-700">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Response will be sent from: {{ config.MAIL_DEFAULT_SENDER }}</li>
+                                <li>Message status will be updated to "Resolved"</li>
+                                <li>User will receive your response via email</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

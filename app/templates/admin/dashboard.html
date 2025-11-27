@@ -1,0 +1,184 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{# Dashboard doesn't need breadcrumbs - it's the home page #}
+{% block breadcrumbs %}
+<h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+{% endblock %}
+
+{% block content %}
+<!-- Stats Overview -->
+<div class="mb-8">
+    <h3 class="text-base font-semibold text-gray-900 mb-4">Overview</h3>
+    <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Total Registrations -->
+        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt class="truncate text-sm font-medium text-gray-500">Total Registrations</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{{ stats.total_registrations }}</dd>
+        </div>
+
+        <!-- Confirmed -->
+        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt class="truncate text-sm font-medium text-gray-500">Confirmed</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-green-600">{{ stats.confirmed_registrations }}</dd>
+        </div>
+
+        <!-- Pending Payment -->
+        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt class="truncate text-sm font-medium text-gray-500">Pending Payment</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-yellow-600">{{ stats.pending_registrations }}</dd>
+        </div>
+
+        <!-- Total Revenue -->
+        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <dt class="truncate text-sm font-medium text-gray-500">Total Revenue</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">TZS {{ "{:,.0f}".format(stats.total_revenue) }}</dd>
+        </div>
+    </dl>
+</div>
+
+<!-- Registration Breakdown -->
+<div class="mb-8">
+    <h3 class="text-base font-semibold text-gray-900 mb-4">Registration Types</h3>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <!-- Attendees -->
+        <div class="overflow-hidden rounded-lg bg-white shadow">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Attendees</p>
+                        <p class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.total_attendees }}</p>
+                    </div>
+                    <div class="rounded-full bg-green-100 p-3">
+                        <svg class="size-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ url_for('admin.list_attendees') }}" class="text-sm font-medium text-green-600 hover:text-green-500">
+                        View all attendees →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exhibitors -->
+        <div class="overflow-hidden rounded-lg bg-white shadow">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Exhibitors</p>
+                        <p class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.total_exhibitors }}</p>
+                    </div>
+                    <div class="rounded-full bg-blue-100 p-3">
+                        <svg class="size-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ url_for('admin.list_exhibitors') }}" class="text-sm font-medium text-green-600 hover:text-green-500">
+                        View all exhibitors →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Check-in Status -->
+<div class="mb-8">
+    <h3 class="text-base font-semibold text-gray-900 mb-4">Check-in Status</h3>
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Checked In</p>
+                    <p class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.checked_in_count }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Assigned Booths</p>
+                    <p class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.assigned_booths }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Unassigned Booths</p>
+                    <p class="mt-1 text-2xl font-semibold text-gray-900">{{ stats.unassigned_booths }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Registrations -->
+<div>
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h3 class="text-base font-semibold text-gray-900">Recent Registrations</h3>
+            <p class="mt-2 text-sm text-gray-700">Latest registrations in the system</p>
+        </div>
+        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+            <a href="{{ url_for('admin.list_attendees') }}" class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                View all
+            </a>
+        </div>
+    </div>
+    <div class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <table class="min-w-full divide-y divide-gray-300">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
+                            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                                <span class="sr-only">View</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for reg in recent_registrations %}
+                        <tr>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                {{ reg.name }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ reg.email }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset {{ 'bg-blue-50 text-blue-700 ring-blue-600/20' if reg.registration_type == 'exhibitor' else 'bg-green-50 text-green-700 ring-green-600/20' }}">
+                                    {{ reg.registration_type|capitalize }}
+                                </span>
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                {% if reg.status.value == 'confirmed' %}
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Confirmed</span>
+                                {% elif reg.status.value == 'pending_payment' %}
+                                <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">Pending</span>
+                                {% else %}
+                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{{ reg.status.value|capitalize }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ reg.created_at.strftime('%b %d, %Y') }}</td>
+                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                {% if reg.registration_type == 'exhibitor' %}
+                                <a href="{{ url_for('admin.view_exhibitor', id=reg.id) }}" class="text-green-600 hover:text-green-900">View</a>
+                                {% else %}
+                                <a href="{{ url_for('admin.view_attendee', id=reg.id) }}" class="text-green-600 hover:text-green-900">View</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="px-3 py-4 text-sm text-gray-500 text-center">No recent registrations</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

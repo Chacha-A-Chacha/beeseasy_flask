@@ -1,0 +1,443 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Exhibitor Details - {{ exhibitor.company_legal_name }}{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Registrations', 'url': url_for('admin.list_exhibitors')},
+    {'name': 'Exhibitors', 'url': url_for('admin.list_exhibitors')},
+    {'name': exhibitor.reference_number}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <!-- Header with Actions -->
+    <div class="sm:flex sm:items-center sm:justify-between">
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-900">Exhibitor Registration</h1>
+            <p class="mt-2 text-sm text-gray-700">
+                Reference: <span class="font-mono font-medium text-gray-900">{{ exhibitor.reference_number }}</span>
+            </p>
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-3">
+            <a href="{{ url_for('admin.edit_exhibitor', id=exhibitor.id) }}"
+               class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
+                </svg>
+                Edit
+            </a>
+            {% if not exhibitor.booth_assigned %}
+            <a href="{{ url_for('admin.assign_booth', id=exhibitor.id) }}"
+               class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+                <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                Assign Booth
+            </a>
+            {% endif %}
+            {% if not exhibitor.checked_in %}
+            <form action="{{ url_for('admin.checkin') }}" method="POST" class="inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="reference_number" value="{{ exhibitor.reference_number }}">
+                <button type="submit"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+                    <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                    </svg>
+                    Check In
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Status Banner -->
+    <div class="mt-6">
+        {% if exhibitor.status.value == 'confirmed' %}
+        <div class="rounded-md bg-green-50 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-green-800">Registration Confirmed</h3>
+                    <div class="mt-2 text-sm text-green-700">
+                        <p>This exhibitor's registration is confirmed and payment has been received.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif exhibitor.status.value == 'pending' %}
+        <div class="rounded-md bg-yellow-50 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-yellow-800">Payment Pending</h3>
+                    <div class="mt-2 text-sm text-yellow-700">
+                        <p>Waiting for payment confirmation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif exhibitor.status.value == 'cancelled' %}
+        <div class="rounded-md bg-red-50 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">Registration Cancelled</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        <p>This registration has been cancelled.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <!-- Left Column: Company & Contact Information -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Company Information -->
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Company Information</h3>
+                </div>
+                <div class="border-t border-gray-100">
+                    <dl class="divide-y divide-gray-100">
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Legal name</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.company_legal_name }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Trading name</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.company_trading_name or '—' }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Website</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {% if exhibitor.company_website %}
+                                <a href="{{ exhibitor.company_website }}" target="_blank" class="text-green-600 hover:text-green-500">
+                                    {{ exhibitor.company_website }}
+                                </a>
+                                {% else %}—{% endif %}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Industry</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.company_industry }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Address</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.company_address }}<br>
+                                {{ exhibitor.company_city }}, {{ exhibitor.company_country }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Description</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.company_description or '—' }}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Contact Person -->
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Primary Contact</h3>
+                </div>
+                <div class="border-t border-gray-100">
+                    <dl class="divide-y divide-gray-100">
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Full name</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.title }} {{ exhibitor.first_name }} {{ exhibitor.last_name }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Email address</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                <a href="mailto:{{ exhibitor.email }}" class="text-green-600 hover:text-green-500">{{ exhibitor.email }}</a>
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Phone number</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ exhibitor.phone }}</dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Role</dt>
+                            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                {{ exhibitor.role or '—' }}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Payment History</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    {% if payments %}
+                    <div class="flow-root">
+                        <ul role="list" class="-mb-8">
+                            {% for payment in payments %}
+                            <li>
+                                <div class="relative pb-8">
+                                    {% if not loop.last %}
+                                    <span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                                    {% endif %}
+                                    <div class="relative flex space-x-3">
+                                        <div>
+                                            <span class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white
+                                                {% if payment.status.value == 'completed' %}bg-green-500{% elif payment.status.value == 'pending' %}bg-yellow-500{% else %}bg-red-500{% endif %}">
+                                                <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                            <div>
+                                                <p class="text-sm text-gray-500">
+                                                    {{ payment.amount|int|format("%.2f") }} TZS via
+                                                    <span class="font-medium text-gray-900">{{ payment.method.value|replace('_', ' ')|title }}</span>
+                                                </p>
+                                                <p class="mt-0.5 text-xs text-gray-500">
+                                                    {% if payment.reference_number %}
+                                                    Ref: {{ payment.reference_number }}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="whitespace-nowrap text-right text-sm text-gray-500">
+                                                <time datetime="{{ payment.created_at.isoformat() }}">
+                                                    {{ payment.created_at.strftime('%b %d, %Y') }}
+                                                </time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% else %}
+                    <p class="text-sm text-gray-500">No payments recorded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Email History -->
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Email Communications</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    {% if email_logs %}
+                    <ul role="list" class="divide-y divide-gray-100">
+                        {% for email in email_logs %}
+                        <li class="py-4">
+                            <div class="flex items-center gap-x-3">
+                                <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                                    <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                                </svg>
+                                <h3 class="flex-auto truncate text-sm font-semibold leading-6 text-gray-900">{{ email.subject }}</h3>
+                                <time datetime="{{ email.sent_at.isoformat() }}" class="flex-none text-xs text-gray-500">
+                                    {{ email.sent_at.strftime('%b %d, %H:%M') }}
+                                </time>
+                            </div>
+                            {% if email.status == 'sent' %}
+                            <p class="mt-1 text-xs text-green-600">Delivered</p>
+                            {% elif email.status == 'failed' %}
+                            <p class="mt-1 text-xs text-red-600">Failed</p>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-sm text-gray-500">No emails sent yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Registration Details -->
+        <div class="space-y-6">
+            <!-- Registration Summary -->
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Registration Details</h3>
+                </div>
+                <div class="border-t border-gray-100">
+                    <dl class="divide-y divide-gray-100">
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Status</dt>
+                            <dd class="mt-2">
+                                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset
+                                    {% if exhibitor.status.value == 'confirmed' %}bg-green-50 text-green-700 ring-green-600/20
+                                    {% elif exhibitor.status.value == 'pending' %}bg-yellow-50 text-yellow-800 ring-yellow-600/20
+                                    {% elif exhibitor.status.value == 'cancelled' %}bg-red-50 text-red-700 ring-red-600/20
+                                    {% else %}bg-gray-50 text-gray-600 ring-gray-500/10{% endif %}">
+                                    {{ exhibitor.status.value|title }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Package Type</dt>
+                            <dd class="mt-2">
+                                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset
+                                    {% if exhibitor.package_type.value == 'platinum' %}bg-purple-50 text-purple-700 ring-purple-600/20
+                                    {% elif exhibitor.package_type.value == 'gold' %}bg-yellow-50 text-yellow-800 ring-yellow-600/20
+                                    {% elif exhibitor.package_type.value == 'silver' %}bg-gray-50 text-gray-700 ring-gray-600/20
+                                    {% elif exhibitor.package_type.value == 'bronze' %}bg-orange-50 text-orange-700 ring-orange-600/20
+                                    {% else %}bg-blue-50 text-blue-700 ring-blue-600/20{% endif %}">
+                                    {{ exhibitor.package_type.value|title }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Booth</dt>
+                            <dd class="mt-2">
+                                {% if exhibitor.booth_assigned and exhibitor.booth_number %}
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                    {{ exhibitor.booth_number }}
+                                </span>
+                                <p class="mt-1 text-xs text-gray-500">
+                                    {{ exhibitor.booth_size or 'Standard' }} booth
+                                </p>
+                                {% else %}
+                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                    Not Assigned
+                                </span>
+                                {% endif %}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Amount Paid</dt>
+                            <dd class="mt-2 text-2xl font-semibold text-gray-900">
+                                {{ exhibitor.total_amount|int|format("%.2f") }} <span class="text-sm font-normal text-gray-500">TZS</span>
+                            </dd>
+                        </div>
+                        {% if exhibitor.promo_code %}
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Promo Code</dt>
+                            <dd class="mt-2 font-mono text-sm text-gray-900">{{ exhibitor.promo_code }}</dd>
+                        </div>
+                        {% endif %}
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Check-in Status</dt>
+                            <dd class="mt-2">
+                                {% if exhibitor.checked_in %}
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                    Checked In
+                                </span>
+                                <p class="mt-1 text-xs text-gray-500">
+                                    {{ exhibitor.checked_in_at.strftime('%b %d, %Y at %H:%M') }}
+                                </p>
+                                {% else %}
+                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                    Not Checked In
+                                </span>
+                                {% endif %}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-900">Registered</dt>
+                            <dd class="mt-2 text-sm text-gray-500">
+                                {{ exhibitor.created_at.strftime('%b %d, %Y at %H:%M') }}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Purchased Add-ons -->
+            {% if addons %}
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Purchased Add-ons</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <ul role="list" class="divide-y divide-gray-100">
+                        {% for addon in addons %}
+                        <li class="py-3 first:pt-0 last:pb-0">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ addon.addon.name }}</p>
+                                    {% if addon.quantity > 1 %}
+                                    <p class="text-xs text-gray-500">Qty: {{ addon.quantity }}</p>
+                                    {% endif %}
+                                </div>
+                                <p class="text-sm text-gray-500">{{ addon.total_price|int|format("%.2f") }} TZS</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Branding Materials -->
+            {% if exhibitor.logo_url or exhibitor.branding_colors %}
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Branding Materials</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    {% if exhibitor.logo_url %}
+                    <div class="mb-4">
+                        <p class="text-sm font-medium text-gray-900 mb-2">Company Logo</p>
+                        <img src="{{ exhibitor.logo_url }}" alt="{{ exhibitor.company_legal_name }} logo" class="h-20 object-contain">
+                    </div>
+                    {% endif %}
+                    {% if exhibitor.branding_colors %}
+                    <div>
+                        <p class="text-sm font-medium text-gray-900 mb-2">Brand Colors</p>
+                        <p class="text-sm text-gray-700">{{ exhibitor.branding_colors }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Admin Notes -->
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Admin Notes</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    {% if exhibitor.admin_notes %}
+                    <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ exhibitor.admin_notes }}</p>
+                    {% else %}
+                    <p class="text-sm text-gray-500 italic">No notes added yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

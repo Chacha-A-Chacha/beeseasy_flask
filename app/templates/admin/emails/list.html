@@ -1,0 +1,150 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Email Logs{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Communications'},
+    {'name': 'Email Logs'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold text-gray-900">Email Logs</h1>
+        <p class="mt-2 text-sm text-gray-700">View all sent emails including confirmations, notifications, and bulk communications.</p>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="mt-6 flex flex-col sm:flex-row gap-4">
+    <form method="GET" class="flex flex-col sm:flex-row gap-4 flex-1">
+        <!-- Email type filter -->
+        <select name="email_type" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
+            <option value="">All Types</option>
+            <option value="confirmation" {{ 'selected' if email_type_filter == 'confirmation' }}>Confirmations</option>
+            <option value="notification" {{ 'selected' if email_type_filter == 'notification' }}>Notifications</option>
+            <option value="bulk" {{ 'selected' if email_type_filter == 'bulk' }}>Bulk Emails</option>
+        </select>
+
+        <!-- Search -->
+        <div class="flex flex-1">
+            <input type="text" name="search" value="{{ search }}" placeholder="Search by recipient email..." class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm/6">
+            <button type="submit" class="ml-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="-mx-4 mt-6 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+    <table class="relative min-w-full divide-y divide-gray-300">
+        <thead>
+            <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Recipient</th>
+                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Subject</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sent At</th>
+                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Sent By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails.items %}
+            <tr>
+                <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6">
+                    <div class="font-medium text-gray-900">{{ email.recipient_email }}</div>
+                    <div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
+                        <span>{{ email.subject[:50] }}...</span>
+                    </div>
+                    {% if not loop.first %}
+                    <div class="absolute -top-px left-6 right-0 h-px bg-gray-200"></div>
+                    {% endif %}
+                </td>
+                <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
+                    {{ email.subject }}
+                </td>
+                <td class="{% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500">
+                    <div class="sm:hidden">{{ email.sent_at.strftime('%b %d') }}</div>
+                    <div class="hidden sm:block">{{ email.sent_at.strftime('%b %d, %Y %I:%M %p') }}</div>
+                </td>
+                <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
+                    {{ email.sent_by if email.sent_by else 'System' }}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="px-3 py-8 text-center text-sm text-gray-500">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <p class="mt-2">No emails found</p>
+                    <p class="mt-1 text-xs text-gray-400">Email logs will appear here once messages are sent</p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if emails.pages > 1 %}
+<div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-6">
+    <div class="flex flex-1 justify-between sm:hidden">
+        {% if emails.has_prev %}
+        <a href="{{ url_for('admin.email_logs', page=emails.prev_num, **request.args) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+        {% endif %}
+        {% if emails.has_next %}
+        <a href="{{ url_for('admin.email_logs', page=emails.next_num, **request.args) }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+        {% endif %}
+    </div>
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm text-gray-700">
+                Showing
+                <span class="font-medium">{{ ((emails.page - 1) * emails.per_page) + 1 }}</span>
+                to
+                <span class="font-medium">{{ min(emails.page * emails.per_page, emails.total) }}</span>
+                of
+                <span class="font-medium">{{ emails.total }}</span>
+                results
+            </p>
+        </div>
+        <div>
+            <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                {% if emails.has_prev %}
+                <a href="{{ url_for('admin.email_logs', page=emails.prev_num, **request.args) }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    <span class="sr-only">Previous</span>
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                {% endif %}
+
+                {% for page_num in emails.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                    {% if page_num %}
+                        {% if page_num == emails.page %}
+                        <span class="relative z-10 inline-flex items-center bg-green-600 px-4 py-2 text-sm font-semibold text-white">{{ page_num }}</span>
+                        {% else %}
+                        <a href="{{ url_for('admin.email_logs', page=page_num, **request.args) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">{{ page_num }}</a>
+                        {% endif %}
+                    {% else %}
+                    <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300">...</span>
+                    {% endif %}
+                {% endfor %}
+
+                {% if emails.has_next %}
+                <a href="{{ url_for('admin.email_logs', page=emails.next_num, **request.args) }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    <span class="sr-only">Next</span>
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

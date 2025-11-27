@@ -1,0 +1,159 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Booth Management{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Exhibitor Operations'},
+    {'name': 'Booth Management'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold text-gray-900">Booth Management</h1>
+        <p class="mt-2 text-sm text-gray-700">Assign booth numbers to confirmed exhibitors and manage booth allocations.</p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <span class="inline-flex items-center gap-x-6">
+            <span class="text-sm text-gray-700">
+                <span class="font-semibold text-green-600">{{ assigned }}</span> Assigned
+            </span>
+            <span class="text-sm text-gray-700">
+                <span class="font-semibold text-yellow-600">{{ unassigned }}</span> Unassigned
+            </span>
+        </span>
+    </div>
+</div>
+
+<!-- Assigned Booths -->
+<div class="mt-8">
+    <h3 class="text-sm font-semibold text-gray-900 mb-4">Assigned Booths</h3>
+    <div class="-mx-4 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+        <table class="relative min-w-full divide-y divide-gray-300">
+            <thead>
+                <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Booth</th>
+                    <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Company</th>
+                    <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Contact</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Package</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                    <th scope="col" class="py-3.5 pl-3 pr-4 sm:pr-6">
+                        <span class="sr-only">Actions</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exhibitor in assigned_exhibitors %}
+                <tr>
+                    <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6">
+                        <div class="font-medium text-green-600">{{ exhibitor.booth_number }}</div>
+                        <div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
+                            <span>{{ exhibitor.organization }}</span>
+                            <span class="hidden sm:inline">·</span>
+                            <span>{{ exhibitor.name }}</span>
+                        </div>
+                        {% if not loop.first %}
+                        <div class="absolute -top-px left-6 right-0 h-px bg-gray-200"></div>
+                        {% endif %}
+                    </td>
+                    <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
+                        {{ exhibitor.organization }}
+                    </td>
+                    <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
+                        <div>{{ exhibitor.name }}</div>
+                        <div class="text-gray-400">{{ exhibitor.email }}</div>
+                    </td>
+                    <td class="{% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500">
+                        {{ exhibitor.package.value|title }}
+                    </td>
+                    <td class="{% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500">
+                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Assigned</span>
+                    </td>
+                    <td class="relative {% if not loop.first %}border-t border-transparent{% endif %} py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <a href="{{ url_for('admin.view_exhibitor', id=exhibitor.id) }}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            View<span class="sr-only">, {{ exhibitor.organization }}</span>
+                        </a>
+                        {% if not loop.first %}
+                        <div class="absolute -top-px left-0 right-6 h-px bg-gray-200"></div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="px-3 py-8 text-center text-sm text-gray-500">
+                        <p>No booths assigned yet</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Unassigned Exhibitors -->
+<div class="mt-8">
+    <h3 class="text-sm font-semibold text-gray-900 mb-4">Unassigned Exhibitors</h3>
+    <div class="-mx-4 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
+        <table class="relative min-w-full divide-y divide-gray-300">
+            <thead>
+                <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Company</th>
+                    <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Contact</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Package</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                    <th scope="col" class="py-3.5 pl-3 pr-4 sm:pr-6">
+                        <span class="sr-only">Actions</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exhibitor in unassigned_exhibitors %}
+                <tr>
+                    <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6">
+                        <div class="font-medium text-gray-900">{{ exhibitor.organization }}</div>
+                        <div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
+                            <span>{{ exhibitor.name }}</span>
+                            <span class="hidden sm:inline">·</span>
+                            <span>{{ exhibitor.package.value|title }}</span>
+                        </div>
+                        {% if not loop.first %}
+                        <div class="absolute -top-px left-6 right-0 h-px bg-gray-200"></div>
+                        {% endif %}
+                    </td>
+                    <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
+                        <div>{{ exhibitor.name }}</div>
+                        <div class="text-gray-400">{{ exhibitor.email }}</div>
+                    </td>
+                    <td class="{% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500">
+                        {{ exhibitor.package.value|title }}
+                    </td>
+                    <td class="{% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500">
+                        <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">Pending Assignment</span>
+                    </td>
+                    <td class="relative {% if not loop.first %}border-t border-transparent{% endif %} py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <a href="{{ url_for('admin.assign_booth', id=exhibitor.id) }}" class="inline-flex items-center rounded-md bg-green-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500">
+                            Assign Booth<span class="sr-only">, {{ exhibitor.organization }}</span>
+                        </a>
+                        {% if not loop.first %}
+                        <div class="absolute -top-px left-0 right-6 h-px bg-gray-200"></div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="px-3 py-8 text-center text-sm text-gray-500">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="mt-2">All exhibitors have been assigned booths</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

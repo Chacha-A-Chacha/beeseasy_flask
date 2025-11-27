@@ -1,7 +1,9 @@
 from datetime import datetime
-from flask_login import UserMixin
-from app.extensions import db, bcrypt, login_manager
 from enum import Enum
+
+from flask_login import UserMixin
+
+from app.extensions import bcrypt, db, login_manager
 
 
 class UserRole(Enum):
@@ -17,7 +19,7 @@ def load_user(user_id):
 
 class User(UserMixin, db.Model):
     """System user — handles admin, staff, and organizer roles."""
-    
+
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,13 +28,11 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.Enum(UserRole), index=True, default=UserRole.STAFF)
     is_active = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    created_at = db.Column(db.DateTime, default=datetime.now, index=True)
 
     # Relationships
     registrations = db.relationship(
-        "Registration",
-        back_populates="created_by",
-        lazy="select"
+        "Registration", back_populates="created_by", lazy="select"
     )
 
     # --- Methods ---

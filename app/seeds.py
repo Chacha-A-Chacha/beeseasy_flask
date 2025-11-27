@@ -20,6 +20,8 @@ from app.models import (
     ExhibitorPackage,
     ExhibitorPackagePrice,
     TicketPrice,
+    User,
+    UserRole,
 )
 
 
@@ -497,6 +499,54 @@ def seed_addon_items():
     print("✅ Add-on items seeded\n")
 
 
+def seed_users():
+    """Seed test admin users for Pollination Africa Symposium"""
+    print("👥 Seeding admin users...")
+
+    users = [
+        {
+            "name": "Admin User",
+            "email": "admin@pollination.africa",
+            "password": "Admin@2025",
+            "role": UserRole.ADMIN,
+            "is_active": True,
+        },
+        {
+            "name": "Staff Member",
+            "email": "staff@pollination.africa",
+            "password": "Staff@2025",
+            "role": UserRole.STAFF,
+            "is_active": True,
+        },
+        {
+            "name": "Event Organizer",
+            "email": "organizer@pollination.africa",
+            "password": "Organizer@2025",
+            "role": UserRole.ORGANIZER,
+            "is_active": True,
+        },
+    ]
+
+    for user_data in users:
+        existing = User.query.filter_by(email=user_data["email"]).first()
+
+        if not existing:
+            user = User(
+                name=user_data["name"],
+                email=user_data["email"],
+                role=user_data["role"],
+                is_active=user_data["is_active"],
+            )
+            user.set_password(user_data["password"])
+            db.session.add(user)
+            print(f"  ✓ Added: {user.name} ({user.role.value}) - {user.email}")
+        else:
+            print(f"  ⊘ Exists: {user_data['email']} ({user_data['role'].value})")
+
+    db.session.commit()
+    print("✅ Admin users seeded\n")
+
+
 def seed_all():
     """Run all seed functions for Pollination Africa Symposium"""
     print("\n" + "=" * 70)
@@ -504,13 +554,18 @@ def seed_all():
     print("   Celebrating All Pollinators: Bees, Butterflies, Birds & Beyond")
     print("=" * 70 + "\n")
 
+    seed_users()
     seed_ticket_prices()
     seed_exhibitor_packages()
     seed_addon_items()
 
     print("=" * 70)
     print("✅ All seed data loaded successfully!")
-    print("📧 Contact: info@pollinationafrica.org")
+    print("\n📧 Test Login Credentials:")
+    print("   Admin:     admin@pollination.africa / Admin@2025")
+    print("   Staff:     staff@pollination.africa / Staff@2025")
+    print("   Organizer: organizer@pollination.africa / Organizer@2025")
+    print("\n📧 Contact: info@pollinationafrica.org")
     print("🌐 Website: https://www.pollinationafrica.org")
     print("=" * 70 + "\n")
 
@@ -522,10 +577,10 @@ def seed_all():
 
 def reset_and_seed():
     """
-    DANGEROUS: Clear all pricing data and reseed
+    DANGEROUS: Clear all pricing data and users, then reseed
     Use only in development or when migrating from BEEASY
     """
-    print("\n⚠️  WARNING: This will DELETE all existing pricing data!\n")
+    print("\n⚠️  WARNING: This will DELETE all existing pricing data and users!\n")
     response = input("Type 'YES' to continue: ")
 
     if response != "YES":
@@ -538,6 +593,7 @@ def reset_and_seed():
     AddOnItem.query.delete()
     ExhibitorPackagePrice.query.delete()
     TicketPrice.query.delete()
+    User.query.delete()
 
     db.session.commit()
     print("✅ Old data cleared\n")

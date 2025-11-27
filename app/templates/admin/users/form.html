@@ -1,0 +1,150 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if mode == 'edit' else 'Create' }} User{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Settings', 'url': url_for('admin.list_users')},
+    {'name': 'Users', 'url': url_for('admin.list_users')},
+    {'name': 'Edit User' if mode == 'edit' else 'Create User'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h1 class="text-2xl font-semibold text-gray-900">{{ 'Edit' if mode == 'edit' else 'Create' }} Admin User</h1>
+            <p class="mt-2 text-sm text-gray-700">
+                {{ 'Update user information and permissions.' if mode == 'edit' else 'Add a new admin user to the system.' }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="mt-8">
+        <form method="POST" class="space-y-8">
+            {{ form.hidden_tag() }}
+
+            <div class="bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <!-- Basic Information -->
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Personal Information</h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <!-- Name -->
+                        <div class="sm:col-span-3">
+                            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.name.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.name(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="sm:col-span-3">
+                            <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.email.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.email(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.email.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.email.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="sm:col-span-6">
+                            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.password.label.text }}
+                                {% if mode == 'create' %}<span class="text-red-600">*</span>{% endif %}
+                            </label>
+                            {{ form.password(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.password.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.password.errors[0] }}</p>
+                            {% elif mode == 'edit' %}
+                            <p class="mt-2 text-sm text-gray-500">Leave blank to keep current password</p>
+                            {% else %}
+                            <p class="mt-2 text-sm text-gray-500">Minimum 8 characters required</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role & Permissions -->
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Role & Permissions</h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <!-- Role -->
+                        <div class="sm:col-span-6">
+                            <label for="role" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.role.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.role(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:max-w-xs sm:text-sm sm:leading-6") }}
+                            {% if form.role.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.role.errors[0] }}</p>
+                            {% endif %}
+                            <p class="mt-2 text-sm text-gray-500">
+                                <span class="font-medium">Administrator:</span> Full system access<br>
+                                <span class="font-medium">Staff:</span> Can manage registrations and payments<br>
+                                <span class="font-medium">Organizer:</span> View-only access to reports
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Status -->
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Account Status</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex h-6 items-center">
+                                {{ form.is_active(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                            </div>
+                            <div class="ml-3 text-sm leading-6">
+                                <label for="is_active" class="font-medium text-gray-900">{{ form.is_active.label.text }}</label>
+                                <p class="text-gray-500">Active users can log in to the admin panel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                    <div class="flex justify-end gap-x-3">
+                        <a href="{{ url_for('admin.list_users') }}"
+                           class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            Cancel
+                        </a>
+                        {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Warning for editing current user -->
+    {% if mode == 'edit' and user and user.id == current_user.id %}
+    <div class="mt-6 rounded-md bg-yellow-50 p-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">You're editing your own account</h3>
+                <div class="mt-2 text-sm text-yellow-700">
+                    <p>Be careful when changing your own role or deactivating your account. You may lose access to the admin panel.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

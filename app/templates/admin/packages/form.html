@@ -1,0 +1,236 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if mode == 'edit' else 'Create' }} Package{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Event Management', 'url': url_for('admin.list_packages')},
+    {'name': 'Packages', 'url': url_for('admin.list_packages')},
+    {'name': 'Edit Package' if mode == 'edit' else 'Create Package'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h1 class="text-2xl font-semibold text-gray-900">{{ 'Edit' if mode == 'edit' else 'Create' }} Exhibitor Package</h1>
+            <p class="mt-2 text-sm text-gray-700">
+                {{ 'Update package information and pricing.' if mode == 'edit' else 'Add a new exhibitor package option.' }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="mt-8">
+        <form method="POST" class="space-y-8">
+            {{ form.hidden_tag() }}
+
+            <div class="bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
+                <!-- Basic Information -->
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <!-- Package Type -->
+                        <div class="sm:col-span-3">
+                            <label for="package_type" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.package_type.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.package_type(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.package_type.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.package_type.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Package Name -->
+                        <div class="sm:col-span-3">
+                            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.name.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.name(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="sm:col-span-6">
+                            <label for="description" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.description.label.text }}
+                            </label>
+                            {{ form.description(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.description.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.description.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing & Booth Details -->
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Pricing & Booth Details</h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <!-- Price -->
+                        <div class="sm:col-span-2">
+                            <label for="price" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.price.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.price(class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            </div>
+                            {% if form.price.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.price.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Currency -->
+                        <div class="sm:col-span-2">
+                            <label for="currency" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.currency.label.text }}
+                                <span class="text-red-600">*</span>
+                            </label>
+                            {{ form.currency(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.currency.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.currency.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Max Quantity -->
+                        <div class="sm:col-span-2">
+                            <label for="max_quantity" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.max_quantity.label.text }}
+                            </label>
+                            {{ form.max_quantity(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.max_quantity.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.max_quantity.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Booth Size -->
+                        <div class="sm:col-span-3">
+                            <label for="booth_size" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.booth_size.label.text }}
+                            </label>
+                            {{ form.booth_size(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.booth_size.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.booth_size.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Included Passes -->
+                        <div class="sm:col-span-3">
+                            <label for="included_passes" class="block text-sm font-medium leading-6 text-gray-900">
+                                {{ form.included_passes.label.text }}
+                            </label>
+                            {{ form.included_passes(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            {% if form.included_passes.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.included_passes.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package Features -->
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Package Features</h3>
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <!-- Column 1 -->
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_electricity(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_electricity" class="font-medium text-gray-900">{{ form.includes_electricity.label.text }}</label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_wifi(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_wifi" class="font-medium text-gray-900">{{ form.includes_wifi.label.text }}</label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_furniture(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_furniture" class="font-medium text-gray-900">{{ form.includes_furniture.label.text }}</label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_catalog_listing(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_catalog_listing" class="font-medium text-gray-900">{{ form.includes_catalog_listing.label.text }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_social_media(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_social_media" class="font-medium text-gray-900">{{ form.includes_social_media.label.text }}</label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_speaking_slot(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_speaking_slot" class="font-medium text-gray-900">{{ form.includes_speaking_slot.label.text }}</label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.includes_workshop(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="includes_workshop" class="font-medium text-gray-900">{{ form.includes_workshop.label.text }}</label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex h-6 items-center">
+                                    {{ form.is_active(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="is_active" class="font-medium text-gray-900">{{ form.is_active.label.text }}</label>
+                                    <p class="text-gray-500">This package will be available for registration</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                    <div class="flex justify-end gap-x-3">
+                        <a href="{{ url_for('admin.list_packages') }}"
+                           class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            Cancel
+                        </a>
+                        {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

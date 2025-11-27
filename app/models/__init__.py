@@ -1,31 +1,32 @@
-from .user import User, UserRole
-from app.models.registration import (
-    # Enums
-    RegistrationStatus,
-    PaymentStatus,
-    PaymentMethod,
-    PaymentType,
-    AttendeeTicketType,
-    ExhibitorPackage,
-    ProfessionalCategory,
-    IndustryCategory,
-    # Models
-    Registration,
-    AttendeeRegistration,
-    ExhibitorRegistration,
-    TicketPrice,
-    ExhibitorPackagePrice,
-    AddOnItem,
-    AddOnPurchase,
-)
-
+from app.models.contact import ContactMessage
 from app.models.payment import (
+    EmailLog,
+    ExchangeRate,
     Payment,
     PromoCode,
     PromoCodeUsage,
-    EmailLog,
-    ExchangeRate,
 )
+from app.models.registration import (
+    AddOnItem,
+    AddOnPurchase,
+    AttendeeRegistration,
+    AttendeeTicketType,
+    ExhibitorPackage,
+    ExhibitorPackagePrice,
+    ExhibitorRegistration,
+    IndustryCategory,
+    PaymentMethod,
+    PaymentStatus,
+    PaymentType,
+    ProfessionalCategory,
+    # Models
+    Registration,
+    # Enums
+    RegistrationStatus,
+    TicketPrice,
+)
+
+from .user import User, UserRole
 
 __all__ = [
     # Enums
@@ -52,4 +53,5 @@ __all__ = [
     "ExchangeRate",
     "User",
     "UserRole",
+    "ContactMessage",
 ]

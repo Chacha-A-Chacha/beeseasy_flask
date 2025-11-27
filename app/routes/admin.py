@@ -1392,58 +1392,86 @@ def booth_management():
 # ============================================
 
 
-@admin_bp.route("/checkin/attendees", methods=["GET", "POST"])
+@admin_bp.route("/checkin", methods=["GET", "POST"])
 @admin_required
-def attendee_checkin():
-    """Attendee check-in interface"""
+def checkin():
+    """Unified check-in interface for attendees and exhibitors"""
 
     if request.method == "POST":
         # Handle QR code scan or manual check-in
         reference = request.form.get("reference_number", "").strip()
+        registration_type = request.form.get(
+            "type", "attendee"
+        )  # attendee or exhibitor
 
         if reference:
-            attendee = AttendeeRegistration.query.filter_by(
+            # Try to find registration (attendee or exhibitor)
+            registration = Registration.query.filter_by(
                 reference_number=reference, is_deleted=False
             ).first()
 
-            if attendee:
-                if attendee.checked_in:
+            if registration:
+                if registration.checked_in:
                     flash(
-                        f"{attendee.first_name} {attendee.last_name} is already checked in.",
+                        f"{registration.name} is already checked in.",
                         "info",
                     )
                 else:
-                    attendee.check_in(checked_in_by=current_user.name)
+                    registration.check_in(checked_in_by=current_user.name)
                     db.session.commit()
+                    reg_type = (
+                        "Attendee"
+                        if isinstance(registration, AttendeeRegistration)
+                        else "Exhibitor"
+                    )
                     flash(
-                        f"{attendee.first_name} {attendee.last_name} checked in successfully!",
+                        f"{reg_type} {registration.name} checked in successfully!",
                         "success",
                     )
             else:
-                flash("Attendee not found with that reference number.", "error")
+                flash("Registration not found with that reference number.", "error")
 
-    # Get recent check-ins
-    recent_checkins = (
+    # Get recent check-ins for both attendees and exhibitors
+    recent_attendee_checkins = (
         AttendeeRegistration.query.filter_by(checked_in=True, is_deleted=False)
         .order_by(AttendeeRegistration.checked_in_at.desc())
-        .limit(20)
+        .limit(10)
         .all()
     )
 
-    # Stats
-    total_confirmed = AttendeeRegistration.query.filter_by(
+    recent_exhibitor_checkins = (
+        ExhibitorRegistration.query.filter_by(checked_in=True, is_deleted=False)
+        .order_by(ExhibitorRegistration.checked_in_at.desc())
+        .limit(10)
+        .all()
+    )
+
+    # Stats for attendees
+    total_confirmed_attendees = AttendeeRegistration.query.filter_by(
         status=RegistrationStatus.CONFIRMED, is_deleted=False
     ).count()
 
-    checked_in_count = AttendeeRegistration.query.filter_by(
+    checked_in_attendees = AttendeeRegistration.query.filter_by(
+        checked_in=True, is_deleted=False
+    ).count()
+
+    # Stats for exhibitors
+    total_confirmed_exhibitors = ExhibitorRegistration.query.filter_by(
+        status=RegistrationStatus.CONFIRMED, is_deleted=False
+    ).count()
+
+    checked_in_exhibitors = ExhibitorRegistration.query.filter_by(
         checked_in=True, is_deleted=False
     ).count()
 
     return render_template(
-        "admin/checkin/attendees.html",
-        recent_checkins=recent_checkins,
-        total_confirmed=total_confirmed,
-        checked_in_count=checked_in_count,
+        "admin/checkin/index.html",
+        recent_attendee_checkins=recent_attendee_checkins,
+        recent_exhibitor_checkins=recent_exhibitor_checkins,
+        total_confirmed_attendees=total_confirmed_attendees,
+        checked_in_attendees=checked_in_attendees,
+        total_confirmed_exhibitors=total_confirmed_exhibitors,
+        checked_in_exhibitors=checked_in_exhibitors,
     )
 
 
@@ -1580,6 +1608,227 @@ def bulk_email():
             flash("Error queuing bulk email.", "error")
 
     return render_template("admin/communications/bulk.html", form=form)
+
+
+@admin_bp.route("/contact-messages")
+@admin_required
+def list_contact_messages():
+    """List all contact form submissions"""
+    from app.models.contact import ContactMessage
+
+    # Filters
+    status_filter = request.args.get("status")
+    inquiry_type_filter = request.args.get("inquiry_type")
+    priority_filter = request.args.get("priority")
+    search = request.args.get("search", "").strip()
+
+    query = ContactMessage.query.filter_by(is_deleted=False)
+
+    # Apply filters
+    if status_filter:
+        query = query.filter_by(status=status_filter)
+    if inquiry_type_filter:
+        query = query.filter_by(inquiry_type=inquiry_type_filter)
+    if priority_filter:
+        query = query.filter_by(priority=priority_filter)
+    if search:
+        query = query.filter(
+            db.or_(
+                ContactMessage.reference_number.ilike(f"%{search}%"),
+                ContactMessage.first_name.ilike(f"%{search}%"),
+                ContactMessage.last_name.ilike(f"%{search}%"),
+                ContactMessage.email.ilike(f"%{search}%"),
+                ContactMessage.subject.ilike(f"%{search}%"),
+            )
+        )
+
+    # Pagination
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 20, type=int)
+
+    messages = query.order_by(ContactMessage.submitted_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+
+    # Get counts for stats
+    total_new = ContactMessage.query.filter_by(status="new", is_deleted=False).count()
+    total_in_progress = ContactMessage.query.filter_by(
+        status="in_progress", is_deleted=False
+    ).count()
+    total_resolved = ContactMessage.query.filter_by(
+        status="resolved", is_deleted=False
+    ).count()
+
+    return render_template(
+        "admin/contact_messages/list.html",
+        messages=messages,
+        total_new=total_new,
+        total_in_progress=total_in_progress,
+        total_resolved=total_resolved,
+        status_filter=status_filter,
+        inquiry_type_filter=inquiry_type_filter,
+        priority_filter=priority_filter,
+        search=search,
+    )
+
+
+@admin_bp.route("/contact-messages/<int:id>")
+@admin_required
+def view_contact_message(id):
+    """View contact message details"""
+    from app.models.contact import ContactMessage
+
+    message = ContactMessage.query.get_or_404(id)
+
+    # Mark as read if new
+    if message.is_new:
+        message.mark_as_read()
+        db.session.commit()
+
+    return render_template("admin/contact_messages/detail.html", message=message)
+
+
+@admin_bp.route("/contact-messages/<int:id>/respond", methods=["GET", "POST"])
+@admin_required
+def respond_contact_message(id):
+    """Respond to contact message"""
+    from app.models.contact import ContactMessage
+
+    message = ContactMessage.query.get_or_404(id)
+    form = ContactReplyForm()
+
+    if form.validate_on_submit():
+        try:
+            # Send response email
+            from flask_mail import Message as EmailMessage
+
+            msg = EmailMessage(
+                subject=f"Re: {message.subject}",
+                sender=current_app.config.get("MAIL_DEFAULT_SENDER"),
+                recipients=[message.email],
+                reply_to=current_app.config.get("CONTACT_EMAIL", "info@beeseasy.org"),
+            )
+
+            # Create email context
+            email_context = {
+                "message": message,
+                "response": form.response.data,
+                "admin_name": current_user.name,
+                "reference_number": message.reference_number,
+            }
+
+            msg.html = render_template("emails/contact_response.html", **email_context)
+            msg.body = f"""
+Dear {message.first_name},
+
+Thank you for contacting us regarding "{message.subject}".
+
+{form.response.data}
+
+Reference Number: {message.reference_number}
+
+Best regards,
+{current_user.name}
+Bee East Africa Symposium Team
+
+---
+This is a response to your inquiry submitted on {message.submitted_at.strftime("%B %d, %Y")}
+            """
+
+            mail.send(msg)
+
+            # Update message status
+            message.mark_as_resolved(
+                resolved_by=current_user.name,
+                response_message=form.response.data,
+                notes=form.internal_notes.data,
+            )
+            db.session.commit()
+
+            flash(f"Response sent to {message.email}", "success")
+            logger.info(
+                f"Contact message {message.reference_number} responded to by {current_user.name}"
+            )
+
+            return redirect(url_for("admin.view_contact_message", id=id))
+
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error responding to contact message {id}: {str(e)}")
+            flash("Error sending response.", "error")
+
+    return render_template(
+        "admin/contact_messages/respond.html", message=message, form=form
+    )
+
+
+@admin_bp.route("/contact-messages/<int:id>/assign", methods=["POST"])
+@admin_required
+def assign_contact_message(id):
+    """Assign contact message to admin user"""
+    from app.models.contact import ContactMessage
+
+    message = ContactMessage.query.get_or_404(id)
+
+    try:
+        message.assign_to(current_user.name)
+        db.session.commit()
+        flash(f"Message assigned to {current_user.name}", "success")
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error assigning contact message {id}: {str(e)}")
+        flash("Error assigning message.", "error")
+
+    return redirect(url_for("admin.view_contact_message", id=id))
+
+
+@admin_bp.route("/contact-messages/<int:id>/priority", methods=["POST"])
+@admin_required
+def set_contact_priority(id):
+    """Set contact message priority"""
+    from app.models.contact import ContactMessage
+
+    message = ContactMessage.query.get_or_404(id)
+    priority = request.form.get("priority")
+
+    if priority not in ["low", "normal", "high", "urgent"]:
+        flash("Invalid priority level.", "error")
+        return redirect(url_for("admin.view_contact_message", id=id))
+
+    try:
+        message.set_priority(priority)
+        db.session.commit()
+        flash(f"Priority set to {priority}", "success")
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error setting priority for contact message {id}: {str(e)}")
+        flash("Error setting priority.", "error")
+
+    return redirect(url_for("admin.view_contact_message", id=id))
+
+
+@admin_bp.route("/contact-messages/<int:id>/delete", methods=["POST"])
+@admin_required
+def delete_contact_message(id):
+    """Soft delete contact message"""
+    from app.models.contact import ContactMessage
+
+    message = ContactMessage.query.get_or_404(id)
+
+    try:
+        message.is_deleted = True
+        message.deleted_at = datetime.now()
+        db.session.commit()
+        flash("Contact message deleted.", "success")
+        logger.info(
+            f"Contact message {message.reference_number} deleted by {current_user.name}"
+        )
+        return redirect(url_for("admin.list_contact_messages"))
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error deleting contact message {id}: {str(e)}")
+        flash("Error deleting message.", "error")
+        return redirect(url_for("admin.view_contact_message", id=id))
 
 
 # ============================================
@@ -1948,3 +2197,67 @@ def toggle_promo_code(id):
             return jsonify({"success": False, "message": str(e)}), 400
 
     return redirect(url_for("admin.list_promo_codes"))
+
+
+# ============================================
+# 10. SETTINGS - SYSTEM SETTINGS
+# ============================================
+
+
+@admin_bp.route("/settings")
+@admin_only
+def system_settings():
+    """System settings dashboard (placeholder for future development)"""
+
+    # Placeholder for system-wide settings
+    # Future features could include:
+    # - Event configuration (dates, venue, capacity limits)
+    # - Email templates customization
+    # - Payment gateway settings
+    # - Notification preferences
+    # - System maintenance mode
+    # - API key management
+    # - Branding and theme settings
+
+    settings_sections = [
+        {
+            "name": "Event Configuration",
+            "description": "Manage event dates, venue, and capacity settings",
+            "status": "Coming Soon",
+            "icon": "calendar",
+        },
+        {
+            "name": "Email Templates",
+            "description": "Customize automated email templates",
+            "status": "Coming Soon",
+            "icon": "envelope",
+        },
+        {
+            "name": "Payment Settings",
+            "description": "Configure payment gateways and options",
+            "status": "Coming Soon",
+            "icon": "credit-card",
+        },
+        {
+            "name": "Notification Preferences",
+            "description": "Manage system notifications and alerts",
+            "status": "Coming Soon",
+            "icon": "bell",
+        },
+        {
+            "name": "Branding & Theme",
+            "description": "Customize colors, logos, and branding",
+            "status": "Coming Soon",
+            "icon": "palette",
+        },
+        {
+            "name": "API Management",
+            "description": "Manage API keys and integrations",
+            "status": "Coming Soon",
+            "icon": "key",
+        },
+    ]
+
+    return render_template(
+        "admin/settings/system.html", settings_sections=settings_sections
+    )

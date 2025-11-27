@@ -9,20 +9,19 @@ Includes:
 - Exchange rate handling
 """
 
+import secrets
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, Dict, Any
-import secrets
-
-from sqlalchemy import CheckConstraint, Index, UniqueConstraint, event, or_
-from sqlalchemy.orm import validates, relationship
-from sqlalchemy import JSON
 from enum import Enum
+from typing import Any, Dict, Optional
+
+from sqlalchemy import JSON, CheckConstraint, Index, UniqueConstraint, event, or_
+from sqlalchemy.orm import relationship, validates
 
 from app.extensions import db
 
-# Import enums from main models file
-from app.models import PaymentStatus, PaymentMethod, PaymentType
+# Import enums from registration models file to avoid circular import
+from app.models.registration import PaymentMethod, PaymentStatus, PaymentType
 
 # ============================================
 # PAYMENT MODEL

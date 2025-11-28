@@ -59,7 +59,7 @@ def login():
         password = form.password.data
         remember = form.remember_me.data
 
-        success, user, message = AuthService.authenticate(
+        success, user, message = AuthService.authenticate_user(
             email=email, password=password, remember=remember
         )
 
@@ -86,7 +86,9 @@ def login():
 @login_required
 def logout():
     """Logout and clear session."""
-    AuthService.logout_user()
+    success, response = AuthService.logout_user_session()
+    if success:
+        return response
     flash("You have been logged out successfully.", "info")
     return redirect(url_for("auth.login"))
 
@@ -101,7 +103,7 @@ def password_reset_request():
     form = PasswordResetRequestForm()
     if form.validate_on_submit():
         email = form.email.data.strip()
-        success, message = AuthService.initiate_reset(email)
+        success, message, token = AuthService.initiate_password_reset(email)
         flash(message, "info" if success else "error")
         if success:
             return redirect(url_for("auth.password_reset_sent"))
@@ -118,7 +120,7 @@ def password_reset_sent():
 @auth_bp.route("/password-reset/<token>", methods=["GET", "POST"])
 def password_reset(token):
     """Complete reset via token."""
-    valid, user, message = AuthService.verify_token(token)
+    valid, user, message = AuthService.verify_reset_token(token)
     if not valid:
         flash(message, "error")
         return redirect(url_for("auth.password_reset_request"))
@@ -143,8 +145,8 @@ def change_password():
     if form.validate_on_submit():
         success, message = AuthService.change_password(
             user=current_user,
-            current=form.current_password.data,
-            new=form.new_password.data,
+            current_password=form.current_password.data,
+            new_password=form.new_password.data,
         )
         flash(message, "success" if success else "error")
         return redirect(url_for("auth.change_password"))

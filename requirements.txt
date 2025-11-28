@@ -12,8 +12,10 @@ certifi==2025.10.5
 charset-normalizer==3.4.4
 click==8.3.0
 colorama==0.4.6
+dnspython==2.8.0
 docutils==0.21.2
 dotenv==0.9.9
+email-validator==2.3.0
 Flask==3.1.2
 Flask-Bcrypt==1.0.1
 Flask-Caching==2.3.1

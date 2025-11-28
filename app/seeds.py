@@ -555,9 +555,9 @@ def seed_all():
     print("=" * 70 + "\n")
 
     seed_users()
-    seed_ticket_prices()
-    seed_exhibitor_packages()
-    seed_addon_items()
+    # seed_ticket_prices()
+    # seed_exhibitor_packages()
+    # seed_addon_items()
 
     print("=" * 70)
     print("✅ All seed data loaded successfully!")

@@ -6,11 +6,13 @@ Handles user login, logout, password management, and email notifications.
 import logging
 import secrets
 from datetime import datetime, timedelta
-from flask import current_app, request, url_for, render_template
-from flask_login import login_user, logout_user, current_user
-from app.models.user import User
-from app.extensions import db, mail
+
+from flask import current_app, render_template, request, url_for
+from flask_login import current_user, login_user, logout_user
 from flask_mail import Message
+
+from app.extensions import db, mail
+from app.models.user import User
 
 
 class AuthService:
@@ -18,19 +20,16 @@ class AuthService:
 
     # -------------------- LOGIN --------------------
     @staticmethod
-    def authenticate_user(identifier, password, remember_me=False):
+    def authenticate_user(email, password, remember=False):
         """
-        Authenticate user via email or username.
+        Authenticate user via email only.
         """
-        logger = logging.getLogger('auth_service')
+        logger = logging.getLogger("auth_service")
 
         try:
             user = (
                 db.session.query(User)
-                .filter(
-                    (User.email == identifier) | (User.full_name == identifier),
-                    User.is_active == True
-                )
+                .filter(User.email == email, User.is_active == True)
                 .first()
             )
 
@@ -40,7 +39,7 @@ class AuthService:
             if not user.check_password(password):
                 return False, None, "Invalid email or password"
 
-            login_user(user, remember=remember_me)
+            login_user(user, remember=remember)
             logger.info(f"User logged in: {user.email}")
             return True, user, "Login successful"
 
@@ -49,7 +48,6 @@ class AuthService:
             db.session.rollback()
             return False, None, "An error occurred during login"
 
-
     # -------------------- LOGOUT --------------------
     @staticmethod
     def logout_user_session():
@@ -57,16 +55,16 @@ class AuthService:
         Logout the current user and clear session cookies.
         """
         from flask import make_response, redirect, url_for
+
         try:
             logout_user()
-            response = make_response(redirect(url_for('auth.login')))
-            response.set_cookie('session', '', expires=0)
-            response.set_cookie('remember_token', '', expires=0)
+            response = make_response(redirect(url_for("auth.login")))
+            response.set_cookie("session", "", expires=0)
+            response.set_cookie("remember_token", "", expires=0)
             return True, response
         except Exception as e:
             logging.error(f"Logout error: {e}")
             return False, None
-
 
     # -------------------- PASSWORD RESET (REQUEST) --------------------
     @staticmethod
@@ -84,9 +82,11 @@ class AuthService:
             user.password_reset_expires = datetime.utcnow() + timedelta(hours=2)
             db.session.commit()
 
-            reset_url = url_for('auth.password_reset', token=token, _external=True)
+            reset_url = url_for("auth.password_reset", token=token, _external=True)
             subject = f"Password Reset - {current_app.config.get('SITE_NAME', 'Bee East Africa Symposium')}"
-            html = render_template('emails/password_reset.html', user=user, reset_url=reset_url)
+            html = render_template(
+                "emails/password_reset.html", user=user, reset_url=reset_url
+            )
 
             msg = Message(subject=subject, recipients=[user.email], html=html)
             mail.send(msg)
@@ -98,18 +98,20 @@ class AuthService:
             db.session.rollback()
             return False, "Unable to send reset email. Please try again.", None
 
-
     # -------------------- PASSWORD RESET (VERIFY + COMPLETE) --------------------
     @staticmethod
     def verify_reset_token(token):
         """Verify password reset token."""
         user = db.session.query(User).filter_by(password_reset_token=token).first()
 
-        if not user or not user.password_reset_expires or datetime.utcnow() > user.password_reset_expires:
+        if (
+            not user
+            or not user.password_reset_expires
+            or datetime.utcnow() > user.password_reset_expires
+        ):
             return False, None, "Reset link invalid or expired"
 
         return True, user, "Token valid"
-
 
     @staticmethod
     def reset_password(user, new_password):
@@ -127,14 +129,17 @@ class AuthService:
             msg = Message(
                 subject=f"Password Changed Successfully - {current_app.config.get('SITE_NAME', 'Bee East Africa Symposium')}",
                 recipients=[user.email],
-                html=render_template('emails/password_reset_confirmation.html', user=user)
+                html=render_template(
+                    "emails/password_reset_confirmation.html", user=user
+                ),
             )
             mail.send(msg)
         except Exception:
-            logging.warning("Password change email could not be sent, but password was updated.")
+            logging.warning(
+                "Password change email could not be sent, but password was updated."
+            )
 
         return True, "Your password has been reset successfully"
-
 
     # -------------------- PASSWORD CHANGE --------------------
     @staticmethod
@@ -153,7 +158,9 @@ class AuthService:
             msg = Message(
                 subject=f"Password Changed - {current_app.config.get('SITE_NAME', 'Bee East Africa Symposium')}",
                 recipients=[user.email],
-                html=render_template('emails/password_change_confirmation.html', user=user)
+                html=render_template(
+                    "emails/password_change_confirmation.html", user=user
+                ),
             )
             mail.send(msg)
         except Exception:
@@ -161,18 +168,26 @@ class AuthService:
 
         return True, "Password changed successfully"
 
-
     # -------------------- PASSWORD STRENGTH --------------------
     @staticmethod
     def validate_password_strength(password):
         """Basic password strength validation."""
         score = 0
-        if len(password) >= 8: score += 1
-        if any(c.islower() for c in password): score += 1
-        if any(c.isupper() for c in password): score += 1
-        if any(c.isdigit() for c in password): score += 1
-        if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password): score += 1
+        if len(password) >= 8:
+            score += 1
+        if any(c.islower() for c in password):
+            score += 1
+        if any(c.isupper() for c in password):
+            score += 1
+        if any(c.isdigit() for c in password):
+            score += 1
+        if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
+            score += 1
 
         valid = score >= 3
-        message = "Strong password" if valid else "Use a mix of letters, numbers, and symbols."
+        message = (
+            "Strong password"
+            if valid
+            else "Use a mix of letters, numbers, and symbols."
+        )
         return valid, message, score

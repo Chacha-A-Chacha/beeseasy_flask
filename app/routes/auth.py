@@ -24,6 +24,7 @@ from app.forms.auth_forms import (
     PasswordResetForm,
     PasswordResetRequestForm,
 )
+from app.models.user import UserRole
 from app.services.auth_service import AuthService
 
 auth_bp = Blueprint("auth", __name__, template_folder="../templates/auth")
@@ -43,12 +44,11 @@ def login():
     """User login route for all roles."""
     if current_user.is_authenticated:
         # redirect based on role
-        if current_user.role == "admin":
+        if current_user.role == UserRole.ADMIN:
             return redirect(url_for("admin.dashboard"))
-        elif current_user.role == "exhibitor":
-            return redirect(url_for("exhibitor.dashboard"))
         else:
-            return redirect(url_for("attendee.dashboard"))
+            # Staff and organizers also go to admin dashboard
+            return redirect(url_for("admin.dashboard"))
 
     form = LoginForm()
     next_url = request.args.get("next", "/")
@@ -69,12 +69,8 @@ def login():
             if form.next_url.data and is_safe_url(form.next_url.data):
                 return redirect(form.next_url.data)
 
-            if user.role == "admin":
-                return redirect(url_for("admin.dashboard"))
-            elif user.role == "exhibitor":
-                return redirect(url_for("exhibitor.dashboard"))
-            else:
-                return redirect(url_for("attendee.dashboard"))
+            # All user roles go to admin dashboard (ADMIN, STAFF, ORGANIZER)
+            return redirect(url_for("admin.dashboard"))
         else:
             flash(message, "error")
 
@@ -87,8 +83,9 @@ def login():
 def logout():
     """Logout and clear session."""
     success, response = AuthService.logout_user_session()
-    if success:
+    if success and response:
         return response
+    # Fallback if logout_user_session fails
     flash("You have been logged out successfully.", "info")
     return redirect(url_for("auth.login"))
 
@@ -158,7 +155,7 @@ def change_password():
 def session_check():
     """Check session validity (AJAX)."""
     if current_user.is_authenticated:
-        return jsonify({"authenticated": True, "role": current_user.role})
+        return jsonify({"authenticated": True, "role": current_user.role.value})
     return jsonify({"authenticated": False}), 401
 
 

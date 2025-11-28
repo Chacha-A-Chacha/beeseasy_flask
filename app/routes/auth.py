@@ -55,8 +55,8 @@ def login():
     form.next_url.data = next_url
 
     if form.validate_on_submit():
-        email = form.email.data.strip()
-        password = form.password.data
+        email = (form.email.data or "").strip()
+        password = form.password.data or ""
         remember = form.remember_me.data
 
         success, user, message = AuthService.authenticate_user(
@@ -99,7 +99,7 @@ def password_reset_request():
 
     form = PasswordResetRequestForm()
     if form.validate_on_submit():
-        email = form.email.data.strip()
+        email = (form.email.data or "").strip()
         success, message, token = AuthService.initiate_password_reset(email)
         flash(message, "info" if success else "error")
         if success:
@@ -125,7 +125,7 @@ def password_reset(token):
     form = PasswordResetForm()
     if form.validate_on_submit():
         success, message = AuthService.reset_password(
-            user=user, new_password=form.password.data
+            user=user, new_password=form.password.data or ""
         )
         flash(message, "success" if success else "error")
         if success:
@@ -142,8 +142,8 @@ def change_password():
     if form.validate_on_submit():
         success, message = AuthService.change_password(
             user=current_user,
-            current_password=form.current_password.data,
-            new_password=form.new_password.data,
+            current_password=form.current_password.data or "",
+            new_password=form.new_password.data or "",
         )
         flash(message, "success" if success else "error")
         return redirect(url_for("auth.change_password"))

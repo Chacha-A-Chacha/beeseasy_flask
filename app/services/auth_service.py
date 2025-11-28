@@ -29,7 +29,7 @@ class AuthService:
         try:
             user = (
                 db.session.query(User)
-                .filter(User.email == email, User.is_active.is_(True))
+                .filter(User.email == email, User.is_active == True)  # type: ignore[arg-type]
                 .first()
             )
 
@@ -79,7 +79,7 @@ class AuthService:
 
             token = secrets.token_urlsafe(32)
             user.password_reset_token = token
-            user.password_reset_expires = datetime.utcnow() + timedelta(hours=2)
+            user.password_reset_expires = datetime.now() + timedelta(hours=0.5)
             db.session.commit()
 
             reset_url = url_for("auth.password_reset", token=token, _external=True)

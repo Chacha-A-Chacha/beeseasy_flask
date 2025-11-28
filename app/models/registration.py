@@ -267,7 +267,7 @@ class TicketPrice(db.Model):
             db.update(TicketPrice)
             .where(
                 TicketPrice.id == self.id,
-                TicketPrice.is_active.is_(True),
+                TicketPrice.is_active == True,  # type: ignore[arg-type]
                 or_(
                     TicketPrice.max_quantity.is_(None),
                     TicketPrice.current_quantity + quantity <= TicketPrice.max_quantity,
@@ -370,7 +370,7 @@ class ExhibitorPackagePrice(db.Model):
             db.update(ExhibitorPackagePrice)
             .where(
                 ExhibitorPackagePrice.id == self.id,
-                ExhibitorPackagePrice.is_active.is_(True),
+                ExhibitorPackagePrice.is_active == True,  # type: ignore[arg-type]
                 or_(
                     ExhibitorPackagePrice.max_quantity.is_(None),
                     ExhibitorPackagePrice.current_quantity

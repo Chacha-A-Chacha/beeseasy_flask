@@ -161,10 +161,19 @@ def dashboard():
         .all()
     )
 
-    # Checked-in count
-    checked_in_count = AttendeeRegistration.query.filter_by(
-        checked_in=True, is_deleted=False
-    ).count()
+    # Checked-in count (using DailyCheckIn model)
+    from app.models import DailyCheckIn
+
+    checked_in_count = (
+        db.session.query(func.count(func.distinct(DailyCheckIn.registration_id)))
+        .join(
+            AttendeeRegistration,
+            DailyCheckIn.registration_id == AttendeeRegistration.id,
+        )
+        .filter(AttendeeRegistration.is_deleted == False)
+        .scalar()
+        or 0
+    )
 
     # Booth assignments
     assigned_booths = ExhibitorRegistration.query.filter_by(
@@ -231,8 +240,20 @@ def list_attendees():
             pass
 
     if checked_in_filter:
+        # Filter by check-in status using DailyCheckIn model
+        from app.models import DailyCheckIn
+
         checked_in_value = checked_in_filter.lower() == "true"
-        query = query.filter_by(checked_in=checked_in_value)
+        if checked_in_value:
+            # Show only those who have at least one check-in
+            query = query.join(
+                DailyCheckIn, AttendeeRegistration.id == DailyCheckIn.registration_id
+            )
+        else:
+            # Show only those who have no check-ins
+            query = query.outerjoin(
+                DailyCheckIn, AttendeeRegistration.id == DailyCheckIn.registration_id
+            ).filter(DailyCheckIn.id == None)
 
     if search_query:
         query = query.filter(
@@ -362,14 +383,23 @@ def cancel_attendee(id):
 @admin_bp.route("/registrations/attendees/<int:id>/check-in", methods=["POST"])
 @admin_required
 def checkin_attendee(id):
-    """Mark attendee as checked in"""
+    """Mark attendee as checked in for today"""
+    from datetime import date
+
     attendee = AttendeeRegistration.query.get_or_404(id)
 
     try:
-        attendee.check_in(checked_in_by=current_user.name)
+        # Check in for today's date
+        today = date.today()
+        attendee.check_in_for_day(
+            event_date=today, checked_in_by=current_user.name, check_in_method="manual"
+        )
         db.session.commit()
 
-        flash("Attendee checked in successfully.", "success")
+        flash(
+            f"Attendee checked in successfully for {today.strftime('%Y-%m-%d')}.",
+            "success",
+        )
 
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"success": True, "message": "Checked in successfully"})
@@ -440,6 +470,8 @@ def export_attendees():
 
     # Data rows
     for attendee in attendees:
+        # Check if attendee has any check-ins
+        has_checked_in = len(attendee.daily_checkins) > 0
         writer.writerow(
             [
                 attendee.reference_number,
@@ -453,7 +485,7 @@ def export_attendees():
                 attendee.city or "",
                 attendee.ticket_type.value if attendee.ticket_type else "",
                 attendee.status.value,
-                "Yes" if attendee.checked_in else "No",
+                "Yes" if has_checked_in else "No",
                 attendee.created_at.strftime("%Y-%m-%d %H:%M"),
                 attendee.confirmed_at.strftime("%Y-%m-%d %H:%M")
                 if attendee.confirmed_at
@@ -623,7 +655,7 @@ def assign_booth(id):
 
     if form.validate_on_submit():
         try:
-            booth_number = form.booth_number.data.strip().upper()
+            booth_number = (form.booth_number.data or "").strip().upper()
 
             # Check if booth number is already assigned
             existing = (
@@ -1380,7 +1412,7 @@ def booth_management():
     form = BoothAssignmentForm()
 
     return render_template(
-        "admin/exhibitors/booths.html",
+        "admin/booths/list.html",
         assigned_exhibitors=assigned,
         unassigned_exhibitors=unassigned,
         form=form,
@@ -1396,6 +1428,9 @@ def booth_management():
 @admin_required
 def checkin():
     """Unified check-in interface for attendees and exhibitors"""
+    from datetime import date
+
+    from app.models import DailyCheckIn
 
     if request.method == "POST":
         # Handle QR code scan or manual check-in
@@ -1411,13 +1446,21 @@ def checkin():
             ).first()
 
             if registration:
-                if registration.checked_in:
+                # Check if already checked in TODAY
+                today = date.today()
+                already_checked_in_today = registration.is_checked_in_for_day(today)
+
+                if already_checked_in_today:
                     flash(
-                        f"{registration.name} is already checked in.",
+                        f"{registration.computed_full_name} is already checked in for today.",
                         "info",
                     )
                 else:
-                    registration.check_in(checked_in_by=current_user.name)
+                    registration.check_in_for_day(
+                        event_date=today,
+                        checked_in_by=current_user.name,
+                        check_in_method="manual",
+                    )
                     db.session.commit()
                     reg_type = (
                         "Attendee"
@@ -1425,44 +1468,64 @@ def checkin():
                         else "Exhibitor"
                     )
                     flash(
-                        f"{reg_type} {registration.name} checked in successfully!",
+                        f"{reg_type} {registration.computed_full_name} checked in successfully for {today.strftime('%Y-%m-%d')}!",
                         "success",
                     )
             else:
                 flash("Registration not found with that reference number.", "error")
 
-    # Get recent check-ins for both attendees and exhibitors
-    recent_attendee_checkins = (
-        AttendeeRegistration.query.filter_by(checked_in=True, is_deleted=False)
-        .order_by(AttendeeRegistration.checked_in_at.desc())
+    # Get recent check-ins for both attendees and exhibitors (using DailyCheckIn)
+    recent_attendee_checkins_query = (
+        db.session.query(AttendeeRegistration, DailyCheckIn)
+        .join(DailyCheckIn, AttendeeRegistration.id == DailyCheckIn.registration_id)
+        .filter(AttendeeRegistration.is_deleted == False)
+        .order_by(DailyCheckIn.checked_in_at.desc())
         .limit(10)
         .all()
     )
+    recent_attendee_checkins = [att for att, _ in recent_attendee_checkins_query]
 
-    recent_exhibitor_checkins = (
-        ExhibitorRegistration.query.filter_by(checked_in=True, is_deleted=False)
-        .order_by(ExhibitorRegistration.checked_in_at.desc())
+    recent_exhibitor_checkins_query = (
+        db.session.query(ExhibitorRegistration, DailyCheckIn)
+        .join(DailyCheckIn, ExhibitorRegistration.id == DailyCheckIn.registration_id)
+        .filter(ExhibitorRegistration.is_deleted == False)
+        .order_by(DailyCheckIn.checked_in_at.desc())
         .limit(10)
         .all()
     )
+    recent_exhibitor_checkins = [exh for exh, _ in recent_exhibitor_checkins_query]
 
     # Stats for attendees
     total_confirmed_attendees = AttendeeRegistration.query.filter_by(
         status=RegistrationStatus.CONFIRMED, is_deleted=False
     ).count()
 
-    checked_in_attendees = AttendeeRegistration.query.filter_by(
-        checked_in=True, is_deleted=False
-    ).count()
+    checked_in_attendees = (
+        db.session.query(func.count(func.distinct(DailyCheckIn.registration_id)))
+        .join(
+            AttendeeRegistration,
+            DailyCheckIn.registration_id == AttendeeRegistration.id,
+        )
+        .filter(AttendeeRegistration.is_deleted == False)
+        .scalar()
+        or 0
+    )
 
     # Stats for exhibitors
     total_confirmed_exhibitors = ExhibitorRegistration.query.filter_by(
         status=RegistrationStatus.CONFIRMED, is_deleted=False
     ).count()
 
-    checked_in_exhibitors = ExhibitorRegistration.query.filter_by(
-        checked_in=True, is_deleted=False
-    ).count()
+    checked_in_exhibitors = (
+        db.session.query(func.count(func.distinct(DailyCheckIn.registration_id)))
+        .join(
+            ExhibitorRegistration,
+            DailyCheckIn.registration_id == ExhibitorRegistration.id,
+        )
+        .filter(ExhibitorRegistration.is_deleted == False)
+        .scalar()
+        or 0
+    )
 
     return render_template(
         "admin/checkin/index.html",

@@ -574,6 +574,13 @@ class Registration(db.Model):
         cascade="all, delete-orphan",
         lazy="select",
     )
+    daily_checkins = relationship(
+        "DailyCheckIn",
+        back_populates="registration",
+        cascade="all, delete-orphan",
+        lazy="select",
+        order_by="DailyCheckIn.event_date",
+    )
     created_by = relationship("User", back_populates="registrations")
 
     __table_args__ = (
@@ -681,6 +688,99 @@ class Registration(db.Model):
         self.deleted_by = deleted_by
         self.status = RegistrationStatus.CANCELLED
 
+    def check_in_for_day(
+        self,
+        event_date: date,
+        checked_in_by: str,
+        event_day_number: Optional[int] = None,
+        check_in_method: str = "manual",
+        session_name: Optional[str] = None,
+        badge_printed: bool = False,
+        materials_given: bool = False,
+        notes: Optional[str] = None,
+    ):
+        """
+        Check in registration for a specific event day
+
+        Args:
+            event_date: The date of the event day
+            checked_in_by: Staff member performing check-in
+            event_day_number: Day number (1, 2, 3, etc.)
+            check_in_method: 'qr_code', 'manual', or 'self_service'
+            session_name: Optional session identifier
+            badge_printed: Whether badge was printed
+            materials_given: Whether materials were distributed
+            notes: Optional notes
+
+        Returns:
+            DailyCheckIn: The created or existing check-in record
+        """
+        # Check if already checked in for this day
+        existing = (
+            db.session.query(DailyCheckIn)
+            .filter_by(registration_id=self.id, event_date=event_date)
+            .first()
+        )
+
+        if existing:
+            # Update existing check-in
+            existing.checked_in_at = datetime.now()
+            existing.checked_in_by = checked_in_by
+            if session_name:
+                existing.session_name = session_name
+            if notes:
+                existing.notes = notes
+            return existing
+
+        # Create new check-in
+        daily_checkin = DailyCheckIn(
+            registration_id=self.id,
+            event_date=event_date,
+            event_day_number=event_day_number,
+            checked_in_by=checked_in_by,
+            check_in_method=check_in_method,
+            session_name=session_name,
+            badge_printed=badge_printed,
+            materials_given=materials_given,
+            notes=notes,
+        )
+        db.session.add(daily_checkin)
+
+        return daily_checkin
+
+    def is_checked_in_for_day(self, event_date: date) -> bool:
+        """Check if registration is checked in for a specific day"""
+        return (
+            db.session.query(DailyCheckIn)
+            .filter_by(registration_id=self.id, event_date=event_date)
+            .first()
+            is not None
+        )
+
+    def get_checked_in_days(self) -> List[date]:
+        """Get list of dates for which this registration has checked in"""
+        return [checkin.event_date for checkin in self.daily_checkins]
+
+    def get_attendance_summary(self) -> Dict[str, Any]:
+        """Get summary of attendance across all event days"""
+        first_checkin = self.daily_checkins[0] if self.daily_checkins else None
+        return {
+            "total_days_attended": len(self.daily_checkins),
+            "days_attended": [
+                {
+                    "date": checkin.event_date.isoformat(),
+                    "day_number": checkin.event_day_number,
+                    "checked_in_at": checkin.checked_in_at.isoformat(),
+                    "session": checkin.session_name,
+                    "badge_printed": checkin.badge_printed,
+                }
+                for checkin in self.daily_checkins
+            ],
+            "first_check_in": first_checkin.checked_in_at.isoformat()
+            if first_checkin
+            else None,
+        }
+
     def to_dict(self, include_pii: bool = False) -> Dict[str, Any]:
         """
         Serialize registration to dictionary with PII protection
@@ -731,6 +831,64 @@ class Registration(db.Model):
 
 
 # ============================================
+# DAILY CHECK-IN MODEL
+# ============================================
+
+
+class DailyCheckIn(db.Model):
+    """Track check-ins for each day of the multi-day event"""
+
+    __tablename__ = "daily_checkins"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    # Registration reference
+    registration_id = db.Column(
+        db.Integer, db.ForeignKey("registrations.id"), nullable=False, index=True
+    )
+
+    # Event day information
+    event_date = db.Column(db.Date, nullable=False, index=True)
+    event_day_number = db.Column(db.Integer)  # e.g., 1, 2, 3 for Day 1, Day 2, Day 3
+
+    # Check-in details
+    checked_in_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    checked_in_by = db.Column(db.String(255))  # Staff member who checked them in
+    check_in_method = db.Column(
+        db.String(50), default="manual"
+    )  # 'qr_code', 'manual', 'self_service'
+
+    # Session/time tracking (optional)
+    session_name = db.Column(db.String(255))  # e.g., "Morning Session", "Afternoon"
+    check_out_at = db.Column(db.DateTime)  # Optional check-out time
+
+    # Badge and materials
+    badge_printed = db.Column(db.Boolean, default=False)
+    materials_given = db.Column(db.Boolean, default=False)
+
+    # Notes
+    notes = db.Column(db.Text)
+
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+
+    # Relationships
+    registration = db.relationship("Registration", back_populates="daily_checkins")
+
+    __table_args__ = (
+        # Ensure one check-in per registration per event date
+        UniqueConstraint(
+            "registration_id", "event_date", name="uq_registration_event_date"
+        ),
+        Index("idx_event_date_checkin", "event_date", "checked_in_at"),
+        Index("idx_registration_date", "registration_id", "event_date"),
+    )
+
+    def __repr__(self):
+        return f"<DailyCheckIn reg={self.registration_id} date={self.event_date}>"
+
+
+# ============================================
 # ATTENDEE REGISTRATION MODEL
 # ============================================
 
@@ -770,12 +928,6 @@ class AttendeeRegistration(Registration):
     visa_letter_sent = db.Column(db.Boolean, default=False)
     visa_letter_sent_at = db.Column(db.DateTime)
 
-    # Check-in tracking
-    checked_in = db.Column(db.Boolean, default=False, index=True)
-    checked_in_at = db.Column(db.DateTime)
-    checked_in_by = db.Column(db.String(255))
-    badge_printed = db.Column(db.Boolean, default=False)
-
     __mapper_args__ = {
         "polymorphic_identity": "attendee",
     }
@@ -787,7 +939,6 @@ class AttendeeRegistration(Registration):
 
     __table_args__ = (
         # Index('idx_attendee_ticket_status', 'ticket_type', 'status'),
-        Index("idx_attendee_checkin", "checked_in", "checked_in_at"),
     )
 
     def get_base_price(self) -> Decimal:
@@ -806,12 +957,6 @@ class AttendeeRegistration(Registration):
         )
 
         return base_price + addons_total
-
-    def check_in(self, checked_in_by: str):
-        """Mark attendee as checked in"""
-        self.checked_in = True
-        self.checked_in_at = datetime.utcnow()
-        self.checked_in_by = checked_in_by
 
     def __repr__(self):
         return f"<AttendeeRegistration {self.reference_number[:15]}... - {self.ticket_type.value}>"

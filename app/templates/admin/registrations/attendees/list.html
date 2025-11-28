@@ -107,7 +107,7 @@
                     {% endif %}
                 </td>
                 <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
-                    {% if attendee.checked_in %}
+                    {% if attendee.daily_checkins %}
                     <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">✓ Checked In</span>
                     {% else %}
                     <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Not Checked In</span>

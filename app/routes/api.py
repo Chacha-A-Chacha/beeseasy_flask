@@ -101,7 +101,15 @@ def dashboard_stats():
         pending_payments = Payment.query.filter_by(status="pending").count()
         failed_payments = Payment.query.filter_by(status="failed").count()
 
-        checked_in_count = Registration.query.filter_by(checked_in=True).count()
+        # Get unique registrations that have checked in at least once
+        from app.models.registration import DailyCheckIn
+
+        checked_in_count = (
+            db.session.query(
+                func.count(func.distinct(DailyCheckIn.registration_id))
+            ).scalar()
+            or 0
+        )
 
         assigned_booths = ExhibitorRegistration.query.filter(
             ExhibitorRegistration.booth_number.isnot(None)
@@ -183,20 +191,29 @@ def get_registration(id):
     try:
         registration = Registration.query.get_or_404(id)
 
+        # Get check-in information
+        has_checked_in = len(registration.daily_checkins) > 0
+        first_checkin = (
+            registration.daily_checkins[0] if registration.daily_checkins else None
+        )
+
         data = {
             "id": registration.id,
             "registration_type": registration.registration_type,
-            "name": registration.name,
+            "name": registration.computed_full_name,
             "email": registration.email,
-            "phone": registration.phone,
+            "phone": registration.full_phone,
             "organization": registration.organization,
             "status": registration.status.value,
-            "checked_in": registration.checked_in,
+            "checked_in": has_checked_in,
             "checked_in_at": (
-                registration.checked_in_at.isoformat()
-                if registration.checked_in_at
-                else None
+                first_checkin.checked_in_at.isoformat() if first_checkin else None
             ),
+            "total_checkins": len(registration.daily_checkins),
+            "checked_in_days": [
+                checkin.event_date.isoformat()
+                for checkin in registration.daily_checkins
+            ],
             "created_at": registration.created_at.isoformat(),
         }
 
@@ -274,12 +291,12 @@ def search_registrations():
         data = [
             {
                 "id": reg.id,
-                "name": reg.name,
+                "name": reg.computed_full_name,
                 "email": reg.email,
-                "phone": reg.phone,
+                "phone": reg.full_phone,
                 "type": reg.registration_type,
                 "status": reg.status.value,
-                "checked_in": reg.checked_in,
+                "checked_in": len(reg.daily_checkins) > 0,
             }
             for reg in results
         ]
@@ -296,21 +313,29 @@ def search_registrations():
 @api_bp.route("/registrations/<int:id>/checkin", methods=["POST"])
 @api_admin_required
 def api_checkin(id):
-    """Quick check-in via API"""
+    """Quick check-in via API for today"""
+    from datetime import date
+
     try:
         registration = Registration.query.get_or_404(id)
+        today = date.today()
 
-        if registration.checked_in:
-            return jsonify({"success": False, "error": "Already checked in"}), 400
+        if registration.is_checked_in_for_day(today):
+            return jsonify(
+                {"success": False, "error": "Already checked in for today"}
+            ), 400
 
-        registration.check_in(checked_in_by=current_user.name)
+        daily_checkin = registration.check_in_for_day(
+            event_date=today, checked_in_by=current_user.name, check_in_method="api"
+        )
         db.session.commit()
 
         return jsonify(
             {
                 "success": True,
-                "message": f"{registration.name} checked in successfully",
-                "checked_in_at": registration.checked_in_at.isoformat(),
+                "message": f"{registration.computed_full_name} checked in successfully for {today.strftime('%Y-%m-%d')}",
+                "checked_in_at": daily_checkin.checked_in_at.isoformat(),
+                "event_date": today.isoformat(),
             }
         )
     except Exception as e:

@@ -7,8 +7,8 @@ import logging
 import secrets
 from datetime import datetime, timedelta
 
-from flask import current_app, render_template, request, url_for
-from flask_login import current_user, login_user, logout_user
+from flask import current_app, render_template, url_for
+from flask_login import login_user, logout_user
 from flask_mail import Message
 
 from app.extensions import db, mail
@@ -29,7 +29,7 @@ class AuthService:
         try:
             user = (
                 db.session.query(User)
-                .filter(User.email == email, User.is_active == True)
+                .filter(User.email == email, User.is_active.is_(True))
                 .first()
             )
 

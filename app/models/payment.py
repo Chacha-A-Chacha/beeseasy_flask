@@ -466,7 +466,7 @@ class PromoCode(db.Model):
             db.update(PromoCode)
             .where(
                 PromoCode.id == self.id,
-                PromoCode.is_active == True,
+                PromoCode.is_active.is_(True),
                 or_(
                     PromoCode.max_uses.is_(None),
                     PromoCode.current_uses < PromoCode.max_uses,

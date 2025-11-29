@@ -63,9 +63,13 @@ class Config:
     MAIL_PORT: int = int(os.getenv("MAIL_PORT", 587))
     MAIL_USE_TLS: bool = os.getenv("MAIL_USE_TLS", "True").lower() == "true"
     MAIL_USE_SSL: bool = os.getenv("MAIL_USE_SSL", "False").lower() == "true"
-    MAIL_USERNAME: str | None = os.getenv("MAIL_USERNAME")  # e.g. info@beeseasy.org
+    MAIL_USERNAME: str | None = os.getenv(
+        "MAIL_USERNAME"
+    )  # e.g. info@pollination.africa
     MAIL_PASSWORD: str | None = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER: str = os.getenv("MAIL_DEFAULT_SENDER", "info@beeseasy.org")
+    MAIL_DEFAULT_SENDER: str = os.getenv(
+        "MAIL_DEFAULT_SENDER", "info@pollination.africa"
+    )
 
     # --- Security ---
     SESSION_COOKIE_SECURE: bool = False
@@ -79,10 +83,24 @@ class Config:
 
     # Bank Details
     BANK_NAME: str = os.getenv("BANK_NAME", "Your Bank")
-    BANK_ACCOUNT_NAME: str = os.getenv("BANK_ACCOUNT_NAME", "BEEASY Organization")
+    BANK_ACCOUNT_NAME: str = os.getenv("BANK_ACCOUNT_NAME", "Pollination Africa")
     BANK_ACCOUNT_NUMBER: str | None = os.getenv("BANK_ACCOUNT_NUMBER")
     BANK_SWIFT: str | None = os.getenv("BANK_SWIFT")
     BANK_BRANCH: str = os.getenv("BANK_BRANCH", "Main Branch")
+
+    # --- Event Configuration ---
+    EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Symposium 2026")
+    EVENT_SHORT_NAME: str = os.getenv("EVENT_SHORT_NAME", "Pollination Africa 2026")
+    EVENT_DATE: str = os.getenv("EVENT_DATE", "3-5 June 2026")
+    EVENT_LOCATION: str = os.getenv(
+        "EVENT_LOCATION", "Arusha International Conference Centre, Arusha, Tanzania"
+    )
+    EVENT_TIME: str = os.getenv("EVENT_TIME", "8:00 AM - 6:00 PM")
+    ORGANIZATION_NAME: str = os.getenv("ORGANIZATION_NAME", "Pollination Africa")
+    CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "info@pollination.africa")
+    SUPPORT_PHONE: str = os.getenv("SUPPORT_PHONE", "+254 719 740 938")
+    SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+254 719 740 938")
+    WEBSITE_URL: str = os.getenv("WEBSITE_URL", "https://pollination.africa")
 
     # --- Other Options ---
     DEBUG_TB_INTERCEPT_REDIRECTS: bool = False

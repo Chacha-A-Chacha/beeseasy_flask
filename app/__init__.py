@@ -153,12 +153,26 @@ def create_app(config_name=None):
     def inject_globals():
         """
         Inject global variables (e.g. event name, organization info)
-        into all templates.
+        into all templates and emails.
         """
         return dict(
-            event_name="Bee East Africa Symposium",
-            organization_name="Bee Easy Africa",
-            contact_email="info@beeseasy.org",
+            event_name=app.config.get(
+                "EVENT_NAME", "Pollination Africa Symposium 2026"
+            ),
+            event_short_name=app.config.get(
+                "EVENT_SHORT_NAME", "Pollination Africa 2026"
+            ),
+            event_date=app.config.get("EVENT_DATE", "3-5 June 2026"),
+            event_location=app.config.get(
+                "EVENT_LOCATION",
+                "Arusha International Conference Centre, Arusha, Tanzania",
+            ),
+            event_time=app.config.get("EVENT_TIME", "8:00 AM - 6:00 PM"),
+            organization_name=app.config.get("ORGANIZATION_NAME", "Pollination Africa"),
+            contact_email=app.config.get("CONTACT_EMAIL", "info@pollination.africa"),
+            support_phone=app.config.get("SUPPORT_PHONE", "+254 719 740 938"),
+            support_whatsapp=app.config.get("SUPPORT_WHATSAPP", "+254 719 740 938"),
+            website_url=app.config.get("WEBSITE_URL", "https://pollination.africa"),
         )
 
     # --- Error Handlers ---

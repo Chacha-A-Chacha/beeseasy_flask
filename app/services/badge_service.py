@@ -99,7 +99,10 @@ class BadgeService:
             # Determine badge type and create appropriate badge
             if isinstance(registration, AttendeeRegistration):
                 # Check if media pass
-                if registration.professional_category == ProfessionalCategory.MEDIA:
+                if (
+                    registration.professional_category
+                    == ProfessionalCategory.MEDIA_JOURNALIST
+                ):
                     success, filename = cls._create_media_pass(registration, qr_buffer)
                     badge_type = "media"
                 else:

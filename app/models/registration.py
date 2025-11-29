@@ -432,10 +432,8 @@ class AddOnItem(db.Model):
     available_until = db.Column(db.DateTime)
 
     # Metadata
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
-    )
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         CheckConstraint("price >= 0", name="check_addon_price_positive"),
@@ -910,7 +908,10 @@ class AttendeeRegistration(Registration):
     ticket_price_id = db.Column(db.Integer, db.ForeignKey("ticket_prices.id"))
 
     # Professional information (simplified)
-    professional_category = db.Column(db.Enum(ProfessionalCategory), index=True)
+    professional_category = db.Column(
+        db.Enum(ProfessionalCategory, values_callable=lambda x: [e.value for e in x]),
+        index=True,
+    )
 
     # Event preferences (consolidated from 4 fields to 1)
     event_preferences = db.Column(

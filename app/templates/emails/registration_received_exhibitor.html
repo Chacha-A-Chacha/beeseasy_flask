@@ -1,0 +1,347 @@
+<!-- templates/emails/registration_received_exhibitor.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #2C5F2D 0%, #5C3A21 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content p {
+            margin: 15px 0;
+        }
+        .highlight-box {
+            background: #2C5F2D;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .highlight-box .ref-number {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin: 10px 0;
+            color: #F5C342;
+        }
+        .info-box {
+            background: #f9f9f9;
+            border-left: 4px solid #2C5F2D;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info-box h3 {
+            margin: 0 0 15px 0;
+            color: #2C5F2D;
+            font-size: 18px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #5C3A21;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #E8B030 0%, #FFA500 100%);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 25px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 176, 48, 0.4);
+        }
+        .button-container {
+            text-align: center;
+        }
+        .package-highlight {
+            background: linear-gradient(135deg, #F5C342 0%, #E8B030 100%);
+            color: #2C5F2D;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .package-highlight h3 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        .next-steps {
+            background: #fff5e6;
+            border: 2px solid #F5C342;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .next-steps h3 {
+            margin: 0 0 15px 0;
+            color: #2C5F2D;
+        }
+        .next-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .next-steps li {
+            margin: 10px 0;
+            color: #5C3A21;
+        }
+        .footer {
+            background: #2C5F2D;
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        .footer p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .footer .contact-info {
+            margin: 15px 0;
+        }
+        .footer .social-links {
+            margin: 15px 0;
+        }
+        .footer a {
+            color: #F5C342;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, #2C5F2D 0%, #F5C342 50%, #2C5F2D 100%);
+            margin: 30px 0;
+        }
+        .benefits-list {
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .benefits-list h4 {
+            color: #2C5F2D;
+            margin: 0 0 10px 0;
+        }
+        .benefits-list ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .benefits-list li {
+            margin: 8px 0;
+            color: #5C3A21;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎪 Exhibitor Registration Received!</h1>
+            <p>{{ event_name }}</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <p>Dear <strong>{{ registration.first_name }} {{ registration.last_name }}</strong>,</p>
+
+            <p>Thank you for registering <strong>{{ registration.company_legal_name }}</strong> as an exhibitor at <strong>{{ event_name }}</strong>! We're thrilled to welcome you to our marketplace.</p>
+
+            <!-- Reference Number Box -->
+            <div class="highlight-box">
+                <div>Your Exhibitor Registration Reference:</div>
+                <div class="ref-number">{{ registration.reference_number }}</div>
+                <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">Save this for your records and booth allocation</div>
+            </div>
+
+            <!-- Package Highlight -->
+            <div class="package-highlight">
+                <h3>{{ registration.package_type.value.replace('_', ' ').title() }} Package</h3>
+                <p style="margin: 10px 0; font-size: 16px;">Selected for {{ registration.company_legal_name }}</p>
+            </div>
+
+            <!-- Company Details -->
+            <div class="info-box">
+                <h3>🏢 Company Information</h3>
+                <div class="info-row">
+                    <span class="info-label">Company Name:</span>
+                    <span>{{ registration.company_legal_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Contact Person:</span>
+                    <span>{{ registration.first_name }} {{ registration.last_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span>{{ registration.email }}</span>
+                </div>
+                {% if registration.job_title %}
+                <div class="info-row">
+                    <span class="info-label">Position:</span>
+                    <span>{{ registration.job_title }}</span>
+                </div>
+                {% endif %}
+                <div class="info-row">
+                    <span class="info-label">Industry:</span>
+                    <span>{{ registration.industry_category }}</span>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="info-box">
+                <h3>💳 Payment Information</h3>
+                <div class="info-row">
+                    <span class="info-label">Package Investment:</span>
+                    <span><strong style="font-size: 20px; color: #E8B030;">{{ currency }} {{ amount_due }}</strong></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Payment Deadline:</span>
+                    <span>{{ due_date }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Included Passes:</span>
+                    <span>{{ registration.number_of_staff }} staff badges</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h3>📌 Next Steps</h3>
+                <ol>
+                    <li><strong>Complete Payment:</strong> Secure your booth by completing payment below</li>
+                    <li><strong>Booth Allocation:</strong> Once payment is confirmed, we'll assign your booth space</li>
+                    <li><strong>Setup Instructions:</strong> You'll receive detailed booth setup guidelines via email</li>
+                    <li><strong>Staff Badges:</strong> Additional team member badges will be sent after payment</li>
+                    <li><strong>Pre-Event Briefing:</strong> Join our exhibitor orientation session (details to follow)</li>
+                </ol>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="button-container">
+                <a href="{{ checkout_url }}" class="cta-button">
+                    🔒 Secure Your Booth - Pay Now
+                </a>
+            </div>
+
+            <p style="text-align: center; color: #666; font-size: 14px;">
+                Or copy this link: <br>
+                <a href="{{ checkout_url }}" style="color: #E8B030; word-break: break-all;">{{ checkout_url }}</a>
+            </p>
+
+            <div class="divider"></div>
+
+            <!-- Package Benefits -->
+            <div class="benefits-list">
+                <h4>✨ Your Package Includes:</h4>
+                <ul>
+                    <li>Dedicated booth space in prime exhibition area</li>
+                    <li>{{ registration.number_of_staff }} complimentary staff passes</li>
+                    <li>Company listing in event catalog and website</li>
+                    <li>Lead generation and networking opportunities</li>
+                    <li>Access to all symposium sessions and networking events</li>
+                    <li>Digital marketing exposure before, during, and after the event</li>
+                </ul>
+            </div>
+
+            <!-- Event Details -->
+            <div class="info-box">
+                <h3>📍 Event Details</h3>
+                <div class="info-row">
+                    <span class="info-label">Event:</span>
+                    <span>{{ event_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Date:</span>
+                    <span>{{ event_date }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Location:</span>
+                    <span>{{ event_location }}</span>
+                </div>
+            </div>
+
+            <p style="background: #fff5e6; padding: 15px; border-radius: 5px; border-left: 4px solid #E8B030;">
+                <strong>💡 Pro Tip:</strong> Early payment ensures prime booth placement! Booths are allocated on a first-come, first-served basis.
+            </p>
+
+            <p>Our exhibitor success team is here to support you. If you have questions about booth setup, marketing opportunities, or logistics, please reach out.</p>
+
+            <p style="margin-top: 30px;">
+                Looking forward to showcasing {{ registration.company_legal_name }}!<br>
+                <strong style="color: #2C5F2D;">The {{ event_name }} Exhibition Team</strong>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="contact-info">
+                <p><strong>Exhibitor Support</strong></p>
+                <p>📧 Email: <a href="mailto:exhibitors@pollination.africa">exhibitors@pollination.africa</a></p>
+                <p>📞 Phone: <a href="tel:+254719740938">+254 719 740 938</a></p>
+                <p>💬 WhatsApp: <a href="https://wa.me/254719740938">+254 719 740 938</a></p>
+            </div>
+            <div class="social-links">
+                <p>
+                    <a href="https://pollination.africa/partners">Exhibitor Portal</a> |
+                    <a href="https://twitter.com/beeseasy">Twitter</a> |
+                    <a href="https://facebook.com/beeseasy">Facebook</a>
+                </p>
+            </div>
+            <p style="font-size: 12px; opacity: 0.8; margin-top: 20px;">
+                This email was sent to {{ registration.email }} regarding your exhibitor registration for {{ event_name }}.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

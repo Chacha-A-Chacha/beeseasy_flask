@@ -6,28 +6,29 @@ Handles registration, payment creation, badge generation, and email notification
 import logging
 from datetime import datetime, timedelta
 from decimal import Decimal
-from typing import Optional, Tuple, Dict, Any
+from typing import Any, Dict, Optional, Tuple
 
 from flask import current_app, url_for
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.extensions import db
-from app.utils.enhanced_email import EnhancedEmailService
 from app.models import (
     AttendeeRegistration,
-    ExhibitorRegistration,
-    RegistrationStatus,
-    TicketPrice,
-    ExhibitorPackagePrice,
     AttendeeTicketType,
     ExhibitorPackage,
+    ExhibitorPackagePrice,
+    ExhibitorRegistration,
     Payment,
-    PaymentStatus,
     PaymentMethod,
+    PaymentStatus,
+    ProfessionalCategory,
     PromoCode,
     PromoCodeUsage,
+    RegistrationStatus,
+    TicketPrice,
 )
 from app.services.badge_service import BadgeService
+from app.utils.enhanced_email import EnhancedEmailService
 from app.utils.model_utils import ValidationHelpers
 
 logger = logging.getLogger("registration_service")
@@ -75,6 +76,21 @@ class RegistrationService:
                 db.session.rollback()
                 return False, str(e), None
 
+            # Convert professional_category string to Enum if provided
+            professional_category = None
+            prof_cat_data = data.get("professional_category", "").strip()
+            if prof_cat_data:
+                try:
+                    professional_category = ProfessionalCategory[
+                        prof_cat_data.upper().replace("-", "_")
+                    ]
+                except KeyError:
+                    # Try using the value directly
+                    for enum_member in ProfessionalCategory:
+                        if enum_member.value == prof_cat_data:
+                            professional_category = enum_member
+                            break
+
             # Create registration
             attendee = AttendeeRegistration(
                 first_name=data.get("first_name").strip(),
@@ -86,7 +102,7 @@ class RegistrationService:
                 ticket_price_id=ticket_price.id,
                 organization=data.get("organization", "").strip() or None,
                 job_title=data.get("job_title", "").strip() or None,
-                professional_category=data.get("professional_category"),
+                professional_category=professional_category,
                 event_preferences=data.get("event_preferences"),
                 dietary_requirement=data.get("dietary_requirement"),
                 dietary_notes=data.get("dietary_notes"),
@@ -128,7 +144,7 @@ class RegistrationService:
                 payment.payment_status = PaymentStatus.COMPLETED
                 payment.payment_method = PaymentMethod.FREE
                 payment.transaction_id = f"FREE-{attendee.reference_number}"
-                payment.paid_at = datetime.utcnow()
+                payment.paid_at = datetime.now()
 
                 # Confirm registration
                 attendee.status = RegistrationStatus.CONFIRMED
@@ -439,8 +455,26 @@ class RegistrationService:
                 "due_date": payment.payment_due_date.strftime("%B %d, %Y")
                 if payment.payment_due_date
                 else None,
-                "event_name": "BEEASY 2025 - Bee East Africa Symposium",
-                "event_date": "March 15-17, 2025",
+                "event_name": current_app.config.get(
+                    "EVENT_NAME", "Pollination Africa Symposium 2026"
+                ),
+                "event_date": current_app.config.get("EVENT_DATE", "3-5 June 2026"),
+                "event_location": current_app.config.get(
+                    "EVENT_LOCATION",
+                    "Arusha International Conference Centre, Arusha, Tanzania",
+                ),
+                "contact_email": current_app.config.get(
+                    "CONTACT_EMAIL", "info@pollination.africa"
+                ),
+                "support_phone": current_app.config.get(
+                    "SUPPORT_PHONE", "+254 719 740 938"
+                ),
+                "support_whatsapp": current_app.config.get(
+                    "SUPPORT_WHATSAPP", "+254 719 740 938"
+                ),
+                "website_url": current_app.config.get(
+                    "WEBSITE_URL", "https://pollination.africa"
+                ),
             }
 
             # Select template
@@ -486,11 +520,27 @@ class RegistrationService:
             context = {
                 "registration": registration,
                 "badge_url": badge_download_url,
-                "event_name": "BEEASY 2025 - Bee East Africa Symposium",
-                "event_date": "March 15-17, 2025",
-                "event_location": "Kenyatta International Convention Centre, Nairobi",
-                "event_time": "9:00 AM - 5:00 PM",
-                "whatsapp": "+254 719 740 938",
+                "event_name": current_app.config.get(
+                    "EVENT_NAME", "Pollination Africa Symposium 2026"
+                ),
+                "event_date": current_app.config.get("EVENT_DATE", "3-5 June 2026"),
+                "event_location": current_app.config.get(
+                    "EVENT_LOCATION",
+                    "Arusha International Conference Centre, Arusha, Tanzania",
+                ),
+                "event_time": current_app.config.get("EVENT_TIME", "8:00 AM - 6:00 PM"),
+                "contact_email": current_app.config.get(
+                    "CONTACT_EMAIL", "info@pollination.africa"
+                ),
+                "support_phone": current_app.config.get(
+                    "SUPPORT_PHONE", "+254 719 740 938"
+                ),
+                "support_whatsapp": current_app.config.get(
+                    "SUPPORT_WHATSAPP", "+254 719 740 938"
+                ),
+                "website_url": current_app.config.get(
+                    "WEBSITE_URL", "https://pollination.africa"
+                ),
             }
 
             # Select template

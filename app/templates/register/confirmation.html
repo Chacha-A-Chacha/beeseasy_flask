@@ -596,7 +596,7 @@ block content %}
             </div>
 
             <!-- Payment Summary Card -->
-            {% if payment %}
+            {% if payment and payment.total_amount > 0 %}
             <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                 <div class="border-b border-gray-200 pb-3 mb-4">
                     <h3 class="text-lg font-bold text-primary-dark">

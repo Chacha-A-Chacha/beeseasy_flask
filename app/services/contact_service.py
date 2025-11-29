@@ -22,16 +22,16 @@ class ContactService:
 
     # Inquiry routing map
     ROUTING_MAP = {
-        "registration": "registrations@beeseasy.org",
-        "exhibition": "exhibitions@beeseasy.org",
-        "sponsorship": "partnerships@beeseasy.org",
-        "speaking": "speakers@beeseasy.org",
-        "partnership": "partnerships@beeseasy.org",
-        "media": "press@beeseasy.org",
-        "agenda": "info@beeseasy.org",
-        "travel": "info@beeseasy.org",
-        "technical": "support@beeseasy.org",
-        "other": "info@beeseasy.org",
+        "registration": "registrations@pollination.africa",
+        "exhibition": "exhibitions@pollination.africa",
+        "sponsorship": "partnerships@pollination.africa",
+        "speaking": "speakers@pollination.africa",
+        "partnership": "partnerships@pollination.africa",
+        "media": "press@pollination.africa",
+        "agenda": "info@pollination.africa",
+        "travel": "info@pollination.africa",
+        "technical": "support@pollination.africa",
+        "other": "info@pollination.africa",
     }
 
     @staticmethod
@@ -86,14 +86,31 @@ class ContactService:
                 country_code = form_data.get("country_code", "+254")
                 full_phone = f"{country_code} {form_data.get('phone')}"
 
-            # Prepare email context
+            # Prepare email context with all config variables
             email_context = {
                 **form_data,
                 "full_phone": full_phone,
                 "reference_number": reference_number,
                 "submitted_at": datetime.now().strftime("%B %d, %Y at %I:%M %p"),
                 "event_name": current_app.config.get(
-                    "EVENT_NAME", "Bee East Africa Symposium 2025"
+                    "EVENT_NAME", "Pollination Africa Symposium 2026"
+                ),
+                "event_date": current_app.config.get("EVENT_DATE", "3-5 June 2026"),
+                "event_location": current_app.config.get(
+                    "EVENT_LOCATION",
+                    "Arusha International Conference Centre, Arusha, Tanzania",
+                ),
+                "contact_email": current_app.config.get(
+                    "CONTACT_EMAIL", "info@pollination.africa"
+                ),
+                "support_phone": current_app.config.get(
+                    "SUPPORT_PHONE", "+254 719 740 938"
+                ),
+                "support_whatsapp": current_app.config.get(
+                    "SUPPORT_WHATSAPP", "+254 719 740 938"
+                ),
+                "website_url": current_app.config.get(
+                    "WEBSITE_URL", "https://pollination.africa"
                 ),
             }
 
@@ -142,7 +159,7 @@ class ContactService:
             logger.error(f"Failed to send contact message: {e}", exc_info=True)
             return (
                 False,
-                "Sorry, we couldn't send your message. Please try again or email us directly at info@beeseasy.org",
+                "Sorry, we couldn't send your message. Please try again or email us directly at info@pollination.africa",
                 None,
             )
 

@@ -1,65 +1,252 @@
 <!-- templates/emails/contact_confirmation.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: #F5C342; color: white; padding: 30px; text-align: center; }
-        .content { padding: 20px; }
-        .info-box { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; }
-        .cta-button { display: inline-block; background: #F5C342; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Thank You for Contacting Us!</h1>
-        </div>
-
-        <div class="content">
-            <p>Hi {{ first_name }},</p>
-
-            <p>We've received your inquiry about <strong>"{{ subject }}"</strong> and will respond within <strong>24-48 hours</strong>.</p>
-
-            <div class="info-box">
-                <strong>Your Inquiry Details:</strong><br>
-                Reference Number: <strong>{{ reference_number }}</strong><br>
-                Inquiry Type: {{ inquiry_type.replace('_', ' ').title() }}<br>
-                Submitted: {{ submitted_at }}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                background: linear-gradient(135deg, #2c5f2d 0%, #5c3a21 100%);
+                color: white;
+                padding: 40px 30px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0 0 10px 0;
+                font-size: 26px;
+                font-weight: bold;
+            }
+            .header p {
+                margin: 0;
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .content p {
+                margin: 15px 0;
+            }
+            .info-box {
+                background: #f0fdf4;
+                border-left: 4px solid #2c5f2d;
+                padding: 20px;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+            .info-box strong {
+                color: #2c5f2d;
+                display: block;
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+            .info-row {
+                padding: 5px 0;
+                color: #5c3a21;
+            }
+            .cta-button {
+                display: inline-block;
+                background: linear-gradient(135deg, #e8b030 0%, #ffa500 100%);
+                color: white;
+                padding: 12px 30px;
+                text-decoration: none;
+                border-radius: 8px;
+                margin: 20px 0;
+                font-weight: bold;
+                transition: transform 0.2s;
+            }
+            .cta-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(232, 176, 48, 0.4);
+            }
+            .contact-list {
+                background: #fff5e6;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+            }
+            .contact-list h3 {
+                margin: 0 0 15px 0;
+                color: #2c5f2d;
+                font-size: 16px;
+            }
+            .contact-list ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .contact-list li {
+                padding: 8px 0;
+                color: #5c3a21;
+            }
+            .contact-list a {
+                color: #e8b030;
+                text-decoration: none;
+            }
+            .contact-list a:hover {
+                text-decoration: underline;
+            }
+            .footer {
+                background: #2c5f2d;
+                color: white;
+                padding: 25px 30px;
+                text-align: center;
+            }
+            .footer p {
+                margin: 8px 0;
+                font-size: 13px;
+            }
+            .footer a {
+                color: #f5c342;
+                text-decoration: none;
+            }
+            .footer a:hover {
+                text-decoration: underline;
+            }
+            .divider {
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    #2c5f2d 0%,
+                    #f5c342 50%,
+                    #2c5f2d 100%
+                );
+                margin: 25px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>✉️ Thank You for Contacting Us!</h1>
+                <p>{{ event_name }}</p>
             </div>
 
-            {% if inquiry_type == 'registration' %}
+            <!-- Content -->
+            <div class="content">
+                <p>Hi <strong>{{ first_name }}</strong>,</p>
+
+                <p>
+                    We've received your inquiry about
+                    <strong>"{{ subject }}"</strong> and will respond within
+                    <strong>24-48 hours</strong>.
+                </p>
+
+                <!-- Inquiry Details -->
+                <div class="info-box">
+                    <strong>📋 Your Inquiry Details</strong>
+                    <div class="info-row">
+                        <strong>Reference Number:</strong> {{ reference_number
+                        }}
+                    </div>
+                    <div class="info-row">
+                        <strong>Inquiry Type:</strong> {{
+                        inquiry_type.replace('_', ' ').title() }}
+                    </div>
+                    <div class="info-row">
+                        <strong>Submitted:</strong> {{ submitted_at }}
+                    </div>
+                </div>
+
+                <!-- Dynamic CTA based on inquiry type -->
+                {% if inquiry_type == 'registration' %}
                 <p>Meanwhile, you can start your registration process:</p>
-                <a href="https://beeseasy.org/register" class="cta-button">Register Now</a>
-            {% elif inquiry_type == 'exhibition' %}
+                <div style="text-align: center">
+                    <a href="{{ website_url }}/register" class="cta-button"
+                        >Register Now</a
+                    >
+                </div>
+                {% elif inquiry_type == 'exhibition' %}
                 <p>Learn more about our exhibition packages:</p>
-                <a href="https://beeseasy.org/partners" class="cta-button">View Packages</a>
-            {% elif inquiry_type == 'sponsorship' %}
+                <div style="text-align: center">
+                    <a href="{{ website_url }}/partners" class="cta-button"
+                        >View Packages</a
+                    >
+                </div>
+                {% elif inquiry_type == 'sponsorship' %}
                 <p>Explore sponsorship opportunities:</p>
-                <a href="https://beeseasy.org/partners" class="cta-button">Partnership Options</a>
-            {% elif inquiry_type == 'speaking' %}
+                <div style="text-align: center">
+                    <a href="{{ website_url }}/partners" class="cta-button"
+                        >Partnership Options</a
+                    >
+                </div>
+                {% elif inquiry_type == 'speaking' %}
                 <p>Review our speaker information:</p>
-                <a href="https://beeseasy.org/speakers" class="cta-button">Speaker Guidelines</a>
-            {% endif %}
+                <div style="text-align: center">
+                    <a href="{{ website_url }}/speakers" class="cta-button"
+                        >Speaker Guidelines</a
+                    >
+                </div>
+                {% endif %}
 
-            <p><strong>Alternative Contact Methods:</strong></p>
-            <ul>
-                <li>📧 Email: <a href="mailto:info@beeseasy.org">info@beeseasy.org</a></li>
-                <li>📞 Phone: +254 719 740 938</li>
-                <li>💬 WhatsApp: +254 719 740 938</li>
-            </ul>
+                <div class="divider"></div>
 
-            <p>Best regards,<br>
-            <strong>The BEEASY2025 Team</strong></p>
+                <!-- Alternative Contact Methods -->
+                <div class="contact-list">
+                    <h3>📞 Alternative Contact Methods</h3>
+                    <ul>
+                        <li>
+                            📧 Email:
+                            <a href="mailto:{{ contact_email }}"
+                                >{{ contact_email }}</a
+                            >
+                        </li>
+                        <li>
+                            📞 Phone:
+                            <a href="tel:{{ support_phone }}"
+                                >{{ support_phone }}</a
+                            >
+                        </li>
+                        <li>
+                            💬 WhatsApp:
+                            <a
+                                href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
+                                >{{ support_whatsapp }}</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 30px">
+                    Best regards,<br />
+                    <strong style="color: #2c5f2d"
+                        >The {{ event_name }} Team</strong
+                    >
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p><strong>{{ event_name }}</strong></p>
+                <p>{{ event_date }} | {{ event_location }}</p>
+                <p style="margin-top: 15px">
+                    <a href="{{ website_url }}">Visit Website</a> |
+                    <a href="{{ website_url }}/contact">Contact Us</a>
+                </p>
+                <p style="font-size: 12px; opacity: 0.8; margin-top: 20px">
+                    This is an automated confirmation. Please do not reply to
+                    this email.<br />
+                    Contact us directly at
+                    <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+                </p>
+            </div>
         </div>
-
-        <div class="footer">
-            <p>This is an automated confirmation. Please do not reply to this email.</p>
-            <p>{{ event_name }} | Arusha, Tanzania | December 2025</p>
-        </div>
-    </div>
-</body>
+    </body>
 </html>

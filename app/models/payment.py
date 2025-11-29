@@ -58,7 +58,7 @@ class Payment(db.Model):
     tax_rate = db.Column(db.Numeric(5, 4), default=0.0)  # e.g., 0.16 for 16%
     discount_amount = db.Column(db.Numeric(10, 2), default=0.0, nullable=False)
     total_amount = db.Column(db.Numeric(10, 2), nullable=False, default=0.0)
-    currency = db.Column(db.String(3), default="USD", nullable=False)
+    currency = db.Column(db.String(3), default="TZS", nullable=False)
 
     # Exchange rate (if paid in different currency)
     exchange_rate = db.Column(db.Numeric(10, 6))

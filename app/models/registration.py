@@ -310,7 +310,7 @@ class ExhibitorPackagePrice(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False)
-    currency = db.Column(db.String(3), default="TSH", nullable=False)
+    currency = db.Column(db.String(3), default="TZS", nullable=False)
 
     # Booth specifications
     booth_size = db.Column(db.String(50))
@@ -416,7 +416,7 @@ class AddOnItem(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False)
-    currency = db.Column(db.String(3), default="USD", nullable=False)
+    currency = db.Column(db.String(3), default="TZS", nullable=False)
 
     # Applicability
     for_attendees = db.Column(db.Boolean, default=False)
@@ -1085,7 +1085,7 @@ class AddOnPurchase(db.Model):
     quantity = db.Column(db.Integer, default=1, nullable=False)
     unit_price = db.Column(db.Numeric(10, 2), nullable=False)
     total_price = db.Column(db.Numeric(10, 2), nullable=False)
-    currency = db.Column(db.String(3), default="USD", nullable=False)
+    currency = db.Column(db.String(3), default="TZS", nullable=False)
 
     # Status
     approved = db.Column(db.Boolean, default=True)

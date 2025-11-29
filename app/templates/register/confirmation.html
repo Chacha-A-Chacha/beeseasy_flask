@@ -2,22 +2,78 @@
 'confirmed' %} Registration Confirmed - Pollination Africa Symposium {% else %}
 Complete Payment - Pollination Africa Symposium {% endif %} {% endblock %} {%
 block content %}
-<!-- Hero Section with Gradient Background -->
+<!-- Hero Section -->
 <div
-    class="isolate overflow-hidden {% if registration.status.value == 'confirmed' %}bg-gradient-to-br from-primary-dark via-primary-medium to-accent-green{% else %}bg-gradient-to-br from-primary-dark via-gray-800 to-gray-900{% endif %}"
+    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"
 >
+    <!-- Decorative background elements -->
     <div
-        class="mx-auto max-w-7xl px-6 pb-96 pt-24 text-center sm:pt-32 lg:px-8"
+        aria-hidden="true"
+        class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
     >
-        <div class="mx-auto max-w-4xl">
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] {% if registration.status.value == 'confirmed' %}bg-gradient-to-tr from-green-400 to-accent-yellow{% else %}bg-gradient-to-tr from-yellow-400 to-accent-orange{% endif %} opacity-20"
+        ></div>
+    </div>
+    <div
+        aria-hidden="true"
+        class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] {% if registration.status.value == 'confirmed' %}bg-gradient-to-tr from-green-400 to-accent-yellow{% else %}bg-gradient-to-tr from-yellow-400 to-accent-orange{% endif %} opacity-20"
+        ></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-3xl text-center">
             <!-- Status Badge -->
             <div class="mb-6">
                 {% if registration.status.value == 'confirmed' %}
                 <span
-                    class="inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold bg-green-500 text-white shadow-lg"
+                    class="inline-flex items-center gap-x-2 rounded-full bg-green-500/20 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-green-500/30"
                 >
                     <svg
-                        class="w-5 h-5 mr-2"
+                        class="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -29,14 +85,14 @@ block content %}
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         ></path>
                     </svg>
-                    CONFIRMED
+                    REGISTRATION CONFIRMED
                 </span>
                 {% else %}
                 <span
-                    class="inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold bg-yellow-500 text-gray-900 shadow-lg"
+                    class="inline-flex items-center gap-x-2 rounded-full bg-yellow-500/20 px-4 py-2 text-sm font-semibold text-yellow-200 ring-1 ring-inset ring-yellow-500/30"
                 >
                     <svg
-                        class="w-5 h-5 mr-2"
+                        class="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -48,647 +104,673 @@ block content %}
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                         ></path>
                     </svg>
-                    PENDING PAYMENT
+                    PAYMENT PENDING
                 </span>
                 {% endif %}
             </div>
 
             <!-- Main Heading -->
             <h1
-                class="text-5xl font-bold tracking-tight text-white sm:text-6xl mb-4"
+                class="text-4xl font-bold tracking-tight text-white sm:text-5xl"
             >
                 {% if registration.status.value == 'confirmed' %} You're All
                 Set! {% else %} Almost There! {% endif %}
             </h1>
 
             <!-- Event Details -->
-            <p
-                class="mt-6 text-lg leading-8 {% if registration.status.value == 'confirmed' %}text-green-200{% else %}text-yellow-200{% endif %}"
-            >
-                Pollination Africa Symposium 2026
+            <p class="mt-4 text-lg text-accent-yellow">
+                3-5 June 2026 • Arusha, Tanzania
             </p>
-            <p
-                class="text-base {% if registration.status.value == 'confirmed' %}text-green-100{% else %}text-gray-300{% endif %}"
-            >
-                June 3-5, 2026 • Arusha International Conference Centre,
-                Tanzania
-            </p>
-        </div>
 
-        <!-- Decorative Background -->
-        <div class="relative mt-10">
-            <p
-                class="mx-auto max-w-2xl text-lg font-medium {% if registration.status.value == 'confirmed' %}text-white{% else %}text-gray-200{% endif %} sm:text-xl/8"
-            >
+            <!-- Description -->
+            <p class="mt-4 text-lg text-white/90">
                 {% if registration.status.value == 'confirmed' %} Your
-                registration is complete. Your event badge has been sent to
-                <span class="font-bold text-accent-yellow"
+                registration for Pollination Africa Symposium 2026 is complete.
+                Your event badge has been sent to
+                <span class="font-semibold text-accent-yellow"
                     >{{ registration.email }}</span
                 >
                 {% else %} Complete your payment to receive your event badge and
-                full confirmation {% endif %}
+                full confirmation for Pollination Africa Symposium 2026 {% endif
+                %}
             </p>
-            <svg
-                viewBox="0 0 1208 1024"
-                class="absolute -top-10 left-1/2 -z-10 h-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:-top-12 md:-top-20 lg:-top-12 xl:top-0"
-            >
-                <ellipse
-                    cx="604"
-                    cy="512"
-                    rx="604"
-                    ry="512"
-                    fill="url(#gradient-confirmation)"
-                />
-                <defs>
-                    <radialGradient id="gradient-confirmation">
-                        {% if registration.status.value == 'confirmed' %}
-                        <stop stop-color="#2C5F2D" />
-                        <stop offset="1" stop-color="#5C8A3D" />
-                        {% else %}
-                        <stop stop-color="#F5C342" />
-                        <stop offset="1" stop-color="#E8B030" />
-                        {% endif %}
-                    </radialGradient>
-                </defs>
-            </svg>
         </div>
     </div>
+</div>
 
-    <!-- Cards Section with Negative Margin -->
-    <div class="flow-root bg-gray-50 pb-24 sm:pb-32">
-        <div class="-mt-80">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <!-- ========================================== -->
-                <!-- CONFIRMED STATUS CARDS -->
-                <!-- ========================================== -->
-                {% if registration.status.value == 'confirmed' %}
-
-                <div
-                    class="mx-auto grid max-w-md grid-cols-1 gap-8 lg:max-w-5xl lg:grid-cols-2"
-                >
-                    <!-- Badge Download Card -->
-                    {% if registration.qr_code_image_url %}
+<!-- Progress Indicator -->
+<div class="bg-white border-b border-gray-200">
+    <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
+        <div class="mx-auto max-w-3xl">
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center">
                     <div
-                        class="flex flex-col justify-between rounded-3xl bg-white p-8 shadow-xl ring-1 ring-gray-900/10 sm:p-10"
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white"
                     >
-                        <div>
-                            <div class="flex items-center gap-x-3 mb-6">
-                                <svg
-                                    class="w-8 h-8 text-green-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                                    ></path>
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-900">
-                                    Your Event Badge
-                                </h3>
-                            </div>
-                            <p class="text-base text-gray-600 mb-6">
-                                Your badge has been sent to your email. Download
-                                it here as a backup for event check-in.
-                            </p>
-                            <div class="bg-green-50 rounded-lg p-4 mb-6">
-                                <p class="text-sm text-green-800">
-                                    <svg
-                                        class="w-5 h-5 inline mr-1"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        ></path>
-                                    </svg>
-                                    Print or save to your phone for quick
-                                    check-in
-                                </p>
-                            </div>
-                        </div>
-                        <a
-                            href="{{ url_for('main.download_badge', reference=registration.reference_number) }}"
-                            class="mt-8 block rounded-md bg-green-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-all"
-                        >
-                            Download Badge (PDF)
-                        </a>
+                        ✓
                     </div>
-                    {% endif %}
-
-                    <!-- What's Next Card -->
-                    <div
-                        class="flex flex-col justify-between rounded-3xl bg-white p-8 shadow-xl ring-1 ring-gray-900/10 sm:p-10"
-                    >
-                        <div>
-                            <div class="flex items-center gap-x-3 mb-6">
-                                <svg
-                                    class="w-8 h-8 text-green-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                                    ></path>
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-900">
-                                    What Happens Next
-                                </h3>
-                            </div>
-                            <ul
-                                role="list"
-                                class="space-y-4 text-sm text-gray-600"
-                            >
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-green-600"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Check Your Email</strong> -
-                                        Badge and event details sent to {{
-                                        registration.email }}</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-green-600"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Save Your Badge</strong> -
-                                        Print or save to phone for quick event
-                                        check-in</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-green-600"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Join WhatsApp Group</strong> -
-                                        Stay connected for real-time updates and
-                                        networking</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-green-600"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Event Day</strong> - Arrive 30
-                                        minutes early for check-in on June 3-5,
-                                        2026</span
-                                    >
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <span class="ml-2 text-gray-600">Registration</span>
                 </div>
-
-                <!-- ========================================== -->
-                <!-- PENDING STATUS CARDS -->
-                <!-- ========================================== -->
-                {% else %}
-
                 <div
-                    class="mx-auto grid max-w-md grid-cols-1 gap-8 lg:max-w-5xl lg:grid-cols-2"
-                >
-                    <!-- Payment Required Card -->
+                    class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-accent-yellow{% endif %} mx-4"
+                ></div>
+                <div class="flex items-center">
                     <div
-                        class="flex flex-col justify-between rounded-3xl bg-white p-8 shadow-xl ring-1 ring-gray-900/10 sm:p-10"
+                        class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-accent-yellow text-primary-dark font-bold{% endif %}"
                     >
-                        <div>
-                            <div class="flex items-center gap-x-3 mb-6">
-                                <svg
-                                    class="w-8 h-8 text-yellow-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                                    ></path>
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-900">
-                                    Complete Payment
-                                </h3>
-                            </div>
-                            <p class="text-base text-gray-600 mb-6">
-                                {% if registration.registration_type ==
-                                'attendee' %} Complete your payment to receive
-                                your event badge and confirmation {% else %}
-                                Complete your payment to receive your exhibitor
-                                badge and booth details {% endif %}
-                            </p>
-                            {% if payment %}
-                            <div class="bg-yellow-50 rounded-lg p-4 mb-6">
-                                <div
-                                    class="flex justify-between items-center mb-2"
-                                >
-                                    <span class="text-sm text-gray-700"
-                                        >Amount Due</span
-                                    >
-                                    <span
-                                        class="text-2xl font-bold text-gray-900"
-                                        >{{ payment.currency }} {{
-                                        "%.2f"|format(balance_due if balance_due
-                                        > 0 else payment.total_amount) }}</span
-                                    >
-                                </div>
-                                <p class="text-xs text-gray-600">
-                                    Secure payment • Multiple payment methods
-                                </p>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <a
-                            href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
-                            class="mt-8 block rounded-md bg-yellow-500 px-4 py-3 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 transition-all"
-                        >
-                            Proceed to Payment
-                        </a>
+                        {% if registration.status.value == 'confirmed' %}✓{%
+                        else %}2{% endif %}
                     </div>
-
-                    <!-- After Payment Card -->
+                    <span
+                        class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}font-semibold text-primary-dark{% endif %}"
+                    >
+                        {% if payment and payment.total_amount > 0 %}Payment{%
+                        else %}Confirmation{% endif %}
+                    </span>
+                </div>
+                <div
+                    class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-gray-200{% endif %} mx-4"
+                ></div>
+                <div class="flex items-center">
                     <div
-                        class="flex flex-col justify-between rounded-3xl bg-white p-8 shadow-xl ring-1 ring-gray-900/10 sm:p-10"
+                        class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-400{% endif %}"
                     >
-                        <div>
-                            <div class="flex items-center gap-x-3 mb-6">
-                                <svg
-                                    class="w-8 h-8 text-gray-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                                    ></path>
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-900">
-                                    After Payment
-                                </h3>
-                            </div>
-                            <ul
-                                role="list"
-                                class="space-y-4 text-sm text-gray-600"
-                            >
-                                {% if registration.registration_type ==
-                                'attendee' %}
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Instant Badge Delivery</strong>
-                                        - Badge emailed to {{ registration.email
-                                        }}</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Event Details</strong> - Full
-                                        symposium schedule and speaker
-                                        information</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Community Access</strong> -
-                                        WhatsApp group invite for
-                                        networking</span
-                                    >
-                                </li>
-                                {% else %}
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Exhibitor Badge</strong> -
-                                        Badge emailed to {{ registration.email
-                                        }}</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Booth Assignment</strong> -
-                                        Your booth location confirmed via
-                                        email</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Exhibitor Manual</strong> -
-                                        Setup schedule and logistics
-                                        details</span
-                                    >
-                                </li>
-                                <li class="flex gap-x-3">
-                                    <svg
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        class="h-6 w-5 flex-none text-gray-400"
-                                    >
-                                        <path
-                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                                            clip-rule="evenodd"
-                                            fill-rule="evenodd"
-                                        />
-                                    </svg>
-                                    <span
-                                        ><strong>Team Badges</strong> -
-                                        Instructions for {{
-                                        registration.number_of_staff }} team
-                                        members</span
-                                    >
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </div>
+                        {% if registration.status.value == 'confirmed' %}✓{%
+                        else %}3{% endif %}
                     </div>
-                </div>
-
-                {% endif %}
-
-                <!-- Registration & Payment Summary - Full Width -->
-                <div
-                    class="mt-8 flex flex-col items-start gap-x-8 gap-y-6 rounded-3xl p-8 ring-1 ring-gray-900/10 sm:gap-y-10 sm:p-10 lg:flex-row lg:items-center bg-white shadow-xl"
-                >
-                    <div class="lg:min-w-0 lg:flex-1">
-                        <div class="flex items-center gap-x-4 mb-4">
-                            <h3 class="text-lg font-bold text-gray-900">
-                                Registration Summary
-                            </h3>
-                            <span
-                                class="inline-block px-3 py-1 rounded-full text-xs font-semibold {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}"
-                            >
-                                {{ registration.status.value|upper }}
-                            </span>
-                        </div>
-
-                        <div
-                            class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm"
-                        >
-                            <div>
-                                <p class="text-gray-600">Reference Number</p>
-                                <p class="font-mono font-bold text-gray-900">
-                                    {{ registration.reference_number }}
-                                </p>
-                            </div>
-                            <div>
-                                <p class="text-gray-600">Name</p>
-                                <p class="font-semibold text-gray-900">
-                                    {{ registration.first_name }} {{
-                                    registration.last_name }}
-                                </p>
-                            </div>
-                            <div>
-                                <p class="text-gray-600">Email</p>
-                                <p class="font-semibold text-gray-900">
-                                    {{ registration.email }}
-                                </p>
-                            </div>
-                            {% if registration.registration_type == 'attendee'
-                            %}
-                            <div>
-                                <p class="text-gray-600">Ticket Type</p>
-                                <p class="font-semibold text-gray-900">
-                                    {{
-                                    registration.ticket_type.value|replace('_',
-                                    ' ')|title }}
-                                </p>
-                            </div>
-                            {% if registration.organization %}
-                            <div>
-                                <p class="text-gray-600">Organization</p>
-                                <p class="font-semibold text-gray-900">
-                                    {{ registration.organization }}
-                                </p>
-                            </div>
-                            {% endif %} {% else %}
-                            <div>
-                                <p class="text-gray-600">Company</p>
-                                <p class="font-semibold text-gray-900">
-                                    {{ registration.company_legal_name }}
-                                </p>
-                            </div>
-                            <div>
-                                <p class="text-gray-600">Package</p>
-                                <p class="font-semibold text-gray-900">
-                                    {{ registration.package_type.value|title }}
-                                </p>
-                            </div>
-                            {% endif %} {% if payment %}
-                            <div>
-                                <p class="text-gray-600">Amount</p>
-                                <p class="font-bold text-gray-900">
-                                    {{ payment.currency }} {{
-                                    "%.2f"|format(payment.total_amount) }}
-                                </p>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Support Banner -->
-                <div
-                    class="mt-8 rounded-3xl bg-gradient-to-r from-primary-dark to-primary-medium p-8 text-center shadow-xl"
-                >
-                    <div class="mx-auto max-w-2xl">
-                        <h3 class="text-xl font-bold text-white mb-3">
-                            Need Assistance?
-                        </h3>
-                        <p class="text-white/90 mb-6">
-                            Our team is here to help with any questions about
-                            your registration
-                        </p>
-                        <div
-                            class="flex flex-col sm:flex-row gap-4 justify-center"
-                        >
-                            <a
-                                href="mailto:info@pollination.africa"
-                                class="inline-flex items-center justify-center px-6 py-3 rounded-md bg-white text-primary-dark font-semibold hover:bg-gray-100 transition-all"
-                            >
-                                <svg
-                                    class="w-5 h-5 mr-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                    ></path>
-                                </svg>
-                                Email Support
-                            </a>
-                            <a
-                                href="https://wa.me/254719740938"
-                                target="_blank"
-                                class="inline-flex items-center justify-center px-6 py-3 rounded-md bg-green-500 text-white font-semibold hover:bg-green-600 transition-all"
-                            >
-                                <svg
-                                    class="w-5 h-5 mr-2"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
-                                    />
-                                </svg>
-                                WhatsApp +254 719 740 938
-                            </a>
-                        </div>
-                    </div>
+                    <span
+                        class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}text-gray-400{% endif %}"
+                        >Complete</span
+                    >
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Auto-refresh for pending payments -->
-{% if registration.status.value != 'confirmed' %}
-<script>
-    let checkCount = 0;
-    const maxChecks = 60; // Check for 5 minutes (60 checks × 5 seconds)
+<!-- Main Content -->
+<div class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-4xl">
+            <!-- ========================================== -->
+            <!-- CONFIRMED STATUS (Free Attendees Only) -->
+            <!-- ========================================== -->
+            {% if registration.status.value == 'confirmed' %}
 
-    function checkPaymentStatus() {
-        if (checkCount >= maxChecks) {
-            console.log('Payment status check timeout');
-            return;
+            <!-- Success Alert -->
+            <div
+                class="bg-green-50 border-l-4 border-green-500 p-6 mb-8 rounded-r-lg shadow-md"
+            >
+                <div class="flex items-start">
+                    <svg
+                        class="w-12 h-12 text-green-500 mr-4 flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    <div>
+                        <h2 class="text-2xl font-bold text-green-800 mb-2">
+                            You're All Set!
+                        </h2>
+                        <p class="text-green-700 text-lg mb-3">
+                            Your registration is complete. Welcome to
+                            Pollination Africa Symposium 2026!
+                        </p>
+                        <p class="text-green-600 text-sm">
+                            <svg
+                                class="w-5 h-5 inline mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+                            Your event badge has been sent to
+                            <strong>{{ registration.email }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badge Download -->
+            {% if registration.qr_code_image_url %}
+            <div
+                class="bg-white rounded-lg shadow-lg p-8 mb-8 text-center border-2 border-green-200"
+            >
+                <h3 class="text-xl font-bold text-primary-dark mb-4">
+                    Your Event Badge
+                </h3>
+                <p class="text-gray-600 mb-6">
+                    Didn't receive the email? Download your badge here as a
+                    backup.
+                </p>
+                <a
+                    href="{{ url_for('main.download_badge', reference=registration.reference_number) }}"
+                    class="inline-flex items-center px-8 py-4 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg text-lg"
+                >
+                    <svg
+                        class="w-6 h-6 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                        ></path>
+                    </svg>
+                    Download Badge (PDF)
+                </a>
+                <p class="text-sm text-gray-500 mt-3">
+                    💡 Print or save to your phone for event check-in
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- What's Next - Attendees Confirmed -->
+            <div
+                class="bg-gradient-to-br from-primary-dark to-primary-medium rounded-lg p-8 mb-8 text-white"
+            >
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                    <svg
+                        class="w-8 h-8 mr-3 text-accent-yellow"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                        ></path>
+                    </svg>
+                    What Happens Next
+                </h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >1</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Check Your Email</h4>
+                            <p class="text-white/90 text-sm">
+                                Your badge and full event details have been sent
+                                to {{ registration.email }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >2</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Save Your Badge</h4>
+                            <p class="text-white/90 text-sm">
+                                Print your badge or save it to your phone for
+                                quick check-in at the event
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >3</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Join Event Updates</h4>
+                            <p class="text-white/90 text-sm">
+                                Stay connected via WhatsApp for real-time
+                                symposium updates and networking
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >4</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Event Day</h4>
+                            <p class="text-white/90 text-sm">
+                                Arrive 30 minutes early for check-in • 3-5 June
+                                2026 • Arusha International Conference Center
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PENDING STATUS (Paid Attendees & All Exhibitors) -->
+            <!-- ========================================== -->
+            {% else %}
+
+            <!-- Pending Payment Alert -->
+            <div
+                class="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-8 rounded-r-lg shadow-md"
+            >
+                <div class="flex items-start">
+                    <svg
+                        class="w-12 h-12 text-yellow-500 mr-4 flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    <div>
+                        <h2 class="text-2xl font-bold text-yellow-800 mb-2">
+                            Almost There!
+                        </h2>
+                        <p class="text-yellow-700 text-lg mb-3">
+                            {% if registration.registration_type == 'attendee'
+                            %} Complete your payment to receive your event badge
+                            and confirmation {% else %} Complete your payment to
+                            receive your exhibitor badge and booth details {%
+                            endif %}
+                        </p>
+                        <p class="text-yellow-600 text-sm">
+                            Your registration has been saved. Badge will be
+                            emailed once payment is verified.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Button -->
+            <div class="text-center mb-8">
+                <a
+                    href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
+                    class="inline-flex items-center px-10 py-5 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg hover:shadow-xl text-xl"
+                >
+                    <svg
+                        class="w-7 h-7 mr-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                        ></path>
+                    </svg>
+                    Complete Payment Now
+                </a>
+                <p class="text-sm text-gray-600 mt-3">
+                    Secure payment • Multiple payment methods available
+                </p>
+            </div>
+
+            <!-- What Happens After Payment -->
+            <div
+                class="bg-gradient-to-br from-primary-dark to-primary-medium rounded-lg p-8 mb-8 text-white"
+            >
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                    <svg
+                        class="w-8 h-8 mr-3 text-accent-yellow"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"
+                        ></path>
+                    </svg>
+                    After Payment Confirmation
+                </h3>
+
+                <div class="space-y-4">
+                    {% if registration.registration_type == 'attendee' %}
+                    <!-- Attendee Next Steps -->
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >1</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">
+                                Instant Badge Delivery
+                            </h4>
+                            <p class="text-white/90 text-sm">
+                                Your event badge will be automatically generated
+                                and emailed to {{ registration.email }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >2</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Event Details</h4>
+                            <p class="text-white/90 text-sm">
+                                Receive full symposium schedule, session
+                                details, and speaker information
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >3</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Join the Community</h4>
+                            <p class="text-white/90 text-sm">
+                                Get WhatsApp group invite for networking and
+                                real-time updates
+                            </p>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <!-- Exhibitor Next Steps -->
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >1</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">
+                                Exhibitor Badge Delivery
+                            </h4>
+                            <p class="text-white/90 text-sm">
+                                Your exhibitor badge will be automatically
+                                generated and emailed to {{ registration.email
+                                }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >2</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Booth Assignment</h4>
+                            <p class="text-white/90 text-sm">
+                                Your booth location will be assigned and
+                                confirmed via email
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >3</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Exhibitor Manual</h4>
+                            <p class="text-white/90 text-sm">
+                                Receive detailed exhibitor manual with setup
+                                schedule, logistics, and team badge instructions
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <span
+                            class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold mr-4 flex-shrink-0"
+                            >4</span
+                        >
+                        <div>
+                            <h4 class="font-bold mb-1">Team Badges</h4>
+                            <p class="text-white/90 text-sm">
+                                Instructions on requesting additional badges for
+                                your {{ registration.number_of_staff }} team
+                                members
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% endif %}
+
+            <!-- Registration Details Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="border-b border-gray-200 pb-3 mb-4">
+                    <h3 class="text-lg font-bold text-primary-dark">
+                        Registration Summary
+                    </h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">
+                            Reference Number
+                        </p>
+                        <p
+                            class="font-bold text-primary-dark font-mono text-lg"
+                        >
+                            {{ registration.reference_number }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Status</p>
+                        <span
+                            class="inline-block px-3 py-1 rounded-full text-sm font-semibold {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800 {% else %}bg-yellow-100 text-yellow-800{% endif %}"
+                        >
+                            {{ registration.status.value|upper }}
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Name</p>
+                        <p class="font-semibold text-primary-dark">
+                            {{ registration.first_name }} {{
+                            registration.last_name }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Email</p>
+                        <p class="font-semibold text-primary-dark">
+                            {{ registration.email }}
+                        </p>
+                    </div>
+
+                    {% if registration.registration_type == 'attendee' %}
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Ticket Type</p>
+                        <p class="font-semibold text-primary-dark">
+                            {{ registration.ticket_type.value|replace('_', '
+                            ')|title }}
+                        </p>
+                    </div>
+                    {% if registration.organization %}
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Organization</p>
+                        <p class="font-semibold text-primary-dark">
+                            {{ registration.organization }}
+                        </p>
+                    </div>
+                    {% endif %} {% else %}
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Company</p>
+                        <p class="font-semibold text-primary-dark">
+                            {{ registration.company_legal_name }}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Package</p>
+                        <p class="font-semibold text-primary-dark">
+                            {{ registration.package_type.value|title }}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Payment Summary Card -->
+            {% if payment %}
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="border-b border-gray-200 pb-3 mb-4">
+                    <h3 class="text-lg font-bold text-primary-dark">
+                        Payment Summary
+                    </h3>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">
+                            {% if registration.registration_type == 'attendee'
+                            %}Ticket Price{% else %}Package Price{% endif %}
+                        </span>
+                        <span class="text-xl font-bold text-primary-dark"
+                            >{{ payment.currency }} {{
+                            "%.2f"|format(payment.total_amount) }}</span
+                        >
+                    </div>
+
+                    {% if balance_due > 0 %}
+                    <div
+                        class="flex justify-between items-center pt-3 border-t border-gray-200"
+                    >
+                        <span class="font-semibold text-red-600"
+                            >Amount Due</span
+                        >
+                        <span class="text-2xl font-bold text-red-600"
+                            >{{ payment.currency }} {{
+                            "%.2f"|format(balance_due) }}</span
+                        >
+                    </div>
+                    {% else %}
+                    <div
+                        class="flex justify-between items-center pt-3 border-t border-gray-200"
+                    >
+                        <span class="font-semibold text-green-600">
+                            {% if payment.total_amount == 0 %}Free Admission{%
+                            else %}Paid in Full{% endif %}
+                        </span>
+                        <span class="text-2xl font-bold text-green-600"
+                            >{{ payment.currency }} {{
+                            "%.2f"|format(payment.total_amount) }}</span
+                        >
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Email Confirmation Notice -->
+            <div
+                class="text-center bg-gray-50 rounded-lg p-6 border border-gray-200"
+            >
+                <svg
+                    class="w-12 h-12 text-gray-400 mx-auto mb-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    ></path>
+                </svg>
+                <p class="text-gray-700 font-medium mb-1">
+                    {% if registration.status.value == 'confirmed' %} Badge Sent
+                    to Your Email {% else %} Confirmation Email Sent {% endif %}
+                </p>
+                <p class="text-sm text-gray-600 mb-4">
+                    Check
+                    <span class="font-semibold">{{ registration.email }}</span>
+                    for {% if registration.status.value == 'confirmed' %}your
+                    badge and event details{% else %}payment instructions{%
+                    endif %}
+                </p>
+                <p class="text-xs text-gray-500 border-t border-gray-200 pt-4">
+                    Questions? Email
+                    <a
+                        href="mailto:info@pollination.africa"
+                        class="text-accent-orange hover:text-accent-yellow font-semibold"
+                        >info@pollination.africa</a
+                    >
+                    or WhatsApp
+                    <a
+                        href="https://wa.me/254719740938"
+                        class="text-accent-orange hover:text-accent-yellow font-semibold"
+                        >+254 719 740 938</a
+                    >
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto-refresh for pending payments -->
+    {% if registration.status.value != 'confirmed' %}
+    <script>
+        let checkCount = 0;
+        const maxChecks = 60; // Check for 5 minutes (60 checks × 5 seconds)
+
+        function checkPaymentStatus() {
+            if (checkCount >= maxChecks) {
+                console.log("Payment status check timeout");
+                return;
+            }
+
+            fetch(
+                "/register/api/payment-status/{{ registration.reference_number }}",
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.is_confirmed) {
+                        console.log("Payment confirmed! Reloading page...");
+                        location.reload();
+                    } else {
+                        checkCount++;
+                        setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
+                    }
+                })
+                .catch((error) => {
+                    console.error("Payment status check failed:", error);
+                    checkCount++;
+                    setTimeout(checkPaymentStatus, 10000); // Retry after 10 seconds on error
+                });
         }
 
-        fetch('/register/api/payment-status/{{ registration.reference_number }}')
-            .then(response => response.json())
-            .then(data => {
-                if (data.is_confirmed) {
-                    console.log('Payment confirmed! Reloading page...');
-                    location.reload();
-                } else {
-                    checkCount++;
-                    setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
-                }
-            })
-            .catch(error => {
-                console.error('Payment status check failed:', error);
-                checkCount++;
-                setTimeout(checkPaymentStatus, 10000); // Retry after 10 seconds on error
-            });
-    }
-
-    // Start checking after 10 seconds (gives time for webhook to process)
-    setTimeout(checkPaymentStatus, 10000);
-</script>
-{% endif %} {% endblock %}
+        // Start checking after 10 seconds (gives time for webhook to process)
+        setTimeout(checkPaymentStatus, 10000);
+    </script>
+    {% endif %} {% endblock %}
+</div>

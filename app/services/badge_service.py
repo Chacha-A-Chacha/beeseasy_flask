@@ -1,5 +1,5 @@
 """
-Enhanced Badge Generation Service for BEEASY2025
+Enhanced Badge Generation Service for Pollination Africa 2026
 Generates PDF badges with embedded QR codes for:
 - Attendees (yellow banner)
 - Media Pass (orange/red banner)
@@ -17,6 +17,7 @@ from typing import Optional, Tuple
 
 import qrcode
 from flask import current_app
+from reportlab.graphics import renderPDF
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A6
@@ -30,6 +31,7 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+from svglib.svglib import svg2rlg
 
 from app.extensions import db
 from app.models import (
@@ -89,7 +91,7 @@ class BadgeService:
             # Generate QR code data if not exists
             if not registration.qr_code_data:
                 registration.qr_code_data = (
-                    f"BEEASY2025-{registration.id}-{registration.reference_number}"
+                    f"POLLINATION2026-{registration.id}-{registration.reference_number}"
                 )
                 db.session.commit()
 
@@ -168,7 +170,7 @@ class BadgeService:
 
             # Generate unique QR code for team member
             team_id = secrets.token_hex(4).upper()
-            qr_data = f"BEEASY2025-{exhibitor_id}-TEAM-{team_id}"
+            qr_data = f"POLLINATION2026-{exhibitor_id}-TEAM-{team_id}"
             qr_buffer = cls._generate_qr_code(qr_data)
 
             # Create team member badge
@@ -231,6 +233,79 @@ class BadgeService:
         img_buffer.seek(0)
 
         return img_buffer
+
+    # ============================================
+    # ATTRIBUTION FOOTER
+    # ============================================
+
+    @classmethod
+    def _add_attribution_footer(cls, elements: list, styles) -> None:
+        """
+        Add Chacha Technologies attribution footer to badge
+
+        Args:
+            elements: List of PDF elements to append to
+            styles: ReportLab styles object
+        """
+        try:
+            # Add spacing before footer
+            elements.append(Spacer(1, 3 * mm))
+
+            # Attribution text style
+            footer_style = ParagraphStyle(
+                "FooterStyle",
+                parent=styles["Normal"],
+                fontSize=6,
+                textColor=colors.HexColor("#666666"),
+                alignment=TA_CENTER,
+                spaceAfter=1 * mm,
+            )
+
+            # Powered by text
+            elements.append(Paragraph("Powered by", footer_style))
+
+            # Try to load SVG logo
+            try:
+                logo_path = (
+                    Path(current_app.root_path)
+                    / "static"
+                    / "external"
+                    / "CC_logo_full.svg"
+                )
+                if logo_path.exists():
+                    drawing = svg2rlg(str(logo_path))
+                    # Scale to appropriate size (25mm width)
+                    scale_factor = (25 * mm) / drawing.width
+                    drawing.width = 25 * mm
+                    drawing.height = drawing.height * scale_factor
+                    drawing.scale(scale_factor, scale_factor)
+                    elements.append(drawing)
+                else:
+                    # Fallback to text if logo not found
+                    logo_style = ParagraphStyle(
+                        "LogoStyle",
+                        parent=styles["Normal"],
+                        fontSize=7,
+                        textColor=colors.HexColor("#3db54a"),
+                        alignment=TA_CENTER,
+                        fontName="Helvetica-Bold",
+                    )
+                    elements.append(Paragraph("Chacha Technologies", logo_style))
+            except Exception as e:
+                logger.warning(f"Could not load SVG logo: {str(e)}")
+                # Fallback to text
+                logo_style = ParagraphStyle(
+                    "LogoStyle",
+                    parent=styles["Normal"],
+                    fontSize=7,
+                    textColor=colors.HexColor("#3db54a"),
+                    alignment=TA_CENTER,
+                    fontName="Helvetica-Bold",
+                )
+                elements.append(Paragraph("Chacha Technologies", logo_style))
+
+        except Exception as e:
+            logger.warning(f"Error adding attribution footer: {str(e)}")
 
     # ============================================
     # STORAGE PATH MANAGEMENT
@@ -335,8 +410,8 @@ class BadgeService:
             )
 
             # Event title
-            elements.append(Paragraph("BEEASY 2025", style_title))
-            elements.append(Paragraph("Bee East Africa Symposium", style_detail))
+            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
+            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
             elements.append(Spacer(1, 3 * mm))
 
             # Attendee type badge
@@ -392,6 +467,9 @@ class BadgeService:
                 alignment=TA_CENTER,
             )
             elements.append(Paragraph(attendee.reference_number, ref_style))
+
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)
@@ -479,8 +557,8 @@ class BadgeService:
             )
 
             # Event title
-            elements.append(Paragraph("BEEASY 2025", style_title))
-            elements.append(Paragraph("Bee East Africa Symposium", style_detail))
+            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
+            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
             elements.append(Spacer(1, 3 * mm))
 
             # Media pass badge (RED banner)
@@ -539,6 +617,9 @@ class BadgeService:
                 alignment=TA_CENTER,
             )
             elements.append(Paragraph(attendee.reference_number, ref_style))
+
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)
@@ -626,8 +707,8 @@ class BadgeService:
             )
 
             # Event title
-            elements.append(Paragraph("BEEASY 2025", style_title))
-            elements.append(Paragraph("Bee East Africa Symposium", style_detail))
+            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
+            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
             elements.append(Spacer(1, 3 * mm))
 
             # Exhibitor type badge (GREEN banner)
@@ -703,6 +784,9 @@ class BadgeService:
                 alignment=TA_CENTER,
             )
             elements.append(Paragraph(exhibitor.reference_number, ref_style))
+
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)
@@ -801,8 +885,8 @@ class BadgeService:
             )
 
             # Event title
-            elements.append(Paragraph("BEEASY 2025", style_title))
-            elements.append(Paragraph("Bee East Africa Symposium", style_detail))
+            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
+            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
             elements.append(Spacer(1, 3 * mm))
 
             # Exhibitor type badge (GREEN banner)
@@ -886,6 +970,9 @@ class BadgeService:
                 Paragraph(f"{exhibitor.reference_number} - TEAM", ref_style)
             )
 
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
+
             # Build PDF
             doc.build(elements)
 
@@ -911,9 +998,13 @@ class BadgeService:
             Tuple of (valid, message, registration)
         """
         try:
-            # Expected format: BEEASY2025-{id}-{reference_number}
-            # Or for team: BEEASY2025-{exhibitor_id}-TEAM-{unique_id}
-            if not qr_data.startswith("BEEASY2025-"):
+            # Expected format: POLLINATION2026-{id}-{reference_number}
+            # Or for team: POLLINATION2026-{exhibitor_id}-TEAM-{unique_id}
+            # Support legacy BEEASY2025 format for backwards compatibility
+            if not (
+                qr_data.startswith("POLLINATION2026-")
+                or qr_data.startswith("BEEASY2025-")
+            ):
                 return False, "Invalid QR code format", None
 
             parts = qr_data.split("-")

@@ -618,9 +618,6 @@ class BadgeService:
             )
             elements.append(Paragraph(attendee.reference_number, ref_style))
 
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
-
             # Build PDF
             doc.build(elements)
 
@@ -784,9 +781,6 @@ class BadgeService:
                 alignment=TA_CENTER,
             )
             elements.append(Paragraph(exhibitor.reference_number, ref_style))
-
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)
@@ -969,9 +963,6 @@ class BadgeService:
             elements.append(
                 Paragraph(f"{exhibitor.reference_number} - TEAM", ref_style)
             )
-
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)

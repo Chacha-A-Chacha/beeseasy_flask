@@ -364,12 +364,19 @@ class RegistrationService:
         # Set payment due date (7 days for invoice, immediate for others)
         due_date = datetime.utcnow() + timedelta(days=7)
 
+        # Get currency from ticket/package price, default to TZS
+        currency = "TZS"
+        if hasattr(registration, "ticket_price") and registration.ticket_price:
+            currency = registration.ticket_price.currency
+        elif hasattr(registration, "package_price") and registration.package_price:
+            currency = registration.package_price.currency
+
         payment = Payment(
             registration_id=registration.id,
             subtotal=total_amount,
             tax_amount=Decimal("0.00"),
             total_amount=total_amount,
-            currency="USD",
+            currency=currency,
             payment_method=PaymentMethod.CARD,  # Default, updated at checkout
             payment_status=PaymentStatus.PENDING,
             payment_due_date=due_date,

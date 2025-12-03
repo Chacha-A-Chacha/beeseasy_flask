@@ -53,11 +53,15 @@ class BadgeService:
     # Storage configuration
     STORAGE_BASE = "storage/badges"
 
-    # Badge colors - Brand consistent
-    COLOR_PRIMARY = colors.HexColor("#F5C342")  # Yellow/Gold - Attendee
-    COLOR_SECONDARY = colors.HexColor("#5C3A21")  # Brown - Text
-    COLOR_ACCENT = colors.HexColor("#2C5F2D")  # Green - Exhibitor
-    COLOR_MEDIA = colors.HexColor("#DC2626")  # Red - Media Pass
+    # Badge colors - Theme consistent with base.html
+    COLOR_PRIMARY_DARK = colors.HexColor("#142601")  # Very Dark Green - Text/Background
+    COLOR_PRIMARY_MEDIUM = colors.HexColor(
+        "#25400a"
+    )  # Dark Forest Green - Alt background
+    COLOR_ACCENT_YELLOW = colors.HexColor("#f2c12e")  # Golden Yellow - Attendee badge
+    COLOR_ACCENT_ORANGE = colors.HexColor("#bf7e04")  # Orange/Amber - Secondary accent
+    COLOR_ACCENT_BROWN = colors.HexColor("#8c5c03")  # Brown - Borders/Details
+    COLOR_MEDIA = colors.HexColor("#DC2626")  # Red - Media Pass (kept for distinction)
 
     # ============================================
     # MAIN BADGE GENERATION
@@ -248,8 +252,8 @@ class BadgeService:
             styles: ReportLab styles object
         """
         try:
-            # Add spacing before footer
-            elements.append(Spacer(1, 3 * mm))
+            # Add minimal spacing before footer (reduced from 3mm to 2mm)
+            elements.append(Spacer(1, 2 * mm))
 
             # Attribution text style
             footer_style = ParagraphStyle(
@@ -258,7 +262,7 @@ class BadgeService:
                 fontSize=6,
                 textColor=colors.HexColor("#666666"),
                 alignment=TA_CENTER,
-                spaceAfter=1 * mm,
+                spaceAfter=0.2 * mm,
             )
 
             # Powered by text
@@ -279,13 +283,24 @@ class BadgeService:
                     drawing.width = 25 * mm
                     drawing.height = drawing.height * scale_factor
                     drawing.scale(scale_factor, scale_factor)
-                    elements.append(drawing)
+
+                    # Center the logo using a table
+                    logo_table = Table([[drawing]], colWidths=[85 * mm])
+                    logo_table.setStyle(
+                        TableStyle(
+                            [
+                                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                            ]
+                        )
+                    )
+                    elements.append(logo_table)
                 else:
                     # Fallback to text if logo not found
                     logo_style = ParagraphStyle(
                         "LogoStyle",
                         parent=styles["Normal"],
-                        fontSize=7,
+                        fontSize=6,
                         textColor=colors.HexColor("#3db54a"),
                         alignment=TA_CENTER,
                         fontName="Helvetica-Bold",
@@ -297,7 +312,7 @@ class BadgeService:
                 logo_style = ParagraphStyle(
                     "LogoStyle",
                     parent=styles["Normal"],
-                    fontSize=7,
+                    fontSize=6,
                     textColor=colors.HexColor("#3db54a"),
                     alignment=TA_CENTER,
                     fontName="Helvetica-Bold",
@@ -375,9 +390,9 @@ class BadgeService:
                 "CustomTitle",
                 parent=styles["Heading1"],
                 fontSize=16,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
-                spaceAfter=3 * mm,
+                spaceAfter=1 * mm,
                 fontName="Helvetica-Bold",
             )
 
@@ -385,7 +400,7 @@ class BadgeService:
                 "CustomName",
                 parent=styles["Heading2"],
                 fontSize=20,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=2 * mm,
                 fontName="Helvetica-Bold",
@@ -395,7 +410,7 @@ class BadgeService:
                 "CustomDetail",
                 parent=styles["Normal"],
                 fontSize=10,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=1 * mm,
             )
@@ -412,7 +427,7 @@ class BadgeService:
             # Event title
             elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
             elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Attendee type badge
             type_table = Table(
@@ -421,16 +436,16 @@ class BadgeService:
             type_table.setStyle(
                 TableStyle(
                     [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_PRIMARY),
+                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_ACCENT_YELLOW),
                         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 3),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                        ("TOPPADDING", (0, 0), (-1, -1), 2),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
                     ]
                 )
             )
             elements.append(type_table)
-            elements.append(Spacer(1, 5 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Attendee name
             full_name = f"{attendee.first_name} {attendee.last_name}"
@@ -444,13 +459,13 @@ class BadgeService:
             if attendee.job_title:
                 elements.append(Paragraph(attendee.job_title, style_detail))
 
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 2 * mm))
 
             # Ticket type
             ticket_type = attendee.ticket_type.value.replace("_", " ").title()
             elements.append(Paragraph(f"<b>{ticket_type}</b>", style_detail))
 
-            elements.append(Spacer(1, 5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR Code
             qr_img = Image(qr_buffer, width=50 * mm, height=50 * mm)
@@ -466,7 +481,7 @@ class BadgeService:
                 textColor=colors.grey,
                 alignment=TA_CENTER,
             )
-            elements.append(Paragraph(attendee.reference_number, ref_style))
+            # elements.append(Paragraph(attendee.reference_number, ref_style))
 
             # Add attribution footer
             cls._add_attribution_footer(elements, styles)
@@ -522,9 +537,9 @@ class BadgeService:
                 "CustomTitle",
                 parent=styles["Heading1"],
                 fontSize=16,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
-                spaceAfter=3 * mm,
+                spaceAfter=1 * mm,
                 fontName="Helvetica-Bold",
             )
 
@@ -532,7 +547,7 @@ class BadgeService:
                 "CustomName",
                 parent=styles["Heading2"],
                 fontSize=20,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=2 * mm,
                 fontName="Helvetica-Bold",
@@ -542,7 +557,7 @@ class BadgeService:
                 "CustomDetail",
                 parent=styles["Normal"],
                 fontSize=10,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=1 * mm,
             )
@@ -559,7 +574,7 @@ class BadgeService:
             # Event title
             elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
             elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Media pass badge (RED banner)
             type_table = Table(
@@ -571,13 +586,13 @@ class BadgeService:
                         ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_MEDIA),
                         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 3),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                        ("TOPPADDING", (0, 0), (-1, -1), 2),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
                     ]
                 )
             )
             elements.append(type_table)
-            elements.append(Spacer(1, 5 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Media name
             full_name = f"{attendee.first_name} {attendee.last_name}"
@@ -600,7 +615,7 @@ class BadgeService:
             if attendee.job_title:
                 elements.append(Paragraph(attendee.job_title, style_detail))
 
-            elements.append(Spacer(1, 5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR Code
             qr_img = Image(qr_buffer, width=50 * mm, height=50 * mm)
@@ -616,7 +631,10 @@ class BadgeService:
                 textColor=colors.grey,
                 alignment=TA_CENTER,
             )
-            elements.append(Paragraph(attendee.reference_number, ref_style))
+            # elements.append(Paragraph(attendee.reference_number, ref_style))
+
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)
@@ -669,9 +687,9 @@ class BadgeService:
                 "CustomTitle",
                 parent=styles["Heading1"],
                 fontSize=16,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
-                spaceAfter=3 * mm,
+                spaceAfter=1 * mm,
                 fontName="Helvetica-Bold",
             )
 
@@ -679,7 +697,7 @@ class BadgeService:
                 "CustomName",
                 parent=styles["Heading2"],
                 fontSize=18,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=2 * mm,
                 fontName="Helvetica-Bold",
@@ -689,7 +707,7 @@ class BadgeService:
                 "CustomDetail",
                 parent=styles["Normal"],
                 fontSize=9,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=1 * mm,
             )
@@ -706,7 +724,7 @@ class BadgeService:
             # Event title
             elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
             elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Exhibitor type badge (GREEN banner)
             type_table = Table(
@@ -715,16 +733,16 @@ class BadgeService:
             type_table.setStyle(
                 TableStyle(
                     [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_ACCENT),
+                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_PRIMARY_MEDIUM),
                         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 3),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                        ("TOPPADDING", (0, 0), (-1, -1), 2),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
                     ]
                 )
             )
             elements.append(type_table)
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Contact person name
             full_name = f"{exhibitor.first_name} {exhibitor.last_name}"
@@ -741,7 +759,7 @@ class BadgeService:
                 "CompanyStyle",
                 parent=styles["Normal"],
                 fontSize=12,
-                textColor=cls.COLOR_PRIMARY,
+                textColor=cls.COLOR_ACCENT_ORANGE,
                 alignment=TA_CENTER,
                 fontName="Helvetica-Bold",
                 spaceAfter=1 * mm,
@@ -756,7 +774,7 @@ class BadgeService:
                     "BoothStyle",
                     parent=styles["Normal"],
                     fontSize=11,
-                    textColor=cls.COLOR_SECONDARY,
+                    textColor=cls.COLOR_PRIMARY_DARK,
                     alignment=TA_CENTER,
                     fontName="Helvetica-Bold",
                 )
@@ -764,7 +782,7 @@ class BadgeService:
                     Paragraph(f"BOOTH: {exhibitor.booth_number}", booth_style)
                 )
 
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR Code
             qr_img = Image(qr_buffer, width=45 * mm, height=45 * mm)
@@ -780,7 +798,10 @@ class BadgeService:
                 textColor=colors.grey,
                 alignment=TA_CENTER,
             )
-            elements.append(Paragraph(exhibitor.reference_number, ref_style))
+            # elements.append(Paragraph(exhibitor.reference_number, ref_style))
+
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)
@@ -844,9 +865,9 @@ class BadgeService:
                 "CustomTitle",
                 parent=styles["Heading1"],
                 fontSize=16,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
-                spaceAfter=3 * mm,
+                spaceAfter=1 * mm,
                 fontName="Helvetica-Bold",
             )
 
@@ -854,7 +875,7 @@ class BadgeService:
                 "CustomName",
                 parent=styles["Heading2"],
                 fontSize=18,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=2 * mm,
                 fontName="Helvetica-Bold",
@@ -864,7 +885,7 @@ class BadgeService:
                 "CustomDetail",
                 parent=styles["Normal"],
                 fontSize=9,
-                textColor=cls.COLOR_SECONDARY,
+                textColor=cls.COLOR_PRIMARY_DARK,
                 alignment=TA_CENTER,
                 spaceAfter=1 * mm,
             )
@@ -881,7 +902,7 @@ class BadgeService:
             # Event title
             elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
             elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Exhibitor type badge (GREEN banner)
             type_table = Table(
@@ -890,16 +911,16 @@ class BadgeService:
             type_table.setStyle(
                 TableStyle(
                     [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_ACCENT),
+                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_PRIMARY_MEDIUM),
                         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 3),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                        ("TOPPADDING", (0, 0), (-1, -1), 2),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
                     ]
                 )
             )
             elements.append(type_table)
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 1 * mm))
 
             # Team member name
             elements.append(Paragraph(member_name.upper(), style_name))
@@ -915,7 +936,7 @@ class BadgeService:
                 "CompanyStyle",
                 parent=styles["Normal"],
                 fontSize=12,
-                textColor=cls.COLOR_PRIMARY,
+                textColor=cls.COLOR_ACCENT_ORANGE,
                 alignment=TA_CENTER,
                 fontName="Helvetica-Bold",
                 spaceAfter=1 * mm,
@@ -939,12 +960,12 @@ class BadgeService:
                     "BoothStyle",
                     parent=styles["Normal"],
                     fontSize=9,
-                    textColor=cls.COLOR_SECONDARY,
+                    textColor=cls.COLOR_PRIMARY_DARK,
                     alignment=TA_CENTER,
                 )
                 elements.append(Paragraph(" | ".join(booth_info), booth_style))
 
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR Code
             qr_img = Image(qr_buffer, width=45 * mm, height=45 * mm)
@@ -960,9 +981,12 @@ class BadgeService:
                 textColor=colors.grey,
                 alignment=TA_CENTER,
             )
-            elements.append(
-                Paragraph(f"{exhibitor.reference_number} - TEAM", ref_style)
-            )
+            # elements.append(
+            #     Paragraph(f"{exhibitor.reference_number} - TEAM", ref_style)
+            # )
+
+            # Add attribution footer
+            cls._add_attribution_footer(elements, styles)
 
             # Build PDF
             doc.build(elements)

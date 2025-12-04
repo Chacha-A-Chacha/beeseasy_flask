@@ -76,12 +76,39 @@ class Config:
     REMEMBER_COOKIE_DURATION: int = 3600 * 24 * 7  # 1 week
     WTF_CSRF_ENABLED: bool = True
 
+    # --- Payment Gateway Configuration ---
+
     # Stripe
     STRIPE_PUBLIC_KEY: str | None = os.getenv("STRIPE_PUBLIC_KEY")
     STRIPE_SECRET_KEY: str | None = os.getenv("STRIPE_SECRET_KEY")
     STRIPE_WEBHOOK_SECRET: str | None = os.getenv("STRIPE_WEBHOOK_SECRET")
 
-    # Bank Details
+    # DPO Payment Gateway (Tanzania Mobile Money & Cards)
+    DPO_COMPANY_TOKEN: str | None = os.getenv("DPO_COMPANY_TOKEN")
+    DPO_SERVICE_TYPE: str | None = os.getenv("DPO_SERVICE_TYPE")
+    DPO_CURRENCY: str = os.getenv("DPO_CURRENCY", "TZS")
+    DPO_TEST_MODE: bool = os.getenv("DPO_TEST_MODE", "True").lower() == "true"
+
+    # DPO API URLs
+    DPO_API_URL_TEST: str = os.getenv(
+        "DPO_API_URL_TEST", "https://secure1.sandbox.directpay.online"
+    )
+    DPO_API_URL_LIVE: str = os.getenv(
+        "DPO_API_URL_LIVE", "https://secure.3gdirectpay.com"
+    )
+
+    # DPO Callback URLs (dynamically set based on environment)
+    DPO_REDIRECT_URL: str | None = os.getenv(
+        "DPO_REDIRECT_URL"
+    )  # e.g., https://yourdomain.com/payments/dpo/callback
+    DPO_BACK_URL: str | None = os.getenv(
+        "DPO_BACK_URL"
+    )  # e.g., https://yourdomain.com/payments/cancel
+
+    # Payment Token Lifetime (in hours) - DPO default is 5 hours
+    DPO_PAYMENT_TOKEN_LIFETIME: int = int(os.getenv("DPO_PAYMENT_TOKEN_LIFETIME", "5"))
+
+    # Bank Details (for manual bank transfer option)
     BANK_NAME: str = os.getenv("BANK_NAME", "Your Bank")
     BANK_ACCOUNT_NAME: str = os.getenv("BANK_ACCOUNT_NAME", "Pollination Africa")
     BANK_ACCOUNT_NUMBER: str | None = os.getenv("BANK_ACCOUNT_NUMBER")

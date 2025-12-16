@@ -1,1 +1,17 @@
-{}
+{
+  "test_test_email_1765921849": {
+    "task_id": "test_test_email_1765921849",
+    "recipient": "calex.chacha@outlook.com",
+    "subject": "[TEST] Email Service Test",
+    "group_id": "test",
+    "batch_id": "test_batch_1765921849",
+    "status": "failed",
+    "attempts": 3,
+    "max_attempts": 3,
+    "timestamp": "2025-12-17T00:50:49.629589",
+    "last_attempt": "2025-12-17T00:50:55.662057",
+    "sent_time": null,
+    "error": "[Errno 11003] getaddrinfo failed",
+    "priority": 0
+  }
+}

@@ -16,6 +16,7 @@ from flask import (
 from app.forms import ContactForm
 from app.models import Registration  # maybe for stats
 from app.services.contact_service import ContactService
+from app.utils.enhanced_email import EnhancedEmailService, Priority
 
 main_bp = Blueprint("main", __name__)
 
@@ -169,3 +170,95 @@ def download_badge(reference):
         as_attachment=True,
         download_name=download_name,
     )
+
+
+@main_bp.route("/test-email")
+def send_test_email():
+    """Test email sending using EnhancedEmailService"""
+    try:
+        email_service = EnhancedEmailService(current_app)
+
+        result = email_service.send_test_email(
+            recipient="calex.chacha@outlook.com",
+            template="test_email",
+            subject="[TEST] Email Service Test",
+            message="This is a test email to verify the Enhanced Email Service is working correctly.",
+            priority=Priority.HIGH,
+        )
+
+        if result.get("success"):
+            return jsonify(
+                {
+                    "success": True,
+                    "message": result.get("message"),
+                    "task_id": result.get("task_id"),
+                    "recipient": result.get("recipient"),
+                }
+            )
+        else:
+            return jsonify(
+                {
+                    "success": False,
+                    "error": result.get("error"),
+                    "message": result.get("message"),
+                }
+            ), 500
+
+    except Exception as e:
+        current_app.logger.error(f"Failed to send test email: {str(e)}")
+        return jsonify(
+            {
+                "success": False,
+                "error": str(e),
+                "message": f"Failed to send test email: {str(e)}",
+            }
+        ), 500
+
+
+@main_bp.route("/test_email_config")
+def test_email_config():
+    """Test email configuration and connection"""
+    try:
+        email_service = EnhancedEmailService(current_app)
+
+        # Check if worker is running
+        worker_running = (
+            email_service.running
+            and email_service.worker_thread
+            and email_service.worker_thread.is_alive()
+        )
+
+        # Get queue stats
+        stats = email_service.get_queue_stats()
+
+        return jsonify(
+            {
+                "success": True,
+                "message": "Email service is configured and running",
+                "config": {
+                    "mail_server": current_app.config.get("MAIL_SERVER"),
+                    "mail_port": current_app.config.get("MAIL_PORT"),
+                    "mail_use_ssl": current_app.config.get("MAIL_USE_SSL"),
+                    "mail_use_tls": current_app.config.get("MAIL_USE_TLS"),
+                    "mail_username": current_app.config.get("MAIL_USERNAME"),
+                    "default_sender": current_app.config.get("MAIL_DEFAULT_SENDER"),
+                },
+                "worker_status": {
+                    "running": worker_running,
+                    "thread_alive": email_service.worker_thread.is_alive()
+                    if email_service.worker_thread
+                    else False,
+                },
+                "queue_stats": stats,
+            }
+        )
+
+    except Exception as e:
+        current_app.logger.error(f"Email config test failed: {str(e)}")
+        return jsonify(
+            {
+                "success": False,
+                "error": str(e),
+                "message": f"Email configuration test failed: {str(e)}",
+            }
+        ), 500

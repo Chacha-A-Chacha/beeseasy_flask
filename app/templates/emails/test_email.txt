@@ -1,0 +1,24 @@
+EMAIL TEST SUCCESSFUL
+{{ site_name }}
+
+Hi {{ name }},
+
+This is a test email from the Enhanced Email Service. If you're reading this, the email system is working correctly!
+
+✓ Email Service Online
+
+TEST DETAILS:
+------------
+Task ID: {{ task_id }}
+Timestamp: {{ timestamp.strftime('%B %d, %Y at %I:%M %p') }}
+Priority: {{ priority }}
+Recipient: {{ recipient_email }}
+
+{{ test_message }}
+
+Best regards,
+The {{ site_name }} Team
+
+---
+This is an automated test email from the Enhanced Email Service.
+Support: {{ support_email }}

@@ -1,0 +1,41 @@
+NEW CONTACT INQUIRY
+Reference: {{ reference_number }}
+
+INQUIRY TYPE: {{ inquiry_type.replace('_', ' ').title() }}
+Submitted: {{ submitted_at }}
+
+SUBJECT:
+--------
+{{ subject }}
+
+CONTACT INFORMATION:
+-------------------
+Full Name: {{ first_name }} {{ last_name }}
+Email: {{ email }}
+{% if full_phone %}Phone: {{ full_phone }}{% endif %}
+{% if organization %}Organization: {{ organization }}{% endif %}
+{% if role %}Role/Position: {{ role }}{% endif %}
+
+Preferred Contact Method: {{ preferred_contact_method.title() }}
+Newsletter Subscription: {% if newsletter_signup %}Yes - Add to mailing list{% else %}No{% endif %}
+
+MESSAGE:
+--------
+{{ message }}
+
+QUICK RESPONSE:
+--------------
+Reply to: {{ email }}
+
+Dear {{ first_name }},
+
+Thank you for your inquiry regarding {{ inquiry_type.replace('_', ' ') }}.
+[Your response here]
+
+Best regards,
+{{ event_name }} Team
+
+---
+{{ event_name }}
+Contact Form Notification System
+Reference: {{ reference_number }}

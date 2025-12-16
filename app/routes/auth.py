@@ -51,8 +51,14 @@ def login():
             return redirect(url_for("admin.dashboard"))
 
     form = LoginForm()
-    next_url = request.args.get("next", "/")
-    form.next_url.data = next_url
+
+    # Set next_url from query parameter or form data (for POST retries)
+    if request.method == "GET":
+        next_url = request.args.get("next", "/")
+        form.next_url.data = next_url
+    else:
+        # On POST, preserve the next_url that was submitted
+        next_url = form.next_url.data or request.args.get("next", "/")
 
     if form.validate_on_submit():
         email = (form.email.data or "").strip()

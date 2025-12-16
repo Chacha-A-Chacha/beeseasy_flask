@@ -1,0 +1,43 @@
+Thank You for Contacting Us!
+{{ event_name }}
+
+Hi {{ first_name }},
+
+We've received your inquiry about "{{ subject }}" and will respond within 24-48 hours.
+
+YOUR INQUIRY DETAILS:
+--------------------
+Reference Number: {{ reference_number }}
+Inquiry Type: {{ inquiry_type.replace('_', ' ').title() }}
+Submitted: {{ submitted_at }}
+
+{% if inquiry_type == 'registration' %}
+Meanwhile, you can start your registration process:
+{{ website_url }}/register
+{% elif inquiry_type == 'exhibition' %}
+Learn more about our exhibition packages:
+{{ website_url }}/partners
+{% elif inquiry_type == 'sponsorship' %}
+Explore sponsorship opportunities:
+{{ website_url }}/partners
+{% elif inquiry_type == 'speaking' %}
+Review our speaker information:
+{{ website_url }}/speakers
+{% endif %}
+
+ALTERNATIVE CONTACT METHODS:
+---------------------------
+Email: {{ contact_email }}
+Phone: {{ support_phone }}
+WhatsApp: {{ support_whatsapp }}
+
+Best regards,
+The {{ event_name }} Team
+
+---
+{{ event_name }}
+{{ event_date }} | {{ event_location }}
+{{ website_url }}
+
+This is an automated confirmation. Please do not reply to this email.
+Contact us directly at {{ contact_email }}

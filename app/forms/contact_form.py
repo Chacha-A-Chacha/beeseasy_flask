@@ -9,18 +9,20 @@ import re
 from flask_wtf import FlaskForm
 from wtforms import (
     BooleanField,
+    HiddenField,
     RadioField,
     SelectField,
     StringField,
     SubmitField,
+    TelField,
     TextAreaField,
 )
 from wtforms.validators import DataRequired, Email, Length, Optional, ValidationError
 
 # Country codes for East Africa and common countries
 COUNTRY_CODES = [
-    ("+254", "🇰🇪 Kenya (+254)"),
     ("+255", "🇹🇿 Tanzania (+255)"),
+    ("+254", "🇰🇪 Kenya (+254)"),
     ("+256", "🇺🇬 Uganda (+256)"),
     ("+250", "🇷🇼 Rwanda (+250)"),
     ("+257", "🇧🇮 Burundi (+257)"),
@@ -97,19 +99,36 @@ class ContactForm(FlaskForm):
         },
     )
 
-    # Phone with country code
-    country_code = SelectField(
+    # Enhanced international phone input (JavaScript-enabled users)
+    phone_international = TelField(
+        "Phone Number (Optional)",
+        validators=[Optional()],
+        render_kw={
+            "placeholder": "Enter phone number",
+            "data-intl-tel-input": "true",
+            "id": "phone_international",
+            "class": "w-full px-3.5 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#F5C342] focus:border-[#F5C342]",
+        },
+    )
+
+    # Hidden fields (populated by JavaScript)
+    phone_country_code = HiddenField()
+    phone_number = HiddenField()
+
+    # Fallback fields (for no-JavaScript users)
+    phone_country_code_fallback = SelectField(
         "Country Code",
         choices=COUNTRY_CODES,
         default="+254",
+        validators=[Optional()],
         render_kw={
             "class": "w-full px-3.5 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#F5C342] focus:border-[#F5C342]"
         },
     )
 
-    phone = StringField(
+    phone_number_fallback = TelField(
         "Phone Number",
-        validators=[Optional(), Length(min=7, max=15)],
+        validators=[Optional(), Length(min=7, max=20)],
         render_kw={
             "placeholder": "e.g., 712 345 678",
             "class": "w-full px-3.5 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#F5C342] focus:border-[#F5C342]",
@@ -207,19 +226,62 @@ class ContactForm(FlaskForm):
         },
     )
 
-    def validate_phone(self, field):
-        """Validate phone number format"""
-        if field.data:
-            # Remove spaces and dashes
-            phone = re.sub(r"[\s\-]", "", field.data)
+    def validate_phone_number(self, field):
+        """Validate phone number - handles both enhanced and fallback inputs"""
+        import phonenumbers
+        from phonenumbers import NumberParseException
 
-            # Check if it contains only digits (after removing spaces/dashes)
-            if not re.match(r"^\d+$", phone):
-                raise ValidationError("Phone number should contain only digits")
+        # Phone is optional for contact form - skip if empty
+        if not self.phone_international.data and not self.phone_number_fallback.data:
+            return
 
-            # Check minimum length
-            if len(phone) < 7:
-                raise ValidationError("Phone number is too short")
+        # Check if enhanced phone (JavaScript worked)
+        if self.phone_international.data:
+            try:
+                parsed = phonenumbers.parse(self.phone_international.data, None)
+                if not phonenumbers.is_valid_number(parsed):
+                    raise ValidationError("Please enter a valid phone number")
+            except NumberParseException:
+                raise ValidationError("Please enter a valid phone number")
+        # Check fallback phone (no JavaScript)
+        elif self.phone_country_code_fallback.data and self.phone_number_fallback.data:
+            try:
+                full_number = (
+                    self.phone_country_code_fallback.data
+                    + self.phone_number_fallback.data
+                )
+                parsed = phonenumbers.parse(full_number, None)
+                if not phonenumbers.is_valid_number(parsed):
+                    raise ValidationError("Please enter a valid phone number")
+            except NumberParseException:
+                raise ValidationError("Please enter a valid phone number")
+
+    def process_phone_data(self):
+        """Process phone data from either enhanced or fallback inputs"""
+        import phonenumbers
+
+        # Priority 1: Enhanced phone (JavaScript worked)
+        if self.phone_international.data:
+            try:
+                parsed = phonenumbers.parse(self.phone_international.data, None)
+                country_code = f"+{parsed.country_code}"
+                national_number = str(parsed.national_number)
+                return country_code, national_number
+            except Exception:
+                pass
+
+        # Priority 2: Fallback phone (no JavaScript)
+        if self.phone_country_code_fallback.data and self.phone_number_fallback.data:
+            return (
+                self.phone_country_code_fallback.data,
+                self.phone_number_fallback.data,
+            )
+
+        # If hidden fields were populated directly (edge case)
+        if self.phone_country_code.data and self.phone_number.data:
+            return self.phone_country_code.data, self.phone_number.data
+
+        return None, None
 
     def validate_email(self, field):
         """Enhanced email validation with typo suggestions"""

@@ -321,18 +321,49 @@ Symposium 2026{% endblock %} {% block content %}
                 {% endfor %} {% endif %}
             </div>
 
-            <!-- Phone with Country Code -->
-            <div>
-                <label class="block text-sm font-semibold text-primary-dark"
-                    >Phone Number (Optional)</label
-                >
-                <div class="mt-2.5 grid grid-cols-3 gap-x-4">
-                    <div class="col-span-1">{{ form.country_code() }}</div>
-                    <div class="col-span-2">{{ form.phone() }}</div>
+            <!-- Enhanced Phone Input with Progressive Enhancement -->
+            <div class="phone-input-container">
+                {{ form.phone_international.label(class="block text-sm
+                font-semibold text-primary-dark") }}
+
+                <div class="mt-2.5">
+                    <!-- Enhanced phone input (JavaScript-enabled) -->
+                    {{ form.phone_international() }}
+
+                    <!-- Hidden fields (populated by JavaScript) -->
+                    {{ form.phone_country_code }} {{ form.phone_number }}
+
+                    <!-- Error message placeholder -->
+                    <p class="phone-error hidden text-red-600 text-xs mt-1"></p>
+
+                    {% if form.phone_international.errors %}
+                    <p class="text-red-600 text-xs mt-1">
+                        {{ form.phone_international.errors[0] }}
+                    </p>
+                    {% endif %}
                 </div>
-                {% if form.phone.errors %} {% for error in form.phone.errors %}
-                <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-                {% endfor %} {% endif %}
+
+                <!-- Fallback for no-JavaScript users -->
+                <noscript>
+                    <div class="grid grid-cols-3 gap-x-4 mt-4">
+                        <div class="col-span-1">
+                            {{
+                            form.phone_country_code_fallback.label(class="block
+                            text-sm font-semibold text-primary-dark mb-1") }} {{
+                            form.phone_country_code_fallback() }}
+                        </div>
+                        <div class="col-span-2">
+                            {{ form.phone_number_fallback.label(class="block
+                            text-sm font-semibold text-primary-dark mb-1") }} {{
+                            form.phone_number_fallback() }} {% if
+                            form.phone_number_fallback.errors %}
+                            <p class="text-red-600 text-xs mt-1">
+                                {{ form.phone_number_fallback.errors[0] }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </noscript>
             </div>
 
             <!-- Inquiry Type -->

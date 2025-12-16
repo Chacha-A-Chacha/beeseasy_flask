@@ -13,7 +13,6 @@ from flask import (
     url_for,
 )
 
-from app.extensions import db
 from app.forms import ContactForm
 from app.models import Registration  # maybe for stats
 from app.services.contact_service import ContactService
@@ -69,13 +68,16 @@ def contact():
     form = ContactForm()
 
     if form.validate_on_submit():
+        # Process phone data
+        country_code, phone_number = form.process_phone_data()
+
         # Collect form data
         form_data = {
             "first_name": form.first_name.data.strip(),
             "last_name": form.last_name.data.strip(),
             "email": form.email.data.strip().lower(),
-            "country_code": form.country_code.data,
-            "phone": form.phone.data.strip() if form.phone.data else None,
+            "country_code": country_code,
+            "phone": phone_number,
             "inquiry_type": form.inquiry_type.data,
             "subject": form.subject.data.strip(),
             "organization": form.organization.data.strip()
@@ -110,6 +112,8 @@ def contact():
     elif request.method == "POST":
         # Form validation failed
         flash("Please correct the errors below and try again.", "error")
+
+    return render_template("contact.html", form=form)
 
 
 @main_bp.route("/become-exhibitor")

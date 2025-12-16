@@ -73,12 +73,19 @@ class Payment(db.Model):
         index=True,
     )
 
-    # Gateway information (Stripe)
+    # Gateway information (Stripe - DEPRECATED)
     stripe_payment_intent_id = db.Column(db.String(255), unique=True, index=True)
     stripe_checkout_session_id = db.Column(db.String(255), unique=True)
     stripe_customer_id = db.Column(db.String(255), index=True)
     stripe_charge_id = db.Column(db.String(255))
     stripe_refund_id = db.Column(db.String(255))
+
+    # Gateway information (DPO - PRIMARY)
+    dpo_trans_token = db.Column(db.String(255), index=True)  # DPO transaction token
+    dpo_trans_ref = db.Column(db.String(255), index=True)  # DPO transaction reference
+    dpo_result_code = db.Column(db.String(10))  # DPO result code (000, 900, etc.)
+    dpo_result_explanation = db.Column(db.Text)  # Human-readable result
+    dpo_payment_type = db.Column(db.String(20))  # mpesa, tigo, airtel, card, or null
 
     # Alternative payment details
     transaction_id = db.Column(
@@ -270,6 +277,96 @@ class Payment(db.Model):
         else:
             self.payment_status = PaymentStatus.PARTIALLY_REFUNDED
 
+    # ============================================
+    # DPO-SPECIFIC METHODS
+    # ============================================
+
+    def set_dpo_token(
+        self, trans_token: str, trans_ref: str, payment_type: Optional[str] = None
+    ):
+        """
+        Set DPO transaction token and reference after token creation
+
+        Args:
+            trans_token: DPO transaction token
+            trans_ref: DPO transaction reference
+            payment_type: Optional payment type (mpesa, tigo, airtel, card)
+        """
+        self.dpo_trans_token = trans_token
+        self.dpo_trans_ref = trans_ref
+        self.dpo_payment_type = payment_type
+        self.transaction_id = trans_ref  # Also store in generic field
+        self.payment_status = PaymentStatus.PROCESSING
+
+    def update_from_dpo_verification(self, verification_result: Dict[str, Any]):
+        """
+        Update payment record from DPO verification result
+
+        Args:
+            verification_result: Dict from dpo_service.verify_token()
+        """
+        self.dpo_result_code = verification_result.get("result_code", "")
+        self.dpo_result_explanation = verification_result.get("message", "")
+
+        # Store full response in gateway_response JSON field
+        self.gateway_response = verification_result
+
+        # Update payment status based on result code
+        result_code = verification_result.get("result_code", "")
+
+        if result_code == "000":  # Paid
+            self.payment_status = PaymentStatus.COMPLETED
+            self.payment_completed_at = datetime.utcnow()
+            if not self.receipt_number:
+                self.receipt_number = f"RCP{self.payment_reference[3:]}"
+
+        elif result_code == "001":  # Authorized (not charged yet)
+            self.payment_status = PaymentStatus.PROCESSING
+
+        elif result_code in ["003", "005", "900"]:  # Pending states
+            self.payment_status = PaymentStatus.PENDING
+
+        elif result_code in ["901", "902", "903", "904"]:  # Failed/cancelled
+            self.payment_status = PaymentStatus.FAILED
+            self.payment_failed_at = datetime.utcnow()
+            self.failure_reason = verification_result.get("message", "Payment failed")
+            self.failure_code = result_code
+
+        else:  # Unknown code - treat as failed
+            self.payment_status = PaymentStatus.FAILED
+            self.payment_failed_at = datetime.utcnow()
+            self.failure_reason = (
+                f"Unknown DPO result: {verification_result.get('message', 'Unknown')}"
+            )
+            self.failure_code = result_code
+
+    @property
+    def is_dpo_payment(self) -> bool:
+        """Check if this is a DPO payment"""
+        return self.dpo_trans_token is not None
+
+    @property
+    def dpo_status_display(self) -> str:
+        """Get human-readable DPO payment status"""
+        if not self.is_dpo_payment:
+            return "N/A"
+
+        status_map = {
+            "000": "Paid Successfully",
+            "001": "Authorized (Pending Charge)",
+            "002": "Amount Mismatch",
+            "003": "Pending Bank Confirmation",
+            "005": "Authorization Queued",
+            "900": "Not Paid Yet",
+            "901": "Declined",
+            "903": "Expired",
+            "904": "Cancelled by User",
+        }
+
+        return status_map.get(
+            self.dpo_result_code or "", self.dpo_result_explanation or "Unknown"
+        )
+
     def to_dict(self, include_sensitive: bool = False) -> Dict[str, Any]:
         """
         Serialize payment to dictionary
@@ -297,6 +394,19 @@ class Payment(db.Model):
                     "stripe_payment_intent_id": self.stripe_payment_intent_id,
                     "transaction_id": self.transaction_id,
                     "bank_reference": self.bank_reference,
+                    "dpo_trans_token": self.dpo_trans_token,
+                    "dpo_trans_ref": self.dpo_trans_ref,
+                }
+            )
+
+        # Always include DPO status if it's a DPO payment
+        if self.is_dpo_payment:
+            data.update(
+                {
+                    "is_dpo_payment": True,
+                    "dpo_payment_type": self.dpo_payment_type,
+                    "dpo_result_code": self.dpo_result_code,
+                    "dpo_status_display": self.dpo_status_display,
                 }
             )
 

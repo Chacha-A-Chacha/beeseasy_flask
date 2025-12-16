@@ -497,6 +497,12 @@
   .my-12 {
     margin-block: calc(var(--spacing) * 12);
   }
+  .my-16 {
+    margin-block: calc(var(--spacing) * 16);
+  }
+  .my-32 {
+    margin-block: calc(var(--spacing) * 32);
+  }
   .-mt-12 {
     margin-top: calc(var(--spacing) * -12);
   }
@@ -2618,10 +2624,24 @@
       }
     }
   }
+  .hover\:border-blue-500 {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-blue-500);
+      }
+    }
+  }
   .hover\:border-green-400 {
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-green-400);
+      }
+    }
+  }
+  .hover\:border-green-500 {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-green-500);
       }
     }
   }

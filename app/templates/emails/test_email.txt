@@ -3,9 +3,9 @@ EMAIL TEST SUCCESSFUL
 
 Hi {{ name }},
 
-This is a test email from the Enhanced Email Service. If you're reading this, the email system is working correctly!
+This is a test email from the Enhanced Email Service. If you are reading this, the email system is working correctly.
 
-✓ Email Service Online
+Email Service Online
 
 TEST DETAILS:
 ------------

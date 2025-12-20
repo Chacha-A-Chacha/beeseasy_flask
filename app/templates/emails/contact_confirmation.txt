@@ -1,4 +1,4 @@
-Thank You for Contacting Us!
+Thank You for Contacting Us
 {{ event_name }}
 
 Hi {{ first_name }},
@@ -25,8 +25,8 @@ Review our speaker information:
 {{ website_url }}/speakers
 {% endif %}
 
-ALTERNATIVE CONTACT METHODS:
----------------------------
+If you have urgent questions, you can also reach us at:
+
 Email: {{ contact_email }}
 Phone: {{ support_phone }}
 WhatsApp: {{ support_whatsapp }}

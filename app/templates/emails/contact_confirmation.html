@@ -135,7 +135,7 @@
         <div class="container">
             <!-- Header -->
             <div class="header">
-                <h1>✉️ Thank You for Contacting Us!</h1>
+                <h1>Thank You for Contacting Us</h1>
                 <p>{{ event_name }}</p>
             </div>
 
@@ -151,7 +151,7 @@
 
                 <!-- Inquiry Details -->
                 <div class="info-box">
-                    <strong>📋 Your Inquiry Details</strong>
+                    <strong>Your Inquiry Details</strong>
                     <div class="info-row">
                         <strong>Reference Number:</strong> {{ reference_number
                         }}
@@ -200,22 +200,22 @@
 
                 <!-- Alternative Contact Methods -->
                 <div class="contact-list">
-                    <h3>📞 Alternative Contact Methods</h3>
+                    <h3>Alternative Contact Methods</h3>
                     <ul>
                         <li>
-                            📧 Email:
+                            Email:
                             <a href="mailto:{{ contact_email }}"
                                 >{{ contact_email }}</a
                             >
                         </li>
                         <li>
-                            📞 Phone:
+                            Phone:
                             <a href="tel:{{ support_phone }}"
                                 >{{ support_phone }}</a
                             >
                         </li>
                         <li>
-                            💬 WhatsApp:
+                            WhatsApp:
                             <a
                                 href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
                                 >{{ support_whatsapp }}</a

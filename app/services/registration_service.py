@@ -553,7 +553,7 @@ class RegistrationService:
             # Select template
             if registration.registration_type == "attendee":
                 template = "payment_confirmed_attendee"
-                subject = "Payment Confirmed - Your Badge is Ready!"
+                subject = "Payment Confirmed - Your Badge is Ready"
             else:
                 template = "payment_confirmed_exhibitor"
                 subject = "Payment Confirmed - Exhibitor Badge Ready"

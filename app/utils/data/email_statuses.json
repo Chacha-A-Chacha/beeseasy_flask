@@ -1,17 +1,47 @@
 {
-  "test_test_email_1765921849": {
-    "task_id": "test_test_email_1765921849",
+  "test_test_email_1765923515": {
+    "task_id": "test_test_email_1765923515",
     "recipient": "calex.chacha@outlook.com",
     "subject": "[TEST] Email Service Test",
     "group_id": "test",
-    "batch_id": "test_batch_1765921849",
+    "batch_id": "test_batch_1765923515",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2025-12-17T01:18:35.879796",
+    "last_attempt": "2025-12-17T01:18:35.890872",
+    "sent_time": "2025-12-17T01:18:42.190161",
+    "error": null,
+    "priority": 0
+  },
+  "contact_team_1765927076_partnerships": {
+    "task_id": "contact_team_1765927076_partnerships",
+    "recipient": "partnerships@pollination.africa",
+    "subject": "[SPONSORSHIP] Test - Subject",
+    "group_id": "notification_contact_team",
+    "batch_id": "single_contact_team_1765927076",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2025-12-17T02:17:56.289909",
+    "last_attempt": "2025-12-17T02:17:56.289909",
+    "sent_time": "2025-12-17T02:17:59.942702",
+    "error": null,
+    "priority": 0
+  },
+  "contact_confirmation_1765927076_calex2607": {
+    "task_id": "contact_confirmation_1765927076_calex2607",
+    "recipient": "calex2607@gmail.com",
+    "subject": "We've received your inquiry - Test - Subject",
+    "group_id": "notification_contact_confirmation",
+    "batch_id": "single_contact_confirmation_1765927076",
     "status": "failed",
     "attempts": 3,
     "max_attempts": 3,
-    "timestamp": "2025-12-17T00:50:49.629589",
-    "last_attempt": "2025-12-17T00:50:55.662057",
+    "timestamp": "2025-12-17T02:17:56.305135",
+    "last_attempt": "2025-12-17T02:18:11.690065",
     "sent_time": null,
-    "error": "[Errno 11003] getaddrinfo failed",
-    "priority": 0
+    "error": "(550, b'This message was classified as SPAM and may not be delivered')",
+    "priority": 1
   }
 }

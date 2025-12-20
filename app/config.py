@@ -59,8 +59,8 @@ class Config:
     }
 
     # --- Mail (SMTP) Configuration ---
-    MAIL_SERVER: str = os.getenv("MAIL_SERVER", "smtp.gmail.com")
-    MAIL_PORT: int = int(os.getenv("MAIL_PORT", 587))
+    MAIL_SERVER: str = os.getenv("MAIL_SERVER", "mail.pollination.africa")
+    MAIL_PORT: int = int(os.getenv("MAIL_PORT", 465))
     MAIL_USE_TLS: bool = os.getenv("MAIL_USE_TLS", "True").lower() == "true"
     MAIL_USE_SSL: bool = os.getenv("MAIL_USE_SSL", "False").lower() == "true"
     MAIL_USERNAME: str | None = os.getenv(
@@ -68,7 +68,7 @@ class Config:
     )  # e.g. info@pollination.africa
     MAIL_PASSWORD: str | None = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER: str = os.getenv(
-        "MAIL_DEFAULT_SENDER", "info@pollination.africa"
+        "MAIL_DEFAULT_SENDER", "no-reply@pollination.africa"
     )
 
     # --- Security ---

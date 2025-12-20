@@ -62,38 +62,50 @@
     <body>
         <div class="container">
             <div class="header">
-                <h1>✅ Email Test Successful</h1>
+                <h1>Email Test Successful</h1>
                 <p style="margin-top: 10px; opacity: 0.9">{{ site_name }}</p>
             </div>
 
             <div class="content">
                 <p>Hi <strong>{{ name }}</strong>,</p>
 
-                <p>This is a test email from the Enhanced Email Service. If you're reading this, the email system is working correctly!</p>
+                <p>
+                    This is a test email from the Enhanced Email Service. If you
+                    are reading this, the email system is working correctly.
+                </p>
 
-                <div class="badge">✓ Email Service Online</div>
+                <div class="badge">Email Service Online</div>
 
                 <div class="info-box">
-                    <strong>Test Details:</strong><br>
-                    Task ID: {{ task_id }}<br>
-                    Timestamp: {{ timestamp.strftime('%B %d, %Y at %I:%M %p') }}<br>
-                    Priority: {{ priority }}<br>
+                    <strong>Test Details:</strong><br />
+                    Task ID: {{ task_id }}<br />
+                    Timestamp: {{ timestamp.strftime('%B %d, %Y at %I:%M %p')
+                    }}<br />
+                    Priority: {{ priority }}<br />
                     Recipient: {{ recipient_email }}
                 </div>
 
                 <p>{{ test_message }}</p>
 
                 <p style="margin-top: 30px">
-                    Best regards,<br>
-                    <strong style="color: #2c5f2d">The {{ site_name }} Team</strong>
+                    Best regards,<br />
+                    <strong style="color: #2c5f2d"
+                        >The {{ site_name }} Team</strong
+                    >
                 </p>
             </div>
 
             <div class="footer">
                 <p><strong>{{ site_name }}</strong></p>
-                <p>This is an automated test email from the Enhanced Email Service.</p>
+                <p>
+                    This is an automated test email from the Enhanced Email
+                    Service.
+                </p>
                 <p style="margin-top: 15px; opacity: 0.8">
-                    Support: <a href="mailto:{{ support_email }}" style="color: #f5c342">{{ support_email }}</a>
+                    Support:
+                    <a href="mailto:{{ support_email }}" style="color: #f5c342"
+                        >{{ support_email }}</a
+                    >
                 </p>
             </div>
         </div>

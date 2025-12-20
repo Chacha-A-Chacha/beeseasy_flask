@@ -181,7 +181,7 @@ def send_test_email():
         result = email_service.send_test_email(
             recipient="calex.chacha@outlook.com",
             template="test_email",
-            subject="[TEST] Email Service Test",
+            subject="Email Service Test",
             message="This is a test email to verify the Enhanced Email Service is working correctly.",
             priority=Priority.HIGH,
         )

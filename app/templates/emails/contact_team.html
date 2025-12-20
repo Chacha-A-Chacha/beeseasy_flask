@@ -162,7 +162,7 @@
         <div class="container">
             <!-- Header -->
             <div class="header">
-                <h2>📬 New Contact Inquiry</h2>
+                <h2>New Contact Inquiry</h2>
                 <div class="ref">
                     <strong>Reference:</strong> {{ reference_number }}
                 </div>
@@ -182,7 +182,7 @@
 
                 <!-- Subject -->
                 <div class="section">
-                    <h3 class="section-title">📝 Subject</h3>
+                    <h3 class="section-title">Subject</h3>
                     <div class="field">
                         <div
                             class="value"
@@ -199,7 +199,7 @@
 
                 <!-- Contact Information -->
                 <div class="section">
-                    <h3 class="section-title">👤 Contact Information</h3>
+                    <h3 class="section-title">Contact Information</h3>
 
                     <div class="field">
                         <div class="label">Full Name</div>
@@ -248,10 +248,10 @@
                         <div class="value">
                             {% if newsletter_signup %}
                             <span class="badge badge-low"
-                                >✓ Yes - Add to mailing list</span
+                                >Yes - Add to mailing list</span
                             >
                             {% else %}
-                            <span class="badge badge-normal">✗ No</span>
+                            <span class="badge badge-normal">No</span>
                             {% endif %}
                         </div>
                     </div>
@@ -259,7 +259,7 @@
 
                 <!-- Message -->
                 <div class="section">
-                    <h3 class="section-title">💬 Message</h3>
+                    <h3 class="section-title">Message</h3>
                     <div class="message-box">
                         {{ message | replace('\n', '<br />') | safe }}
                     </div>
@@ -271,7 +271,7 @@
                         href="mailto:{{ email }}?subject=Re: {{ subject }}"
                         class="action-button"
                     >
-                        📧 Reply to {{ first_name }}
+                        Reply to {{ first_name }}
                     </a>
                 </div>
 
@@ -285,7 +285,7 @@
                     "
                 >
                     <h4 style="color: #2c5f2d; margin: 0 0 10px 0">
-                        💡 Quick Response Template:
+                        Quick Response Template:
                     </h4>
                     <p style="margin: 10px 0; font-size: 14px; color: #5c3a21">
                         <em>

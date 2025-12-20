@@ -1,428 +1,614 @@
 <!-- templates/emails/payment_confirmed_exhibitor.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header {
-            background: linear-gradient(135deg, #2C5F2D 0%, #5C3A21 100%);
-            color: white;
-            padding: 50px 30px;
-            text-align: center;
-            position: relative;
-        }
-        .header::before {
-            content: "✓";
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: #F5C342;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: bold;
-            color: #2C5F2D;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        .header h1 {
-            margin: 40px 0 10px 0;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .header p {
-            margin: 0;
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 30px;
-        }
-        .content p {
-            margin: 15px 0;
-        }
-        .success-banner {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 25px 0;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .badge-box {
-            background: #2C5F2D;
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
-            margin: 25px 0;
-            text-align: center;
-        }
-        .badge-box h3 {
-            margin: 0 0 15px 0;
-            font-size: 22px;
-            color: #F5C342;
-        }
-        .badge-box p {
-            margin: 10px 0;
-        }
-        .info-box {
-            background: #f9f9f9;
-            border-left: 4px solid #2C5F2D;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        .info-box h3 {
-            margin: 0 0 15px 0;
-            color: #2C5F2D;
-            font-size: 18px;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        .info-label {
-            font-weight: bold;
-            color: #5C3A21;
-        }
-        .download-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #F5C342 0%, #E8B030 100%);
-            color: #2C5F2D;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .download-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 195, 66, 0.4);
-        }
-        .button-container {
-            text-align: center;
-        }
-        .important-info {
-            background: #fff5e6;
-            border: 2px solid #F5C342;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 25px 0;
-        }
-        .important-info h3 {
-            margin: 0 0 15px 0;
-            color: #2C5F2D;
-        }
-        .important-info ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        .important-info li {
-            margin: 8px 0;
-            color: #5C3A21;
-        }
-        .footer {
-            background: #2C5F2D;
-            color: white;
-            padding: 25px 30px;
-            text-align: center;
-        }
-        .footer p {
-            margin: 8px 0;
-            font-size: 14px;
-        }
-        .footer .contact-info {
-            margin: 15px 0;
-        }
-        .footer a {
-            color: #F5C342;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, #2C5F2D 0%, #F5C342 50%, #2C5F2D 100%);
-            margin: 30px 0;
-        }
-        .timeline {
-            background: #f0fdf4;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .timeline h4 {
-            color: #2C5F2D;
-            margin: 0 0 15px 0;
-        }
-        .timeline-item {
-            padding: 12px;
-            margin: 10px 0;
-            background: white;
-            border-left: 3px solid #F5C342;
-            border-radius: 4px;
-        }
-        .timeline-item strong {
-            color: #2C5F2D;
-        }
-        .booth-highlight {
-            background: linear-gradient(135deg, #F5C342 0%, #E8B030 100%);
-            color: #2C5F2D;
-            padding: 25px;
-            border-radius: 8px;
-            margin: 25px 0;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>Exhibitor Payment Confirmed! 🎉</h1>
-            <p>Welcome to {{ event_name }}</p>
-        </div>
-
-        <!-- Content -->
-        <div class="content">
-            <p>Dear <strong>{{ registration.first_name }} {{ registration.last_name }}</strong>,</p>
-
-            <div class="success-banner">
-                ✓ Your Booth is Secured!
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                background: linear-gradient(135deg, #2c5f2d 0%, #5c3a21 100%);
+                color: white;
+                padding: 50px 30px;
+                text-align: center;
+                position: relative;
+            }
+            .header::before {
+                content: "";
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 60px;
+                height: 60px;
+                background: #f5c342;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                font-weight: bold;
+                color: #2c5f2d;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+            .header h1 {
+                margin: 40px 0 10px 0;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            .header p {
+                margin: 0;
+                font-size: 16px;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .content p {
+                margin: 15px 0;
+            }
+            .success-banner {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 25px 0;
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .badge-box {
+                background: #2c5f2d;
+                color: white;
+                padding: 30px;
+                border-radius: 8px;
+                margin: 25px 0;
+                text-align: center;
+            }
+            .badge-box h3 {
+                margin: 0 0 15px 0;
+                font-size: 22px;
+                color: #f5c342;
+            }
+            .badge-box p {
+                margin: 10px 0;
+            }
+            .info-box {
+                background: #f9f9f9;
+                border-left: 4px solid #2c5f2d;
+                padding: 20px;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+            .info-box h3 {
+                margin: 0 0 15px 0;
+                color: #2c5f2d;
+                font-size: 18px;
+            }
+            .info-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .info-row:last-child {
+                border-bottom: none;
+            }
+            .info-label {
+                font-weight: bold;
+                color: #5c3a21;
+            }
+            .download-button {
+                display: inline-block;
+                background: linear-gradient(135deg, #f5c342 0%, #e8b030 100%);
+                color: #2c5f2d;
+                padding: 15px 40px;
+                text-decoration: none;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 18px;
+                font-weight: bold;
+                text-align: center;
+                transition: transform 0.2s;
+            }
+            .download-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(245, 195, 66, 0.4);
+            }
+            .button-container {
+                text-align: center;
+            }
+            .important-info {
+                background: #fff5e6;
+                border: 2px solid #f5c342;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 25px 0;
+            }
+            .important-info h3 {
+                margin: 0 0 15px 0;
+                color: #2c5f2d;
+            }
+            .important-info ul {
+                margin: 10px 0;
+                padding-left: 20px;
+            }
+            .important-info li {
+                margin: 8px 0;
+                color: #5c3a21;
+            }
+            .footer {
+                background: #2c5f2d;
+                color: white;
+                padding: 25px 30px;
+                text-align: center;
+            }
+            .footer p {
+                margin: 8px 0;
+                font-size: 14px;
+            }
+            .footer .contact-info {
+                margin: 15px 0;
+            }
+            .footer a {
+                color: #f5c342;
+                text-decoration: none;
+            }
+            .footer a:hover {
+                text-decoration: underline;
+            }
+            .divider {
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    #2c5f2d 0%,
+                    #f5c342 50%,
+                    #2c5f2d 100%
+                );
+                margin: 30px 0;
+            }
+            .timeline {
+                background: #f0fdf4;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+            }
+            .timeline h4 {
+                color: #2c5f2d;
+                margin: 0 0 15px 0;
+            }
+            .timeline-item {
+                padding: 12px;
+                margin: 10px 0;
+                background: white;
+                border-left: 3px solid #f5c342;
+                border-radius: 4px;
+            }
+            .timeline-item strong {
+                color: #2c5f2d;
+            }
+            .booth-highlight {
+                background: linear-gradient(135deg, #f5c342 0%, #e8b030 100%);
+                color: #2c5f2d;
+                padding: 25px;
+                border-radius: 8px;
+                margin: 25px 0;
+                text-align: center;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>Exhibitor Payment Confirmed</h1>
+                <p>Welcome to {{ event_name }}</p>
             </div>
 
-            <p>Excellent news! Payment for <strong>{{ registration.company_legal_name }}</strong> has been confirmed. Your booth at <strong>{{ event_name }}</strong> is now officially secured!</p>
-
-            <!-- Booth Information (if assigned) -->
-            {% if registration.booth_number %}
-            <div class="booth-highlight">
-                🎪 Booth #{{ registration.booth_number }} Assigned
-            </div>
-            {% else %}
-            <div style="background: #e0f2fe; padding: 15px; border-radius: 5px; border-left: 4px solid #0284c7; margin: 20px 0;">
-                📋 <strong>Booth allocation is in progress.</strong> You'll receive your booth number within 2 business days.
-            </div>
-            {% endif %}
-
-            <!-- Exhibitor Badge Box -->
-            <div class="badge-box">
-                <h3>🎫 Your Exhibitor Badge is Ready!</h3>
-                <p>Download your main exhibitor badge below.</p>
-
-                <div class="button-container">
-                    {% if badge_url %}
-                    <a href="{{ badge_url }}" class="download-button">
-                        📥 Download Main Badge
-                    </a>
-                    {% else %}
-                    <p style="font-size: 14px; margin-top: 15px;">
-                        Your badge is being generated. You'll receive it within 10 minutes.
-                    </p>
-                    {% endif %}
-                </div>
-
-                <p style="font-size: 14px; margin-top: 15px; opacity: 0.9;">
-                    Additional badges for your team will be sent separately
+            <!-- Content -->
+            <div class="content">
+                <p>
+                    Dear
+                    <strong
+                        >{{ registration.first_name }} {{ registration.last_name
+                        }}</strong
+                    >,
                 </p>
-            </div>
 
-            <!-- Company & Package Details -->
-            <div class="info-box">
-                <h3>🏢 Exhibitor Details</h3>
-                <div class="info-row">
-                    <span class="info-label">Company:</span>
-                    <span><strong>{{ registration.company_legal_name }}</strong></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Reference Number:</span>
-                    <span>{{ registration.reference_number }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Package:</span>
-                    <span>{{ registration.package_type.value.replace('_', ' ').title() }}</span>
-                </div>
+                <div class="success-banner">Your Booth is Secured</div>
+
+                <p>
+                    Payment for
+                    <strong>{{ registration.company_legal_name }}</strong> has
+                    been confirmed. Your booth at
+                    <strong>{{ event_name }}</strong> is now officially secured.
+                </p>
+
+                <!-- Booth Information (if assigned) -->
                 {% if registration.booth_number %}
-                <div class="info-row">
-                    <span class="info-label">Booth Number:</span>
-                    <span><strong style="color: #E8B030;">{{ registration.booth_number }}</strong></span>
+                <div class="booth-highlight">
+                    🎪 Booth #{{ registration.booth_number }} Assigned
+                </div>
+                {% else %}
+                <div
+                    style="
+                        background: #e0f2fe;
+                        padding: 15px;
+                        border-radius: 5px;
+                        border-left: 4px solid #0284c7;
+                        margin: 20px 0;
+                    "
+                >
+                    📋 <strong>Booth allocation is in progress.</strong> You'll
+                    receive your booth number within 2 business days.
                 </div>
                 {% endif %}
-                <div class="info-row">
-                    <span class="info-label">Team Badges:</span>
-                    <span>{{ registration.number_of_staff }} passes</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Contact Person:</span>
-                    <span>{{ registration.first_name }} {{ registration.last_name }}</span>
-                </div>
-            </div>
 
-            <div class="divider"></div>
+                <!-- Exhibitor Badge Box -->
+                <div class="badge-box">
+                    <h3>🎫 Your Exhibitor Badge is Ready!</h3>
+                    <p>Download your main exhibitor badge below.</p>
 
-            <!-- Timeline -->
-            <div class="timeline">
-                <h4>📅 What Happens Next</h4>
-                <div class="timeline-item">
-                    <strong>Within 48 Hours:</strong> Booth assignment confirmation (if not already assigned)
-                </div>
-                <div class="timeline-item">
-                    <strong>2 Weeks Before:</strong> Exhibitor kit with setup instructions, floor plan, and logistics
-                </div>
-                <div class="timeline-item">
-                    <strong>1 Week Before:</strong> Pre-event exhibitor orientation session (online)
-                </div>
-                <div class="timeline-item">
-                    <strong>Setup Day:</strong> {{ event_date }} (Day before event) - 2:00 PM to 6:00 PM
-                </div>
-                <div class="timeline-item">
-                    <strong>Event Days:</strong> {{ event_date }} - Full access to all symposium activities
-                </div>
-            </div>
+                    <div class="button-container">
+                        {% if badge_url %}
+                        <a href="{{ badge_url }}" class="download-button">
+                            📥 Download Main Badge
+                        </a>
+                        {% else %}
+                        <p style="font-size: 14px; margin-top: 15px">
+                            Your badge is being generated. You'll receive it
+                            within 10 minutes.
+                        </p>
+                        {% endif %}
+                    </div>
 
-            <!-- Event Information -->
-            <div class="info-box">
-                <h3>📍 Event Information</h3>
-                <div class="info-row">
-                    <span class="info-label">Event:</span>
-                    <span>{{ event_name }}</span>
+                    <p style="font-size: 14px; margin-top: 15px; opacity: 0.9">
+                        Additional badges for your team will be sent separately
+                    </p>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Date:</span>
-                    <span>{{ event_date }}</span>
+
+                <!-- Company & Package Details -->
+                <div class="info-box">
+                    <h3>🏢 Exhibitor Details</h3>
+                    <div class="info-row">
+                        <span class="info-label">Company:</span>
+                        <span
+                            ><strong
+                                >{{ registration.company_legal_name }}</strong
+                            ></span
+                        >
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Reference Number:</span>
+                        <span>{{ registration.reference_number }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Package:</span>
+                        <span
+                            >{{ registration.package_type.value.replace('_', '
+                            ').title() }}</span
+                        >
+                    </div>
+                    {% if registration.booth_number %}
+                    <div class="info-row">
+                        <span class="info-label">Booth Number:</span>
+                        <span
+                            ><strong style="color: #e8b030"
+                                >{{ registration.booth_number }}</strong
+                            ></span
+                        >
+                    </div>
+                    {% endif %}
+                    <div class="info-row">
+                        <span class="info-label">Team Badges:</span>
+                        <span>{{ registration.number_of_staff }} passes</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Contact Person:</span>
+                        <span
+                            >{{ registration.first_name }} {{
+                            registration.last_name }}</span
+                        >
+                    </div>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span>{{ event_location }}</span>
+
+                <div class="divider"></div>
+
+                <!-- Timeline -->
+                <div class="timeline">
+                    <h4>📅 What Happens Next</h4>
+                    <div class="timeline-item">
+                        <strong>Within 48 Hours:</strong> Booth assignment
+                        confirmation (if not already assigned)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>2 Weeks Before:</strong> Exhibitor kit with
+                        setup instructions, floor plan, and logistics
+                    </div>
+                    <div class="timeline-item">
+                        <strong>1 Week Before:</strong> Pre-event exhibitor
+                        orientation session (online)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Setup Day:</strong> {{ event_date }} (Day before
+                        event) - 2:00 PM to 6:00 PM
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Event Days:</strong> {{ event_date }} - Full
+                        access to all symposium activities
+                    </div>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Exhibition Hours:</span>
-                    <span>{{ event_time }}</span>
+
+                <!-- Event Information -->
+                <div class="info-box">
+                    <h3>📍 Event Information</h3>
+                    <div class="info-row">
+                        <span class="info-label">Event:</span>
+                        <span>{{ event_name }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Date:</span>
+                        <span>{{ event_date }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Location:</span>
+                        <span>{{ event_location }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Exhibition Hours:</span>
+                        <span>{{ event_time }}</span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Important Information for Exhibitors -->
-            <div class="important-info">
-                <h3>📦 Exhibitor Preparation Checklist</h3>
-                <ul>
-                    <li><strong>Booth Materials:</strong> Prepare your banners, displays, and promotional materials</li>
-                    <li><strong>Product Samples:</strong> Bring demos or samples of your products/services</li>
-                    <li><strong>Marketing Collateral:</strong> Business cards, brochures, flyers (minimum 500 copies recommended)</li>
-                    <li><strong>Lead Capture:</strong> Prepare a system to collect attendee information</li>
-                    <li><strong>Team Briefing:</strong> Brief your staff on product knowledge and engagement strategies</li>
-                    <li><strong>Branded Giveaways:</strong> Consider promotional items for booth visitors</li>
-                    <li><strong>Display Equipment:</strong> Check if you need additional display units or technology</li>
-                </ul>
-            </div>
+                <!-- Important Information for Exhibitors -->
+                <div class="important-info">
+                    <h3>📦 Exhibitor Preparation Checklist</h3>
+                    <ul>
+                        <li>
+                            <strong>Booth Materials:</strong> Prepare your
+                            banners, displays, and promotional materials
+                        </li>
+                        <li>
+                            <strong>Product Samples:</strong> Bring demos or
+                            samples of your products/services
+                        </li>
+                        <li>
+                            <strong>Marketing Collateral:</strong> Business
+                            cards, brochures, flyers (minimum 500 copies
+                            recommended)
+                        </li>
+                        <li>
+                            <strong>Lead Capture:</strong> Prepare a system to
+                            collect attendee information
+                        </li>
+                        <li>
+                            <strong>Team Briefing:</strong> Brief your staff on
+                            product knowledge and engagement strategies
+                        </li>
+                        <li>
+                            <strong>Branded Giveaways:</strong> Consider
+                            promotional items for booth visitors
+                        </li>
+                        <li>
+                            <strong>Display Equipment:</strong> Check if you
+                            need additional display units or technology
+                        </li>
+                    </ul>
+                </div>
 
-            <!-- Package Benefits Reminder -->
-            <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h4 style="color: #2C5F2D; margin: 0 0 10px 0;">✨ Your Package Includes:</h4>
-                <ul style="margin: 10px 0; padding-left: 20px; color: #5C3A21;">
-                    <li>Dedicated booth space in prime exhibition area</li>
-                    <li>{{ registration.number_of_staff }} complimentary exhibitor badges</li>
-                    <li>Company profile in official event catalog and mobile app</li>
-                    <li>Logo placement on event website and promotional materials</li>
-                    <li>Access to attendee list for post-event follow-up (opt-in only)</li>
-                    <li>Full access to symposium sessions and networking events</li>
-                    <li>Electricity and basic furniture (table, chairs)</li>
-                    <li>Wi-Fi connectivity throughout the venue</li>
-                </ul>
-            </div>
+                <!-- Package Benefits Reminder -->
+                <div
+                    style="
+                        background: #f0fdf4;
+                        padding: 20px;
+                        border-radius: 8px;
+                        margin: 20px 0;
+                    "
+                >
+                    <h4 style="color: #2c5f2d; margin: 0 0 10px 0">
+                        ✨ Your Package Includes:
+                    </h4>
+                    <ul
+                        style="
+                            margin: 10px 0;
+                            padding-left: 20px;
+                            color: #5c3a21;
+                        "
+                    >
+                        <li>Dedicated booth space in prime exhibition area</li>
+                        <li>
+                            {{ registration.number_of_staff }} complimentary
+                            exhibitor badges
+                        </li>
+                        <li>
+                            Company profile in official event catalog and mobile
+                            app
+                        </li>
+                        <li>
+                            Logo placement on event website and promotional
+                            materials
+                        </li>
+                        <li>
+                            Access to attendee list for post-event follow-up
+                            (opt-in only)
+                        </li>
+                        <li>
+                            Full access to symposium sessions and networking
+                            events
+                        </li>
+                        <li>Electricity and basic furniture (table, chairs)</li>
+                        <li>Wi-Fi connectivity throughout the venue</li>
+                    </ul>
+                </div>
 
-            <div class="divider"></div>
+                <div class="divider"></div>
 
-            <!-- Additional Services -->
-            <div style="background: #fff5e6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h4 style="color: #2C5F2D; margin: 0 0 10px 0;">🎯 Optional Add-Ons Available:</h4>
-                <p style="margin: 10px 0; color: #5C3A21;">
-                    Enhance your exhibition experience with:
+                <!-- Additional Services -->
+                <div
+                    style="
+                        background: #fff5e6;
+                        padding: 20px;
+                        border-radius: 8px;
+                        margin: 20px 0;
+                    "
+                >
+                    <h4 style="color: #2c5f2d; margin: 0 0 10px 0">
+                        🎯 Optional Add-Ons Available:
+                    </h4>
+                    <p style="margin: 10px 0; color: #5c3a21">
+                        Enhance your exhibition experience with:
+                    </p>
+                    <ul
+                        style="
+                            margin: 10px 0;
+                            padding-left: 20px;
+                            color: #5c3a21;
+                        "
+                    >
+                        <li>Speaking slot in plenary or breakout sessions</li>
+                        <li>Sponsored coffee break or lunch session</li>
+                        <li>Premium booth location upgrade</li>
+                        <li>Additional team member badges</li>
+                        <li>Professional booth design and setup service</li>
+                    </ul>
+                    <p style="margin: 10px 0; color: #5c3a21">
+                        Contact us to discuss these opportunities:
+                        <a
+                            href="mailto:exhibitors@pollination.africa"
+                            style="color: #e8b030"
+                            >exhibitors@pollination.africa</a
+                        >
+                    </p>
+                </div>
+
+                <p
+                    style="
+                        background: #e0f2fe;
+                        padding: 15px;
+                        border-radius: 5px;
+                        border-left: 4px solid #0284c7;
+                        margin: 25px 0;
+                    "
+                >
+                    <strong>💡 Exhibitor Portal Coming Soon!</strong> You'll
+                    receive login credentials to manage your booth details,
+                    upload company information, and connect with attendees.
                 </p>
-                <ul style="margin: 10px 0; padding-left: 20px; color: #5C3A21;">
-                    <li>Speaking slot in plenary or breakout sessions</li>
-                    <li>Sponsored coffee break or lunch session</li>
-                    <li>Premium booth location upgrade</li>
-                    <li>Additional team member badges</li>
-                    <li>Professional booth design and setup service</li>
-                </ul>
-                <p style="margin: 10px 0; color: #5C3A21;">
-                    Contact us to discuss these opportunities: <a href="mailto:exhibitors@pollination.africa" style="color: #E8B030;">exhibitors@pollination.africa</a>
+
+                <p>
+                    Our dedicated exhibitor success team is here to ensure you
+                    have an outstanding experience. Don't hesitate to reach out
+                    with any questions or special requirements.
+                </p>
+
+                <p style="margin-top: 30px">
+                    Looking forward to a successful exhibition!<br />
+                    <strong style="color: #2c5f2d"
+                        >The {{ event_name }} Exhibition Team</strong
+                    >
                 </p>
             </div>
 
-            <p style="background: #e0f2fe; padding: 15px; border-radius: 5px; border-left: 4px solid #0284c7; margin: 25px 0;">
-                <strong>💡 Exhibitor Portal Coming Soon!</strong> You'll receive login credentials to manage your booth details, upload company information, and connect with attendees.
-            </p>
+            <!-- Footer -->
+            <div class="footer">
+                <div class="contact-info">
+                    <p><strong>Exhibitor Support Team</strong></p>
+                    <p>
+                        📧 Email:
+                        <a href="mailto:exhibitors@pollination.africa"
+                            >exhibitors@pollination.africa</a
+                        >
+                    </p>
+                    <p>
+                        📞 Phone:
+                        <a href="tel:{{ whatsapp }}">{{ whatsapp }}</a>
+                    </p>
+                    <p>
+                        💬 WhatsApp:
+                        <a
+                            href="https://wa.me/{{ whatsapp.replace('+', '').replace(' ', '') }}"
+                            >{{ whatsapp }}</a
+                        >
+                    </p>
+                </div>
+                <p style="margin: 20px 0">
+                    <a href="https://pollination.africa/partners"
+                        >Exhibitor Resources</a
+                    >
+                    |
+                    <a href="https://pollination.africa/floor-plan"
+                        >Floor Plan</a
+                    >
+                    |
+                    <a href="https://pollination.africa/setup-guide"
+                        >Setup Guide</a
+                    >
+                </p>
+                <p style="font-size: 12px; opacity: 0.8; margin-top: 20px">
+                    You're receiving this email because {{
+                    registration.company_legal_name }} is registered as an
+                    exhibitor for {{ event_name }}.<br />
+                    Exhibitor Reference: {{ registration.reference_number }}
+                </p>
 
-            <p>Our dedicated exhibitor success team is here to ensure you have an outstanding experience. Don't hesitate to reach out with any questions or special requirements.</p>
-
-            <p style="margin-top: 30px;">
-                Looking forward to a successful exhibition!<br>
-                <strong style="color: #2C5F2D;">The {{ event_name }} Exhibition Team</strong>
-            </p>
+                <div
+                    style="
+                        margin-top: 25px;
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.2);
+                    "
+                >
+                    <p style="font-size: 11px; opacity: 0.7; margin: 5px 0">
+                        Developed and Powered by
+                    </p>
+                    <a
+                        href="https://chach-a.com"
+                        target="_blank"
+                        style="
+                            text-decoration: none;
+                            display: inline-flex;
+                            align-items: center;
+                            margin-top: 8px;
+                        "
+                    >
+                        <img
+                            src="https://www.chach-a.com/logoMark.svg"
+                            alt="Chacha Technologies"
+                            style="
+                                height: 20px;
+                                width: auto;
+                                margin-right: 8px;
+                                vertical-align: middle;
+                            "
+                        />
+                        <span
+                            style="
+                                color: #f5c342;
+                                font-weight: bold;
+                                font-size: 13px;
+                            "
+                            >Chacha Technologies</span
+                        >
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="contact-info">
-                <p><strong>Exhibitor Support Team</strong></p>
-                <p>📧 Email: <a href="mailto:exhibitors@pollination.africa">exhibitors@pollination.africa</a></p>
-                <p>📞 Phone: <a href="tel:{{ whatsapp }}">{{ whatsapp }}</a></p>
-                <p>💬 WhatsApp: <a href="https://wa.me/{{ whatsapp.replace('+', '').replace(' ', '') }}">{{ whatsapp }}</a></p>
-            </div>
-            <p style="margin: 20px 0;">
-                <a href="https://pollination.africa/partners">Exhibitor Resources</a> |
-                <a href="https://pollination.africa/floor-plan">Floor Plan</a> |
-                <a href="https://pollination.africa/setup-guide">Setup Guide</a>
-            </p>
-            <p style="font-size: 12px; opacity: 0.8; margin-top: 20px;">
-                You're receiving this email because {{ registration.company_legal_name }} is registered as an exhibitor for {{ event_name }}.<br>
-                Exhibitor Reference: {{ registration.reference_number }}
-            </p>
-
-            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
-                <p style="font-size: 11px; opacity: 0.7; margin: 5px 0;">
-                    Developed and Powered by
-                </p>
-                <a href="https://chach-a.com" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; margin-top: 8px;">
-                    <img src="https://www.chach-a.com/logoMark.svg" alt="Chacha Technologies" style="height: 20px; width: auto; margin-right: 8px; vertical-align: middle;">
-                    <span style="color: #F5C342; font-weight: bold; font-size: 13px;">Chacha Technologies</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</body>
+    </body>
 </html>

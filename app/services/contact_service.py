@@ -34,6 +34,20 @@ class ContactService:
         "other": "info@pollination.africa",
     }
 
+    # Category-specific reference number prefixes
+    CATEGORY_PREFIXES = {
+        "registration": "PACREG",  # Event Registration & Attendance
+        "exhibition": "PACEXH",  # Exhibition & Booth Booking
+        "sponsorship": "PACSPO",  # Sponsorship Opportunities
+        "speaking": "PACSPK",  # Speaking Opportunities
+        "partnership": "PACPAR",  # Partnership & Collaboration
+        "media": "PACMED",  # Media & Press Inquiries
+        "agenda": "PACAGN",  # Program & Agenda Questions
+        "travel": "PACTRV",  # Travel & Accommodation
+        "technical": "PACTEC",  # Technical Support
+        "other": "PACGEN",  # General/Other Inquiries
+    }
+
     @staticmethod
     def send_contact_message(form_data: dict) -> tuple:
         """
@@ -46,10 +60,13 @@ class ContactService:
             tuple: (success: bool, message: str, reference_number: str)
         """
         try:
-            # Generate reference number
-            reference_number = (
-                f"BEE{datetime.now().strftime('%Y%m%d')}{secrets.token_hex(3).upper()}"
-            )
+            # Get inquiry type and determine prefix
+            inquiry_type = form_data.get("inquiry_type", "other")
+            prefix = ContactService.CATEGORY_PREFIXES.get(inquiry_type, "PACGEN")
+
+            # Generate category-specific reference number
+            # Format: {prefix}{YYYYMMDD}{6-random-chars}
+            reference_number = f"{prefix}{datetime.now().strftime('%Y%m%d')}{secrets.token_hex(3).upper()}"
 
             # Save to database first
             contact_message = ContactMessage(
@@ -77,8 +94,7 @@ class ContactService:
             # Initialize email service
             email_service = EnhancedEmailService(current_app)
 
-            # Determine recipient based on inquiry type
-            inquiry_type = form_data.get("inquiry_type", "other")
+            # Determine recipient based on inquiry type (already extracted above)
             team_recipient = ContactService.ROUTING_MAP.get(
                 inquiry_type, ContactService.ROUTING_MAP["other"]
             )

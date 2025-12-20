@@ -25,7 +25,7 @@ class ContactService:
         "registration": "registrations@pollination.africa",
         "exhibition": "exhibitions@pollination.africa",
         "sponsorship": "partnerships@pollination.africa",
-        "speaking": "speakers@pollination.africa",
+        "speaking": "info@pollination.africa",
         "partnership": "partnerships@pollination.africa",
         "media": "press@pollination.africa",
         "agenda": "info@pollination.africa",
@@ -94,10 +94,14 @@ class ContactService:
             # Initialize email service
             email_service = EnhancedEmailService(current_app)
 
-            # Determine recipient based on inquiry type (already extracted above)
-            team_recipient = ContactService.ROUTING_MAP.get(
-                inquiry_type, ContactService.ROUTING_MAP["other"]
+            # Use default info email for now (routing map reserved for future team expansion)
+            team_recipient = current_app.config.get(
+                "CONTACT_EMAIL", "info@pollination.africa"
             )
+            # TODO: Uncomment when team is bigger and has dedicated department emails
+            # team_recipient = ContactService.ROUTING_MAP.get(
+            #     inquiry_type, ContactService.ROUTING_MAP["other"]
+            # )
 
             # Format phone number
             full_phone = None

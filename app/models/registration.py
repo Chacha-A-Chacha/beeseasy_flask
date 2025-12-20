@@ -158,8 +158,11 @@ class IndustryCategory(Enum):
 # ============================================
 
 
-def generate_reference_number(prefix: str = "BEE") -> str:
-    """Generate unique reference number"""
+def generate_reference_number(prefix: str = "PA") -> str:
+    """
+    Generate unique reference number
+    Format: {prefix}{timestamp}{random} e.g., PAA20260103AB12CD
+    """
     timestamp = datetime.now().strftime("%Y%m%d")
     random_str = "".join(
         secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6)
@@ -601,8 +604,8 @@ class Registration(db.Model):
 
     def __init__(self, **kwargs):
         super(Registration, self).__init__(**kwargs)
-        if not self.reference_number:
-            self.reference_number = generate_reference_number()
+        # Don't generate reference number here - let subclasses do it
+        # This allows type-specific prefixes (PAA for attendees, PAE for exhibitors)
         if not self.confirmation_code:
             self.confirmation_code = generate_confirmation_code()
 
@@ -933,6 +936,11 @@ class AttendeeRegistration(Registration):
         "polymorphic_identity": "attendee",
     }
 
+    def __init__(self, **kwargs):
+        super(AttendeeRegistration, self).__init__(**kwargs)
+        if not self.reference_number:
+            self.reference_number = generate_reference_number("PAA")
+
     # Relationships
     ticket_price = relationship(
         "TicketPrice", backref="attendee_registrations", lazy="joined"
@@ -1025,6 +1033,11 @@ class ExhibitorRegistration(Registration):
     __mapper_args__ = {
         "polymorphic_identity": "exhibitor",
     }
+
+    def __init__(self, **kwargs):
+        super(ExhibitorRegistration, self).__init__(**kwargs)
+        if not self.reference_number:
+            self.reference_number = generate_reference_number("PAE")
 
     # Relationships
     package_price = relationship(

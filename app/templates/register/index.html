@@ -1,72 +1,112 @@
 <!-- file: app/templates/register/index.html -->
 
-{% extends "base.html" %}
-
-{% block title %}Register for BEEASY 2025{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Register - {{ event_name }}{%
+endblock %} {% block content %}
 <!-- Hero Section -->
 <div class="bg-gradient-to-r from-[#F5C342] to-[#E8B030] py-12">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-[#5C3A21] mb-4">Register for BEEASY 2025</h1>
+        <h1 class="text-4xl md:text-5xl font-bold text-[#5C3A21] mb-4">
+            Register for BEEASY 2025
+        </h1>
         <p class="text-lg text-[#5C3A21] max-w-2xl mx-auto">
-            Join us at the Bee East Africa Symposium • March 15-17, 2025 • Nairobi, Kenya
+            Join us at the Bee East Africa Symposium • March 15-17, 2025 •
+            Nairobi, Kenya
         </p>
     </div>
 </div>
 
 <!-- Registration Options -->
 <div class="container mx-auto px-4 py-16">
-
     <!-- Attendee Tickets -->
     <div class="mb-16">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Attendee Tickets</h2>
-            <p class="text-gray-600">Choose your ticket type and secure your spot</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                Attendee Tickets
+            </h2>
+            <p class="text-gray-600">
+                Choose your ticket type and secure your spot
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto"
+        >
             {% for ticket in tickets %}
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-t-4 border-[#F5C342]">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-t-4 border-[#F5C342]"
+            >
                 <div class="p-6">
                     <!-- Ticket Name -->
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ ticket.name }}</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        {{ ticket.name }}
+                    </h3>
 
                     <!-- Price -->
                     <div class="mb-4">
                         <span class="text-3xl font-bold text-[#2C5F2D]">
-                            {{ ticket.currency }} {{ ticket.get_current_price() }}
+                            {{ ticket.currency }} {{ ticket.get_current_price()
+                            }}
                         </span>
                     </div>
 
                     <!-- Features -->
                     <ul class="space-y-2 mb-6 text-sm text-gray-600">
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Full event access
                         </li>
                         {% if ticket.includes_lunch %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Lunch included
                         </li>
-                        {% endif %}
-                        {% if ticket.includes_materials %}
+                        {% endif %} {% if ticket.includes_materials %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Event materials
                         </li>
-                        {% endif %}
-                        {% if ticket.includes_certificate %}
+                        {% endif %} {% if ticket.includes_certificate %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Certificate
                         </li>
@@ -77,22 +117,29 @@
                     {% if ticket.is_available() %}
                     <div class="mb-4">
                         <div class="text-xs text-gray-500 mb-1">
-                            {{ ticket.max_quantity - ticket.current_quantity }} tickets remaining
+                            {{ ticket.max_quantity - ticket.current_quantity }}
+                            tickets remaining
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-[#F5C342] h-2 rounded-full"
-                                 style="width: {{ (ticket.current_quantity / ticket.max_quantity * 100)|round }}%"></div>
+                            <div
+                                class="bg-[#F5C342] h-2 rounded-full"
+                                style="width: {{ (ticket.current_quantity / ticket.max_quantity * 100)|round }}%"
+                            ></div>
                         </div>
                     </div>
                     {% else %}
-                    <div class="mb-4 text-center text-red-600 font-semibold text-sm">
+                    <div
+                        class="mb-4 text-center text-red-600 font-semibold text-sm"
+                    >
                         Sold Out
                     </div>
                     {% endif %}
 
                     <!-- Register Button -->
-                    <a href="{{ url_for('register.register_attendee') }}"
-                       class="block w-full text-center py-3 px-4 bg-[#5C3A21] text-white font-semibold rounded-lg hover:bg-[#4a2f1a] transition-colors {% if not ticket.is_available() %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}">
+                    <a
+                        href="{{ url_for('register.register_attendee') }}"
+                        class="block w-full text-center py-3 px-4 bg-[#5C3A21] text-white font-semibold rounded-lg hover:bg-[#4a2f1a] transition-colors {% if not ticket.is_available() %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}"
+                    >
                         Select Ticket
                     </a>
                 </div>
@@ -107,16 +154,26 @@
     <!-- Exhibitor Packages -->
     <div>
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Exhibitor Packages</h2>
-            <p class="text-gray-600">Showcase your products and connect with the industry</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                Exhibitor Packages
+            </h2>
+            <p class="text-gray-600">
+                Showcase your products and connect with the industry
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto"
+        >
             {% for package in packages %}
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-t-4 border-[#2C5F2D]">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-t-4 border-[#2C5F2D]"
+            >
                 <div class="p-6">
                     <!-- Package Name -->
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ package.name }}</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        {{ package.name }}
+                    </h3>
 
                     <!-- Price -->
                     <div class="mb-4">
@@ -128,44 +185,90 @@
                     <!-- Features -->
                     <ul class="space-y-2 mb-6 text-sm text-gray-600">
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             {{ package.booth_size }} booth
                         </li>
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             {{ package.included_passes }} staff badges
                         </li>
                         {% if package.includes_electricity %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Power included
                         </li>
-                        {% endif %}
-                        {% if package.includes_wifi %}
+                        {% endif %} {% if package.includes_wifi %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             WiFi included
                         </li>
-                        {% endif %}
-                        {% if package.includes_speaking_slot %}
+                        {% endif %} {% if package.includes_speaking_slot %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Speaking slot
                         </li>
                         {% endif %}
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-4 h-4 text-green-500 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             Catalog listing
                         </li>
@@ -175,22 +278,29 @@
                     {% if package.is_available() %}
                     <div class="mb-4">
                         <div class="text-xs text-gray-500 mb-1">
-                            {{ package.max_quantity - package.current_quantity }} booths available
+                            {{ package.max_quantity - package.current_quantity
+                            }} booths available
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-[#2C5F2D] h-2 rounded-full"
-                                 style="width: {{ (package.current_quantity / package.max_quantity * 100)|round }}%"></div>
+                            <div
+                                class="bg-[#2C5F2D] h-2 rounded-full"
+                                style="width: {{ (package.current_quantity / package.max_quantity * 100)|round }}%"
+                            ></div>
                         </div>
                     </div>
                     {% else %}
-                    <div class="mb-4 text-center text-red-600 font-semibold text-sm">
+                    <div
+                        class="mb-4 text-center text-red-600 font-semibold text-sm"
+                    >
                         Sold Out
                     </div>
                     {% endif %}
 
                     <!-- Register Button -->
-                    <a href="{{ url_for('register.register_exhibitor') }}"
-                       class="block w-full text-center py-3 px-4 bg-[#2C5F2D] text-white font-semibold rounded-lg hover:bg-[#1f4520] transition-colors {% if not package.is_available() %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}">
+                    <a
+                        href="{{ url_for('register.register_exhibitor') }}"
+                        class="block w-full text-center py-3 px-4 bg-[#2C5F2D] text-white font-semibold rounded-lg hover:bg-[#1f4520] transition-colors {% if not package.is_available() %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}"
+                    >
                         Select Package
                     </a>
                 </div>
@@ -198,7 +308,6 @@
             {% endfor %}
         </div>
     </div>
-
 </div>
 
 <!-- Call to Action -->
@@ -206,8 +315,10 @@
     <div class="container mx-auto px-4 text-center">
         <h3 class="text-2xl font-bold mb-4">Have Questions?</h3>
         <p class="mb-6">Contact us for custom packages or group rates</p>
-        <a href="{{ url_for('main.contact') }}"
-           class="inline-block px-8 py-3 bg-[#F5C342] text-[#5C3A21] font-semibold rounded-lg hover:bg-[#E8B030] transition-colors">
+        <a
+            href="{{ url_for('main.contact') }}"
+            class="inline-block px-8 py-3 bg-[#F5C342] text-[#5C3A21] font-semibold rounded-lg hover:bg-[#E8B030] transition-colors"
+        >
             Contact Us
         </a>
     </div>

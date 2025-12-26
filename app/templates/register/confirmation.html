@@ -1,7 +1,6 @@
 {% extends "base.html" %} {% block title %} {% if registration.status.value ==
-'confirmed' %} Registration Confirmed - Pollination Africa Symposium {% else %}
-Complete Payment - Pollination Africa Symposium {% endif %} {% endblock %} {%
-block content %}
+'confirmed' %} Registration Confirmed - {{ event_name }} {% else %} Complete
+Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
 <!-- Hero Section -->
 <div
     class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"

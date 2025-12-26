@@ -76,15 +76,26 @@
             <h2
                 class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
             >
-                Event Agenda
+                Summit Program
             </h2>
             <p
                 class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
             >
-                Two days of inspiring talks, hands-on training, and
-                collaborative sessions focused on innovation and sustainability
-                in pollinator conservation
+                A three-day continental scientific, innovation, and policy
+                summit advancing pollination solutions for Africa
             </p>
+
+            <!-- Preliminary Notice -->
+            <div
+                class="mt-6 rounded-lg bg-accent-yellow/20 backdrop-blur p-4 border border-accent-yellow/30"
+            >
+                <p class="text-sm text-white text-center">
+                    <span class="font-semibold">Preliminary Program:</span>
+                    Detailed session times, speakers, and descriptions will be
+                    announced soon. Program subject to refinement based on
+                    partner input.
+                </p>
+            </div>
         </div>
 
         <!-- Quick Info Cards -->
@@ -108,7 +119,7 @@
                 <div class="text-base/7">
                     <h3 class="font-semibold text-white">When</h3>
                     <p class="mt-2 text-gray-100">
-                        3-5 June 2026<br />9am-5pm Daily
+                        {{ event_date }}<br />{{ event_time }}
                     </p>
                 </div>
             </div>
@@ -130,7 +141,7 @@
                 <div class="text-base/7">
                     <h3 class="font-semibold text-white">Duration</h3>
                     <p class="mt-2 text-gray-100">
-                        2 Days<br />Daily: 5:00 PM - 8:00 PM
+                        {{ event_duration }}<br />{{ event_format }}
                     </p>
                 </div>
             </div>
@@ -151,7 +162,9 @@
                 </svg>
                 <div class="text-base/7">
                     <h3 class="font-semibold text-white">Location</h3>
-                    <p class="mt-2 text-gray-100">AICC<br />Arusha, Tanzania</p>
+                    <p class="mt-2 text-gray-100">
+                        Venue: {{ event_venue }}<br />{{ event_location }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -170,17 +183,17 @@
             <p
                 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl lg:text-balance"
             >
-                Two Days of Transformation
+                Three Days of Innovation and Action
             </p>
             <p class="mt-6 text-lg/8 text-gray-700">
-                Each day is carefully designed to provide a mix of learning,
-                networking, and practical engagement
+                A structured journey from science and evidence, through
+                innovation and technology, to policy action and investment
             </p>
         </div>
 
         <!-- Day Cards -->
         <div
-            class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2"
+            class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
         >
             <!-- Day 1 -->
             <div
@@ -188,7 +201,7 @@
             >
                 <img
                     src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?auto=format&fit=crop&w=1200&q=80"
-                    alt="Day 1"
+                    alt="Day 1 - Science and Evidence"
                     class="absolute inset-0 -z-10 size-full object-cover opacity-30"
                 />
                 <div class="relative">
@@ -201,124 +214,34 @@
                         <time class="text-sm text-gray-300">3 June 2026</time>
                     </div>
                     <h3 class="mt-6 text-3xl font-semibold text-white">
-                        Innovation & Policy
+                        Science and Evidence
                     </h3>
                     <p class="mt-4 text-base text-gray-300">
-                        Focusing on policy frameworks, regulatory support, and
-                        technological innovations shaping the future of
-                        pollinator conservation in East Africa
+                        Examining the state of pollinators in Africa through
+                        scientific evidence, exploring drivers of pollinator
+                        decline, and understanding the critical links between
+                        pollination, food security, and ecosystem resilience.
                     </p>
 
-                    <dl class="mt-8 space-y-4">
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-yellow"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >9:00 AM</span
-                                >
-                                - Registration & Opening Ceremony - Opening
-                                Keynote: Rt. Hon. Mizengo K. P. Pinda
-                            </dd>
-                        </div>
-
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-yellow"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >6:00 PM</span
-                                >
-                                - Policy Panel Discussions
-                                <span class="text-gray-400"
-                                    >(Speakers TBA)</span
-                                >
-                            </dd>
-                        </div>
-
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-yellow"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >7:00 PM</span
-                                >
-                                - Innovation Showcase & Technology Exhibits
-                            </dd>
-                        </div>
-
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-yellow/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-yellow"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >12:30 PM</span
-                                >
-                                - Lunch Break & Exhibition - Networking
-                                Reception
-                            </dd>
-                        </div>
-                    </dl>
+                    <div class="mt-6 space-y-3 text-sm text-gray-300">
+                        <p>
+                            • Opening session with summit objectives and
+                            scientific framing
+                        </p>
+                        <p>• State of Pollinators in Africa and Globally</p>
+                        <p>
+                            • Pollination, Food Security and Ecosystem
+                            Resilience
+                        </p>
+                        <p>
+                            • Scientific panels on drivers of pollinator decline
+                        </p>
+                        <p>• Pollinator ecology in agricultural landscapes</p>
+                        <p>
+                            • Pollinator habitats, forests and landscape
+                            restoration
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -328,7 +251,7 @@
             >
                 <img
                     src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80"
-                    alt="Day 2"
+                    alt="Day 2 - Innovation, AI and Technology"
                     class="absolute inset-0 -z-10 size-full object-cover opacity-30"
                 />
                 <div class="relative">
@@ -341,123 +264,78 @@
                         <time class="text-sm text-gray-300">4 June 2026</time>
                     </div>
                     <h3 class="mt-6 text-3xl font-semibold text-white">
-                        Practice & Partnership
+                        Innovation, AI and Technology
                     </h3>
                     <p class="mt-4 text-base text-gray-300">
-                        Hands-on workshops, practical demonstrations, and
-                        collaborative opportunities to build sustainable
-                        pollinator management systems
+                        Showcasing cutting-edge innovations in AI, robotics, and
+                        precision pollination, alongside digital tools for
+                        monitoring and management.
                     </p>
 
-                    <dl class="mt-8 space-y-4">
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-orange"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >9:00 AM</span
-                                >
-                                - Technical Workshops & Demonstrations -
-                                Hands-on Workshops (Multiple Tracks)
-                            </dd>
-                        </div>
+                    <div class="mt-6 space-y-3 text-sm text-gray-300">
+                        <p>• AI, Robotics and Precision Pollination</p>
+                        <p>
+                            • Digital Tools for Pollination Monitoring and
+                            Management
+                        </p>
+                        <p>• Innovation Showcase: Research demonstrations</p>
+                        <p>• Emerging pollination-focused solutions</p>
+                        <p>
+                            • Technology exhibitions and product demonstrations
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-orange"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >11:00 AM</span
-                                >
-                                - Research Presentations: Latest Findings -
-                                Technology & Product Demonstrations
-                            </dd>
+            <!-- Day 3 -->
+            <div
+                class="relative overflow-hidden rounded-3xl bg-gray-900 px-8 py-10"
+            >
+                <img
+                    src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=1200&q=80"
+                    alt="Day 3 - Policy, Investment and Green Enterprises"
+                    class="absolute inset-0 -z-10 size-full object-cover opacity-30"
+                />
+                <div class="relative">
+                    <div class="flex items-center gap-x-4">
+                        <div
+                            class="rounded-full bg-primary-dark px-3 py-1 text-sm font-semibold text-white"
+                        >
+                            Day 3
                         </div>
+                        <time class="text-sm text-gray-300">5 June 2026</time>
+                    </div>
+                    <h3 class="mt-6 text-3xl font-semibold text-white">
+                        Policy, Investment and Green Enterprises
+                    </h3>
+                    <p class="mt-4 text-base text-gray-300">
+                        Advancing policy frameworks, investment pathways, and
+                        green pollination enterprises with high-level dialogue
+                        on translating science into action.
+                    </p>
 
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-orange"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >12:30 PM</span
-                                >
-                                - Lunch & Networking - Market Linkage & Trade
-                                Sessions
-                            </dd>
-                        </div>
-
-                        <div class="flex items-start gap-x-3">
-                            <dt class="flex-none">
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent-orange/20"
-                                >
-                                    <svg
-                                        class="h-4 w-4 text-accent-orange"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </dt>
-                            <dd class="text-sm text-gray-300">
-                                <span class="font-semibold text-white"
-                                    >2:00 PM</span
-                                >
-                                - Parallel Sessions: Specialized Topics -
-                                Partnership & Collaboration Forum
-                            </dd>
-                        </div>
-                    </dl>
+                    <div class="mt-6 space-y-3 text-sm text-gray-300">
+                        <p>
+                            • Policy & Investment: Enabling Environments for
+                            Pollinator Protection
+                        </p>
+                        <p>
+                            • Green Pollination Enterprises and Climate Positive
+                            Markets
+                        </p>
+                        <p>
+                            • High-Level Policy Dialogue: From Science to Policy
+                            Action
+                        </p>
+                        <p>
+                            • Closing Session: Pathways toward Commitments and
+                            Declarations
+                        </p>
+                        <p>
+                            • Accountability mechanisms and collective action
+                            frameworks
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

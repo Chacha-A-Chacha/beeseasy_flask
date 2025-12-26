@@ -156,18 +156,23 @@ def create_app(config_name=None):
         into all templates and emails.
         """
         return dict(
-            event_name=app.config.get(
-                "EVENT_NAME", "Pollination Africa Symposium 2026"
-            ),
+            event_name=app.config.get("EVENT_NAME", "Pollination Africa Summit 2026"),
             event_short_name=app.config.get(
                 "EVENT_SHORT_NAME", "Pollination Africa 2026"
             ),
             event_date=app.config.get("EVENT_DATE", "3-5 June 2026"),
-            event_location=app.config.get(
-                "EVENT_LOCATION",
-                "Arusha International Conference Centre, Arusha, Tanzania",
+            event_location=app.config.get("EVENT_LOCATION", "Arusha, Tanzania"),
+            event_venue=app.config.get("EVENT_VENUE", "TBA"),
+            event_time=app.config.get("EVENT_TIME", "Daily 9am-5pm"),
+            event_duration=app.config.get("EVENT_DURATION", "3 Days"),
+            event_theme=app.config.get(
+                "EVENT_THEME",
+                "Harnessing Pollination for Food Security, Biodiversity, and Livelihoods",
             ),
-            event_time=app.config.get("EVENT_TIME", "8:00 AM - 6:00 PM"),
+            event_format=app.config.get(
+                "EVENT_FORMAT", "Continental scientific, innovation & policy summit"
+            ),
+            event_guest_of_honor=app.config.get("EVENT_GUEST_OF_HONOR", "TBC"),
             organization_name=app.config.get("ORGANIZATION_NAME", "Pollination Africa"),
             contact_email=app.config.get("CONTACT_EMAIL", "info@pollination.africa"),
             support_phone=app.config.get("SUPPORT_PHONE", "+254 719 740 938"),

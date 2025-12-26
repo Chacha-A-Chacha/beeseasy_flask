@@ -116,13 +116,21 @@ class Config:
     BANK_BRANCH: str = os.getenv("BANK_BRANCH", "Main Branch")
 
     # --- Event Configuration ---
-    EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Symposium 2026")
+    EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Summit 2026")
     EVENT_SHORT_NAME: str = os.getenv("EVENT_SHORT_NAME", "Pollination Africa 2026")
     EVENT_DATE: str = os.getenv("EVENT_DATE", "3-5 June 2026")
-    EVENT_LOCATION: str = os.getenv(
-        "EVENT_LOCATION", "Arusha International Conference Centre, Arusha, Tanzania"
+    EVENT_LOCATION: str = os.getenv("EVENT_LOCATION", "Arusha, Tanzania")
+    EVENT_VENUE: str = os.getenv("EVENT_VENUE", "TBA")
+    EVENT_TIME: str = os.getenv("EVENT_TIME", "Daily 9am-5pm")
+    EVENT_DURATION: str = os.getenv("EVENT_DURATION", "3 Days")
+    EVENT_THEME: str = os.getenv(
+        "EVENT_THEME",
+        "Harnessing Pollination for Food Security, Biodiversity, and Livelihoods",
     )
-    EVENT_TIME: str = os.getenv("EVENT_TIME", "8:00 AM - 6:00 PM")
+    EVENT_FORMAT: str = os.getenv(
+        "EVENT_FORMAT", "Continental scientific, innovation & policy summit"
+    )
+    EVENT_GUEST_OF_HONOR: str = os.getenv("EVENT_GUEST_OF_HONOR", "TBC")
     ORGANIZATION_NAME: str = os.getenv("ORGANIZATION_NAME", "Pollination Africa")
     CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "info@pollination.africa")
     SUPPORT_PHONE: str = os.getenv("SUPPORT_PHONE", "+254 719 740 938")

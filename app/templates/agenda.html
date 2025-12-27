@@ -40,7 +40,7 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA700] opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
         ></div>
     </div>
     <div
@@ -67,7 +67,7 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA700] opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
         ></div>
     </div>
 
@@ -94,7 +94,7 @@
                 class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
             >
                 <svg
-                    class="h-7 w-5 flex-none text-[#FFD700]"
+                    class="h-7 w-5 flex-none text-accent-yellow"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                 >
@@ -116,7 +116,7 @@
                 class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
             >
                 <svg
-                    class="h-7 w-5 flex-none text-[#FFD700]"
+                    class="h-7 w-5 flex-none text-accent-yellow"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                 >
@@ -138,7 +138,7 @@
                 class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
             >
                 <svg
-                    class="h-7 w-5 flex-none text-[#FFD700]"
+                    class="h-7 w-5 flex-none text-accent-yellow"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                 >
@@ -559,6 +559,7 @@ COMMENTED OUT Focus Areas section - to be finalized later
 <!-- ============================================ -->
 <!-- SECTION 7: STAY UPDATED CTA -->
 <!-- ============================================ -->
+{#
 <div class="bg-gray-50 py-16 sm:py-24">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
@@ -603,7 +604,7 @@ COMMENTED OUT Focus Areas section - to be finalized later
         </div>
     </div>
 </div>
-
+#}
 <!-- ============================================ -->
 <!-- SECTION 8: REGISTER CTA -->
 <!-- ============================================ -->
@@ -628,12 +629,15 @@ COMMENTED OUT Focus Areas section - to be finalized later
                 >
                     Register as Attendee
                 </a>
+
+                {#
                 <a
                     href="{{ url_for('register.exhibitor_index') }}"
                     class="rounded-md bg-primary-dark px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-medium transition-all w-full sm:w-auto"
                 >
                     Register as Exhibitor
                 </a>
+                #}
             </div>
             <p class="mt-8 text-sm text-gray-600">
                 Questions about the agenda?

@@ -40,7 +40,7 @@ endblock %} {% block content %}
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA700] opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
         ></div>
     </div>
     <div
@@ -67,7 +67,7 @@ endblock %} {% block content %}
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA700] opacity-15"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-accent-yellow to-accent-orange opacity-15"
         ></div>
     </div>
 
@@ -76,21 +76,22 @@ endblock %} {% block content %}
             <h2
                 class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
             >
-                Symposium Speakers
+                Summit Speakers
             </h2>
             <p
                 class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
             >
                 Meet the thought leaders, innovators, and practitioners shaping
-                the future of pollinator conservation in East Africa and beyond.
+                the future of pollinator conservation in Africa and beyond.
             </p>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- SECTION 2: GUEST OF HONOUR -->
-<!-- ============================================ -->
+{# ============================================ SECTION 2: GUEST OF HONOUR -
+COMMENTED OUT Awaiting re-confirmation of Guest of Honour Per technical
+document: Guest of Honor is TBC ============================================ #}
+{#
 <div class="bg-primary-dark py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:text-center mb-16">
@@ -109,7 +110,6 @@ endblock %} {% block content %}
                 class="overflow-hidden rounded-3xl bg-primary-medium shadow-2xl ring-1 ring-accent-brown/20"
             >
                 <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <!-- Image -->
                     <div class="relative h-80 lg:h-auto">
                         <img
                             src="{{ url_for('static', filename='images/photo_2025-11-04_17-06-10.jpg') }}"
@@ -121,7 +121,6 @@ endblock %} {% block content %}
                         ></div>
                     </div>
 
-                    <!-- Content -->
                     <div class="p-8 lg:p-12">
                         <div class="mb-4">
                             <p
@@ -179,6 +178,7 @@ endblock %} {% block content %}
         </div>
     </div>
 </div>
+#}
 
 <!-- ============================================ -->
 <!-- SECTION 3: SPEAKER CATEGORIES -->
@@ -195,7 +195,7 @@ endblock %} {% block content %}
                 Our Speaker Community
             </p>
             <p class="mt-6 text-lg/8 text-gray-700">
-                Pollination Africa 2025 brings together experts from multiple
+                {{ event_short_name }} brings together experts from multiple
                 disciplines, each bringing unique insights to the conservation
                 conversation.
             </p>
@@ -243,8 +243,7 @@ endblock %} {% block content %}
                 </h3>
                 <p class="mt-2 text-sm text-gray-300">
                     Ministers, officials, and policy advisors shaping
-                    agricultural and environmental frameworks across East
-                    Africa.
+                    agricultural and environmental frameworks across Africa.
                 </p>
             </article>
 
@@ -367,7 +366,7 @@ endblock %} {% block content %}
                         <p class="flex-auto">
                             Expert insights on pollinator biology, species
                             diversity, disease management, climate adaptation,
-                            and habitat restoration strategies tailored for East
+                            and habitat restoration strategies tailored for
                             African contexts—covering bees, butterflies, birds,
                             bats, and more.
                         </p>

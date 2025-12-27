@@ -7,7 +7,7 @@
 <div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <img
         src="{{ url_for('static', filename='images/photo_2025-10-28_00-15-18.jpg') }}"
-        alt="Pollinators in East Africa"
+        alt="Pollinators in Africa"
         class="absolute inset-0 -z-10 size-full object-cover opacity-60"
     />
     <div
@@ -75,13 +75,12 @@
             <h2
                 class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
             >
-                About Pollination Africa 2026
+                About {{ event_short_name }}
             </h2>
             <p
                 class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
             >
-                Celebrating All Pollinators for Food Security, Biodiversity and
-                Livelihoods
+                {{ event_theme }}
             </p>
         </div>
 
@@ -93,13 +92,13 @@
                     class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
                 >
                     <p>
-                        The
                         <strong class="font-semibold text-primary-dark"
-                            >Pollination Africa Symposium 2026</strong
+                            >{{ event_name }}</strong
                         >
-                        is East Africa's premier platform dedicated to advancing
-                        pollinator conservation, promoting biodiversity, and
-                        strengthening food security across the region.
+                        is a focused, continent-wide scientific, policy and
+                        innovation summit dedicated to advancing pollination as
+                        a foundation for food security, biodiversity,
+                        livelihoods, and green enterprise development in Africa.
                     </p>
                 </div>
                 <div
@@ -108,13 +107,13 @@
                     <p>
                         Hosted in
                         <strong class="font-semibold text-primary-dark"
-                            >Arusha, Tanzania</strong
-                        >, this symposium brings together farmers,
-                        conservationists, researchers, policymakers, and
-                        development partners to harness the power of all
-                        pollinators—from bees and butterflies to birds and
-                        bats—for sustainable development and economic
-                        transformation.
+                            >{{ event_location }}</strong
+                        >, the Summit brings together scientists, policymakers,
+                        innovators, development partners, conservation actors,
+                        and practitioners to examine the state of pollinators in
+                        Africa, explore emerging scientific and technological
+                        solutions, and strengthen pathways from evidence to
+                        policy, investment, and action.
                     </p>
                 </div>
             </div>
@@ -196,7 +195,7 @@
                         Why Pollinators Matter
                     </h1>
                     <p class="mt-6 text-xl/8 text-gray-700">
-                        Pollinators are the unsung heroes of East African
+                        Pollinators are the unsung heroes of African
                         agriculture. From tiny native bees to brilliant
                         sunbirds, these diverse species play a vital role in
                         increasing crop yields, sustaining ecosystems, and
@@ -223,11 +222,13 @@
                 <div class="max-w-xl text-base/7 text-gray-700 lg:max-w-lg">
                     <p>
                         <strong class="font-semibold text-primary-dark"
-                            >Pollination Africa 2026</strong
+                            >{{ event_short_name }}</strong
                         >
-                        shines a spotlight on the critical importance of diverse
-                        pollinators to farming, the environment, and economic
-                        opportunity in the region and beyond.
+                        is designed as a knowledge-driven, action-oriented
+                        platform, advancing scientific understanding,
+                        innovation, and cooperative responses to pollinator
+                        decline and its implications for agriculture,
+                        ecosystems, and livelihoods across Africa.
                     </p>
                     <p class="mt-8">
                         From the honeybees that pollinate our coffee crops to
@@ -238,9 +239,9 @@
                         ecological health.
                     </p>
                     <p class="mt-8">
-                        By bringing together stakeholders from across East
-                        Africa and beyond, we're building a movement to protect
-                        and celebrate these essential species, ensuring food
+                        By bringing together stakeholders from across Africa and
+                        beyond, we're building a movement to protect and
+                        celebrate these essential species, ensuring food
                         security and sustainable livelihoods for generations to
                         come.
                     </p>
@@ -251,8 +252,8 @@
                         Our Core Objectives
                     </h2>
                     <p class="mt-6">
-                        The symposium is designed to drive real impact across
-                        three key pillars:
+                        The Summit is designed to drive real impact across four
+                        key pillars:
                     </p>
                     <ul role="list" class="mt-8 space-y-8 text-gray-600">
                         <li class="flex gap-x-3">
@@ -273,8 +274,8 @@
                                 >
                                 Build regional partnerships and facilitate
                                 knowledge exchange among farmers, researchers,
-                                conservationists, and policymakers across East
-                                Africa and beyond.</span
+                                conservationists, and policymakers across Africa
+                                and beyond.</span
                             >
                         </li>
                         <li class="flex gap-x-3">
@@ -315,10 +316,10 @@
                                 ><strong class="font-semibold text-primary-dark"
                                     >Drive Policy Impact.</strong
                                 >
-                                Influence agricultural and environmental
+                                Strengthen science-policy dialogue and influence
                                 policies to enhance food security, support
                                 pollinator health, and build resilient
-                                agribusinesses across the region.</span
+                                agribusinesses across Africa.</span
                             >
                         </li>
                     </ul>
@@ -331,35 +332,12 @@
 <!-- ============================================ -->
 <!-- SECTION 3: KEY EVENT DETAILS -->
 <!-- ============================================ -->
-<!-- Event at a Glance Section - Vibrant -->
-<div
-    class="bg-gradient-to-br from-[#2C5F2D] via-[#5C3A21] to-[#2C5F2D] py-24 sm:py-32 relative overflow-hidden"
->
-    <!-- Decorative background pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <pattern
-                    id="pollinators"
-                    x="0"
-                    y="0"
-                    width="100"
-                    height="100"
-                    patternUnits="userSpaceOnUse"
-                >
-                    <circle cx="25" cy="25" r="2" fill="#F5C342" />
-                    <circle cx="75" cy="75" r="2" fill="#F5C342" />
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#pollinators)" />
-        </svg>
-    </div>
-
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+<div class="bg-primary-dark py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <!-- Section Header -->
         <div class="mx-auto max-w-2xl lg:text-center">
-            <h2 class="text-base/7 font-semibold text-[#F5C342]">
-                3-5 June 2026
+            <h2 class="text-base/7 font-semibold text-accent-yellow">
+                {{ event_date }}
             </h2>
             <p
                 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance"
@@ -367,8 +345,8 @@
                 Event at a Glance
             </p>
             <p class="mt-6 text-lg/8 text-gray-200">
-                Two transformative days bringing together the pollinator
-                conservation community
+                {{ event_duration }} of transformative sessions bringing
+                together the pollinator conservation community
             </p>
         </div>
 
@@ -379,13 +357,13 @@
             >
                 <!-- When Card -->
                 <div
-                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
+                    class="flex gap-x-4 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10"
                 >
                     <div
-                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent-yellow"
                     >
                         <svg
-                            class="size-7 text-[#5C3A21]"
+                            class="size-7 text-primary-dark"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -397,25 +375,27 @@
                         </svg>
                     </div>
                     <div class="text-base/7">
-                        <h3 class="font-bold text-[#F5C342] text-lg">When</h3>
+                        <h3 class="font-bold text-accent-yellow text-lg">
+                            When
+                        </h3>
                         <p class="mt-2 text-white font-semibold">
-                            3-5 June 2026
+                            {{ event_date }}
                         </p>
                         <p class="text-gray-300 text-sm">
-                            Three Full Days | 9am-5pm Daily
+                            {{ event_duration }} | {{ event_time }}
                         </p>
                     </div>
                 </div>
 
                 <!-- Where Card -->
                 <div
-                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
+                    class="flex gap-x-4 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10"
                 >
                     <div
-                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent-yellow"
                     >
                         <svg
-                            class="size-7 text-[#5C3A21]"
+                            class="size-7 text-primary-dark"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -427,25 +407,27 @@
                         </svg>
                     </div>
                     <div class="text-base/7">
-                        <h3 class="font-bold text-[#F5C342] text-lg">Where</h3>
+                        <h3 class="font-bold text-accent-yellow text-lg">
+                            Where
+                        </h3>
                         <p class="mt-2 text-white font-semibold">
-                            Arusha International Conference Center
+                            {{ event_location }}
                         </p>
                         <p class="text-gray-300 text-sm">
-                            (AICC) Arusha, Tanzania
+                            Venue: {{ event_venue }}
                         </p>
                     </div>
                 </div>
 
                 <!-- Who Card -->
                 <div
-                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
+                    class="flex gap-x-4 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10"
                 >
                     <div
-                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent-yellow"
                     >
                         <svg
-                            class="size-7 text-[#5C3A21]"
+                            class="size-7 text-primary-dark"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -455,7 +437,9 @@
                         </svg>
                     </div>
                     <div class="text-base/7">
-                        <h3 class="font-bold text-[#F5C342] text-lg">Who</h3>
+                        <h3 class="font-bold text-accent-yellow text-lg">
+                            Who
+                        </h3>
                         <p class="mt-2 text-white font-semibold">
                             500+ Expected Attendees
                         </p>
@@ -467,13 +451,13 @@
 
                 <!-- What Card -->
                 <div
-                    class="flex gap-x-4 rounded-2xl bg-gradient-to-br from-[#F5C342]/20 to-[#E8B030]/10 backdrop-blur-sm p-6 ring-1 ring-[#F5C342]/30"
+                    class="flex gap-x-4 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10"
                 >
                     <div
-                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#F5C342]"
+                        class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent-yellow"
                     >
                         <svg
-                            class="size-7 text-[#5C3A21]"
+                            class="size-7 text-primary-dark"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -488,12 +472,14 @@
                         </svg>
                     </div>
                     <div class="text-base/7">
-                        <h3 class="font-bold text-[#F5C342] text-lg">What</h3>
+                        <h3 class="font-bold text-accent-yellow text-lg">
+                            What
+                        </h3>
                         <p class="mt-2 text-white font-semibold">
-                            Exhibitions, Keynotes, Workshops
+                            Plenaries, Technical Sessions, Panels
                         </p>
                         <p class="text-gray-300 text-sm">
-                            Networking & Hands-on Demonstrations
+                            Innovation Showcases & Policy Dialogues
                         </p>
                     </div>
                 </div>
@@ -506,7 +492,8 @@
         >
             <a
                 href="{{ url_for('register.attendee_index') }}"
-                class="inline-flex items-center px-8 py-3 bg-accent-orange text-white font-semibold rounded-full hover:bg-[#E8B030] transition-all duration-300 transform hover:scale-102 shadow-2xl shadow-[#F5C342]/30"
+                class="inline-flex items-center px-8 py-3 bg-accent-orange text-white font-semibold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 transform hover:scale-105 shadow-2xl"
+                style="box-shadow: 0 25px 50px -12px rgba(242, 193, 46, 0.3)"
             >
                 Register Now
                 <svg
@@ -525,7 +512,7 @@
             </a>
             <a
                 href="{{ url_for('main.agenda') }}"
-                class="inline-flex items-center px-8 py-3 bg-transparent border-1 border-[#F5C342] text-[#F5C342] font-semibold rounded-full transition-all duration-300 transform hover:scale-102"
+                class="inline-flex items-center px-8 py-3 bg-transparent border border-accent-yellow text-[#F5C342] font-semibold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 transform hover:scale-105"
             >
                 View Full Agenda
                 <svg
@@ -602,7 +589,7 @@
                 class="flex flex-col gap-y-3 border-l border-accent-yellow/40 pl-6"
             >
                 <dt class="text-sm/6 text-gray-600">
-                    Expected Symposium Attendees
+                    Expected Summit Attendees
                 </dt>
                 <dd class="order-first text-3xl font-semibold tracking-tight">
                     500+
@@ -1006,10 +993,10 @@
             <p
                 class="mx-auto mt-6 max-w-xl text-pretty text-lg/8 text-gray-300"
             >
-                Be part of East Africa's premier gathering shaping the future of
+                Be part of Africa's premier gathering shaping the future of
                 pollinator conservation. Register today and contribute to food
-                security, biodiversity, and sustainable livelihoods across the
-                region.
+                security, biodiversity, and sustainable livelihoods across
+                Africa.
             </p>
             <div class="mt-10 flex items-center justify-center gap-x-6">
                 <a

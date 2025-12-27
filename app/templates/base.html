@@ -295,7 +295,7 @@
                     href="{{ url_for('main.index') }}"
                     class="-m-1.5 p-1.5 flex items-center gap-2"
                 >
-                    <span class="sr-only">Pollination Africa Symposium</span>
+                    <span class="sr-only">Pollination Africa Summit</span>
                     <img
                         src="{{ url_for('static', filename='images/logo.png') }}"
                         alt="Pollination Africa Logo"
@@ -742,15 +742,14 @@
 
                     <!-- Copyright -->
                     <p class="text-center text-sm/6 text-gray-300">
-                        &copy; {{ now.year if now else '2025' }} Pollination
-                        Africa Symposium. Organized by SAADIT and partners. All
-                        rights reserved.
+                        &copy; {{ now.year if now else '2025' }} {{ event_name
+                        }}. Organized by SAADIT and partners. All rights
+                        reserved.
                     </p>
 
                     <!-- Location & Date -->
                     <p class="mt-2 text-center text-xs text-gray-400">
-                        December 2025 | Arusha International Conference Center,
-                        Tanzania
+                        {{ event_date }} | {{ event_location }}
                     </p>
                 </div>
             </div>

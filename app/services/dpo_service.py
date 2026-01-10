@@ -368,11 +368,19 @@ class DPOService:
         Returns:
             XML string for DPO API request
         """
+        from datetime import datetime
+
         # Extract customer name parts
         customer_name = payment_data.get("customer_name", "").strip()
         name_parts = customer_name.split(" ", 1)
         first_name = name_parts[0] if len(name_parts) > 0 else ""
         last_name = name_parts[1] if len(name_parts) > 1 else ""
+
+        # Format service date - DPO requires "YYYY/MM/DD HH:MM" format
+        service_date = payment_data.get("service_date", "")
+        if service_date and not any(char in service_date for char in [":", " "]):
+            # If only date provided (no time), add default time 09:00
+            service_date = f"{service_date} 09:00"
 
         # Optional: Set default payment method for mobile money
         default_payment = ""
@@ -421,7 +429,7 @@ class DPOService:
                 <Service>
                     <ServiceType>{self.service_type}</ServiceType>
                     <ServiceDescription>{payment_data.get("service_description", "Event Payment")}</ServiceDescription>
-                    <ServiceDate>{payment_data.get("service_date", "")}</ServiceDate>
+                    <ServiceDate>{service_date}</ServiceDate>
                 </Service>
             </Services>
         </API3G>"""

@@ -89,6 +89,11 @@ def create_app(config_name=None):
     cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
     csrf.init_app(app)
 
+    # --- Initialize Payment Services ---
+    from app.services.dpo_service import dpo_service
+
+    dpo_service.init_app(app)
+
     # --- Login Manager Setup ---
     login_manager.login_view = "auth.login"
     login_manager.login_message_category = "info"

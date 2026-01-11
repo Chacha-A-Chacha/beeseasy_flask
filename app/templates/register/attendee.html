@@ -463,6 +463,45 @@
                             </noscript>
                         </div>
 
+                        <!-- Location Information -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Location
+                            </h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    {{ form.country.label(class="block text-sm
+                                    font-medium text-primary-dark mb-1") }} {{
+                                    form.country(class="w-full px-3.5 py-2
+                                    border border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.country.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.country.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    {{ form.city.label(class="block text-sm
+                                    font-medium text-primary-dark mb-1") }} {{
+                                    form.city(class="w-full px-3.5 py-2 border
+                                    border-gray-300 rounded-md
+                                    focus:ring-accent-yellow
+                                    focus:border-accent-yellow") }} {% if
+                                    form.city.errors %}
+                                    <p class="text-red-600 text-xs mt-1">
+                                        {{ form.city.errors[0] }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Professional Information -->
                         <div class="mb-8">
                             <h2
@@ -722,4 +761,57 @@
     </div>
 </div>
 
+{% endblock %} {% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Populate country selector using intl-tel-input's country data
+        const countrySelect = document.getElementById("country_select");
+
+        if (countrySelect && window.intlTelInputGlobals) {
+            const countryData = window.intlTelInputGlobals.getCountryData();
+
+            // Clear existing options except the first one (placeholder)
+            while (countrySelect.options.length > 1) {
+                countrySelect.remove(1);
+            }
+
+            // Add all countries
+            countryData.forEach(function (country) {
+                const option = document.createElement("option");
+                option.value = country.name;
+                option.textContent = country.name;
+                countrySelect.appendChild(option);
+            });
+
+            // Auto-select country based on phone country code if available
+            const phoneInput = document.getElementById("phone_international");
+            if (phoneInput && window.intlTelInputUtils) {
+                phoneInput.addEventListener("countrychange", function () {
+                    const iti =
+                        window.intlTelInputGlobals.getInstance(phoneInput);
+                    if (iti) {
+                        const selectedCountryData =
+                            iti.getSelectedCountryData();
+                        if (selectedCountryData && selectedCountryData.name) {
+                            // Find matching option and select it
+                            for (
+                                let i = 0;
+                                i < countrySelect.options.length;
+                                i++
+                            ) {
+                                if (
+                                    countrySelect.options[i].value ===
+                                    selectedCountryData.name
+                                ) {
+                                    countrySelect.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
 {% endblock %}

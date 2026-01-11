@@ -100,6 +100,8 @@ class RegistrationService:
                 phone_number=data.get("phone_number", "").strip(),
                 ticket_type=ticket_type,
                 ticket_price_id=ticket_price.id,
+                country=data.get("country", "").strip() or None,
+                city=data.get("city", "").strip() or None,
                 organization=data.get("organization", "").strip() or None,
                 job_title=data.get("job_title", "").strip() or None,
                 professional_category=professional_category,

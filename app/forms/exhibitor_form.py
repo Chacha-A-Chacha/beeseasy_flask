@@ -98,10 +98,16 @@ class ExhibitorRegistrationForm(FlaskForm):
         render_kw={"placeholder": "Company Inc."},
     )
 
-    company_country = StringField(
+    company_country = SelectField(
         "Country of Registration",
         validators=[DataRequired(), Length(max=100)],
-        render_kw={"placeholder": "Kenya"},
+        choices=[
+            ("", "Select country"),
+        ],
+        render_kw={
+            "id": "company_country_select",
+            "placeholder": "Select country",
+        },
     )
 
     company_address = TextAreaField(

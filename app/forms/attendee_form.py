@@ -82,6 +82,25 @@ class AttendeeRegistrationForm(FlaskForm):
         render_kw={"placeholder": "712345678"},
     )
 
+    # ===== LOCATION INFORMATION =====
+    country = SelectField(
+        "Country",
+        validators=[Optional(), Length(max=100)],
+        choices=[
+            ("", "Select your country"),
+        ],
+        render_kw={
+            "id": "country_select",
+            "placeholder": "Select your country",
+        },
+    )
+
+    city = StringField(
+        "City",
+        validators=[Optional(), Length(max=100)],
+        render_kw={"placeholder": "e.g., Nairobi, Dar es Salaam, Kampala"},
+    )
+
     # ===== SECTION 2: Professional Information =====
     organization = StringField(
         "Organization",

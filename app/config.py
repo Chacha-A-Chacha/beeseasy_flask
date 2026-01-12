@@ -21,6 +21,20 @@ def _get_database_uri():
     # Check for Neon/PostgreSQL DATABASE_URL
     database_url = os.getenv("DATABASE_URL")
     if database_url:
+        # Handle SQLite paths from environment (can be relative or absolute)
+        if database_url.startswith("sqlite:///"):
+            db_path = database_url.replace("sqlite:///", "")
+
+            # If relative path, make it absolute from project root
+            if not os.path.isabs(db_path):
+                db_path = os.path.abspath(os.path.join(basedir, "..", db_path))
+
+            # Ensure directory exists
+            db_dir = os.path.dirname(db_path)
+            os.makedirs(db_dir, exist_ok=True)
+
+            return f"sqlite:///{db_path}"
+
         # Convert postgresql:// to postgresql+psycopg2:// for Flask-SQLAlchemy sync operations
         # If you need async support, explicitly set DATABASE_URL with postgresql+asyncpg://
         if database_url.startswith("postgresql://"):
@@ -28,7 +42,50 @@ def _get_database_uri():
         return database_url
 
     # Fall back to SQLite
-    return f"sqlite:///{os.path.abspath(os.path.join(basedir, '..', 'instance', 'app.db'))}"
+    sqlite_path = os.path.abspath(os.path.join(basedir, "..", "instance", "app.db"))
+    # Ensure instance directory exists
+    os.makedirs(os.path.dirname(sqlite_path), exist_ok=True)
+    return f"sqlite:///{sqlite_path}"
+
+
+def _get_engine_options():
+    """Get database engine options based on database type."""
+    database_uri = _get_database_uri()
+
+    # PostgreSQL-specific options (for Neon scale-to-zero support)
+    if database_uri.startswith("postgresql"):
+        return {
+            # Test connections before using them from the pool (handles stale connections)
+            "pool_pre_ping": True,
+            # Recycle connections after 5 minutes (before Neon's scale-to-zero)
+            "pool_recycle": 300,
+            # Increase connection timeout to allow for database wake-up (default is 10s)
+            "connect_args": {
+                "connect_timeout": 30,
+                "keepalives": 1,
+                "keepalives_idle": 30,
+                "keepalives_interval": 10,
+                "keepalives_count": 5,
+            },
+            # Connection pool sizing
+            "pool_size": 5,
+            "max_overflow": 10,
+        }
+
+    # SQLite options (minimal, no pooling needed)
+    elif database_uri.startswith("sqlite"):
+        return {
+            # Check connections before using (good practice)
+            "pool_pre_ping": True,
+        }
+
+    # Default options for other databases
+    else:
+        return {
+            "pool_pre_ping": True,
+            "pool_size": 5,
+            "max_overflow": 10,
+        }
 
 
 class Config:
@@ -39,24 +96,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI: str = _get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
 
-    # --- Database Connection Pool Settings (for Neon scale-to-zero) ---
-    SQLALCHEMY_ENGINE_OPTIONS: dict = {
-        # Test connections before using them from the pool (handles stale connections)
-        "pool_pre_ping": True,
-        # Recycle connections after 5 minutes (before Neon's scale-to-zero)
-        "pool_recycle": 300,
-        # Increase connection timeout to allow for database wake-up (default is 10s)
-        "connect_args": {
-            "connect_timeout": 30,
-            "keepalives": 1,
-            "keepalives_idle": 30,
-            "keepalives_interval": 10,
-            "keepalives_count": 5,
-        },
-        # Connection pool sizing
-        "pool_size": 5,
-        "max_overflow": 10,
-    }
+    # --- Database Connection Pool Settings (auto-configured based on database type) ---
+    SQLALCHEMY_ENGINE_OPTIONS: dict = _get_engine_options()
 
     # --- Mail (SMTP) Configuration ---
     MAIL_SERVER: str = os.getenv("MAIL_SERVER", "mail.pollination.africa")
@@ -90,8 +131,9 @@ class Config:
     DPO_TEST_MODE: bool = os.getenv("DPO_TEST_MODE", "True").lower() == "true"
 
     # DPO API URLs
+    # Note: DPO uses the same URL for both test and live - the difference is in the Company Token
     DPO_API_URL_TEST: str = os.getenv(
-        "DPO_API_URL_TEST", "https://secure1.sandbox.directpay.online"
+        "DPO_API_URL_TEST", "https://secure.3gdirectpay.com"
     )
     DPO_API_URL_LIVE: str = os.getenv(
         "DPO_API_URL_LIVE", "https://secure.3gdirectpay.com"

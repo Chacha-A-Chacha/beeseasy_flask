@@ -61,6 +61,9 @@ def register_attendee_form():
     # Dynamically populate ticket choices from database
     form.populate_ticket_choices()
 
+    # Populate country choices
+    form.populate_country_choices()
+
     tickets = TicketPrice.query.filter_by(is_active=True).all()
 
     # Pre-select ticket if passed via query parameter
@@ -138,6 +141,9 @@ def register_exhibitor_form():
 
     # Dynamically populate package choices from database
     form.populate_package_choices()
+
+    # Populate country choices
+    form.populate_country_choices()
 
     packages = ExhibitorPackagePrice.query.filter_by(is_active=True).all()
 

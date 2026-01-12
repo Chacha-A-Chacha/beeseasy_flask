@@ -472,14 +472,17 @@
                             </h2>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Country Selector -->
                                 <div>
                                     {{ form.country.label(class="block text-sm
                                     font-medium text-primary-dark mb-1") }} {{
                                     form.country(class="w-full px-3.5 py-2
                                     border border-gray-300 rounded-md
                                     focus:ring-accent-yellow
-                                    focus:border-accent-yellow") }} {% if
-                                    form.country.errors %}
+                                    focus:border-accent-yellow") }}
+
+                                    <!-- Error display -->
+                                    {% if form.country.errors %}
                                     <p class="text-red-600 text-xs mt-1">
                                         {{ form.country.errors[0] }}
                                     </p>
@@ -535,6 +538,37 @@
                                 px-3.5 py-2 border border-gray-300 rounded-md
                                 focus:ring-accent-yellow
                                 focus:border-accent-yellow") }}
+                            </div>
+                        </div>
+
+                        <!-- Group Size (Conditional - Only for GROUP ticket type) -->
+                        <div
+                            class="mb-8"
+                            id="group-size-section"
+                            style="display: none"
+                        >
+                            <h2
+                                class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-yellow/30"
+                            >
+                                Group Details
+                            </h2>
+
+                            <div class="mb-4">
+                                {{ form.group_size.label(class="block text-sm
+                                font-medium text-primary-dark mb-1") }} {{
+                                form.group_size(class="w-full px-3.5 py-2 border
+                                border-gray-300 rounded-md
+                                focus:ring-accent-yellow
+                                focus:border-accent-yellow", style="") }}
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Group Delegate Pass is for groups of 5-10
+                                    persons
+                                </p>
+                                {% if form.group_size.errors %}
+                                <p class="text-red-600 text-xs mt-1">
+                                    {{ form.group_size.errors[0] }}
+                                </p>
+                                {% endif %}
                             </div>
                         </div>
 
@@ -761,57 +795,45 @@
     </div>
 </div>
 
-{% endblock %} {% block scripts %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Populate country selector using intl-tel-input's country data
-        const countrySelect = document.getElementById("country_select");
+    /**
+     * Group Size Field Toggle Based on Ticket Type
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+        const ticketTypeInput = document.getElementById("ticket_type");
+        const groupSizeSection = document.getElementById("group-size-section");
+        const groupSizeInput = document.querySelector(
+            'input[name="group_size"]',
+        );
 
-        if (countrySelect && window.intlTelInputGlobals) {
-            const countryData = window.intlTelInputGlobals.getCountryData();
+        if (!ticketTypeInput || !groupSizeSection) return;
 
-            // Clear existing options except the first one (placeholder)
-            while (countrySelect.options.length > 1) {
-                countrySelect.remove(1);
-            }
+        // Function to toggle group size section
+        function toggleGroupSize() {
+            const ticketType = ticketTypeInput.value;
+            const isGroupTicket =
+                ticketType === "group" || ticketType === "GROUP";
 
-            // Add all countries
-            countryData.forEach(function (country) {
-                const option = document.createElement("option");
-                option.value = country.name;
-                option.textContent = country.name;
-                countrySelect.appendChild(option);
-            });
-
-            // Auto-select country based on phone country code if available
-            const phoneInput = document.getElementById("phone_international");
-            if (phoneInput && window.intlTelInputUtils) {
-                phoneInput.addEventListener("countrychange", function () {
-                    const iti =
-                        window.intlTelInputGlobals.getInstance(phoneInput);
-                    if (iti) {
-                        const selectedCountryData =
-                            iti.getSelectedCountryData();
-                        if (selectedCountryData && selectedCountryData.name) {
-                            // Find matching option and select it
-                            for (
-                                let i = 0;
-                                i < countrySelect.options.length;
-                                i++
-                            ) {
-                                if (
-                                    countrySelect.options[i].value ===
-                                    selectedCountryData.name
-                                ) {
-                                    countrySelect.selectedIndex = i;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                });
+            if (isGroupTicket) {
+                groupSizeSection.style.display = "block";
+                if (groupSizeInput) {
+                    groupSizeInput.setAttribute("required", "required");
+                }
+            } else {
+                groupSizeSection.style.display = "none";
+                if (groupSizeInput) {
+                    groupSizeInput.removeAttribute("required");
+                    groupSizeInput.value = ""; // Clear value when hidden
+                }
             }
         }
+
+        // Toggle on page load (for validation errors or pre-selected values)
+        toggleGroupSize();
+
+        // Toggle on ticket type change
+        ticketTypeInput.addEventListener("change", toggleGroupSize);
     });
 </script>
+
 {% endblock %}

@@ -46,7 +46,7 @@ COUNTRY_CODES = [
 INQUIRY_TYPES = [
     ("", "Select inquiry type..."),
     ("registration", "Event Registration & Attendance"),
-    ("exhibition", "Exhibition & Booth Booking"),
+    # ("exhibition", "Exhibition & Booth Booking"),
     ("sponsorship", "Sponsorship Opportunities"),
     ("speaking", "Speaking Opportunities"),
     ("partnership", "Partnership & Collaboration"),

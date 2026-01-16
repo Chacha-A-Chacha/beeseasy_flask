@@ -511,9 +511,9 @@ endblock %} {% block content %}
 
                         <!-- Payment Method Options -->
                         <div class="space-y-4 mb-6">
-                            <!-- Card Payment -->
+                            <!-- DPO Online Payment (Card & Mobile Money) -->
                             <label
-                                class="payment-method-card relative flex cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-4 shadow-sm hover:border-accent-yellow transition-all focus:outline-none"
+                                class="payment-method-card relative flex cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-6 shadow-sm hover:border-accent-yellow transition-all focus:outline-none"
                                 data-method="card"
                             >
                                 <input
@@ -524,10 +524,40 @@ endblock %} {% block content %}
                                     required
                                 />
                                 <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="flex items-center">
+                                    <span class="flex flex-col w-full">
+                                        <span
+                                            class="flex items-center justify-between mb-3"
+                                        >
+                                            <span class="flex items-center">
+                                                <svg
+                                                    class="w-6 h-6 text-accent-orange mr-3"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                                                    />
+                                                </svg>
+                                                <span
+                                                    class="block text-lg font-bold text-gray-900"
+                                                    >Pay with Card or Mobile
+                                                    Money</span
+                                                >
+                                            </span>
+                                            <span
+                                                class="hidden sm:inline-block text-xs text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full"
+                                                >✓ Instant</span
+                                            >
+                                        </span>
+                                        <span
+                                            class="flex items-center text-sm text-gray-600 mb-4"
+                                        >
                                             <svg
-                                                class="w-6 h-6 text-accent-orange mr-3"
+                                                class="w-4 h-4 text-green-600 mr-1.5"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -536,89 +566,138 @@ endblock %} {% block content %}
                                                     stroke-linecap="round"
                                                     stroke-linejoin="round"
                                                     stroke-width="2"
-                                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                                                />
+                                                    d="M5 13l4 4L19 7"
+                                                ></path>
                                             </svg>
                                             <span
-                                                class="block text-lg font-bold text-gray-900"
-                                                >Credit/Debit Card</span
+                                                >Instant confirmation • Secure &
+                                                encrypted</span
                                             >
                                         </span>
-                                        <span
-                                            class="mt-2 flex items-center text-sm text-gray-500"
-                                        >
-                                            <span
-                                                >Visa, Mastercard, Amex •
-                                                Instant confirmation</span
-                                            >
-                                        </span>
-                                        <span
-                                            class="mt-1 text-xs text-green-600 font-semibold"
-                                            >✓ Recommended - Fastest
-                                            processing</span
-                                        >
-                                    </span>
-                                </span>
-                                <svg
-                                    class="h-5 w-5 text-accent-yellow payment-check hidden"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd"
-                                    />
-                                </svg>
-                            </label>
 
-                            <!-- Mobile Money -->
-                            <label
-                                class="payment-method-card relative flex cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-4 shadow-sm hover:border-accent-yellow transition-all focus:outline-none"
-                                data-method="mobile_money"
-                            >
-                                <input
-                                    type="radio"
-                                    name="payment_method"
-                                    value="mobile_money"
-                                    class="sr-only"
-                                />
-                                <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="flex items-center">
-                                            <svg
-                                                class="w-6 h-6 text-accent-orange mr-3"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                                                />
-                                            </svg>
-                                            <span
-                                                class="block text-lg font-bold text-gray-900"
-                                                >Mobile Money</span
-                                            >
-                                        </span>
-                                        <span
-                                            class="mt-2 flex items-center text-sm text-gray-500"
+                                        <!-- Payment Methods Box -->
+                                        <div
+                                            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200"
                                         >
-                                            <span
-                                                >M-Pesa, Airtel Money • Kenya &
-                                                Tanzania</span
+                                            <!-- Credit & Debit Cards -->
+                                            <div class="mb-4">
+                                                <p
+                                                    class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2.5"
+                                                >
+                                                    Credit & Debit Cards
+                                                </p>
+                                                <div
+                                                    class="flex flex-wrap items-center gap-3"
+                                                >
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/Visa_new_logo.svg') }}"
+                                                        alt="Visa"
+                                                        class="h-7 sm:h-8 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/mastercard.svg') }}"
+                                                        alt="Mastercard"
+                                                        class="h-7 sm:h-8 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/American-Express.svg') }}"
+                                                        alt="American Express"
+                                                        class="h-7 sm:h-8 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <!-- Mobile Money -->
+                                            <div
+                                                class="pt-3 border-t border-gray-200"
                                             >
-                                        </span>
-                                        <span class="mt-1 text-xs text-gray-400"
-                                            >Processing time: 5-10 minutes</span
-                                        >
+                                                <p
+                                                    class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2.5"
+                                                >
+                                                    Mobile Money (East Africa)
+                                                </p>
+                                                <div
+                                                    class="flex flex-wrap items-center gap-3"
+                                                >
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/mPesa.svg') }}"
+                                                        alt="M-Pesa Kenya"
+                                                        class="h-6 sm:h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                        title="Safaricom M-Pesa (Kenya)"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/vodacom-mpesa-logo.svg') }}"
+                                                        alt="M-Pesa Tanzania"
+                                                        class="h-6 sm:h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                        title="Vodacom M-Pesa (Tanzania)"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/Airtel-Money-1.svg') }}"
+                                                        alt="Airtel Money"
+                                                        class="h-6 sm:h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                        title="Airtel Money (Tanzania, Kenya, Uganda, Rwanda)"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/tigo-pesa.svg') }}"
+                                                        alt="Tigo Pesa"
+                                                        class="h-6 sm:h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                        title="Tigo Pesa (Tanzania)"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/Mtn-MoMo-Pay.svg') }}"
+                                                        alt="MTN Mobile Money"
+                                                        class="h-6 sm:h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                        title="MTN MoMo (Uganda, Rwanda)"
+                                                    />
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/Orange-Money.svg') }}"
+                                                        alt="Orange Money"
+                                                        class="h-6 sm:h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                                                        title="Orange Money"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <!-- DPO Branding -->
+                                            <div
+                                                class="flex items-center justify-between mt-4 pt-3 border-t border-gray-200"
+                                            >
+                                                <div
+                                                    class="flex items-center text-xs text-gray-500"
+                                                >
+                                                    <span class="font-medium"
+                                                        >Powered by</span
+                                                    >
+                                                    <img
+                                                        src="{{ url_for('static', filename='external/DPO_Pay_by_Network_Logo_3.webp') }}"
+                                                        alt="DPO Pay"
+                                                        class="h-4 ml-2"
+                                                    />
+                                                </div>
+                                                <div
+                                                    class="flex items-center text-xs text-gray-500"
+                                                >
+                                                    <svg
+                                                        class="w-3.5 h-3.5 text-green-600 mr-1"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                                        />
+                                                    </svg>
+                                                    <span>SSL Encrypted</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </span>
                                 </span>
                                 <svg
-                                    class="h-5 w-5 text-accent-yellow payment-check hidden"
+                                    class="h-5 w-5 text-accent-yellow payment-check hidden absolute top-6 right-6"
                                     viewBox="0 0 20 20"
                                     fill="currentColor"
                                 >

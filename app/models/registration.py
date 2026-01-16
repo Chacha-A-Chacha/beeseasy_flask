@@ -910,6 +910,9 @@ class AttendeeRegistration(Registration):
     )
     ticket_price_id = db.Column(db.Integer, db.ForeignKey("ticket_prices.id"))
 
+    # Group ticket information
+    group_size = db.Column(db.Integer)  # Required for GROUP ticket type (5-10 persons)
+
     # Professional information (simplified)
     professional_category = db.Column(
         db.Enum(ProfessionalCategory, values_callable=lambda x: [e.value for e in x]),
@@ -940,6 +943,32 @@ class AttendeeRegistration(Registration):
         super(AttendeeRegistration, self).__init__(**kwargs)
         if not self.reference_number:
             self.reference_number = generate_reference_number("PAA")
+
+    @validates("ticket_type", "group_size")
+    def validate_group_ticket(self, key, value):
+        """Validate group size for GROUP ticket type"""
+        if key == "ticket_type" and value == AttendeeTicketType.GROUP:
+            # Check if group_size is set when GROUP ticket is selected
+            if hasattr(self, "group_size") and self.group_size is not None:
+                if not (5 <= self.group_size <= 10):
+                    raise ValueError(
+                        "Group size must be between 5 and 10 persons for GROUP ticket"
+                    )
+
+        if key == "group_size" and value is not None:
+            # Validate group size range
+            if not (5 <= value <= 10):
+                raise ValueError("Group size must be between 5 and 10 persons")
+            # Ensure GROUP ticket is selected
+            if (
+                hasattr(self, "ticket_type")
+                and self.ticket_type != AttendeeTicketType.GROUP
+            ):
+                raise ValueError(
+                    "Group size can only be specified for GROUP ticket type"
+                )
+
+        return value
 
     # Relationships
     ticket_price = relationship(

@@ -326,14 +326,18 @@ Returns dictionary of supported payment methods.
 
 **Test Mode (Sandbox):**
 - Set `DPO_TEST_MODE=True`
-- Uses: `https://secure1.sandbox.directpay.online`
+- Uses: `https://secure.3gdirectpay.com`
+- Use test Company Token provided by DPO
 - Test card numbers available from DPO
 - No real money charged
 
 **Production (Live):**
 - Set `DPO_TEST_MODE=False`
 - Uses: `https://secure.3gdirectpay.com`
+- Use live Company Token provided by DPO
 - Real payments processed
+
+**Note:** DPO uses the same API endpoint URL for both test and live environments. The difference is in the **Company Token** credentials you use, not the URL.
 
 ### Local Testing with ngrok
 

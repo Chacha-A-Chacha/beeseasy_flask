@@ -93,6 +93,7 @@ class DPOService:
                     - service_description: str (e.g., "VIP Ticket - Event Name")
 
                 Optional fields:
+                    - currency: str (USD, TZS, etc. - defaults to config DPO_CURRENCY)
                     - service_date: str (event date)
                     - payment_type: str (mpesa, tigo, airtel, card)
 
@@ -133,9 +134,21 @@ class DPOService:
             # Build XML request
             xml_request = self._build_create_token_xml(payment_data)
 
+            # Log configuration (mask sensitive data)
+            company_token_masked = (
+                f"{self.company_token[:8]}...{self.company_token[-4:]}"
+                if self.company_token and len(self.company_token) > 12
+                else "NOT_SET"
+            )
             logger.info(
                 f"Creating DPO token for {payment_data['company_ref']} - "
                 f"Amount: {self.currency} {payment_data['amount']}"
+            )
+            logger.info(
+                f"DPO Config - URL: {self.api_url}, "
+                f"Token: {company_token_masked}, "
+                f"Service Type: {self.service_type}, "
+                f"Test Mode: {self.test_mode}"
             )
 
             # Send request to DPO
@@ -145,6 +158,32 @@ class DPOService:
                 headers={"Content-Type": "application/xml"},
                 timeout=30,
             )
+
+            # Log response details before checking status
+            logger.info(f"DPO API Response Status: {response.status_code}")
+            logger.debug(f"DPO API Response Headers: {response.headers}")
+            logger.debug(f"DPO API Response Body: {response.text}")
+
+            # If we got a 403, try to parse the error from DPO
+            if response.status_code == 403:
+                try:
+                    error_result = xmltodict.parse(response.content)
+                    error_msg = error_result.get("API3G", {}).get(
+                        "ResultExplanation", "Forbidden - Invalid credentials"
+                    )
+                    logger.error(f"DPO API 403 Error: {error_msg}")
+                    return {
+                        "success": False,
+                        "error": f"DPO Authentication Failed: {error_msg}",
+                    }
+                except Exception:
+                    logger.error(
+                        "DPO API returned 403 Forbidden - Check your Company Token and Service Type"
+                    )
+                    return {
+                        "success": False,
+                        "error": "Invalid DPO credentials. Please check your Company Token and Service Type.",
+                    }
 
             response.raise_for_status()
 
@@ -378,9 +417,32 @@ class DPOService:
 
         # Format service date - DPO requires "YYYY/MM/DD HH:MM" format
         service_date = payment_data.get("service_date", "")
-        if service_date and not any(char in service_date for char in [":", " "]):
-            # If only date provided (no time), add default time 09:00
-            service_date = f"{service_date} 09:00"
+
+        # If no service date provided or invalid format, use current date + 30 days
+        if not service_date or len(service_date.strip()) == 0:
+            from datetime import datetime, timedelta
+
+            service_date = (datetime.now() + timedelta(days=30)).strftime(
+                "%Y/%m/%d 09:00"
+            )
+        else:
+            # Check if date is already in correct format (YYYY/MM/DD HH:MM or YYYY-MM-DD HH:MM)
+            if not any(char in service_date for char in [":", " "]):
+                # If only date provided (no time), add default time 09:00
+                service_date = f"{service_date} 09:00"
+
+            # Ensure forward slashes are used (DPO accepts both / and -)
+            # But let's standardize to forward slashes
+            if "-" in service_date and "/" not in service_date:
+                # Convert YYYY-MM-DD to YYYY/MM/DD
+                date_part = (
+                    service_date.split(" ")[0] if " " in service_date else service_date
+                )
+                time_part = (
+                    service_date.split(" ")[1] if " " in service_date else "09:00"
+                )
+                date_part = date_part.replace("-", "/")
+                service_date = f"{date_part} {time_part}"
 
         # Optional: Set default payment method for mobile money
         default_payment = ""
@@ -392,6 +454,11 @@ class DPOService:
             <DefaultPayment>MO</DefaultPayment>
             <DefaultPaymentCountry>Tanzania</DefaultPaymentCountry>
             <DefaultPaymentMNO>Vodacom</DefaultPaymentMNO>"""
+        elif payment_type == "mpesa_kenya":
+            default_payment = """
+            <DefaultPayment>MO</DefaultPayment>
+            <DefaultPaymentCountry>Kenya</DefaultPaymentCountry>
+            <DefaultPaymentMNO>Safaricom</DefaultPaymentMNO>"""
         elif payment_type == "tigo":
             default_payment = """
             <DefaultPayment>MO</DefaultPayment>
@@ -402,9 +469,22 @@ class DPOService:
             <DefaultPayment>MO</DefaultPayment>
             <DefaultPaymentCountry>Tanzania</DefaultPaymentCountry>
             <DefaultPaymentMNO>Airtel</DefaultPaymentMNO>"""
+        elif payment_type == "mtn":
+            default_payment = """
+            <DefaultPayment>MO</DefaultPayment>
+            <DefaultPaymentCountry>Uganda</DefaultPaymentCountry>
+            <DefaultPaymentMNO>MTN</DefaultPaymentMNO>"""
+        elif payment_type == "orange":
+            default_payment = """
+            <DefaultPayment>MO</DefaultPayment>
+            <DefaultPaymentCountry>Senegal</DefaultPaymentCountry>
+            <DefaultPaymentMNO>Orange</DefaultPaymentMNO>"""
         elif payment_type == "card":
             default_payment = """
             <DefaultPayment>CC</DefaultPayment>"""
+
+        # Get currency from payment_data or use default from config
+        currency = payment_data.get("currency", self.currency)
 
         # Build XML
         xml = f"""<?xml version="1.0" encoding="utf-8"?>
@@ -413,7 +493,7 @@ class DPOService:
             <Request>createToken</Request>
             <Transaction>
                 <PaymentAmount>{payment_data["amount"]}</PaymentAmount>
-                <PaymentCurrency>{self.currency}</PaymentCurrency>
+                <PaymentCurrency>{currency}</PaymentCurrency>
                 <CompanyRef>{payment_data["company_ref"]}</CompanyRef>
                 <RedirectURL>{self.redirect_url}</RedirectURL>
                 <BackURL>{self.back_url}</BackURL>
@@ -446,7 +526,7 @@ class DPOService:
         Returns:
             Full URL to DPO payment page
         """
-        return f"{self.base_url}/payv2.php?ID={trans_token}"
+        return f"{self.base_url}/payv3.php?ID={trans_token}"
 
     def is_configured(self) -> bool:
         """
@@ -471,6 +551,15 @@ class DPOService:
                 "name": "M-Pesa (Vodacom)",
                 "type": "mobile_money",
                 "country": "Tanzania",
+                "mno": "Vodacom",
+                "description": "Pay with M-Pesa mobile money",
+                "processing_time": "Instant",
+            },
+            "mpesa_kenya": {
+                "name": "M-Pesa (Safaricom)",
+                "type": "mobile_money",
+                "country": "Kenya",
+                "mno": "Safaricom",
                 "description": "Pay with M-Pesa mobile money",
                 "processing_time": "Instant",
             },
@@ -478,14 +567,32 @@ class DPOService:
                 "name": "Tigo Pesa",
                 "type": "mobile_money",
                 "country": "Tanzania",
+                "mno": "Tigo",
                 "description": "Pay with Tigo Pesa mobile money",
                 "processing_time": "Instant",
             },
             "airtel": {
                 "name": "Airtel Money",
                 "type": "mobile_money",
-                "country": "Tanzania",
+                "country": "Multi",
+                "mno": "Airtel",
                 "description": "Pay with Airtel Money mobile money",
+                "processing_time": "Instant",
+            },
+            "mtn": {
+                "name": "MTN MoMo",
+                "type": "mobile_money",
+                "country": "Uganda",
+                "mno": "MTN",
+                "description": "Pay with MTN Mobile Money",
+                "processing_time": "Instant",
+            },
+            "orange": {
+                "name": "Orange Money",
+                "type": "mobile_money",
+                "country": "Multi",
+                "mno": "Orange",
+                "description": "Pay with Orange Money",
                 "processing_time": "Instant",
             },
             "card": {

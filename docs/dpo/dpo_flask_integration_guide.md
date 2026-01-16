@@ -140,8 +140,9 @@ DPO_COMPANY_TOKEN=9F416C11-127B-4DE2-AC7F-D5710E4C5E0A
 DPO_SERVICE_TYPE=3854
 DPO_CURRENCY=TZS
 DPO_TEST_MODE=True
+# Note: DPO uses the same URL for both test and live - the difference is in the Company Token
 DPO_API_URL_LIVE=https://secure.3gdirectpay.com
-DPO_API_URL_TEST=https://secure1.sandbox.directpay.online
+DPO_API_URL_TEST=https://secure.3gdirectpay.com
 
 # Application URLs
 APP_BASE_URL=http://localhost:5000
@@ -635,7 +636,7 @@ class DPOService:
     
     def _create_payment_url(self, trans_token: str) -> str:
         """Generate DPO payment page URL"""
-        return f"{self.base_url}/payv2.php?ID={trans_token}"
+        return f"{self.base_url}/payv3.php?ID={trans_token}"
     
     def cancel_token(self, trans_token: str) -> Dict:
         """

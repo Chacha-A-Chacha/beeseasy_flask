@@ -20,41 +20,51 @@ def upgrade():
     """
     Update ProfessionalCategory and IndustryCategory enums to broad categories.
     PostgreSQL enums require special handling - we can't just ALTER them directly.
+    SQLite doesn't have ALTER TYPE, so we skip enum alterations for SQLite.
     """
+
+    # Check if we're using PostgreSQL
+    bind = op.get_bind()
+    is_postgresql = bind.dialect.name == "postgresql"
 
     # ============================================
     # STEP 1: Update ProfessionalCategory Enum
     # ============================================
 
-    # Add new enum values
-    op.execute("ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'farmer'")
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'researcher_academic'"
-    )
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'government_official'"
-    )
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'ngo_nonprofit'"
-    )
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'private_sector'"
-    )
-    op.execute("ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'entrepreneur'")
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'extension_officer'"
-    )
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'cooperative_member'"
-    )
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'media_journalist'"
-    )
-    op.execute("ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'policy_maker'")
-    op.execute(
-        "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'conservationist'"
-    )
-    op.execute("ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'educator'")
+    # Add new enum values (PostgreSQL only)
+    if is_postgresql:
+        op.execute("ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'farmer'")
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'researcher_academic'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'government_official'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'ngo_nonprofit'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'private_sector'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'entrepreneur'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'extension_officer'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'cooperative_member'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'media_journalist'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'policy_maker'"
+        )
+        op.execute(
+            "ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'conservationist'"
+        )
+        op.execute("ALTER TYPE professionalcategory ADD VALUE IF NOT EXISTS 'educator'")
 
     # Migrate existing data to new values
     op.execute("""
@@ -97,51 +107,56 @@ def upgrade():
     # STEP 2: Update IndustryCategory Enum
     # ============================================
 
-    # Add new enum values
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'agriculture_inputs'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'equipment_machinery'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'processing_packaging'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'technology_innovation'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'training_education'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'research_development'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'consulting_advisory'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'conservation_environment'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'certification_standards'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'logistics_supply_chain'"
-    )
-    op.execute("ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'marketing_trade'")
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'government_agency'"
-    )
-    op.execute("ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'ngo_development'")
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'media_communications'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'healthcare_nutrition'"
-    )
-    op.execute(
-        "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'tourism_hospitality'"
-    )
+    # Add new enum values (PostgreSQL only)
+    if is_postgresql:
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'agriculture_inputs'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'equipment_machinery'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'processing_packaging'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'technology_innovation'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'training_education'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'research_development'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'consulting_advisory'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'conservation_environment'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'certification_standards'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'logistics_supply_chain'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'marketing_trade'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'government_agency'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'ngo_development'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'media_communications'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'healthcare_nutrition'"
+        )
+        op.execute(
+            "ALTER TYPE industrycategory ADD VALUE IF NOT EXISTS 'tourism_hospitality'"
+        )
 
     # Migrate existing data to new values
     op.execute("""

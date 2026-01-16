@@ -767,52 +767,296 @@ event_name }}{% endblock %} {% block content %}
 </div>
 
 {% endblock %} {% block scripts %}
+<!-- Select2 CSS for searchable dropdowns -->
+<link
+    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet"
+/>
+<style>
+    /* Match Select2 to our design system */
+    .select2-container--default .select2-selection--single {
+        border: 1px solid rgb(209 213 219);
+        border-radius: 0.375rem;
+        height: 42px;
+        padding: 0.5rem 0.875rem;
+    }
+    .select2-container--default
+        .select2-selection--single
+        .select2-selection__rendered {
+        line-height: 26px;
+        color: #1f2937;
+    }
+    .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow {
+        height: 40px;
+    }
+    .select2-container--default.select2-container--focus
+        .select2-selection--single {
+        border-color: #f5c342;
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(245, 195, 66, 0.1);
+    }
+    .select2-dropdown {
+        border: 1px solid rgb(209 213 219);
+        border-radius: 0.375rem;
+    }
+    .select2-container--default
+        .select2-results__option--highlighted[aria-selected] {
+        background-color: #f5c342;
+        color: #1f2937;
+    }
+</style>
+
+<!-- Select2 JS for searchable dropdowns -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Populate company country selector using intl-tel-input's country data
+        // Comprehensive country list (sorted alphabetically)
+        const countries = [
+            "Afghanistan",
+            "Albania",
+            "Algeria",
+            "Andorra",
+            "Angola",
+            "Antigua and Barbuda",
+            "Argentina",
+            "Armenia",
+            "Australia",
+            "Austria",
+            "Azerbaijan",
+            "Bahamas",
+            "Bahrain",
+            "Bangladesh",
+            "Barbados",
+            "Belarus",
+            "Belgium",
+            "Belize",
+            "Benin",
+            "Bhutan",
+            "Bolivia",
+            "Bosnia and Herzegovina",
+            "Botswana",
+            "Brazil",
+            "Brunei",
+            "Bulgaria",
+            "Burkina Faso",
+            "Burundi",
+            "Cabo Verde",
+            "Cambodia",
+            "Cameroon",
+            "Canada",
+            "Central African Republic",
+            "Chad",
+            "Chile",
+            "China",
+            "Colombia",
+            "Comoros",
+            "Congo",
+            "Costa Rica",
+            "Croatia",
+            "Cuba",
+            "Cyprus",
+            "Czech Republic",
+            "Denmark",
+            "Djibouti",
+            "Dominica",
+            "Dominican Republic",
+            "DR Congo",
+            "Ecuador",
+            "Egypt",
+            "El Salvador",
+            "Equatorial Guinea",
+            "Eritrea",
+            "Estonia",
+            "Eswatini",
+            "Ethiopia",
+            "Fiji",
+            "Finland",
+            "France",
+            "Gabon",
+            "Gambia",
+            "Georgia",
+            "Germany",
+            "Ghana",
+            "Greece",
+            "Grenada",
+            "Guatemala",
+            "Guinea",
+            "Guinea-Bissau",
+            "Guyana",
+            "Haiti",
+            "Honduras",
+            "Hungary",
+            "Iceland",
+            "India",
+            "Indonesia",
+            "Iran",
+            "Iraq",
+            "Ireland",
+            "Israel",
+            "Italy",
+            "Jamaica",
+            "Japan",
+            "Jordan",
+            "Kazakhstan",
+            "Kenya",
+            "Kiribati",
+            "Kosovo",
+            "Kuwait",
+            "Kyrgyzstan",
+            "Laos",
+            "Latvia",
+            "Lebanon",
+            "Lesotho",
+            "Liberia",
+            "Libya",
+            "Liechtenstein",
+            "Lithuania",
+            "Luxembourg",
+            "Madagascar",
+            "Malawi",
+            "Malaysia",
+            "Maldives",
+            "Mali",
+            "Malta",
+            "Marshall Islands",
+            "Mauritania",
+            "Mauritius",
+            "Mexico",
+            "Micronesia",
+            "Moldova",
+            "Monaco",
+            "Mongolia",
+            "Montenegro",
+            "Morocco",
+            "Mozambique",
+            "Myanmar",
+            "Namibia",
+            "Nauru",
+            "Nepal",
+            "Netherlands",
+            "New Zealand",
+            "Nicaragua",
+            "Niger",
+            "Nigeria",
+            "North Korea",
+            "North Macedonia",
+            "Norway",
+            "Oman",
+            "Pakistan",
+            "Palau",
+            "Palestine",
+            "Panama",
+            "Papua New Guinea",
+            "Paraguay",
+            "Peru",
+            "Philippines",
+            "Poland",
+            "Portugal",
+            "Qatar",
+            "Romania",
+            "Russia",
+            "Rwanda",
+            "Saint Kitts and Nevis",
+            "Saint Lucia",
+            "Saint Vincent and the Grenadines",
+            "Samoa",
+            "San Marino",
+            "Sao Tome and Principe",
+            "Saudi Arabia",
+            "Senegal",
+            "Serbia",
+            "Seychelles",
+            "Sierra Leone",
+            "Singapore",
+            "Slovakia",
+            "Slovenia",
+            "Solomon Islands",
+            "Somalia",
+            "South Africa",
+            "South Korea",
+            "South Sudan",
+            "Spain",
+            "Sri Lanka",
+            "Sudan",
+            "Suriname",
+            "Sweden",
+            "Switzerland",
+            "Syria",
+            "Taiwan",
+            "Tajikistan",
+            "Tanzania",
+            "Thailand",
+            "Timor-Leste",
+            "Togo",
+            "Tonga",
+            "Trinidad and Tobago",
+            "Tunisia",
+            "Turkey",
+            "Turkmenistan",
+            "Tuvalu",
+            "Uganda",
+            "Ukraine",
+            "United Arab Emirates",
+            "United Kingdom",
+            "United States",
+            "Uruguay",
+            "Uzbekistan",
+            "Vanuatu",
+            "Vatican City",
+            "Venezuela",
+            "Vietnam",
+            "Yemen",
+            "Zambia",
+            "Zimbabwe",
+        ];
+
+        // Populate company country selector
         const companyCountrySelect = document.getElementById(
             "company_country_select",
         );
-
-        if (companyCountrySelect && window.intlTelInputGlobals) {
-            const countryData = window.intlTelInputGlobals.getCountryData();
-
-            // Clear existing options except the first one (placeholder)
+        if (companyCountrySelect) {
+            // Clear existing options except placeholder
             while (companyCountrySelect.options.length > 1) {
                 companyCountrySelect.remove(1);
             }
 
             // Add all countries
-            countryData.forEach(function (country) {
+            countries.forEach(function (country) {
                 const option = document.createElement("option");
-                option.value = country.name;
-                option.textContent = country.name;
+                option.value = country;
+                option.textContent = country;
                 companyCountrySelect.appendChild(option);
             });
 
-            // Auto-select country based on phone country code if available
+            // Initialize Select2 for searchable dropdown
+            $(companyCountrySelect).select2({
+                placeholder: "Select country",
+                allowClear: true,
+                width: "100%",
+            });
+
+            // Auto-select country based on phone input country code
             const phoneInput = document.getElementById("phone_international");
-            if (phoneInput && window.intlTelInputUtils) {
+            if (phoneInput) {
                 phoneInput.addEventListener("countrychange", function () {
-                    const iti =
-                        window.intlTelInputGlobals.getInstance(phoneInput);
-                    if (iti) {
-                        const selectedCountryData =
-                            iti.getSelectedCountryData();
-                        if (selectedCountryData && selectedCountryData.name) {
-                            // Find matching option and select it
-                            for (
-                                let i = 0;
-                                i < companyCountrySelect.options.length;
-                                i++
+                    if (window.intlTelInputGlobals) {
+                        const iti =
+                            window.intlTelInputGlobals.getInstance(phoneInput);
+                        if (iti) {
+                            const selectedCountryData =
+                                iti.getSelectedCountryData();
+                            if (
+                                selectedCountryData &&
+                                selectedCountryData.name
                             ) {
-                                if (
-                                    companyCountrySelect.options[i].value ===
-                                    selectedCountryData.name
-                                ) {
-                                    companyCountrySelect.selectedIndex = i;
-                                    break;
-                                }
+                                // Set the country in Select2
+                                $(companyCountrySelect)
+                                    .val(selectedCountryData.name)
+                                    .trigger("change");
                             }
                         }
                     }

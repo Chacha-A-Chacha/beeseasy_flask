@@ -100,6 +100,9 @@ class RegistrationService:
                 phone_number=data.get("phone_number", "").strip(),
                 ticket_type=ticket_type,
                 ticket_price_id=ticket_price.id,
+                group_size=data.get("group_size")
+                if ticket_type == AttendeeTicketType.GROUP
+                else None,
                 country=data.get("country", "").strip() or None,
                 city=data.get("city", "").strip() or None,
                 organization=data.get("organization", "").strip() or None,

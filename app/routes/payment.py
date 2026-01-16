@@ -3,22 +3,17 @@ Payment routes for BEEASY2025
 Handles checkout, payment processing, and webhooks
 """
 
-import hashlib
-import hmac
 import logging
-from decimal import Decimal
+from datetime import datetime, timedelta
 
 import stripe
 from flask import (
     Blueprint,
-    abort,
     current_app,
     flash,
-    jsonify,
     redirect,
     render_template,
     request,
-    session,
     url_for,
 )
 
@@ -274,7 +269,14 @@ def mpesa_callback():
 def dpo_initiate(ref):
     """
     Initiate DPO payment
-    Supports: M-Pesa (Vodacom), Tigo Pesa, Airtel Money, Credit/Debit Cards
+    Supports:
+    - Credit/Debit Cards (Visa, Mastercard, Amex)
+    - M-Pesa Tanzania (Vodacom)
+    - M-Pesa Kenya (Safaricom)
+    - Tigo Pesa (Tanzania)
+    - Airtel Money (Multi-country)
+    - MTN Mobile Money (Uganda, Rwanda)
+    - Orange Money (Multi-country)
     """
     registration = Registration.query.filter_by(
         reference_number=ref, is_deleted=False
@@ -305,26 +307,23 @@ def dpo_initiate(ref):
             )
 
         # Get attendee/exhibitor details
-        if registration.registration_type == "attendee":
-            attendee = registration.attendee_registration
-            customer_name = f"{attendee.first_name} {attendee.last_name}"
-            customer_email = registration.email
-            customer_phone = attendee.phone
-        else:  # exhibitor
-            exhibitor = registration.exhibitor_registration
-            customer_name = exhibitor.contact_person_name
-            customer_email = registration.email
-            customer_phone = exhibitor.contact_person_phone
+        # Note: With JTI, registration is already the subclass (AttendeeRegistration or ExhibitorRegistration)
+        customer_name = f"{registration.first_name} {registration.last_name}"
+        customer_email = registration.email
+        customer_phone = f"{registration.phone_country_code}{registration.phone_number}"
 
         # Prepare payment data for DPO
         payment_data = {
             "amount": float(payment.total_amount),
+            "currency": payment.currency,  # Use payment's actual currency (USD, TZS, etc.)
             "company_ref": payment.payment_reference,
             "customer_name": customer_name,
             "customer_email": customer_email,
             "customer_phone": customer_phone,
             "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
-            "service_date": current_app.config.get("EVENT_DATE", "2026/06/03 09:00"),
+            "service_date": (datetime.now() + timedelta(days=30)).strftime(
+                "%Y/%m/%d 09:00"
+            ),
             "payment_type": payment_type,
         }
 

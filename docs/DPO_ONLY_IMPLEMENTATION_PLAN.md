@@ -389,7 +389,8 @@ DPO_SERVICE_TYPE=your-service-type-code
 DPO_CURRENCY=TZS
 DPO_TEST_MODE=True
 
-DPO_API_URL_TEST=https://secure1.sandbox.directpay.online
+# Note: DPO uses the same URL for both test and live - the difference is in the Company Token
+DPO_API_URL_TEST=https://secure.3gdirectpay.com
 DPO_API_URL_LIVE=https://secure.3gdirectpay.com
 
 DPO_REDIRECT_URL=http://localhost:5000/payments/dpo/callback

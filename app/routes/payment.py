@@ -297,7 +297,9 @@ def dpo_direct(ref):
         "customer_email": customer_email,
         "customer_phone": customer_phone,
         "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
-        "service_date": (datetime.now() + timedelta(days=30)).strftime("%Y/%m/%d 09:00"),
+        "service_date": (datetime.now() + timedelta(days=30)).strftime(
+            "%Y/%m/%d 09:00"
+        ),
         # No payment_type specified - DPO will show all available options
     }
 
@@ -314,11 +316,15 @@ def dpo_direct(ref):
         )
 
         # Payment method will be determined after user pays on DPO's site
-        payment.payment_method = PaymentMethod.MOBILE_MONEY  # Default, will update via webhook
+        payment.payment_method = (
+            PaymentMethod.MOBILE_MONEY
+        )  # Default, will update via webhook
 
         db.session.commit()
 
-        logger.info(f"DPO token created: {result['trans_token']}, redirecting to payment page")
+        logger.info(
+            f"DPO token created: {result['trans_token']}, redirecting to payment page"
+        )
 
         # Redirect directly to DPO payment page
         return redirect(result["payment_url"])
@@ -479,12 +485,27 @@ def dpo_callback():
     registration = payment.registration
 
     if verification_result.get("success"):
-        # Payment successful
+        # Payment successful - process completion (generates badge and sends email)
         logger.info(
             f"Payment verified successfully: {payment.payment_reference} - Status: {payment.payment_status.value}"
         )
+
+        # Process payment completion - generates badge and sends confirmation email
+        success, message = RegistrationService.process_payment_completion(
+            payment_id=payment.id,
+            transaction_id=verification_result.get("trans_id", ""),
+            payment_method=PaymentMethod.MOBILE_MONEY
+            if payment.payment_method == PaymentMethod.MOBILE_MONEY
+            else PaymentMethod.CARD,
+        )
+
+        if success:
+            logger.info(f"Payment completion processed: {payment.payment_reference}")
+        else:
+            logger.error(f"Failed to process payment completion: {message}")
+
         flash(
-            "Payment completed successfully! You will receive a confirmation email shortly.",
+            "Payment completed successfully! Check your email for your badge and confirmation.",
             "success",
         )
         return redirect(url_for("payments.success", ref=registration.reference_number))
@@ -536,7 +557,24 @@ def dpo_verify(ref):
     db.session.commit()
 
     if verification_result.get("success"):
-        flash("Payment verified successfully!", "success")
+        # Process payment completion - generates badge and sends confirmation email
+        success, message = RegistrationService.process_payment_completion(
+            payment_id=payment.id,
+            transaction_id=verification_result.get("trans_id", ""),
+            payment_method=PaymentMethod.MOBILE_MONEY
+            if payment.payment_method == PaymentMethod.MOBILE_MONEY
+            else PaymentMethod.CARD,
+        )
+
+        if success:
+            logger.info(f"Manual verification completed: {payment.payment_reference}")
+        else:
+            logger.error(f"Failed to process payment completion: {message}")
+
+        flash(
+            "Payment verified successfully! Check your email for confirmation.",
+            "success",
+        )
         return redirect(url_for("payments.success", ref=ref))
     else:
         message = verification_result.get("error", "Payment not completed")

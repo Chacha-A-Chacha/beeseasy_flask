@@ -1,1 +1,17 @@
-{}
+{
+  "test_test_email_1768606933": {
+    "task_id": "test_test_email_1768606933",
+    "recipient": "calex.chacha@outlook.com",
+    "subject": "Email Service Test",
+    "group_id": "test",
+    "batch_id": "test_batch_1768606933",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2026-01-17T02:42:13.268072",
+    "last_attempt": "2026-01-17T02:42:13.280447",
+    "sent_time": "2026-01-17T02:42:17.177437",
+    "error": null,
+    "priority": 0
+  }
+}

@@ -63,7 +63,7 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
         ></div>
     </div>
 
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-3xl text-center">
             <!-- Status Badge -->
             <div class="mb-6">
@@ -110,7 +110,7 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
 
             <!-- Main Heading -->
             <h1
-                class="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+                class="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
             >
                 {% if registration.status.value == 'confirmed' %} You're All
                 Set! {% else %} Almost There! {% endif %}
@@ -139,9 +139,11 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
 
 <!-- Progress Indicator -->
 <div class="bg-white border-b border-gray-200">
-    <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
-        <div class="mx-auto max-w-3xl">
-            <div class="flex items-center justify-between text-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6 lg:px-8">
+        <div class="mx-auto max-w-3xl overflow-x-auto">
+            <div
+                class="flex items-center justify-between text-xs sm:text-sm min-w-max sm:min-w-0"
+            >
                 <div class="flex items-center">
                     <div
                         class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white"
@@ -188,8 +190,8 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
 </div>
 
 <!-- Main Content -->
-<div class="bg-gray-50 py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+<div class="bg-gray-50 py-8 sm:py-12 lg:py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-4xl">
             <!-- ========================================== -->
             <!-- CONFIRMED STATUS (Free Attendees Only) -->
@@ -357,14 +359,120 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                 </div>
             </div>
 
-            <!-- Payment Button -->
+            <!-- Payment Summary Card (Show FIRST for pending) -->
+            {% if payment and payment.total_amount > 0 %}
+            <div
+                class="bg-white rounded-lg shadow-lg p-6 mb-6 border-2 border-accent-orange"
+            >
+                <div class="border-b border-gray-200 pb-3 mb-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-primary-dark">
+                            Payment Summary
+                        </h3>
+                        {% if payment.payment_due_date %}
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800"
+                        >
+                            <svg
+                                class="w-3 h-3 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                            Due {{ payment.payment_due_date.strftime('%b %d,
+                            %Y') }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Original Price -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm sm:text-base text-gray-700">
+                            {% if registration.registration_type == 'attendee'
+                            %}Ticket Price{% else %}Package Price{% endif %}
+                        </span>
+                        <span
+                            class="text-base sm:text-lg font-semibold text-gray-900"
+                            >{{ payment.currency }} {{
+                            "%.2f"|format(payment.subtotal) }}</span
+                        >
+                    </div>
+
+                    <!-- Show Discount if Applied -->
+                    {% if payment.discount_amount and payment.discount_amount >
+                    0 %}
+                    <div
+                        class="flex justify-between items-center bg-green-50 -mx-2 px-2 py-2 rounded"
+                    >
+                        <span
+                            class="text-sm sm:text-base text-green-700 font-medium flex items-center"
+                        >
+                            <svg
+                                class="w-4 h-4 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 13l4 4L19 7"
+                                ></path>
+                            </svg>
+                            Discount Applied
+                        </span>
+                        <span
+                            class="text-base sm:text-lg font-semibold text-green-600"
+                            >-{{ payment.currency }} {{
+                            "%.2f"|format(payment.discount_amount) }}</span
+                        >
+                    </div>
+                    {% endif %}
+
+                    <!-- Total Amount Due - Prominent Display -->
+                    <div
+                        class="pt-4 border-t-2 border-gray-200 bg-gradient-to-r from-red-50 to-orange-50 -mx-6 px-6 py-4 mt-4"
+                    >
+                        <div class="flex justify-between items-center">
+                            <span
+                                class="text-base sm:text-lg font-bold text-red-700"
+                            >
+                                Amount Due
+                            </span>
+                            <div class="text-right">
+                                <div class="text-xs text-gray-600">
+                                    {{ payment.currency }}
+                                </div>
+                                <div
+                                    class="text-3xl sm:text-4xl font-bold text-red-600"
+                                >
+                                    {{ "{:,.2f}".format(payment.total_amount) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Payment Button with Payment Methods -->
             <div class="text-center mb-8">
                 <a
                     href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
-                    class="inline-flex items-center px-10 py-5 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg hover:shadow-xl text-xl"
+                    class="inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg hover:shadow-xl text-lg sm:text-xl"
                 >
                     <svg
-                        class="w-7 h-7 mr-3"
+                        class="w-6 h-6 sm:w-7 sm:h-7 mr-2 sm:mr-3"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -378,8 +486,30 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                     </svg>
                     Complete Payment Now
                 </a>
-                <p class="text-sm text-gray-600 mt-3">
-                    Secure payment • Multiple payment methods available
+                <div
+                    class="mt-4 flex items-center justify-center gap-3 text-sm text-gray-600"
+                >
+                    <div class="flex items-center">
+                        <svg
+                            class="w-4 h-4 text-green-600 mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                            ></path>
+                        </svg>
+                        Secure
+                    </div>
+                    <span class="text-gray-400">•</span>
+                    <div>Card, M-Pesa, Bank Transfer</div>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                    🔒 SSL encrypted payment processing via DPO
                 </p>
             </div>
 
@@ -393,20 +523,61 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                     </h3>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-3 sm:gap-y-4"
+                >
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
                             Reference Number
                         </p>
-                        <p
-                            class="font-bold text-primary-dark font-mono text-lg"
-                        >
-                            {{ registration.reference_number }}
-                        </p>
+                        <div class="flex items-center gap-2">
+                            <p
+                                id="refNumber"
+                                class="font-bold text-primary-dark font-mono text-sm sm:text-base break-all"
+                            >
+                                {{ registration.reference_number }}
+                            </p>
+                            <button
+                                onclick="copyReference()"
+                                class="flex-shrink-0 p-2 text-gray-500 hover:text-accent-orange hover:bg-gray-100 rounded transition-colors"
+                                title="Copy reference number"
+                            >
+                                <svg
+                                    id="copyIcon"
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                    ></path>
+                                </svg>
+                                <svg
+                                    id="copiedIcon"
+                                    class="w-4 h-4 hidden text-green-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Status</p>
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Status
+                        </p>
                         <span
                             class="inline-block px-3 py-1 rounded-full text-sm font-semibold {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800 {% else %}bg-yellow-100 text-yellow-800{% endif %}"
                         >
@@ -415,45 +586,69 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                     </div>
 
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Name</p>
-                        <p class="font-semibold text-primary-dark">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Name
+                        </p>
+                        <p
+                            class="text-sm sm:text-base font-semibold text-primary-dark"
+                        >
                             {{ registration.first_name }} {{
                             registration.last_name }}
                         </p>
                     </div>
 
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Email</p>
-                        <p class="font-semibold text-primary-dark">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Email
+                        </p>
+                        <p
+                            class="text-sm sm:text-base font-semibold text-primary-dark break-all"
+                        >
                             {{ registration.email }}
                         </p>
                     </div>
 
                     {% if registration.registration_type == 'attendee' %}
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Ticket Type</p>
-                        <p class="font-semibold text-primary-dark">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Ticket Type
+                        </p>
+                        <p
+                            class="text-sm sm:text-base font-semibold text-primary-dark"
+                        >
                             {{ registration.ticket_type.value|replace('_', '
                             ')|title }}
                         </p>
                     </div>
                     {% if registration.organization %}
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Organization</p>
-                        <p class="font-semibold text-primary-dark">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Organization
+                        </p>
+                        <p
+                            class="text-sm sm:text-base font-semibold text-primary-dark"
+                        >
                             {{ registration.organization }}
                         </p>
                     </div>
                     {% endif %} {% else %}
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Company</p>
-                        <p class="font-semibold text-primary-dark">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Company
+                        </p>
+                        <p
+                            class="text-sm sm:text-base font-semibold text-primary-dark"
+                        >
                             {{ registration.company_legal_name }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Package</p>
-                        <p class="font-semibold text-primary-dark">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
+                            Package
+                        </p>
+                        <p
+                            class="text-sm sm:text-base font-semibold text-primary-dark"
+                        >
                             {{ registration.package_type.value|title }}
                         </p>
                     </div>
@@ -461,8 +656,9 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                 </div>
             </div>
 
-            <!-- Payment Summary Card -->
-            {% if payment and payment.total_amount > 0 %}
+            <!-- Payment Summary Card for CONFIRMED status -->
+            {% if registration.status.value == 'confirmed' and payment and
+            payment.total_amount > 0 %}
             <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                 <div class="border-b border-gray-200 pb-3 mb-4">
                     <h3 class="text-lg font-bold text-primary-dark">
@@ -471,43 +667,52 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                 </div>
 
                 <div class="space-y-3">
+                    <!-- Original Price -->
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-700">
+                        <span class="text-sm sm:text-base text-gray-700">
                             {% if registration.registration_type == 'attendee'
                             %}Ticket Price{% else %}Package Price{% endif %}
                         </span>
-                        <span class="text-xl font-bold text-primary-dark"
+                        <span
+                            class="text-base sm:text-lg font-semibold text-gray-900"
                             >{{ payment.currency }} {{
-                            "%.2f"|format(payment.total_amount) }}</span
+                            "%.2f"|format(payment.subtotal) }}</span
                         >
                     </div>
 
-                    {% if balance_due > 0 %}
-                    <div
-                        class="flex justify-between items-center pt-3 border-t border-gray-200"
-                    >
-                        <span class="font-semibold text-red-600"
-                            >Amount Due</span
+                    <!-- Show Discount if Applied -->
+                    {% if payment.discount_amount and payment.discount_amount >
+                    0 %}
+                    <div class="flex justify-between items-center">
+                        <span
+                            class="text-sm sm:text-base text-green-600 font-medium"
                         >
-                        <span class="text-2xl font-bold text-red-600"
-                            >{{ payment.currency }} {{
-                            "%.2f"|format(balance_due) }}</span
-                        >
-                    </div>
-                    {% else %}
-                    <div
-                        class="flex justify-between items-center pt-3 border-t border-gray-200"
-                    >
-                        <span class="font-semibold text-green-600">
-                            {% if payment.total_amount == 0 %}Free Admission{%
-                            else %}Paid in Full{% endif %}
+                            Discount Applied
                         </span>
-                        <span class="text-2xl font-bold text-green-600"
-                            >{{ payment.currency }} {{
-                            "%.2f"|format(payment.total_amount) }}</span
+                        <span
+                            class="text-base sm:text-lg font-semibold text-green-600"
+                            >-{{ payment.currency }} {{
+                            "%.2f"|format(payment.discount_amount) }}</span
                         >
                     </div>
                     {% endif %}
+
+                    <!-- Total Amount - Paid -->
+                    <div
+                        class="flex justify-between items-center pt-3 border-t border-gray-200"
+                    >
+                        <span
+                            class="text-base sm:text-lg font-semibold text-green-600"
+                        >
+                            Paid in Full
+                        </span>
+                        <span
+                            class="text-xl sm:text-2xl font-bold text-green-600"
+                        >
+                            {{ payment.currency }} {{
+                            "%.2f"|format(payment.total_amount) }}
+                        </span>
+                    </div>
                 </div>
             </div>
             {% endif %}
@@ -558,17 +763,77 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
         </div>
     </div>
 
-    <!-- Auto-refresh for pending payments -->
+    <!-- Auto-refresh for pending payments with visual feedback -->
     {% if registration.status.value != 'confirmed' %}
+    <div
+        id="paymentCheckIndicator"
+        class="hidden fixed bottom-4 right-4 bg-white rounded-lg shadow-lg px-4 py-3 border-l-4 border-accent-orange z-50"
+    >
+        <div class="flex items-center">
+            <svg
+                class="animate-spin h-5 w-5 text-accent-orange mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                ></circle>
+                <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+            </svg>
+            <span class="text-sm text-gray-700"
+                >Checking payment status...</span
+            >
+        </div>
+    </div>
+    <script>
+        // Copy reference number function
+        function copyReference() {
+            const refNumber = document
+                .getElementById("refNumber")
+                .textContent.trim();
+            const copyIcon = document.getElementById("copyIcon");
+            const copiedIcon = document.getElementById("copiedIcon");
+
+            navigator.clipboard
+                .writeText(refNumber)
+                .then(() => {
+                    copyIcon.classList.add("hidden");
+                    copiedIcon.classList.remove("hidden");
+
+                    setTimeout(() => {
+                        copyIcon.classList.remove("hidden");
+                        copiedIcon.classList.add("hidden");
+                    }, 2000);
+                })
+                .catch((err) => {
+                    console.error("Failed to copy:", err);
+                });
+        }
+    </script>
     <script>
         let checkCount = 0;
         const maxChecks = 60; // Check for 5 minutes (60 checks × 5 seconds)
 
+        const indicator = document.getElementById("paymentCheckIndicator");
+
         function checkPaymentStatus() {
             if (checkCount >= maxChecks) {
                 console.log("Payment status check timeout");
+                indicator.classList.add("hidden");
                 return;
             }
+
+            // Show indicator
+            indicator.classList.remove("hidden");
 
             fetch(
                 "/register/api/payment-status/{{ registration.reference_number }}",
@@ -577,15 +842,19 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                 .then((data) => {
                     if (data.is_confirmed) {
                         console.log("Payment confirmed! Reloading page...");
-                        location.reload();
+                        indicator.innerHTML =
+                            '<div class="flex items-center"><svg class="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span class="text-sm text-green-700 font-semibold">Payment confirmed! Refreshing...</span></div>';
+                        setTimeout(() => location.reload(), 1000);
                     } else {
                         checkCount++;
+                        indicator.classList.add("hidden");
                         setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
                     }
                 })
                 .catch((error) => {
                     console.error("Payment status check failed:", error);
                     checkCount++;
+                    indicator.classList.add("hidden");
                     setTimeout(checkPaymentStatus, 10000); // Retry after 10 seconds on error
                 });
         }

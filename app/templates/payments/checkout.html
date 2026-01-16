@@ -408,8 +408,7 @@ endblock %} {% block content %}
                                     >
                                     <span class="font-semibold text-gray-900"
                                         >{{ payment.currency }} {{
-                                        "%.2f"|format(payment.subtotal or
-                                        payment.total_amount) }}</span
+                                        "%.2f"|format(payment.subtotal) }}</span
                                     >
                                 </div>
 
@@ -450,7 +449,9 @@ endblock %} {% block content %}
                                     <div
                                         class="text-2xl font-bold text-accent-orange"
                                     >
-                                        {{ "%.2f"|format(balance_due) }}
+                                        {{
+                                        "{:,.2f}".format(payment.total_amount)
+                                        }}
                                     </div>
                                 </div>
                             </div>

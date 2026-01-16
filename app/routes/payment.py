@@ -80,12 +80,9 @@ def select_method(ref):
         payment_method = form.payment_method.data
 
         # Route to appropriate payment handler
-        if payment_method == "card":
-            # For card payments, use DPO (supports Visa, Mastercard, Amex)
-            return redirect(url_for("payments.dpo_initiate", ref=ref))
-        elif payment_method == "mobile_money":
-            # For mobile money, use DPO (M-Pesa, Tigo, Airtel)
-            return redirect(url_for("payments.dpo_initiate", ref=ref))
+        if payment_method == "card" or payment_method == "mobile_money":
+            # For DPO payments, create token immediately and redirect to DPO gateway
+            return redirect(url_for("payments.dpo_direct", ref=ref))
         elif payment_method == "bank_transfer":
             return redirect(url_for("payments.bank_transfer", ref=ref))
         elif payment_method == "invoice":
@@ -263,6 +260,74 @@ def mpesa_callback():
 # ============================================
 # DPO PAYMENT (Tanzania Mobile Money & Cards)
 # ============================================
+
+
+@payments_bp.route("/dpo/direct/<ref>")
+def dpo_direct(ref):
+    """
+    Direct DPO payment - creates token immediately and redirects to DPO gateway
+    User will select payment method on DPO's page (cards, mobile money, etc.)
+    """
+    registration = Registration.query.filter_by(
+        reference_number=ref, is_deleted=False
+    ).first_or_404()
+
+    payment = registration.payments[0] if registration.payments else None
+
+    if not payment:
+        flash("Payment record not found.", "error")
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    # Check if already paid
+    if registration.is_fully_paid():
+        flash("This registration is already paid.", "info")
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    # Get customer details
+    customer_name = f"{registration.first_name} {registration.last_name}"
+    customer_email = registration.email
+    customer_phone = f"{registration.phone_country_code}{registration.phone_number}"
+
+    # Prepare payment data for DPO - no specific payment_type means DPO shows all options
+    payment_data = {
+        "amount": float(payment.total_amount),
+        "currency": payment.currency,
+        "company_ref": payment.payment_reference,
+        "customer_name": customer_name,
+        "customer_email": customer_email,
+        "customer_phone": customer_phone,
+        "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
+        "service_date": (datetime.now() + timedelta(days=30)).strftime("%Y/%m/%d 09:00"),
+        # No payment_type specified - DPO will show all available options
+    }
+
+    # Create DPO token
+    logger.info(f"Creating DPO token for {payment.payment_reference} (direct mode)")
+    result = dpo_service.create_token(payment_data)
+
+    if result.get("success"):
+        # Save DPO token to payment record
+        payment.set_dpo_token(
+            trans_token=result["trans_token"],
+            trans_ref=result["trans_ref"],
+            payment_type="dpo",  # Generic type
+        )
+
+        # Payment method will be determined after user pays on DPO's site
+        payment.payment_method = PaymentMethod.MOBILE_MONEY  # Default, will update via webhook
+
+        db.session.commit()
+
+        logger.info(f"DPO token created: {result['trans_token']}, redirecting to payment page")
+
+        # Redirect directly to DPO payment page
+        return redirect(result["payment_url"])
+    else:
+        # Token creation failed
+        error_msg = result.get("error", "Unable to initiate payment")
+        logger.error(f"DPO token creation failed: {error_msg}")
+        flash(f"Payment initiation failed: {error_msg}", "error")
+        return redirect(url_for("payments.checkout", ref=ref))
 
 
 @payments_bp.route("/dpo/initiate/<ref>", methods=["GET", "POST"])

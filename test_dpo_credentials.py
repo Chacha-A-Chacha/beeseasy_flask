@@ -2,16 +2,45 @@
 """
 DPO Credentials Test Script
 Tests your DPO Company Token and Service Type directly
+
+SECURITY WARNING:
+================
+This script uses environment variables to load DPO credentials.
+NEVER hardcode credentials directly in this file!
+
+SETUP:
+======
+1. Create a .env file in the project root (it's gitignored)
+2. Add these variables:
+   DPO_COMPANY_TOKEN=your_company_token_here
+   DPO_SERVICE_TYPE=your_service_type_here
+3. Run this script: python test_dpo_credentials.py
+
+The .env file is automatically excluded from git via .gitignore
 """
 
+import os
 from datetime import datetime
 
 import requests
 import xmltodict
+from dotenv import load_dotenv
 
-# Your DPO Credentials
-COMPANY_TOKEN = "8D3DA73D-9D7F-4E09-96D4-3D44E7A83EA3"
-SERVICE_TYPE = "3854"  # Test Product
+# Load environment variables
+load_dotenv()
+
+# Your DPO Credentials - LOADED FROM ENVIRONMENT VARIABLES
+# DO NOT HARDCODE CREDENTIALS HERE!
+COMPANY_TOKEN = os.getenv("DPO_COMPANY_TOKEN")
+SERVICE_TYPE = os.getenv("DPO_SERVICE_TYPE")
+
+# Validate credentials are loaded
+if not COMPANY_TOKEN or not SERVICE_TYPE:
+    print("ERROR: DPO credentials not found in environment variables!")
+    print("\nPlease create a .env file with:")
+    print("  DPO_COMPANY_TOKEN=your_token_here")
+    print("  DPO_SERVICE_TYPE=your_service_type_here")
+    exit(1)
 
 # DPO API Configuration
 API_URL = "https://secure.3gdirectpay.com/API/v6/"

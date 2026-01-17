@@ -1,0 +1,111 @@
+PAYMENT CONFIRMED - YOUR BADGE IS READY
+{{ event_name }}
+
+Dear {{ registration.first_name }} {{ registration.last_name }},
+
+Congratulations! Your payment has been confirmed and your event badge is ready!
+
+YOUR REGISTRATION REFERENCE: {{ registration.reference_number }}
+
+═══════════════════════════════════════════════════════════════
+
+PAYMENT CONFIRMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Payment Status: CONFIRMED
+✓ Badge Status: READY FOR DOWNLOAD
+✓ Registration: COMPLETE
+
+═══════════════════════════════════════════════════════════════
+
+YOUR EVENT BADGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your personalized event badge is now ready!
+
+{% if badge_url %}DOWNLOAD YOUR BADGE:
+{{ badge_url }}
+
+Please download and save your badge. You can print it or show it on your mobile device at check-in.
+{% else %}Your badge will be available for download shortly. We'll send you another email with the download link.{% endif %}
+
+═══════════════════════════════════════════════════════════════
+
+REGISTRATION DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Name: {{ registration.first_name }} {{ registration.last_name }}
+Email: {{ registration.email }}
+Ticket Type: {{ registration.ticket_type.value.replace('_', ' ').title() }}
+{% if registration.organization %}Organization: {{ registration.organization }}{% endif %}
+Reference: {{ registration.reference_number }}
+
+═══════════════════════════════════════════════════════════════
+
+EVENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Event: {{ event_name }}
+Date: {{ event_date }}
+Time: {{ event_time }}
+Location: {{ event_location }}
+
+═══════════════════════════════════════════════════════════════
+
+WHAT TO BRING ON EVENT DAY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Your event badge (printed or on mobile device)
+✓ Valid photo ID
+✓ Business cards for networking
+✓ Notebook or device for taking notes
+
+═══════════════════════════════════════════════════════════════
+
+IMPORTANT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Badge Required: Your badge must be worn at all times during the event
+• Check-in: Arrive early to allow time for check-in and registration
+• Networking: Connect with exhibitors, speakers, and fellow attendees
+• Sessions: Review the event schedule and plan your day
+• Updates: Check your email regularly for event updates and announcements
+• Social Media: Follow us and use our event hashtag to share your experience
+
+═══════════════════════════════════════════════════════════════
+
+PRE-EVENT CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ Download and save your badge
+□ Review the event schedule and session topics
+□ Plan your travel and accommodation
+□ Prepare questions for speakers and exhibitors
+
+═══════════════════════════════════════════════════════════════
+
+We're excited to see you at {{ event_name }}! Get ready for an amazing experience filled with learning, networking, and innovation.
+
+If you have any questions or need assistance, don't hesitate to reach out.
+
+See you soon!
+
+The {{ event_name }} Team
+
+═══════════════════════════════════════════════════════════════
+
+NEED HELP?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email: {{ contact_email }}
+Phone: {{ support_phone }}
+WhatsApp: {{ support_whatsapp }}
+
+Visit Website: {{ website_url }}
+Follow us on social media for updates and announcements
+
+This email was sent to {{ registration.email }} regarding your registration for {{ event_name }}.
+
+───────────────────────────────────────────────────────────────
+Developed and Powered by Chacha Technologies
+https://chach-a.com

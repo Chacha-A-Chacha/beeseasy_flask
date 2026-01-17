@@ -1,0 +1,74 @@
+REGISTRATION RECEIVED
+{{ event_name }}
+
+Dear {{ registration.first_name }} {{ registration.last_name }},
+
+Thank you for registering for {{ event_name }}! We're excited to have you join us on {{ event_date }}.
+
+YOUR REGISTRATION REFERENCE NUMBER: {{ registration.reference_number }}
+Keep this for your records
+
+═══════════════════════════════════════════════════════════════
+
+REGISTRATION DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Name: {{ registration.first_name }} {{ registration.last_name }}
+Email: {{ registration.email }}
+Ticket Type: {{ registration.ticket_type.value.replace('_', ' ').title() }}
+{% if registration.organization %}Organization: {{ registration.organization }}{% endif %}
+
+═══════════════════════════════════════════════════════════════
+
+PAYMENT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Amount Due: {{ currency }} {{ amount_due }}
+Payment Deadline: {{ due_date }}
+
+═══════════════════════════════════════════════════════════════
+
+NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Complete Payment: Click the link below to proceed to our secure checkout
+2. Receive Confirmation: You'll get your badge via email once payment is confirmed
+3. Attend the Event: Bring your badge (digital or printed) for check-in
+
+COMPLETE PAYMENT NOW:
+{{ checkout_url }}
+
+═══════════════════════════════════════════════════════════════
+
+EVENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Event: {{ event_name }}
+Date: {{ event_date }}
+Location: {{ event_location }}
+
+═══════════════════════════════════════════════════════════════
+
+If you have any questions or need assistance, please don't hesitate to reach out to our team.
+
+Best regards,
+The {{ event_name }} Team
+
+═══════════════════════════════════════════════════════════════
+
+NEED HELP?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email: {{ contact_email }}
+Phone: +254 719 740 938
+WhatsApp: +254 719 740 938
+
+Visit Website: https://pollination.africa
+Twitter: https://twitter.com/beeseasy
+Facebook: https://facebook.com/beeseasy
+
+This email was sent to {{ registration.email }} regarding your registration for {{ event_name }}.
+
+───────────────────────────────────────────────────────────────
+Developed and Powered by Chacha Technologies
+https://chach-a.com

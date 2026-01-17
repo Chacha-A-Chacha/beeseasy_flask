@@ -1,0 +1,101 @@
+EXHIBITOR REGISTRATION RECEIVED
+{{ event_name }}
+
+Dear {{ registration.first_name }} {{ registration.last_name }},
+
+Thank you for registering {{ registration.company_legal_name }} as an exhibitor at {{ event_name }}! We're thrilled to welcome you to our marketplace.
+
+YOUR EXHIBITOR REGISTRATION REFERENCE: {{ registration.reference_number }}
+Save this for your records and booth allocation
+
+═══════════════════════════════════════════════════════════════
+
+SELECTED PACKAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{{ registration.package_type.value.replace('_', ' ').title() }} Package
+Selected for {{ registration.company_legal_name }}
+
+═══════════════════════════════════════════════════════════════
+
+COMPANY INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Company Name: {{ registration.company_legal_name }}
+Contact Person: {{ registration.first_name }} {{ registration.last_name }}
+Email: {{ registration.email }}
+{% if registration.job_title %}Position: {{ registration.job_title }}{% endif %}
+Industry: {{ registration.industry_category }}
+
+═══════════════════════════════════════════════════════════════
+
+PAYMENT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Package Investment: {{ currency }} {{ amount_due }}
+Payment Deadline: {{ due_date }}
+Included Passes: {{ registration.number_of_staff }} staff badges
+
+═══════════════════════════════════════════════════════════════
+
+NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Complete Payment: Secure your booth by completing payment below
+2. Booth Allocation: Once payment is confirmed, we'll assign your booth space
+3. Setup Instructions: You'll receive detailed booth setup guidelines via email
+4. Staff Badges: Additional team member badges will be sent after payment
+5. Pre-Event Briefing: Join our exhibitor orientation session (details to follow)
+
+SECURE YOUR BOOTH - PAY NOW:
+{{ checkout_url }}
+
+═══════════════════════════════════════════════════════════════
+
+YOUR PACKAGE INCLUDES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Dedicated booth space in prime exhibition area
+✓ {{ registration.number_of_staff }} complimentary staff passes
+✓ Company listing in event catalog and website
+✓ Lead generation and networking opportunities
+✓ Access to all symposium sessions and networking events
+✓ Digital marketing exposure before, during, and after the event
+
+═══════════════════════════════════════════════════════════════
+
+EVENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Event: {{ event_name }}
+Date: {{ event_date }}
+Location: {{ event_location }}
+
+═══════════════════════════════════════════════════════════════
+
+PRO TIP: Early payment ensures prime booth placement! Booths are allocated on a first-come, first-served basis.
+
+Our exhibitor success team is here to support you. If you have questions about booth setup, marketing opportunities, or logistics, please reach out.
+
+Looking forward to showcasing {{ registration.company_legal_name }}!
+
+The {{ event_name }} Exhibition Team
+
+═══════════════════════════════════════════════════════════════
+
+EXHIBITOR SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email: exhibitors@pollination.africa
+Phone: +254 719 740 938
+WhatsApp: +254 719 740 938
+
+Exhibitor Portal: https://pollination.africa/partners
+Twitter: https://twitter.com/beeseasy
+Facebook: https://facebook.com/beeseasy
+
+This email was sent to {{ registration.email }} regarding your exhibitor registration for {{ event_name }}.
+
+───────────────────────────────────────────────────────────────
+Developed and Powered by Chacha Technologies
+https://chach-a.com

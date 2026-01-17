@@ -1,0 +1,162 @@
+PAYMENT CONFIRMED - EXHIBITOR BADGE READY
+{{ event_name }}
+
+Dear {{ registration.first_name }} {{ registration.last_name }},
+
+Excellent news! Your payment has been confirmed and {{ registration.company_legal_name }}'s exhibitor badge is ready!
+
+YOUR EXHIBITOR REGISTRATION REFERENCE: {{ registration.reference_number }}
+
+═══════════════════════════════════════════════════════════════
+
+PAYMENT CONFIRMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Payment Status: CONFIRMED
+✓ Badge Status: READY FOR DOWNLOAD
+✓ Booth Status: ALLOCATION IN PROGRESS
+✓ Registration: COMPLETE
+
+═══════════════════════════════════════════════════════════════
+
+YOUR EXHIBITOR BADGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your personalized exhibitor badge is now ready!
+
+{% if badge_url %}DOWNLOAD YOUR BADGE:
+{{ badge_url }}
+
+Please download and save your badge. You can print it or show it on your mobile device at check-in.
+{% else %}Your badge will be available for download shortly. We'll send you another email with the download link.{% endif %}
+
+Additional staff badges ({{ registration.number_of_staff }} total) will be provided separately.
+
+═══════════════════════════════════════════════════════════════
+
+COMPANY & BOOTH INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Company: {{ registration.company_legal_name }}
+Contact Person: {{ registration.first_name }} {{ registration.last_name }}
+Email: {{ registration.email }}
+Package: {{ registration.package_type.value.replace('_', ' ').title() }}
+Staff Passes: {{ registration.number_of_staff }}
+Industry: {{ registration.industry_category }}
+Reference: {{ registration.reference_number }}
+
+Booth Number: To be assigned (you'll receive notification within 48 hours)
+
+═══════════════════════════════════════════════════════════════
+
+PAYMENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Package Investment: PAID
+Amount: {{ registration.package_type.value.replace('_', ' ').title() }} Package
+Payment Date: Confirmed
+Invoice: Available upon request
+
+═══════════════════════════════════════════════════════════════
+
+EVENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Event: {{ event_name }}
+Date: {{ event_date }}
+Time: {{ event_time }}
+Location: {{ event_location }}
+
+═══════════════════════════════════════════════════════════════
+
+NEXT STEPS FOR EXHIBITORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. BOOTH ASSIGNMENT - You'll receive your booth number and location within 48 hours
+2. SETUP GUIDE - Detailed booth setup instructions will be emailed this week
+3. STAFF BADGES - Additional team member badges will be sent before the event
+4. EXHIBITOR BRIEFING - Join our mandatory pre-event orientation (invitation coming soon)
+5. MARKETING ASSETS - Access logos, banners, and promotional materials for your booth
+6. LOGISTICS - Review delivery schedules, power requirements, and setup times
+7. NETWORKING - Plan your strategy to maximize lead generation
+
+═══════════════════════════════════════════════════════════════
+
+YOUR PACKAGE INCLUDES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Dedicated booth space in prime exhibition area
+✓ {{ registration.number_of_staff }} complimentary staff passes
+✓ Company listing in event catalog and website
+✓ Lead generation tools and networking opportunities
+✓ Access to all symposium sessions and networking events
+✓ Digital marketing exposure (pre-event, during, post-event)
+✓ Exhibitor lounge access with refreshments
+
+═══════════════════════════════════════════════════════════════
+
+EXHIBITOR PREPARATION CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ Download and save your exhibitor badge
+□ Wait for booth assignment notification
+□ Review setup guidelines when received
+□ Prepare marketing materials and product displays
+□ Brief your team on event objectives and schedule
+□ Arrange logistics (shipping, travel, accommodation)
+□ Plan booth staffing schedule
+□ Prepare lead capture system
+
+═══════════════════════════════════════════════════════════════
+
+IMPORTANT REMINDERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Setup Day: Arrive early for booth setup (detailed schedule to follow)
+• Badge Required: All staff must wear badges throughout the event
+• Booth Guidelines: Follow our exhibitor handbook for display standards
+• Insurance: Ensure you have appropriate coverage for your booth and products
+• Electrical Needs: Submit power requirements at least 2 weeks before event
+• WiFi: Complimentary WiFi available (premium bandwidth available on request)
+
+═══════════════════════════════════════════════════════════════
+
+MAXIMIZE YOUR EXHIBITION SUCCESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRO TIPS:
+• Promote your presence on social media before the event
+• Bring plenty of business cards and promotional materials
+• Prepare engaging demonstrations or presentations
+• Train staff on product knowledge and lead capture
+• Schedule meetings with key prospects in advance
+• Follow up with leads within 48 hours after the event
+
+═══════════════════════════════════════════════════════════════
+
+Our dedicated exhibitor success team is here to ensure {{ registration.company_legal_name }} has an outstanding experience. We're committed to helping you achieve maximum ROI from your exhibition investment.
+
+Looking forward to showcasing your company at {{ event_name }}!
+
+The {{ event_name }} Exhibition Team
+
+═══════════════════════════════════════════════════════════════
+
+EXHIBITOR SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email: exhibitors@pollination.africa
+Phone: +254 719 740 938
+WhatsApp: +254 719 740 938
+
+Exhibitor Portal: https://pollination.africa/partners
+Twitter: https://twitter.com/beeseasy
+Facebook: https://facebook.com/beeseasy
+
+For urgent setup or logistics questions, please contact our exhibitor coordinator directly.
+
+This email was sent to {{ registration.email }} regarding your exhibitor registration for {{ event_name }}.
+
+───────────────────────────────────────────────────────────────
+Developed and Powered by Chacha Technologies
+https://chach-a.com

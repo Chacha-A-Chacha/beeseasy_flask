@@ -1,1 +1,47 @@
-{}
+{
+  "invoice_request_confirmation_1768612275_chachadaniel44": {
+    "task_id": "invoice_request_confirmation_1768612275_chachadaniel44",
+    "recipient": "chachadaniel44@gmail.com",
+    "subject": "Invoice Request Received - Pollination Africa Symposium 2026",
+    "group_id": "notification_invoice_request_confirmation",
+    "batch_id": "single_invoice_request_confirmation_1768612275",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2026-01-17T04:11:15.038853",
+    "last_attempt": "2026-01-17T04:11:15.038853",
+    "sent_time": "2026-01-17T04:11:18.923585",
+    "error": null,
+    "priority": 1
+  },
+  "invoice_request_confirmation_1768614337_chachadaniel44": {
+    "task_id": "invoice_request_confirmation_1768614337_chachadaniel44",
+    "recipient": "chachadaniel44@gmail.com",
+    "subject": "Invoice Request Received - Pollination Africa Symposium 2026",
+    "group_id": "notification_invoice_request_confirmation",
+    "batch_id": "single_invoice_request_confirmation_1768614337",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2026-01-17T04:45:37.217870",
+    "last_attempt": "2026-01-17T04:45:37.217870",
+    "sent_time": "2026-01-17T04:45:40.907428",
+    "error": null,
+    "priority": 1
+  },
+  "test_test_email_1768614479": {
+    "task_id": "test_test_email_1768614479",
+    "recipient": "calex2607@gmail.com",
+    "subject": "Email Service Test",
+    "group_id": "test",
+    "batch_id": "test_batch_1768614479",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2026-01-17T04:47:59.013193",
+    "last_attempt": "2026-01-17T04:47:59.037191",
+    "sent_time": "2026-01-17T04:48:02.487732",
+    "error": null,
+    "priority": 0
+  }
+}

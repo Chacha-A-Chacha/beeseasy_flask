@@ -179,7 +179,7 @@ def send_test_email():
         email_service = EnhancedEmailService(current_app)
 
         result = email_service.send_test_email(
-            recipient="calex.chacha@outlook.com",
+            recipient="calex2607@gmail.com",
             template="test_email",
             subject="Email Service Test",
             message="This is a test email to verify the Enhanced Email Service is working correctly.",

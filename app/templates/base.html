@@ -403,17 +403,12 @@
             </nav>
 
             <!-- Mobile Menu Dialog -->
-            <el-dialog id="mobile-menu" class="lg:hidden">
-                <dialog class="fixed inset-0 z-50">
-                    <div
-                        class="fixed inset-0 bg-black/50"
-                        command="hide-modal"
-                        commandfor="mobile-menu"
-                    ></div>
-                    <div
-                        class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-primary-dark px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-accent-brown"
-                    >
-                        <el-dialog-panel>
+            <el-dialog class="lg:hidden">
+                <dialog id="mobile-menu" class="backdrop:bg-transparent">
+                    <div tabindex="0" class="fixed inset-0 focus:outline-none">
+                        <el-dialog-panel
+                            class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-primary-dark px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-accent-brown"
+                        >
                             <!-- Close button -->
                             <div class="flex items-center justify-between">
                                 <a
@@ -432,7 +427,7 @@
                                 </a>
                                 <button
                                     type="button"
-                                    command="hide-modal"
+                                    command="close"
                                     commandfor="mobile-menu"
                                     class="-m-2.5 rounded-md p-2.5 text-white hover:bg-primary-medium"
                                 >

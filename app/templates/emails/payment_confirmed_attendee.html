@@ -1,519 +1,556 @@
-<!-- templates/emails/payment_confirmed_attendee.html -->
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Payment Confirmed</title>
         <style>
+            /* Reset and base styles */
             body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                color: #333;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
-            }
-            .container {
-                max-width: 600px;
-                margin: 20px auto;
-                background: white;
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-            .header {
-                background: linear-gradient(135deg, #2c5f2d 0%, #5c3a21 100%);
-                color: white;
-                padding: 50px 30px;
-                text-align: center;
-                position: relative;
-            }
-            .header::before {
-                content: "✓";
-                position: absolute;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 60px;
-                height: 60px;
-                background: #f5c342;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 40px;
-                font-weight: bold;
-                color: #2c5f2d;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            }
-            .header h1 {
-                margin: 40px 0 10px 0;
-                font-size: 28px;
-                font-weight: bold;
-            }
-            .header p {
-                margin: 0;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, sans-serif;
                 font-size: 16px;
+                line-height: 1.6;
+                color: #212529;
+                background-color: #f8f9fa;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+                max-width: 100%;
+            }
+
+            /* Container */
+            .email-wrapper {
+                width: 100%;
+                background-color: #f8f9fa;
+                padding: 20px 0;
+            }
+
+            .email-container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            /* Header */
+            .email-header {
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 40px 30px;
+                text-align: center;
+            }
+
+            .email-header h1 {
+                margin: 0 0 8px;
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 1.3;
+            }
+
+            .email-header p {
+                margin: 0;
+                font-size: 15px;
                 opacity: 0.9;
             }
-            .content {
+
+            /* Content */
+            .email-content {
                 padding: 30px;
             }
-            .content p {
-                margin: 15px 0;
+
+            .email-content p {
+                margin: 0 0 16px;
+                color: #212529;
             }
+
+            /* Success banner */
             .success-banner {
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                color: white;
-                padding: 20px;
-                border-radius: 8px;
-                margin: 25px 0;
+                background-color: #d4edda;
+                border: 1px solid #28a745;
+                color: #155724;
+                padding: 16px;
+                margin: 30px 0;
                 text-align: center;
-                font-size: 18px;
-                font-weight: bold;
+                font-weight: 600;
             }
+
+            /* Badge box */
             .badge-box {
-                background: linear-gradient(135deg, #f5c342 0%, #e8b030 100%);
-                color: #2c5f2d;
-                padding: 30px;
-                border-radius: 8px;
-                margin: 25px 0;
+                background-color: #fff9e6;
+                border: 1px solid #e8b030;
+                padding: 24px;
+                margin: 30px 0;
                 text-align: center;
             }
+
             .badge-box h3 {
-                margin: 0 0 15px 0;
-                font-size: 22px;
-            }
-            .badge-box p {
-                margin: 10px 0;
-            }
-            .info-box {
-                background: #f9f9f9;
-                border-left: 4px solid #2c5f2d;
-                padding: 20px;
-                border-radius: 5px;
-                margin: 20px 0;
-            }
-            .info-box h3 {
-                margin: 0 0 15px 0;
-                color: #2c5f2d;
+                margin: 0 0 12px;
                 font-size: 18px;
+                font-weight: 600;
+                color: #2c5f2d;
             }
-            .info-row {
-                display: flex;
-                justify-content: space-between;
-                padding: 8px 0;
-                border-bottom: 1px solid #eee;
+
+            .badge-box p {
+                margin: 0 0 12px;
+                color: #6c757d;
+                font-size: 15px;
             }
-            .info-row:last-child {
-                border-bottom: none;
-            }
-            .info-label {
-                font-weight: bold;
-                color: #5c3a21;
-            }
+
+            /* Download button */
             .download-button {
                 display: inline-block;
-                background: linear-gradient(135deg, #e8b030 0%, #ffa500 100%);
-                color: white;
-                padding: 15px 40px;
+                padding: 14px 32px;
+                background-color: #2c5f2d;
+                color: #ffffff;
                 text-decoration: none;
-                border-radius: 8px;
-                margin: 15px 0;
-                font-size: 18px;
-                font-weight: bold;
-                text-align: center;
-                transition: transform 0.2s;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 4px;
+                margin-top: 12px;
             }
+
             .download-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(232, 176, 48, 0.4);
+                background-color: #1f4520;
             }
-            .button-container {
-                text-align: center;
-            }
-            .important-info {
-                background: #fff5e6;
-                border: 2px solid #f5c342;
-                padding: 20px;
-                border-radius: 8px;
-                margin: 25px 0;
-            }
-            .important-info h3 {
-                margin: 0 0 15px 0;
+
+            /* Section headers */
+            .section-header {
+                font-size: 16px;
+                font-weight: 600;
                 color: #2c5f2d;
+                margin: 30px 0 16px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #e9ecef;
             }
-            .important-info ul {
-                margin: 10px 0;
-                padding-left: 20px;
+
+            /* Data table */
+            .data-table {
+                width: 100%;
+                margin: 16px 0;
             }
-            .important-info li {
-                margin: 8px 0;
-                color: #5c3a21;
+
+            .data-table tr {
+                border-bottom: 1px solid #e9ecef;
             }
-            .footer {
-                background: #2c5f2d;
-                color: white;
-                padding: 25px 30px;
-                text-align: center;
+
+            .data-table tr:last-child {
+                border-bottom: none;
             }
-            .footer p {
-                margin: 8px 0;
+
+            .data-table td {
+                padding: 12px 0;
+                vertical-align: top;
+            }
+
+            .data-label {
                 font-size: 14px;
+                font-weight: 600;
+                color: #6c757d;
+                width: 40%;
             }
-            .footer .contact-info {
-                margin: 15px 0;
+
+            .data-value {
+                font-size: 15px;
+                color: #212529;
+                text-align: right;
             }
-            .footer a {
-                color: #f5c342;
-                text-decoration: none;
-            }
-            .footer a:hover {
-                text-decoration: underline;
-            }
-            .divider {
-                height: 2px;
-                background: linear-gradient(
-                    90deg,
-                    #2c5f2d 0%,
-                    #f5c342 50%,
-                    #2c5f2d 100%
-                );
-                margin: 30px 0;
-            }
+
+            /* Checklist */
             .checklist {
-                background: #f0fdf4;
-                padding: 20px;
-                border-radius: 8px;
+                background-color: #f8f9fa;
+                padding: 20px 20px 20px 40px;
                 margin: 20px 0;
             }
-            .checklist h4 {
+
+            .checklist h3 {
+                margin: 0 0 12px;
+                font-size: 16px;
+                font-weight: 600;
                 color: #2c5f2d;
-                margin: 0 0 15px 0;
             }
-            .checklist-item {
-                padding: 10px;
-                margin: 8px 0;
-                background: white;
-                border-left: 3px solid #10b981;
-                border-radius: 4px;
+
+            .checklist ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .checklist li {
+                margin: 0 0 10px;
+                padding-left: 24px;
+                position: relative;
+                color: #212529;
+                line-height: 1.6;
+            }
+
+            .checklist li:before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: #28a745;
+                font-weight: bold;
+            }
+
+            .checklist li:last-child {
+                margin-bottom: 0;
+            }
+
+            /* Info callout */
+            .info-callout {
+                background-color: #e7f3ff;
+                border-left: 3px solid #0d6efd;
+                padding: 16px;
+                margin: 20px 0;
+                font-size: 15px;
+            }
+
+            /* Divider */
+            .divider {
+                height: 1px;
+                background-color: #e9ecef;
+                margin: 30px 0;
+            }
+
+            /* Footer */
+            .email-footer {
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 30px;
+                text-align: center;
+            }
+
+            .email-footer p {
+                margin: 0 0 8px;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .email-footer a {
+                color: #e8b030;
+                text-decoration: none;
+            }
+
+            .email-footer a:hover {
+                text-decoration: underline;
+            }
+
+            .footer-links {
+                margin: 16px 0;
+            }
+
+            .footer-divider {
+                height: 1px;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin: 20px 0;
+            }
+
+            .footer-small {
+                font-size: 12px;
+                opacity: 0.8;
+                margin-top: 16px;
+            }
+
+            .branding {
+                margin-top: 20px;
+                opacity: 0.7;
+            }
+
+            .branding-logo {
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .branding-logo img {
+                height: 18px;
+                margin-right: 8px;
+            }
+
+            .branding-text {
+                color: #e8b030;
+                font-weight: 600;
+                font-size: 13px;
+            }
+
+            /* Mobile responsive */
+            @media only screen and (max-width: 600px) {
+                .email-wrapper {
+                    padding: 10px 0;
+                }
+
+                .email-header {
+                    padding: 30px 20px;
+                }
+
+                .email-header h1 {
+                    font-size: 22px;
+                }
+
+                .email-content {
+                    padding: 20px;
+                }
+
+                .badge-box {
+                    padding: 20px;
+                }
+
+                .badge-box h3 {
+                    font-size: 16px;
+                }
+
+                .section-header {
+                    font-size: 15px;
+                }
+
+                .data-table td {
+                    display: block;
+                    width: 100%;
+                    text-align: left !important;
+                    padding: 6px 0;
+                }
+
+                .data-label {
+                    width: 100%;
+                    margin-bottom: 4px;
+                }
+
+                .data-value {
+                    text-align: left !important;
+                }
+
+                .checklist {
+                    padding: 16px 16px 16px 32px;
+                }
+
+                .download-button {
+                    font-size: 15px;
+                    padding: 12px 24px;
+                }
+
+                .email-footer {
+                    padding: 24px 20px;
+                }
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <!-- Header -->
-            <div class="header">
-                <h1>Payment Confirmed</h1>
-                <p>You are All Set for {{ event_name }}</p>
-            </div>
+        <div class="email-wrapper">
+            <div class="email-container">
+                <!-- Header -->
+                <div class="email-header">
+                    <h1>Payment Confirmed</h1>
+                    <p>{{ event_name }}</p>
+                </div>
 
-            <!-- Content -->
-            <div class="content">
-                <p>
-                    Dear
-                    <strong
-                        >{{ registration.first_name }} {{ registration.last_name
-                        }}</strong
-                    >,
-                </p>
-
-                <div class="success-banner">Payment Successfully Processed</div>
-
-                <p>
-                    Your payment has been confirmed and your registration for
-                    <strong>{{ event_name }}</strong> is now complete. We look
-                    forward to welcoming you on
-                    <strong>{{ event_date }}</strong>.
-                </p>
-
-                <!-- Badge Download Box -->
-                <div class="badge-box">
-                    <h3>Your Event Badge is Ready</h3>
+                <!-- Content -->
+                <div class="email-content">
                     <p>
-                        Download your personalized badge below. You will need
-                        this for event check-in.
+                        Dear
+                        <strong
+                            >{{ registration.first_name }} {{
+                            registration.last_name }}</strong
+                        >,
                     </p>
 
-                    <div class="button-container">
+                    <div class="success-banner">
+                        Payment Successfully Processed
+                    </div>
+
+                    <p>
+                        Your payment has been confirmed and your registration
+                        for <strong>{{ event_name }}</strong> is now complete.
+                        We look forward to welcoming you on
+                        <strong>{{ event_date }}</strong>.
+                    </p>
+
+                    <!-- Badge Download -->
+                    <div class="badge-box">
+                        <h3>Your Event Badge is Ready</h3>
+                        <p>
+                            Download your personalized badge below. You will
+                            need this for event check-in.
+                        </p>
                         {% if badge_url %}
-                        <a href="{{ badge_url }}" class="download-button">
-                            Download Your Badge
-                        </a>
+                        <a href="{{ badge_url }}" class="download-button"
+                            >Download Badge</a
+                        >
+                        <p style="font-size: 13px; margin-top: 12px">
+                            Print your badge or save it on your phone for quick
+                            check-in.
+                        </p>
                         {% else %}
-                        <p style="font-size: 14px; margin-top: 15px">
+                        <p style="font-size: 14px; color: #6c757d">
                             Your badge is being generated. You will receive it
                             within 10 minutes.
                         </p>
                         {% endif %}
                     </div>
 
-                    <p style="font-size: 14px; margin-top: 15px; opacity: 0.9">
-                        Print your badge or save it on your phone for quick
-                        check-in
+                    <!-- Registration Details -->
+                    <h2 class="section-header">Registration Details</h2>
+                    <table class="data-table">
+                        <tr>
+                            <td class="data-label">Reference Number</td>
+                            <td class="data-value">
+                                <strong
+                                    >{{ registration.reference_number }}</strong
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Name</td>
+                            <td class="data-value">
+                                {{ registration.first_name }} {{
+                                registration.last_name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Email</td>
+                            <td class="data-value">{{ registration.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Ticket Type</td>
+                            <td class="data-value">
+                                {{ registration.ticket_type.value.replace('_', '
+                                ').title() }}
+                            </td>
+                        </tr>
+                        {% if registration.organization %}
+                        <tr>
+                            <td class="data-label">Organization</td>
+                            <td class="data-value">
+                                {{ registration.organization }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <!-- Event Information -->
+                    <h2 class="section-header">Event Information</h2>
+                    <table class="data-table">
+                        <tr>
+                            <td class="data-label">Event</td>
+                            <td class="data-value">{{ event_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Date & Time</td>
+                            <td class="data-value">
+                                {{ event_date }}, {{ event_time }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Location</td>
+                            <td class="data-value">{{ event_location }}</td>
+                        </tr>
+                    </table>
+
+                    <!-- Event Day Checklist -->
+                    <h2 class="section-header">Event Day Checklist</h2>
+                    <div class="checklist">
+                        <ul>
+                            <li>
+                                <strong>Your Badge:</strong> Printed or on your
+                                phone (required for entry)
+                            </li>
+                            <li>
+                                <strong>Valid ID:</strong> Government-issued
+                                photo identification
+                            </li>
+                            <li>
+                                <strong>Business Cards:</strong> For networking
+                                opportunities
+                            </li>
+                            <li>
+                                <strong>Notebook/Device:</strong> For taking
+                                notes during sessions
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="info-callout">
+                        <strong>Important:</strong> Doors open at 8:00 AM. Early
+                        arrival is recommended to avoid queues. Your badge must
+                        be worn at all times during the event.
+                    </div>
+
+                    <p style="margin-top: 30px">
+                        If you have any questions or require assistance, please
+                        contact our team.
+                    </p>
+
+                    <p style="margin-top: 24px">
+                        Best regards,<br />
+                        <strong>The {{ event_name }} Team</strong>
                     </p>
                 </div>
 
-                <!-- Registration Details -->
-                <div class="info-box">
-                    <h3>📋 Your Registration Details</h3>
-                    <div class="info-row">
-                        <span class="info-label">Reference Number:</span>
-                        <span
-                            ><strong
-                                >{{ registration.reference_number }}</strong
-                            ></span
-                        >
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Name:</span>
-                        <span
-                            >{{ registration.first_name }} {{
-                            registration.last_name }}</span
-                        >
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Email:</span>
-                        <span>{{ registration.email }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Ticket Type:</span>
-                        <span
-                            >{{ registration.ticket_type.value.replace('_', '
-                            ').title() }}</span
-                        >
-                    </div>
-                    {% if registration.organization %}
-                    <div class="info-row">
-                        <span class="info-label">Organization:</span>
-                        <span>{{ registration.organization }}</span>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Event Information -->
-                <div class="info-box">
-                    <h3>📍 Event Information</h3>
-                    <div class="info-row">
-                        <span class="info-label">Event:</span>
-                        <span>{{ event_name }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Date & Time:</span>
-                        <span>{{ event_date }}, {{ event_time }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Location:</span>
-                        <span>{{ event_location }}</span>
-                    </div>
-                </div>
-
-                <!-- What to Bring Checklist -->
-                <div class="checklist">
-                    <h4>✅ Event Day Checklist</h4>
-                    <div class="checklist-item">
-                        <strong>✓ Your Badge:</strong> Printed or on your phone
-                        (required for entry)
-                    </div>
-                    <div class="checklist-item">
-                        <strong>✓ Valid ID:</strong> Government-issued photo
-                        identification
-                    </div>
-                    <div class="checklist-item">
-                        <strong>✓ Business Cards:</strong> For networking
-                        opportunities
-                    </div>
-                    <div class="checklist-item">
-                        <strong>✓ Notebook/Device:</strong> For taking notes
-                        during sessions
-                    </div>
-                </div>
-
-                <!-- Important Information -->
-                <div class="important-info">
-                    <h3>📌 Important Information</h3>
-                    <ul>
-                        <li>
-                            <strong>Check-In:</strong> Doors open at 8:00 AM.
-                            Early arrival recommended to avoid queues
-                        </li>
-                        <li>
-                            <strong>Dress Code:</strong> Business casual or
-                            traditional attire
-                        </li>
-                        <li>
-                            <strong>Parking:</strong> Limited parking available.
-                            Public transport recommended
-                        </li>
-                        <li>
-                            <strong>Wi-Fi:</strong> Free high-speed internet
-                            throughout the venue
-                        </li>
-                        <li>
-                            <strong>Meals:</strong> {% if
-                            registration.ticket_type.value in ['full_access',
-                            'vip'] %}Complimentary lunch and refreshments
-                            included{% else %}Refreshments available for
-                            purchase{% endif %}
-                        </li>
-                        <li>
-                            <strong>Networking:</strong> Special networking
-                            sessions scheduled during breaks
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Preparation Tips -->
-                <div
-                    style="
-                        background: #f0fdf4;
-                        padding: 20px;
-                        border-radius: 8px;
-                        margin: 20px 0;
-                    "
-                >
-                    <h4 style="color: #2c5f2d; margin: 0 0 10px 0">
-                        💡 Get the Most Out of the Event:
-                    </h4>
-                    <ul
-                        style="
-                            margin: 10px 0;
-                            padding-left: 20px;
-                            color: #5c3a21;
-                        "
-                    >
-                        <li>
-                            Review the
-                            <a
-                                href="https://pollination.africa/agenda"
-                                style="color: #e8b030"
-                                >event agenda</a
-                            >
-                            and plan your sessions
-                        </li>
-                        <li>
-                            Connect with speakers and delegates on our event app
-                            (link coming soon)
-                        </li>
-                        <li>
-                            Join our WhatsApp community for real-time updates:
-                            <a
-                                href="https://wa.me/{{ whatsapp }}"
-                                style="color: #e8b030"
-                                >{{ whatsapp }}</a
-                            >
-                        </li>
-                        <li>
-                            Follow us on social media for live event coverage
-                        </li>
-                    </ul>
-                </div>
-
-                <p
-                    style="
-                        background: #fff5e6;
-                        padding: 15px;
-                        border-radius: 5px;
-                        border-left: 4px solid #e8b030;
-                        margin: 25px 0;
-                    "
-                >
-                    <strong>📱 Save This Email!</strong> Keep this confirmation
-                    for your records and easy access to your badge download
-                    link.
-                </p>
-
-                <p>
-                    If you have any dietary requirements, accessibility needs,
-                    or special requests that we should know about, please
-                    contact us as soon as possible.
-                </p>
-
-                <p style="margin-top: 30px">
-                    We can't wait to see you there!<br />
-                    <strong style="color: #2c5f2d"
-                        >The {{ event_name }} Team</strong
-                    >
-                </p>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                <div class="contact-info">
-                    <p><strong>Questions or Need Help?</strong></p>
+                <!-- Footer -->
+                <div class="email-footer">
+                    <p><strong>Contact Information</strong></p>
                     <p>
-                        📧 Email:
+                        Email:
                         <a href="mailto:{{ contact_email }}"
                             >{{ contact_email }}</a
-                        >
-                    </p>
-                    <p>
-                        📞 Phone:
-                        <a href="tel:{{ whatsapp }}">{{ whatsapp }}</a>
-                    </p>
-                    <p>
-                        💬 WhatsApp:
+                        ><br />
+                        Phone:
+                        <a href="tel:{{ support_phone }}">{{ support_phone }}</a
+                        ><br />
+                        WhatsApp:
                         <a
-                            href="https://wa.me/{{ whatsapp.replace('+', '').replace(' ', '') }}"
-                            >{{ whatsapp }}</a
+                            href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
+                            >{{ support_whatsapp }}</a
                         >
                     </p>
-                </div>
-                <p style="margin: 20px 0">
-                    <a href="https://pollination.africa">Visit Website</a> |
-                    <a href="https://pollination.africa/agenda">Event Agenda</a>
-                    |
-                    <a href="https://pollination.africa/speakers">Speakers</a>
-                </p>
-                <p style="font-size: 12px; opacity: 0.8; margin-top: 20px">
-                    You're receiving this email because you registered for {{
-                    event_name }}.<br />
-                    Registration Reference: {{ registration.reference_number }}
-                </p>
 
-                <div
-                    style="
-                        margin-top: 25px;
-                        padding-top: 20px;
-                        border-top: 1px solid rgba(255, 255, 255, 0.2);
-                    "
-                >
-                    <p style="font-size: 11px; opacity: 0.7; margin: 5px 0">
-                        Developed and Powered by
+                    <div class="footer-links">
+                        <a href="{{ website_url }}">Visit Website</a> |
+                        <a href="{{ website_url }}/contact">Contact Us</a>
+                    </div>
+
+                    <div class="footer-divider"></div>
+
+                    <p class="footer-small">
+                        This email was sent to {{ registration.email }}
+                        regarding your registration for {{ event_name }}.
                     </p>
-                    <a
-                        href="https://chach-a.com"
-                        target="_blank"
-                        style="
-                            text-decoration: none;
-                            display: inline-flex;
-                            align-items: center;
-                            margin-top: 8px;
-                        "
-                    >
-                        <img
-                            src="https://www.chach-a.com/logoMark.svg"
-                            alt="Chacha Technologies"
-                            style="
-                                height: 20px;
-                                width: auto;
-                                margin-right: 8px;
-                                vertical-align: middle;
-                            "
-                        />
-                        <span
-                            style="
-                                color: #f5c342;
-                                font-weight: bold;
-                                font-size: 13px;
-                            "
-                            >Chacha Technologies</span
+
+                    <div class="branding">
+                        <p style="font-size: 11px; margin-bottom: 8px">
+                            Powered by
+                        </p>
+                        <a
+                            href="https://chach-a.com"
+                            target="_blank"
+                            class="branding-logo"
                         >
-                    </a>
+                            <img
+                                src="https://www.chach-a.com/logoMark.svg"
+                                alt="Chacha Technologies"
+                            />
+                            <span class="branding-text"
+                                >Chacha Technologies</span
+                            >
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

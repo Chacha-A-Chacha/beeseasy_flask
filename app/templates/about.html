@@ -73,12 +73,12 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:mx-0">
             <h2
-                class="text-5xl font-semibold tracking-tight text-green-100 sm:text-7xl"
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
             >
                 About {{ event_short_name }}
             </h2>
             <p
-                class="mt-8 text-pretty text-lg font-medium text-gray-100 sm:text-xl/8"
+                class="mt-8 text-pretty text-lg font-medium text-white sm:text-xl/8"
             >
                 {{ event_theme }}
             </p>
@@ -86,7 +86,7 @@
 
         <div class="mx-auto mt-16 max-w-2xl lg:mx-0 lg:max-w-none">
             <div
-                class="grid grid-cols-1 gap-x-12 gap-y-6 text-base/7 text-gray-100 lg:grid-cols-2"
+                class="grid grid-cols-1 gap-x-8 gap-y-6 text-base/7 text-white sm:grid-cols-2 lg:gap-x-12"
             >
                 <div
                     class="flex gap-x-4 rounded-xl bg-white/30 p-6 ring-1 ring-green-950/10 backdrop-blur"
@@ -487,9 +487,7 @@
         </div>
 
         <!-- CTA Section -->
-        <div
-            class="mt-16 flex flex-col sm:flex-row gap-x-6 justify-center items-center"
-        >
+        <div class="mt-16 flex flex-wrap gap-4 justify-center items-center">
             <a
                 href="{{ url_for('register.attendee_index') }}"
                 class="inline-flex items-center px-8 py-3 bg-accent-orange text-white font-semibold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 transform hover:scale-105 shadow-2xl"
@@ -965,7 +963,7 @@
                         <p class="flex-auto">
                             Emerging entrepreneurs and innovators driving the
                             future of pollinator conservation and sustainable
-                            agriculture in East Africa.
+                            agriculture in Africa.
                         </p>
                     </dd>
                 </div>
@@ -997,7 +995,7 @@
                 security, biodiversity, and sustainable livelihoods across
                 Africa.
             </p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <a
                     href="{{ url_for('register.attendee_index') }}"
                     class="rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"

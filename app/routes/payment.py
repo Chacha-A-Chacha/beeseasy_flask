@@ -647,7 +647,51 @@ def invoice_request(ref):
     payment.payment_status = PaymentStatus.PENDING
     db.session.commit()
 
-    # TODO: Generate and email invoice PDF
+    # Send invoice request confirmation email
+    try:
+        from app.utils.enhanced_email import EnhancedEmailService
+
+        email_service = EnhancedEmailService(current_app)
+
+        context = {
+            "registration": registration,
+            "payment": payment,
+            "amount_due": float(payment.total_amount),
+            "currency": payment.currency,
+            "event_name": current_app.config.get(
+                "EVENT_NAME", "Pollination Africa Symposium 2026"
+            ),
+            "event_date": current_app.config.get("EVENT_DATE", "3-5 June 2026"),
+            "event_location": current_app.config.get(
+                "EVENT_LOCATION",
+                "Arusha International Conference Centre, Arusha, Tanzania",
+            ),
+            "contact_email": current_app.config.get(
+                "CONTACT_EMAIL", "info@pollination.africa"
+            ),
+            "support_phone": current_app.config.get(
+                "SUPPORT_PHONE", "+254 719 740 938"
+            ),
+            "support_whatsapp": current_app.config.get(
+                "SUPPORT_WHATSAPP", "+254 719 740 938"
+            ),
+            "website_url": current_app.config.get(
+                "WEBSITE_URL", "https://pollination.africa"
+            ),
+        }
+
+        email_service.send_notification(
+            recipient=registration.email,
+            template="invoice_request_confirmation",
+            subject="Invoice Request Received - Pollination Africa Symposium 2026",
+            template_context=context,
+            priority=1,
+        )
+
+        logger.info(f"Invoice request confirmation email sent to {registration.email}")
+
+    except Exception as e:
+        logger.error(f"Failed to send invoice request email: {str(e)}", exc_info=True)
 
     flash(
         "Invoice request received. An invoice will be sent to your email within 24 hours.",

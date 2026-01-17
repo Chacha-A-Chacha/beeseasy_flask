@@ -1,0 +1,431 @@
+<!-- templates/emails/invoice_request_confirmation.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #2C5F2D 0%, #5C3A21 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content p {
+            margin: 15px 0;
+        }
+        .success-icon {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .success-icon .icon-circle {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            border-radius: 50%;
+            line-height: 80px;
+            font-size: 45px;
+            color: white;
+        }
+        .highlight-box {
+            background: #F5C342;
+            color: #2C5F2D;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .highlight-box .ref-number {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+        .info-box {
+            background: #f9f9f9;
+            border-left: 4px solid #2C5F2D;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info-box h3 {
+            margin: 0 0 15px 0;
+            color: #2C5F2D;
+            font-size: 18px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #5C3A21;
+        }
+        .timeline-box {
+            background: #fff5e6;
+            border: 2px solid #F5C342;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .timeline-box h3 {
+            margin: 0 0 15px 0;
+            color: #2C5F2D;
+        }
+        .timeline-step {
+            display: flex;
+            margin: 15px 0;
+            align-items: flex-start;
+        }
+        .timeline-step .step-number {
+            flex-shrink: 0;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #E8B030 0%, #FFA500 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .timeline-step .step-content h4 {
+            margin: 0 0 5px 0;
+            color: #2C5F2D;
+            font-size: 16px;
+        }
+        .timeline-step .step-content p {
+            margin: 0;
+            color: #5C3A21;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .alert-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .alert-box p {
+            margin: 8px 0;
+            color: #1565C0;
+            font-size: 14px;
+        }
+        .alert-box strong {
+            color: #0D47A1;
+        }
+        .invoice-includes {
+            background: linear-gradient(135deg, #2C5F2D 0%, #5C3A21 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .invoice-includes h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .invoice-includes ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .invoice-includes li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 14px;
+        }
+        .invoice-includes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #F5C342;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .contact-box {
+            background: #FFF3E0;
+            border: 2px solid #FFB300;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .contact-box h3 {
+            margin: 0 0 12px 0;
+            color: #E65100;
+            font-size: 16px;
+        }
+        .contact-box p {
+            margin: 8px 0;
+            color: #5C3A21;
+            font-size: 14px;
+        }
+        .contact-box a {
+            color: #E8B030;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background: #2C5F2D;
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        .footer p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .footer .contact-info {
+            margin: 15px 0;
+        }
+        .footer .social-links {
+            margin: 15px 0;
+        }
+        .footer a {
+            color: #F5C342;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, #2C5F2D 0%, #F5C342 50%, #2C5F2D 100%);
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📄 Invoice Request Received</h1>
+            <p>{{ event_name }}</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Success Icon -->
+            <div class="success-icon">
+                <div class="icon-circle">✓</div>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; color: #2C5F2D; margin: 10px 0 25px 0;">
+                <strong>Thank you! Your invoice request has been received.</strong>
+            </p>
+
+            <p>Dear</p> <strong>{{ registration.first_name }} {{ registration.last_name }}</strong>,</p>
+
+            <p>We have received your request for an invoice for <strong>{{ event_name }}</strong>. Our finance team is preparing your invoice and it will be sent to your email within 24 hours.</p>
+
+            <!-- Reference Number Box -->
+            <div class="highlight-box">
+                <div>Your Registration Reference Number:</div>
+                <div class="ref-number">{{ registration.reference_number }}</div>
+                <div style="font-size: 14px; margin-top: 10px; opacity: 0.9;">Please include this in your payment notes</div>
+            </div>
+
+            <!-- Invoice Details -->
+            <div class="info-box">
+                <h3>📋 Invoice Details</h3>
+                <div class="info-row">
+                    <span class="info-label">Invoice To:</span>
+                    <span>{{ registration.first_name }} {{ registration.last_name }}</span>
+                </div>
+                {% if registration.registration_type == 'exhibitor' and registration.company_legal_name %}
+                <div class="info-row">
+                    <span class="info-label">Company:</span>
+                    <span>{{ registration.company_legal_name }}</span>
+                </div>
+                {% endif %}
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span>{{ registration.email }}</span>
+                </div>
+                {% if registration.registration_type == 'attendee' %}
+                <div class="info-row">
+                    <span class="info-label">Ticket Type:</span>
+                    <span>{{ registration.ticket_type.value.replace('_', ' ').title() }}</span>
+                </div>
+                {% else %}
+                <div class="info-row">
+                    <span class="info-label">Package Type:</span>
+                    <span>{{ registration.package_type.value.replace('_', ' ').title() }}</span>
+                </div>
+                {% endif %}
+                <div class="info-row">
+                    <span class="info-label">Invoice Amount:</span>
+                    <span><strong style="font-size: 20px; color: #E8B030;">{{ currency</span> }} {{ "{:,.2f}".format(amount_due) }}</strong></span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- What Happens Next Timeline -->
+            <div class="timeline-box">
+                <h3>📌 What Happens Next</h3>
+
+                <div class="timeline-step">
+                    <div class="step-number">1</div></h3>
+                    <div class="step-content">
+                        <h4>Invoice Generation (Now - 24 hours)</h4>
+                        <p>Our finance team will generate a professional invoice with all registration details, payment terms, and bank account information.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Email Delivery (Within 24 hours)</h4>
+                        <p>The invoice will be sent to <strong>{{ registration.email }}</strong> as a PDF attachment with complete payment instructions.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Payment Processing (Your Timeline)</h4>
+                        <p>Process payment through your company's accounts payable system according to the payment terms specified in the invoice.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Payment Confirmation</h4>
+                        <p>Once we receive and verify your payment, you'll receive your registration confirmation and event badge via email.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Will Include -->
+            <div class="invoice-includes">
+                <h3>📄 Your Invoice Will Include:</h3>
+                <ul>
+                    <li>Your registration details and reference number</li>
+                    <li>Itemized breakdown of all fees and charges</li>
+                    <li>Bank account details for wire transfer</li>
+                    <li>Payment terms and due date</li>
+                    <li>Tax information (if applicable)</li>
+                    <li>Invoice number for your accounting records</li>
+                    <li>Our organization's contact information</li>
+                </ul>
+            </div>
+
+            <!-- Important Alert -->
+            <div class="alert-box">
+                <p><strong>📧 Check Your Inbox:</strong></p>
+                <p>• The invoice will be sent from <strong>{{ contact_email }}</strong></p>
+                <p>• Please check your spam/junk folder if you don't see it within 24 hours</p>
+                <p>• Add our email to your contacts to ensure delivery</p>
+                <p>• Your reference number is <strong>{{ registration.reference_number }}</strong> - include it in all payment communications</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Event Details -->
+            <div class="info-box">
+                <h3>📍 Event Details</h3>
+                <div class="info-row">
+                    <span class="info-label">Event:</span>
+                    <span>{{ event_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Date:</span>
+                    <span>{{ event_date }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Location:</span>
+                    <span>{{ event_location }}</span>
+                </div>
+            </div>
+
+            <!-- Contact Box -->
+            <div class="contact-box">
+                <h3>💬 Questions About Your Invoice?</h3>
+                <p>If you need to</h3> update billing details, have questions about payment terms, or require urgent invoice delivery, please contact our finance team:</p>
+                <p>📧 Email: <a href="mailto:finance@pollination.africa">finance@pollination.africa</a></p>
+                <p>📞 Phone: <a href="tel:{{ support_phone }}">{{ support_phone }}</a></p>
+                <p>💬 WhatsApp: <a href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}">{{ support_whatsapp }}</a></p>
+            </div>
+
+            <p style="margin-top: 30px;">
+                Best regards,<br>
+                <strong style="color: #2C5F2D;">The {{ event_name }} Finance Team</strong>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="contact-info">
+                <p><strong>Need Help?</strong></p>
+                <p>📧 Email: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+                <p>📞 Phone: <a href="tel:{{ support_phone }}">{{ support_phone }}</a></p>
+                <p>💬 WhatsApp: <a href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}">{{ support_whatsapp }}</a></p>
+            </div>
+            <div class="social-links">
+                <p>
+                    <a href="{{ website_url }}">Visit Website</a> |
+                    <a href="https://twitter.com/pollinationafrica">Twitter</a> |
+                    <a href="https://facebook.com/pollinationafrica">Facebook</a>
+                </p>
+            </div>
+            <p style="font-size: 12px; opacity: 0.8; margin-top: 20px;">
+                This email was sent to {{ registration.email }} regarding your invoice request for {{ event_name }}.<br>
+                Invoice Reference: {{ registration.reference_number }}
+            </p>
+
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+                <p style="font-size: 11px; opacity: 0.7; margin: 5px 0;">
+                    Developed and Powered by
+                </p>
+                <a href="https://chach-a.com" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; margin-top: 8px;">
+                    <img src="https://www.chach-a.com/logoMark.svg" alt="Chacha Technologies" style="height: 20px; width: auto; margin-right: 8px; vertical-align: middle;">
+                    <span style="color: #F5C342; font-weight: bold; font-size: 13px;">Chacha Technologies</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

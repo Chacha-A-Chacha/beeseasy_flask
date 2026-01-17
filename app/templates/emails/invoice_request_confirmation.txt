@@ -1,0 +1,103 @@
+INVOICE REQUEST RECEIVED
+{{ event_name }}
+========================================
+
+✓ Your invoice request has been successfully received!
+
+Dear {{ registration.first_name }} {{ registration.last_name }},
+
+Thank you for your invoice request for {{ event_name }}. Our finance team is preparing your invoice and it will be sent to your email within 24 hours.
+
+========================================
+YOUR REGISTRATION REFERENCE NUMBER
+========================================
+
+{{ registration.reference_number }}
+
+Please include this reference number in all payment communications.
+
+========================================
+INVOICE DETAILS
+========================================
+
+Invoice To: {{ registration.first_name }} {{ registration.last_name }}
+{% if registration.registration_type == 'exhibitor' and registration.company_legal_name %}Company: {{ registration.company_legal_name }}
+{% endif %}Email: {{ registration.email }}
+{% if registration.registration_type == 'attendee' %}Ticket Type: {{ registration.ticket_type.value.replace('_', ' ').title() }}
+{% else %}Package Type: {{ registration.package_type.value.replace('_', ' ').title() }}
+{% endif %}Invoice Amount: {{ currency }} {{ "{:,.2f}".format(amount_due) }}
+
+========================================
+WHAT HAPPENS NEXT
+========================================
+
+STEP 1: Invoice Generation (Now - 24 hours)
+Our finance team will generate a professional invoice with all registration details, payment terms, and bank account information.
+
+STEP 2: Email Delivery (Within 24 hours)
+The invoice will be sent to {{ registration.email }} as a PDF attachment with complete payment instructions.
+
+STEP 3: Payment Processing (Your Timeline)
+Process payment through your company's accounts payable system according to the payment terms specified in the invoice.
+
+STEP 4: Payment Confirmation
+Once we receive and verify your payment, you'll receive your registration confirmation and event badge via email.
+
+========================================
+YOUR INVOICE WILL INCLUDE
+========================================
+
+✓ Your registration details and reference number
+✓ Itemized breakdown of all fees and charges
+✓ Bank account details for wire transfer
+✓ Payment terms and due date
+✓ Tax information (if applicable)
+✓ Invoice number for your accounting records
+✓ Our organization's contact information
+
+========================================
+IMPORTANT NOTES
+========================================
+
+• The invoice will be sent from {{ contact_email }}
+• Please check your spam/junk folder if you don't see it within 24 hours
+• Add our email to your contacts to ensure delivery
+• Your reference number is {{ registration.reference_number }} - include it in all payment communications
+
+========================================
+EVENT DETAILS
+========================================
+
+Event: {{ event_name }}
+Date: {{ event_date }}
+Location: {{ event_location }}
+
+========================================
+QUESTIONS ABOUT YOUR INVOICE?
+========================================
+
+If you need to update billing details, have questions about payment terms, or require urgent invoice delivery, please contact our finance team:
+
+Email: finance@pollination.africa
+Phone: {{ support_phone }}
+WhatsApp: {{ support_whatsapp }}
+
+========================================
+NEED HELP?
+========================================
+
+General Inquiries:
+Email: {{ contact_email }}
+Phone: {{ support_phone }}
+WhatsApp: {{ support_whatsapp }}
+Website: {{ website_url }}
+
+Best regards,
+The {{ event_name }} Finance Team
+
+---
+This email was sent to {{ registration.email }} regarding your invoice request for {{ event_name }}.
+Invoice Reference: {{ registration.reference_number }}
+
+Developed and Powered by Chacha Technologies
+https://chach-a.com

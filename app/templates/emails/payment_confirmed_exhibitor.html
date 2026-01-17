@@ -1,612 +1,558 @@
-<!-- templates/emails/payment_confirmed_exhibitor.html -->
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Payment Confirmed - Exhibitor</title>
         <style>
+            /* Reset and base styles */
             body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                color: #333;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
-            }
-            .container {
-                max-width: 600px;
-                margin: 20px auto;
-                background: white;
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-            .header {
-                background: linear-gradient(135deg, #2c5f2d 0%, #5c3a21 100%);
-                color: white;
-                padding: 50px 30px;
-                text-align: center;
-                position: relative;
-            }
-            .header::before {
-                content: "";
-                position: absolute;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 60px;
-                height: 60px;
-                background: #f5c342;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 40px;
-                font-weight: bold;
-                color: #2c5f2d;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            }
-            .header h1 {
-                margin: 40px 0 10px 0;
-                font-size: 28px;
-                font-weight: bold;
-            }
-            .header p {
-                margin: 0;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, sans-serif;
                 font-size: 16px;
+                line-height: 1.6;
+                color: #212529;
+                background-color: #f8f9fa;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+                max-width: 100%;
+            }
+
+            /* Container */
+            .email-wrapper {
+                width: 100%;
+                background-color: #f8f9fa;
+                padding: 20px 0;
+            }
+
+            .email-container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            /* Header */
+            .email-header {
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 40px 30px;
+                text-align: center;
+            }
+
+            .email-header h1 {
+                margin: 0 0 8px;
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 1.3;
+            }
+
+            .email-header p {
+                margin: 0;
+                font-size: 15px;
                 opacity: 0.9;
             }
-            .content {
+
+            /* Content */
+            .email-content {
                 padding: 30px;
             }
-            .content p {
-                margin: 15px 0;
+
+            .email-content p {
+                margin: 0 0 16px;
+                color: #212529;
             }
+
+            /* Success banner */
             .success-banner {
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                color: white;
-                padding: 20px;
-                border-radius: 8px;
-                margin: 25px 0;
+                background-color: #d4edda;
+                border: 1px solid #28a745;
+                color: #155724;
+                padding: 16px;
+                margin: 30px 0;
                 text-align: center;
-                font-size: 18px;
-                font-weight: bold;
+                font-weight: 600;
             }
+
+            /* Badge box */
             .badge-box {
-                background: #2c5f2d;
-                color: white;
-                padding: 30px;
-                border-radius: 8px;
-                margin: 25px 0;
+                background-color: #fff9e6;
+                border: 1px solid #e8b030;
+                padding: 24px;
+                margin: 30px 0;
                 text-align: center;
             }
+
             .badge-box h3 {
-                margin: 0 0 15px 0;
-                font-size: 22px;
-                color: #f5c342;
-            }
-            .badge-box p {
-                margin: 10px 0;
-            }
-            .info-box {
-                background: #f9f9f9;
-                border-left: 4px solid #2c5f2d;
-                padding: 20px;
-                border-radius: 5px;
-                margin: 20px 0;
-            }
-            .info-box h3 {
-                margin: 0 0 15px 0;
-                color: #2c5f2d;
+                margin: 0 0 12px;
                 font-size: 18px;
+                font-weight: 600;
+                color: #2c5f2d;
             }
-            .info-row {
-                display: flex;
-                justify-content: space-between;
-                padding: 8px 0;
-                border-bottom: 1px solid #eee;
+
+            .badge-box p {
+                margin: 0 0 12px;
+                color: #6c757d;
+                font-size: 15px;
             }
-            .info-row:last-child {
-                border-bottom: none;
-            }
-            .info-label {
-                font-weight: bold;
-                color: #5c3a21;
-            }
+
+            /* Download button */
             .download-button {
                 display: inline-block;
-                background: linear-gradient(135deg, #f5c342 0%, #e8b030 100%);
-                color: #2c5f2d;
-                padding: 15px 40px;
+                padding: 14px 32px;
+                background-color: #2c5f2d;
+                color: #ffffff;
                 text-decoration: none;
-                border-radius: 8px;
-                margin: 15px 0;
-                font-size: 18px;
-                font-weight: bold;
-                text-align: center;
-                transition: transform 0.2s;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 4px;
+                margin-top: 12px;
             }
+
             .download-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(245, 195, 66, 0.4);
+                background-color: #1f4520;
             }
-            .button-container {
-                text-align: center;
-            }
-            .important-info {
-                background: #fff5e6;
-                border: 2px solid #f5c342;
-                padding: 20px;
-                border-radius: 8px;
-                margin: 25px 0;
-            }
-            .important-info h3 {
-                margin: 0 0 15px 0;
+
+            /* Section headers */
+            .section-header {
+                font-size: 16px;
+                font-weight: 600;
                 color: #2c5f2d;
+                margin: 30px 0 16px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #e9ecef;
             }
-            .important-info ul {
-                margin: 10px 0;
-                padding-left: 20px;
+
+            /* Data table */
+            .data-table {
+                width: 100%;
+                margin: 16px 0;
             }
-            .important-info li {
-                margin: 8px 0;
-                color: #5c3a21;
+
+            .data-table tr {
+                border-bottom: 1px solid #e9ecef;
             }
-            .footer {
-                background: #2c5f2d;
-                color: white;
-                padding: 25px 30px;
-                text-align: center;
+
+            .data-table tr:last-child {
+                border-bottom: none;
             }
-            .footer p {
-                margin: 8px 0;
+
+            .data-table td {
+                padding: 12px 0;
+                vertical-align: top;
+            }
+
+            .data-label {
                 font-size: 14px;
+                font-weight: 600;
+                color: #6c757d;
+                width: 40%;
             }
-            .footer .contact-info {
-                margin: 15px 0;
+
+            .data-value {
+                font-size: 15px;
+                color: #212529;
+                text-align: right;
             }
-            .footer a {
-                color: #f5c342;
-                text-decoration: none;
-            }
-            .footer a:hover {
-                text-decoration: underline;
-            }
-            .divider {
-                height: 2px;
-                background: linear-gradient(
-                    90deg,
-                    #2c5f2d 0%,
-                    #f5c342 50%,
-                    #2c5f2d 100%
-                );
-                margin: 30px 0;
-            }
-            .timeline {
-                background: #f0fdf4;
-                padding: 20px;
-                border-radius: 8px;
+
+            /* Steps list */
+            .steps-list {
+                background-color: #f8f9fa;
+                padding: 20px 20px 20px 40px;
                 margin: 20px 0;
             }
-            .timeline h4 {
-                color: #2c5f2d;
-                margin: 0 0 15px 0;
+
+            .steps-list ol {
+                margin: 0;
+                padding: 0;
             }
-            .timeline-item {
-                padding: 12px;
-                margin: 10px 0;
-                background: white;
-                border-left: 3px solid #f5c342;
-                border-radius: 4px;
+
+            .steps-list li {
+                margin: 0 0 12px;
+                color: #212529;
+                line-height: 1.6;
             }
-            .timeline-item strong {
-                color: #2c5f2d;
+
+            .steps-list li:last-child {
+                margin-bottom: 0;
             }
-            .booth-highlight {
-                background: linear-gradient(135deg, #f5c342 0%, #e8b030 100%);
-                color: #2c5f2d;
-                padding: 25px;
-                border-radius: 8px;
-                margin: 25px 0;
+
+            /* Info callout */
+            .info-callout {
+                background-color: #fff9e6;
+                border-left: 3px solid #e8b030;
+                padding: 16px;
+                margin: 20px 0;
+                font-size: 15px;
+            }
+
+            /* Divider */
+            .divider {
+                height: 1px;
+                background-color: #e9ecef;
+                margin: 30px 0;
+            }
+
+            /* Footer */
+            .email-footer {
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 30px;
                 text-align: center;
-                font-size: 20px;
-                font-weight: bold;
+            }
+
+            .email-footer p {
+                margin: 0 0 8px;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .email-footer a {
+                color: #e8b030;
+                text-decoration: none;
+            }
+
+            .email-footer a:hover {
+                text-decoration: underline;
+            }
+
+            .footer-links {
+                margin: 16px 0;
+            }
+
+            .footer-divider {
+                height: 1px;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin: 20px 0;
+            }
+
+            .footer-small {
+                font-size: 12px;
+                opacity: 0.8;
+                margin-top: 16px;
+            }
+
+            .branding {
+                margin-top: 20px;
+                opacity: 0.7;
+            }
+
+            .branding-logo {
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .branding-logo img {
+                height: 18px;
+                margin-right: 8px;
+            }
+
+            .branding-text {
+                color: #e8b030;
+                font-weight: 600;
+                font-size: 13px;
+            }
+
+            /* Mobile responsive */
+            @media only screen and (max-width: 600px) {
+                .email-wrapper {
+                    padding: 10px 0;
+                }
+
+                .email-header {
+                    padding: 30px 20px;
+                }
+
+                .email-header h1 {
+                    font-size: 22px;
+                }
+
+                .email-content {
+                    padding: 20px;
+                }
+
+                .badge-box {
+                    padding: 20px;
+                }
+
+                .badge-box h3 {
+                    font-size: 16px;
+                }
+
+                .section-header {
+                    font-size: 15px;
+                }
+
+                .data-table td {
+                    display: block;
+                    width: 100%;
+                    text-align: left !important;
+                    padding: 6px 0;
+                }
+
+                .data-label {
+                    width: 100%;
+                    margin-bottom: 4px;
+                }
+
+                .data-value {
+                    text-align: left !important;
+                }
+
+                .steps-list {
+                    padding: 16px 16px 16px 32px;
+                }
+
+                .download-button {
+                    font-size: 15px;
+                    padding: 12px 24px;
+                }
+
+                .email-footer {
+                    padding: 24px 20px;
+                }
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <!-- Header -->
-            <div class="header">
-                <h1>Exhibitor Payment Confirmed</h1>
-                <p>Welcome to {{ event_name }}</p>
-            </div>
-
-            <!-- Content -->
-            <div class="content">
-                <p>
-                    Dear
-                    <strong
-                        >{{ registration.first_name }} {{ registration.last_name
-                        }}</strong
-                    >,
-                </p>
-
-                <div class="success-banner">Your Booth is Secured</div>
-
-                <p>
-                    Payment for
-                    <strong>{{ registration.company_legal_name }}</strong> has
-                    been confirmed. Your booth at
-                    <strong>{{ event_name }}</strong> is now officially secured.
-                </p>
-
-                <!-- Booth Information (if assigned) -->
-                {% if registration.booth_number %}
-                <div class="booth-highlight">
-                    🎪 Booth #{{ registration.booth_number }} Assigned
+        <div class="email-wrapper">
+            <div class="email-container">
+                <!-- Header -->
+                <div class="email-header">
+                    <h1>Payment Confirmed - Exhibitor Badge Ready</h1>
+                    <p>{{ event_name }}</p>
                 </div>
-                {% else %}
-                <div
-                    style="
-                        background: #e0f2fe;
-                        padding: 15px;
-                        border-radius: 5px;
-                        border-left: 4px solid #0284c7;
-                        margin: 20px 0;
-                    "
-                >
-                    📋 <strong>Booth allocation is in progress.</strong> You'll
-                    receive your booth number within 2 business days.
-                </div>
-                {% endif %}
 
-                <!-- Exhibitor Badge Box -->
-                <div class="badge-box">
-                    <h3>🎫 Your Exhibitor Badge is Ready!</h3>
-                    <p>Download your main exhibitor badge below.</p>
+                <!-- Content -->
+                <div class="email-content">
+                    <p>
+                        Dear
+                        <strong
+                            >{{ registration.first_name }} {{
+                            registration.last_name }}</strong
+                        >,
+                    </p>
 
-                    <div class="button-container">
+                    <div class="success-banner">
+                        Payment Successfully Processed - Booth Secured
+                    </div>
+
+                    <p>
+                        Your payment has been confirmed and
+                        <strong>{{ registration.company_legal_name }}</strong>'s
+                        exhibitor registration is now complete. Your booth
+                        reservation is confirmed for
+                        <strong>{{ event_name }}</strong>.
+                    </p>
+
+                    <!-- Badge Download -->
+                    <div class="badge-box">
+                        <h3>Your Exhibitor Badge is Ready</h3>
+                        <p>
+                            Download your personalized exhibitor badge below.
+                            Additional staff badges ({{
+                            registration.number_of_staff }} total) will be
+                            provided separately.
+                        </p>
                         {% if badge_url %}
-                        <a href="{{ badge_url }}" class="download-button">
-                            📥 Download Main Badge
-                        </a>
+                        <a href="{{ badge_url }}" class="download-button"
+                            >Download Badge</a
+                        >
+                        <p style="font-size: 13px; margin-top: 12px">
+                            Print your badge or save it on your phone for event
+                            check-in.
+                        </p>
                         {% else %}
-                        <p style="font-size: 14px; margin-top: 15px">
-                            Your badge is being generated. You'll receive it
+                        <p style="font-size: 14px; color: #6c757d">
+                            Your badge is being generated. You will receive it
                             within 10 minutes.
                         </p>
                         {% endif %}
                     </div>
 
-                    <p style="font-size: 14px; margin-top: 15px; opacity: 0.9">
-                        Additional badges for your team will be sent separately
+                    <!-- Company & Booth Information -->
+                    <h2 class="section-header">Company & Booth Information</h2>
+                    <table class="data-table">
+                        <tr>
+                            <td class="data-label">Company</td>
+                            <td class="data-value">
+                                {{ registration.company_legal_name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Contact Person</td>
+                            <td class="data-value">
+                                {{ registration.first_name }} {{
+                                registration.last_name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Email</td>
+                            <td class="data-value">{{ registration.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Package</td>
+                            <td class="data-value">
+                                {{ registration.package_type.value.replace('_',
+                                ' ').title() }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Staff Passes</td>
+                            <td class="data-value">
+                                {{ registration.number_of_staff }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Reference</td>
+                            <td class="data-value">
+                                <strong
+                                    >{{ registration.reference_number }}</strong
+                                >
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <!-- Next Steps -->
+                    <h2 class="section-header">Next Steps for Exhibitors</h2>
+                    <div class="steps-list">
+                        <ol>
+                            <li>
+                                <strong>Booth Assignment:</strong> Your booth
+                                number and location will be assigned within 48
+                                hours
+                            </li>
+                            <li>
+                                <strong>Setup Guidelines:</strong> Detailed
+                                booth setup instructions will be emailed this
+                                week
+                            </li>
+                            <li>
+                                <strong>Staff Badges:</strong> Additional team
+                                member badges will be sent before the event
+                            </li>
+                            <li>
+                                <strong>Exhibitor Briefing:</strong> Join our
+                                mandatory pre-event orientation (invitation
+                                coming soon)
+                            </li>
+                            <li>
+                                <strong>Logistics:</strong> Submit any special
+                                requirements (power, internet, shipping) at
+                                least 2 weeks before the event
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Event Details -->
+                    <h2 class="section-header">Event Details</h2>
+                    <table class="data-table">
+                        <tr>
+                            <td class="data-label">Event</td>
+                            <td class="data-value">{{ event_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Date & Time</td>
+                            <td class="data-value">
+                                {{ event_date }}, {{ event_time }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="data-label">Location</td>
+                            <td class="data-value">{{ event_location }}</td>
+                        </tr>
+                    </table>
+
+                    <div class="info-callout">
+                        <strong>Important:</strong> Setup day details will be
+                        provided in your booth assignment email. Please ensure
+                        all staff members have valid badges and arrive during
+                        designated setup hours.
+                    </div>
+
+                    <p style="margin-top: 30px">
+                        Our dedicated exhibitor success team is here to support
+                        you with booth setup, marketing opportunities, and
+                        logistics. Please don't hesitate to reach out with any
+                        questions.
+                    </p>
+
+                    <p style="margin-top: 24px">
+                        Best regards,<br />
+                        <strong>The {{ event_name }} Exhibition Team</strong>
                     </p>
                 </div>
 
-                <!-- Company & Package Details -->
-                <div class="info-box">
-                    <h3>🏢 Exhibitor Details</h3>
-                    <div class="info-row">
-                        <span class="info-label">Company:</span>
-                        <span
-                            ><strong
-                                >{{ registration.company_legal_name }}</strong
-                            ></span
-                        >
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Reference Number:</span>
-                        <span>{{ registration.reference_number }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Package:</span>
-                        <span
-                            >{{ registration.package_type.value.replace('_', '
-                            ').title() }}</span
-                        >
-                    </div>
-                    {% if registration.booth_number %}
-                    <div class="info-row">
-                        <span class="info-label">Booth Number:</span>
-                        <span
-                            ><strong style="color: #e8b030"
-                                >{{ registration.booth_number }}</strong
-                            ></span
-                        >
-                    </div>
-                    {% endif %}
-                    <div class="info-row">
-                        <span class="info-label">Team Badges:</span>
-                        <span>{{ registration.number_of_staff }} passes</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Contact Person:</span>
-                        <span
-                            >{{ registration.first_name }} {{
-                            registration.last_name }}</span
-                        >
-                    </div>
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Timeline -->
-                <div class="timeline">
-                    <h4>📅 What Happens Next</h4>
-                    <div class="timeline-item">
-                        <strong>Within 48 Hours:</strong> Booth assignment
-                        confirmation (if not already assigned)
-                    </div>
-                    <div class="timeline-item">
-                        <strong>2 Weeks Before:</strong> Exhibitor kit with
-                        setup instructions, floor plan, and logistics
-                    </div>
-                    <div class="timeline-item">
-                        <strong>1 Week Before:</strong> Pre-event exhibitor
-                        orientation session (online)
-                    </div>
-                    <div class="timeline-item">
-                        <strong>Setup Day:</strong> {{ event_date }} (Day before
-                        event) - 2:00 PM to 6:00 PM
-                    </div>
-                    <div class="timeline-item">
-                        <strong>Event Days:</strong> {{ event_date }} - Full
-                        access to all symposium activities
-                    </div>
-                </div>
-
-                <!-- Event Information -->
-                <div class="info-box">
-                    <h3>📍 Event Information</h3>
-                    <div class="info-row">
-                        <span class="info-label">Event:</span>
-                        <span>{{ event_name }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Date:</span>
-                        <span>{{ event_date }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Location:</span>
-                        <span>{{ event_location }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Exhibition Hours:</span>
-                        <span>{{ event_time }}</span>
-                    </div>
-                </div>
-
-                <!-- Important Information for Exhibitors -->
-                <div class="important-info">
-                    <h3>📦 Exhibitor Preparation Checklist</h3>
-                    <ul>
-                        <li>
-                            <strong>Booth Materials:</strong> Prepare your
-                            banners, displays, and promotional materials
-                        </li>
-                        <li>
-                            <strong>Product Samples:</strong> Bring demos or
-                            samples of your products/services
-                        </li>
-                        <li>
-                            <strong>Marketing Collateral:</strong> Business
-                            cards, brochures, flyers (minimum 500 copies
-                            recommended)
-                        </li>
-                        <li>
-                            <strong>Lead Capture:</strong> Prepare a system to
-                            collect attendee information
-                        </li>
-                        <li>
-                            <strong>Team Briefing:</strong> Brief your staff on
-                            product knowledge and engagement strategies
-                        </li>
-                        <li>
-                            <strong>Branded Giveaways:</strong> Consider
-                            promotional items for booth visitors
-                        </li>
-                        <li>
-                            <strong>Display Equipment:</strong> Check if you
-                            need additional display units or technology
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Package Benefits Reminder -->
-                <div
-                    style="
-                        background: #f0fdf4;
-                        padding: 20px;
-                        border-radius: 8px;
-                        margin: 20px 0;
-                    "
-                >
-                    <h4 style="color: #2c5f2d; margin: 0 0 10px 0">
-                        ✨ Your Package Includes:
-                    </h4>
-                    <ul
-                        style="
-                            margin: 10px 0;
-                            padding-left: 20px;
-                            color: #5c3a21;
-                        "
-                    >
-                        <li>Dedicated booth space in prime exhibition area</li>
-                        <li>
-                            {{ registration.number_of_staff }} complimentary
-                            exhibitor badges
-                        </li>
-                        <li>
-                            Company profile in official event catalog and mobile
-                            app
-                        </li>
-                        <li>
-                            Logo placement on event website and promotional
-                            materials
-                        </li>
-                        <li>
-                            Access to attendee list for post-event follow-up
-                            (opt-in only)
-                        </li>
-                        <li>
-                            Full access to symposium sessions and networking
-                            events
-                        </li>
-                        <li>Electricity and basic furniture (table, chairs)</li>
-                        <li>Wi-Fi connectivity throughout the venue</li>
-                    </ul>
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Additional Services -->
-                <div
-                    style="
-                        background: #fff5e6;
-                        padding: 20px;
-                        border-radius: 8px;
-                        margin: 20px 0;
-                    "
-                >
-                    <h4 style="color: #2c5f2d; margin: 0 0 10px 0">
-                        🎯 Optional Add-Ons Available:
-                    </h4>
-                    <p style="margin: 10px 0; color: #5c3a21">
-                        Enhance your exhibition experience with:
-                    </p>
-                    <ul
-                        style="
-                            margin: 10px 0;
-                            padding-left: 20px;
-                            color: #5c3a21;
-                        "
-                    >
-                        <li>Speaking slot in plenary or breakout sessions</li>
-                        <li>Sponsored coffee break or lunch session</li>
-                        <li>Premium booth location upgrade</li>
-                        <li>Additional team member badges</li>
-                        <li>Professional booth design and setup service</li>
-                    </ul>
-                    <p style="margin: 10px 0; color: #5c3a21">
-                        Contact us to discuss these opportunities:
-                        <a
-                            href="mailto:exhibitors@pollination.africa"
-                            style="color: #e8b030"
-                            >exhibitors@pollination.africa</a
-                        >
-                    </p>
-                </div>
-
-                <p
-                    style="
-                        background: #e0f2fe;
-                        padding: 15px;
-                        border-radius: 5px;
-                        border-left: 4px solid #0284c7;
-                        margin: 25px 0;
-                    "
-                >
-                    <strong>💡 Exhibitor Portal Coming Soon!</strong> You'll
-                    receive login credentials to manage your booth details,
-                    upload company information, and connect with attendees.
-                </p>
-
-                <p>
-                    Our dedicated exhibitor success team is here to ensure you
-                    have an outstanding experience. Don't hesitate to reach out
-                    with any questions or special requirements.
-                </p>
-
-                <p style="margin-top: 30px">
-                    Looking forward to a successful exhibition!<br />
-                    <strong style="color: #2c5f2d"
-                        >The {{ event_name }} Exhibition Team</strong
-                    >
-                </p>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                <div class="contact-info">
-                    <p><strong>Exhibitor Support Team</strong></p>
+                <!-- Footer -->
+                <div class="email-footer">
+                    <p><strong>Exhibitor Support</strong></p>
                     <p>
-                        📧 Email:
+                        Email:
                         <a href="mailto:exhibitors@pollination.africa"
                             >exhibitors@pollination.africa</a
+                        ><br />
+                        Phone:
+                        <a href="tel:+254719740938">+254 719 740 938</a><br />
+                        WhatsApp:
+                        <a href="https://wa.me/254719740938"
+                            >+254 719 740 938</a
                         >
                     </p>
-                    <p>
-                        📞 Phone:
-                        <a href="tel:{{ whatsapp }}">{{ whatsapp }}</a>
-                    </p>
-                    <p>
-                        💬 WhatsApp:
-                        <a
-                            href="https://wa.me/{{ whatsapp.replace('+', '').replace(' ', '') }}"
-                            >{{ whatsapp }}</a
-                        >
-                    </p>
-                </div>
-                <p style="margin: 20px 0">
-                    <a href="https://pollination.africa/partners"
-                        >Exhibitor Resources</a
-                    >
-                    |
-                    <a href="https://pollination.africa/floor-plan"
-                        >Floor Plan</a
-                    >
-                    |
-                    <a href="https://pollination.africa/setup-guide"
-                        >Setup Guide</a
-                    >
-                </p>
-                <p style="font-size: 12px; opacity: 0.8; margin-top: 20px">
-                    You're receiving this email because {{
-                    registration.company_legal_name }} is registered as an
-                    exhibitor for {{ event_name }}.<br />
-                    Exhibitor Reference: {{ registration.reference_number }}
-                </p>
 
-                <div
-                    style="
-                        margin-top: 25px;
-                        padding-top: 20px;
-                        border-top: 1px solid rgba(255, 255, 255, 0.2);
-                    "
-                >
-                    <p style="font-size: 11px; opacity: 0.7; margin: 5px 0">
-                        Developed and Powered by
-                    </p>
-                    <a
-                        href="https://chach-a.com"
-                        target="_blank"
-                        style="
-                            text-decoration: none;
-                            display: inline-flex;
-                            align-items: center;
-                            margin-top: 8px;
-                        "
-                    >
-                        <img
-                            src="https://www.chach-a.com/logoMark.svg"
-                            alt="Chacha Technologies"
-                            style="
-                                height: 20px;
-                                width: auto;
-                                margin-right: 8px;
-                                vertical-align: middle;
-                            "
-                        />
-                        <span
-                            style="
-                                color: #f5c342;
-                                font-weight: bold;
-                                font-size: 13px;
-                            "
-                            >Chacha Technologies</span
+                    <div class="footer-links">
+                        <a href="{{ website_url }}/partners"
+                            >Exhibitor Portal</a
                         >
-                    </a>
+                        |
+                        <a href="{{ website_url }}/contact">Contact Us</a>
+                    </div>
+
+                    <div class="footer-divider"></div>
+
+                    <p class="footer-small">
+                        This email was sent to {{ registration.email }}
+                        regarding your exhibitor registration for {{ event_name
+                        }}.
+                    </p>
+
+                    <div class="branding">
+                        <p style="font-size: 11px; margin-bottom: 8px">
+                            Powered by
+                        </p>
+                        <a
+                            href="https://chach-a.com"
+                            target="_blank"
+                            class="branding-logo"
+                        >
+                            <img
+                                src="https://www.chach-a.com/logoMark.svg"
+                                alt="Chacha Technologies"
+                            />
+                            <span class="branding-text"
+                                >Chacha Technologies</span
+                            >
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

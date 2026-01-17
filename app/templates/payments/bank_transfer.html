@@ -1,328 +1,109 @@
-{% extends "base.html" %}
-{% block title %}Bank Transfer Payment - {{ event_name }}{% endblock %}
+{% extends "base.html" %} {% block title %}Bank Transfer - {{ event_name }}{%
+endblock %} {% block content %}
 
-{% block content %}
-
-<!-- Hero Section -->
-<div class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20">
-    <!-- Decorative background elements -->
-    <div aria-hidden="true" class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl">
-        <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%);" class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-yellow-400 to-accent-orange opacity-20"></div>
-    </div>
-    <div aria-hidden="true" class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0">
-        <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%);" class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-yellow-400 to-accent-orange opacity-20"></div>
-    </div>
-
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-3xl text-center">
-            <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                Bank Transfer Payment
-            </h1>
-            <p class="mt-4 text-lg text-[#F5C342]">
-                Pollination Africa Symposium 2026 • 3-5 June 2026 • Arusha, Tanzania
-            </p>
-            <p class="mt-3 text-base text-white/90">
-                Complete your payment via bank transfer
-            </p>
-        </div>
-    </div>
-</div>
-
-<!-- Progress Indicator -->
-<div class="bg-white border-b border-gray-200">
-    <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
-        <div class="mx-auto max-w-3xl">
-            <div class="flex items-center justify-between text-sm">
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">✓</div>
-                    <span class="ml-2 text-gray-600">{% if registration.registration_type == 'attendee' %}Select Ticket{% else %}Select Package{% endif %}</span>
-                </div>
-                <div class="flex-1 h-0.5 bg-green-500 mx-4"></div>
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">✓</div>
-                    <span class="ml-2 text-gray-600">Registration</span>
-                </div>
-                <div class="flex-1 h-0.5 bg-accent-yellow mx-4"></div>
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-accent-yellow text-primary-dark font-bold">3</div>
-                    <span class="ml-2 font-semibold text-primary-dark">Payment</span>
-                </div>
-            </div>
-        </div>
+<!-- Header -->
+<div class="bg-primary-dark py-12">
+    <div class="mx-auto max-w-4xl px-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Bank Transfer</h1>
+        <p class="text-white/80">{{ event_name }}</p>
     </div>
 </div>
 
 <!-- Main Content -->
-<div class="container mx-auto px-4 py-12">
-    <div class="max-w-5xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-            <!-- LEFT SIDEBAR - Order Summary -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow-lg border-2 {% if registration.registration_type == 'attendee' %}border-accent-yellow{% else %}border-accent-orange{% endif %} sticky top-6">
-                    <div class="bg-gradient-to-r {% if registration.registration_type == 'attendee' %}from-accent-yellow to-accent-orange{% else %}from-primary-dark to-primary-medium{% endif %} p-4">
-                        <h3 class="text-lg font-bold {% if registration.registration_type == 'attendee' %}text-primary-dark{% else %}text-white{% endif %}">
-                            Payment Summary
-                        </h3>
-                    </div>
-
-                    <div class="p-6">
-                        <!-- Registration Details -->
-                        <div class="mb-4">
-                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Reference Number</p>
-                            <p class="text-sm font-mono font-bold text-primary-dark">{{ registration.reference_number }}</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Name</p>
-                            <p class="text-sm font-semibold">{{ registration.first_name }} {{ registration.last_name }}</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Email</p>
-                            <p class="text-sm">{{ registration.email }}</p>
-                        </div>
-
-                        {% if registration.registration_type == 'attendee' %}
-                        <div class="mb-4">
-                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Ticket Type</p>
-                            <p class="text-sm font-semibold">{{ registration.ticket_type.value|title }}</p>
-                        </div>
-                        {% else %}
-                        <div class="mb-4">
-                            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Package Type</p>
-                            <p class="text-sm font-semibold">{{ registration.package_type.value|title }}</p>
-                        </div>
-                        {% endif %}
-
-                        <hr class="my-4 border-gray-200">
-
-                        <!-- Amount Due -->
-                        <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
-                            <p class="text-xs text-gray-600 uppercase tracking-wide mb-1">Amount Due</p>
-                            <p class="text-3xl font-bold text-accent-orange">
-                                {{ payment.currency }} {{ "{:,.2f}".format(payment.total_amount) }}
-                            </p>
-                        </div>
-
-                        <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                            <p class="text-xs text-blue-800">
-                                <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                </svg>
-                                Payment verification may take 1-2 business days
-                            </p>
-                        </div>
-                    </div>
+<div class="container mx-auto px-6 py-12">
+    <div class="max-w-4xl mx-auto">
+        <!-- Reference & Amount -->
+        <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8"
+        >
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">
+                        Your Reference Number
+                    </p>
+                    <p class="text-2xl font-bold text-primary-dark font-mono">
+                        {{ registration.reference_number }}
+                    </p>
+                    <p class="text-xs text-gray-500 mt-2">
+                        Include this in your transfer description
+                    </p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Amount to Transfer</p>
+                    <p class="text-2xl font-bold text-primary-dark">
+                        {{ payment.currency }} {{
+                        "{:,.2f}".format(payment.total_amount) }}
+                    </p>
+                    <p class="text-xs text-gray-500 mt-2">
+                        {{ registration.first_name }} {{ registration.last_name
+                        }}
+                    </p>
                 </div>
             </div>
+        </div>
 
-            <!-- RIGHT SIDE - Bank Transfer Instructions -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-lg p-8">
+        <!-- Bank Details -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">
+                Bank Account Details
+            </h2>
 
-                    <!-- Alert Box -->
-                    <div class="mb-6 p-4 bg-yellow-50 border-l-4 border-accent-yellow rounded-r-lg">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-accent-yellow" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <h3 class="text-sm font-medium text-yellow-800">Important</h3>
-                                <p class="mt-1 text-sm text-yellow-700">
-                                    Please include your <strong>reference number</strong> in the transfer notes/description to ensure quick processing.
-                                </p>
-                            </div>
-                        </div>
+            <div class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Bank Name</p>
+                        <p class="text-base font-semibold text-gray-900">
+                            {{ bank_details.bank_name }}
+                        </p>
                     </div>
-
-                    <h2 class="text-2xl font-bold text-primary-dark mb-6">
-                        Bank Transfer Instructions
-                    </h2>
-
-                    <!-- Bank Details Card -->
-                    <div class="bg-gradient-to-br from-primary-dark to-primary-medium rounded-lg p-6 mb-6 text-white">
-                        <h3 class="text-lg font-bold mb-4 flex items-center">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                            Bank Account Details
-                        </h3>
-
-                        <div class="space-y-3">
-                            <div>
-                                <p class="text-xs text-yellow-300 uppercase tracking-wide">Bank Name</p>
-                                <p class="text-lg font-bold">{{ bank_details.bank_name }}</p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-yellow-300 uppercase tracking-wide">Account Name</p>
-                                <p class="text-lg font-bold">{{ bank_details.account_name }}</p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-yellow-300 uppercase tracking-wide">Account Number</p>
-                                <p class="text-2xl font-bold font-mono tracking-wider">{{ bank_details.account_number }}</p>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-xs text-yellow-300 uppercase tracking-wide">SWIFT Code</p>
-                                    <p class="text-lg font-bold font-mono">{{ bank_details.swift_code }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-yellow-300 uppercase tracking-wide">Branch</p>
-                                    <p class="text-lg font-bold">{{ bank_details.branch }}</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Branch</p>
+                        <p class="text-base font-semibold text-gray-900">
+                            {{ bank_details.branch }}
+                        </p>
                     </div>
-
-                    <!-- Transfer Details to Include -->
-                    <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-bold text-blue-900 mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                            </svg>
-                            Include in Transfer Notes
-                        </h3>
-                        <div class="space-y-2">
-                            <div class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">1</span>
-                                <div>
-                                    <p class="font-semibold text-blue-900">Reference Number</p>
-                                    <p class="text-sm text-blue-700">{{ registration.reference_number }}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">2</span>
-                                <div>
-                                    <p class="font-semibold text-blue-900">Your Name</p>
-                                    <p class="text-sm text-blue-700">{{ registration.first_name }} {{ registration.last_name }}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
-                                <div>
-                                    <p class="font-semibold text-blue-900">Purpose</p>
-                                    <p class="text-sm text-blue-700">Pollination Symposium 2026 Registration</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Instructions -->
-                    <div class="mb-6">
-                        <h3 class="text-lg font-bold text-primary-dark mb-4">Payment Instructions</h3>
-                        <ol class="space-y-3 text-gray-700">
-                            <li class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-accent-yellow text-primary-dark rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</span>
-                                <span>Log in to your online banking or visit your bank branch</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-accent-yellow text-primary-dark rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
-                                <span>Initiate a transfer to the bank account details provided above</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-accent-yellow text-primary-dark rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
-                                <span>Enter the exact amount: <strong>{{ payment.currency }} {{ "{:,.2f}".format(payment.total_amount) }}</strong></span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-accent-yellow text-primary-dark rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">4</span>
-                                <span>Include your reference number <strong>{{ registration.reference_number }}</strong> in the transfer notes/description</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-accent-yellow text-primary-dark rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">5</span>
-                                <span>Complete the transfer and save your receipt</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="flex-shrink-0 w-6 h-6 bg-accent-yellow text-primary-dark rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">6</span>
-                                <span>We will verify your payment within 1-2 business days and send a confirmation email</span>
-                            </li>
-                        </ol>
-                    </div>
-
-                    <!-- Processing Timeline -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            Processing Timeline
-                        </h3>
-                        <div class="space-y-2 text-sm text-gray-700">
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                <span><strong>Same day:</strong> Your bank processes the transfer</span>
-                            </div>
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                                </svg>
-                                <span><strong>1-2 business days:</strong> We verify and confirm your payment</span>
-                            </div>
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 text-accent-yellow mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                                </svg>
-                                <span><strong>After verification:</strong> You receive confirmation email and badge</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="{{ url_for('register.confirmation', ref=registration.reference_number) }}" class="flex-1 px-6 py-3 bg-primary-dark text-white font-bold rounded-lg hover:bg-primary-medium transition-all shadow-md hover:shadow-lg text-center">
-                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                            </svg>
-                            Back to Confirmation
-                        </a>
-                        <a href="{{ url_for('payments.checkout', ref=registration.reference_number) }}" class="flex-1 px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition-all text-center">
-                            Choose Different Method
-                        </a>
-                    </div>
-
                 </div>
 
-                <!-- Support Contact -->
-                <div class="mt-6 bg-white rounded-lg shadow-lg p-6 border-l-4 border-accent-yellow">
-                    <h3 class="text-lg font-bold text-primary-dark mb-3 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
-                        </svg>
-                        Need Help?
-                    </h3>
-                    <p class="text-gray-700 mb-3">If you have any questions about the bank transfer process, please contact us:</p>
-                    <div class="space-y-2 text-sm">
-                        <p class="flex items-center text-gray-700">
-                            <svg class="w-4 h-4 mr-2 text-accent-yellow" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                            </svg>
-                            <strong>Email:</strong> <a href="mailto:info@pollination.africa" class="text-primary-dark hover:text-accent-yellow ml-1">info@pollination.africa</a>
+                <div>
+                    <p class="text-sm text-gray-600">Account Name</p>
+                    <p class="text-base font-semibold text-gray-900">
+                        {{ bank_details.account_name }}
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Account Number</p>
+                        <p class="text-lg font-bold text-gray-900 font-mono">
+                            {{ bank_details.account_number }}
                         </p>
-                        <p class="flex items-center text-gray-700">
-                            <svg class="w-4 h-4 mr-2 text-accent-yellow" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                            </svg>
-                            <strong>Phone:</strong> <span class="ml-1">+254 719 740 938</span>
-                        </p>
-                        <p class="flex items-center text-gray-700">
-                            <svg class="w-4 h-4 mr-2 text-accent-yellow" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
-                            </svg>
-                            <strong>WhatsApp:</strong> <span class="ml-1">+254 719 740 938</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">SWIFT Code</p>
+                        <p class="text-lg font-bold text-gray-900 font-mono">
+                            {{ bank_details.swift_code }}
                         </p>
                     </div>
                 </div>
             </div>
 
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-600">
+                    Payment verification typically takes 1-2 business days. You
+                    will receive a confirmation email once your payment is
+                    verified.
+                </p>
+            </div>
+        </div>
+
+        <!-- Action -->
+        <div class="mt-8 text-center">
+            <a
+                href="{{ url_for('register.confirmation', ref=registration.reference_number) }}"
+                class="inline-block px-6 py-3 bg-primary-dark text-white font-semibold rounded hover:bg-primary-medium transition"
+            >
+                Return to Confirmation
+            </a>
         </div>
     </div>
 </div>

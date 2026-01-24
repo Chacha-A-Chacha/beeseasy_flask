@@ -1,0 +1,43 @@
+{{ event_name }}
+Verify Your Email Address
+
+================================================================================
+
+Hello,
+
+Thank you for subscribing to receive updates about {{ event_name }}. To complete your subscription, please verify your email address.
+
+VERIFY YOUR EMAIL
+-----------------
+Click the link below to verify your email address:
+{{ verify_url }}
+
+Once verified, you'll receive updates about:
+- Registration opening announcements
+- Speaker and session updates
+- Event schedule and agenda releases
+- Important event information
+
+================================================================================
+
+DIDN'T SUBSCRIBE?
+If you didn't request this subscription, you can safely ignore this email or unsubscribe here:
+{{ unsubscribe_url }}
+
+================================================================================
+
+Best regards,
+The {{ event_name }} Team
+
+{{ event_date }} | {{ event_location }}
+
+Visit Website: {{ website_url }}
+Contact Us: {{ contact_email }}
+
+================================================================================
+
+This email was sent to {{ email }} because you subscribed to our newsletter.
+To unsubscribe, visit: {{ unsubscribe_url }}
+
+Developed and Powered by Chacha Technologies
+https://chach-a.com

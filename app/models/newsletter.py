@@ -71,7 +71,7 @@ class NewsletterSubscription(db.Model):
         self.verification_token = None
         self.updated_at = datetime.now()
 
-    def unsubscribe(self, reason: str = None):
+    def unsubscribe(self, reason: str | None = None):
         """Unsubscribe from newsletter"""
         self.is_active = False
         self.unsubscribed_at = datetime.now()

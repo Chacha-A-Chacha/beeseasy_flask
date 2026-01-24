@@ -15,7 +15,7 @@ Key Features:
 import re
 import secrets
 import string
-from datetime import date, datetime, time
+from datetime import date, datetime
 from decimal import Decimal
 from enum import Enum
 from typing import Any, Dict, List, Optional
@@ -25,13 +25,11 @@ from sqlalchemy import (
     CheckConstraint,
     Index,
     UniqueConstraint,
-    and_,
-    event,
     func,
     or_,
 )
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref, relationship, validates
+from sqlalchemy.orm import relationship, validates
 
 from app.extensions import db
 

@@ -1,0 +1,147 @@
+{# Registration Coming Soon Overlay Component #} {# Shows when registration is
+not yet open #}
+
+<div
+    id="registrationOverlay"
+    class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    style="display: none"
+>
+    <div
+        class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 border-4 border-accent-yellow relative overflow-hidden"
+    >
+        {# Decorative Background Pattern #}
+        <div
+            class="absolute inset-0 opacity-5"
+            style="background-image: url('{{ url_for('static', filename='images/speakers/pattern.svg') }}'); background-size: cover;"
+        ></div>
+
+        {# Content #}
+        <div class="relative p-8 text-center">
+            {# Icon #}
+            <div
+                class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-br from-accent-yellow to-accent-orange mb-6 shadow-lg"
+            >
+                <svg
+                    class="h-10 w-10 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                    />
+                </svg>
+            </div>
+
+            {# Heading #}
+            <h3 class="text-3xl font-bold text-primary-dark mb-3">
+                Registration Opening Soon!
+            </h3>
+
+            {# Message #}
+            <p class="text-gray-600 mb-2 text-lg font-medium">
+                We're finalizing the details.
+            </p>
+            <p class="text-gray-600 mb-6">
+                Registration for
+                <span class="font-semibold text-primary-dark"
+                    >{{ event_name }}</span
+                >
+                will open shortly. Be among the first to secure your spot at
+                Africa's premier pollinator conservation summit.
+            </p>
+
+            {# Info Box #}
+            <div
+                class="bg-accent-yellow/10 border border-accent-yellow/30 rounded-lg p-4 mb-6"
+            >
+                <p class="text-sm text-gray-700">
+                    <span class="font-semibold text-primary-dark"
+                        >Event Date:</span
+                    ><br />
+                    {{ event_date }}<br />
+                    <span class="font-semibold text-primary-dark"
+                        >Location:</span
+                    ><br />
+                    {{ event_location }}
+                </p>
+            </div>
+
+            {# CTA Buttons #}
+            <div class="space-y-3">
+                <a
+                    href="{{ url_for('main.contact') }}"
+                    class="block w-full px-6 py-3 bg-accent-orange text-white font-semibold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 shadow-lg"
+                >
+                    Get Notified When Registration Opens
+                </a>
+                <button
+                    onclick="closeRegistrationOverlay()"
+                    class="block w-full px-6 py-3 bg-transparent border-2 border-gray-300 text-gray-700 font-semibold rounded-full hover:border-primary-dark hover:text-primary-dark transition-all duration-300"
+                >
+                    Continue Browsing
+                </button>
+            </div>
+
+            {# Social Proof #}
+            <p class="mt-6 text-xs text-gray-500">
+                Join
+                <span class="font-bold text-primary-dark">500+</span>
+                participants from across Africa
+            </p>
+        </div>
+    </div>
+</div>
+
+{# JavaScript for Overlay Control #}
+<script>
+    // Show overlay when registration links are clicked
+    function showRegistrationOverlay(event) {
+        event.preventDefault();
+        const overlay = document.getElementById("registrationOverlay");
+        if (overlay) {
+            overlay.style.display = "flex";
+            document.body.style.overflow = "hidden"; // Prevent scrolling
+        }
+    }
+
+    // Close overlay
+    function closeRegistrationOverlay() {
+        const overlay = document.getElementById("registrationOverlay");
+        if (overlay) {
+            overlay.style.display = "none";
+            document.body.style.overflow = ""; // Restore scrolling
+        }
+    }
+
+    // Close on ESC key
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeRegistrationOverlay();
+        }
+    });
+
+    // Close when clicking outside the modal
+    document
+        .getElementById("registrationOverlay")
+        ?.addEventListener("click", function (event) {
+            if (event.target === this) {
+                closeRegistrationOverlay();
+            }
+        });
+
+    // Attach event listeners to all registration links
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all links that contain registration routes
+        const registrationLinks = document.querySelectorAll(
+            'a[href*="/register/"]',
+        );
+        console.log("Found registration links:", registrationLinks.length);
+        registrationLinks.forEach((link) => {
+            link.addEventListener("click", showRegistrationOverlay);
+        });
+    });
+</script>

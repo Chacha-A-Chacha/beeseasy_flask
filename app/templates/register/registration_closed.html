@@ -1,0 +1,154 @@
+{% extends "base.html" %} {% block title %}Registration Opening Soon - {{
+event_name }}{% endblock %} {% block content %}
+<div class="relative isolate overflow-hidden bg-white">
+    <!-- Hero Section -->
+    <div class="relative py-24 sm:py-32">
+        <img
+            src="{{ url_for('static', filename='images/speakers/pattern.svg') }}"
+            alt=""
+            class="absolute inset-0 -z-10 h-full w-full object-cover opacity-5"
+        />
+        <div
+            class="absolute inset-0 -z-10 bg-gradient-to-b from-primary-medium/10 to-white"
+        ></div>
+
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <!-- Icon -->
+                <div
+                    class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-gradient-to-br from-accent-yellow to-accent-orange mb-8 shadow-xl"
+                >
+                    <svg
+                        class="h-12 w-12 text-primary-dark"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                        />
+                    </svg>
+                </div>
+
+                <!-- Heading -->
+                <h1
+                    class="text-4xl font-bold tracking-tight text-primary-dark sm:text-6xl mb-6"
+                >
+                    Registration Opening Soon!
+                </h1>
+
+                <!-- Message -->
+                <p class="text-xl text-gray-600 mb-4">
+                    We're finalizing the details for {{ event_name }}.
+                </p>
+                <p class="text-lg text-gray-600 mb-8">
+                    {% if registration_type == "attendee" %} Delegate
+                    registration will open shortly. Be among the first to secure
+                    your spot at Africa's premier pollinator conservation
+                    summit. {% elif registration_type == "exhibitor" %}
+                    Exhibitor registration will open shortly. Reserve your space
+                    to showcase your work at Africa's premier pollinator
+                    conservation summit. {% else %} Registration will open
+                    shortly. {% endif %}
+                </p>
+
+                <!-- Event Details Box -->
+                <div
+                    class="bg-primary-medium/10 border-2 border-primary-medium/30 rounded-2xl p-8 mb-12 text-left"
+                >
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <p
+                                class="text-sm font-semibold text-accent-orange uppercase tracking-wide mb-2"
+                            >
+                                Event Date
+                            </p>
+                            <p class="text-lg font-bold text-primary-dark">
+                                {{ event_date }}
+                            </p>
+                        </div>
+                        <div>
+                            <p
+                                class="text-sm font-semibold text-accent-orange uppercase tracking-wide mb-2"
+                            >
+                                Location
+                            </p>
+                            <p class="text-lg font-bold text-primary-dark">
+                                {{ event_location }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div
+                    class="bg-white border-2 border-accent-yellow rounded-2xl p-8 mb-8"
+                >
+                    <h3 class="text-2xl font-bold text-primary-dark mb-4">
+                        Be the First to Know
+                    </h3>
+                    <p class="text-gray-600 mb-6">
+                        Get notified when registration opens and receive
+                        exclusive updates about {{ event_short_name }}.
+                    </p>
+
+                    <form
+                        action="{{ url_for('main.contact') }}"
+                        method="get"
+                        class="flex flex-col sm:flex-row gap-3"
+                    >
+                        <input
+                            type="email"
+                            name="notify"
+                            placeholder="Enter your email"
+                            required
+                            class="flex-1 rounded-full border-0 bg-white px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange text-base"
+                        />
+                        <button
+                            type="submit"
+                            class="rounded-full bg-accent-orange px-8 py-3 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
+                        >
+                            Notify Me
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Back Button -->
+                <div class="flex justify-center">
+                    <a
+                        href="{{ url_for('main.index') }}"
+                        class="inline-flex items-center text-primary-dark hover:text-accent-orange transition-colors font-semibold"
+                    >
+                        <svg
+                            class="w-5 h-5 mr-2"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                            />
+                        </svg>
+                        Back to Home
+                    </a>
+                </div>
+
+                <!-- Social Proof -->
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <p class="text-sm text-gray-500">
+                        Join
+                        <span class="font-bold text-primary-dark">500+</span>
+                        participants from across Africa
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

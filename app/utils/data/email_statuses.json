@@ -1,32 +1,32 @@
 {
-  "registration_received_attendee_1768902629_calex.chacha": {
-    "task_id": "registration_received_attendee_1768902629_calex.chacha",
-    "recipient": "calex.chacha@outlook.com",
-    "subject": "Registration Received - Complete Payment",
-    "group_id": "notification_registration_received_attendee",
-    "batch_id": "single_registration_received_attendee_1768902629",
+  "contact_team_1769291462_info": {
+    "task_id": "contact_team_1769291462_info",
+    "recipient": "info@pollination.africa",
+    "subject": "[SPONSORSHIP] Customer experience",
+    "group_id": "notification_contact_team",
+    "batch_id": "single_contact_team_1769291462",
     "status": "sent",
     "attempts": 1,
     "max_attempts": 3,
-    "timestamp": "2026-01-20T12:50:29.125040",
-    "last_attempt": "2026-01-20T12:50:29.125040",
-    "sent_time": "2026-01-20T12:50:35.561146",
-    "error": null,
-    "priority": 1
-  },
-  "payment_confirmed_attendee_1768902770_calex.chacha": {
-    "task_id": "payment_confirmed_attendee_1768902770_calex.chacha",
-    "recipient": "calex.chacha@outlook.com",
-    "subject": "Payment Confirmed - Your Badge is Ready",
-    "group_id": "notification_payment_confirmed_attendee",
-    "batch_id": "single_payment_confirmed_attendee_1768902770",
-    "status": "sent",
-    "attempts": 1,
-    "max_attempts": 3,
-    "timestamp": "2026-01-20T12:52:50.903052",
-    "last_attempt": "2026-01-20T12:52:50.904049",
-    "sent_time": "2026-01-20T12:52:59.509964",
+    "timestamp": "2026-01-25T00:51:02.018758",
+    "last_attempt": "2026-01-25T00:51:02.018758",
+    "sent_time": "2026-01-25T00:51:05.775104",
     "error": null,
     "priority": 0
+  },
+  "contact_confirmation_1769291462_calex2607": {
+    "task_id": "contact_confirmation_1769291462_calex2607",
+    "recipient": "calex2607@gmail.com",
+    "subject": "We've received your inquiry - Customer experience",
+    "group_id": "notification_contact_confirmation",
+    "batch_id": "single_contact_confirmation_1769291462",
+    "status": "sent",
+    "attempts": 1,
+    "max_attempts": 3,
+    "timestamp": "2026-01-25T00:51:02.034074",
+    "last_attempt": "2026-01-25T00:51:05.775104",
+    "sent_time": "2026-01-25T00:51:10.343936",
+    "error": null,
+    "priority": 1
   }
 }

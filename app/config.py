@@ -179,6 +179,9 @@ class Config:
     SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+254 719 740 938")
     WEBSITE_URL: str = os.getenv("WEBSITE_URL", "https://pollination.africa")
 
+    # --- Registration Settings ---
+    REGISTRATION_OPEN: bool = os.getenv("REGISTRATION_OPEN", "False").lower() == "true"
+
     # --- Other Options ---
     DEBUG_TB_INTERCEPT_REDIRECTS: bool = False
     CORS_HEADERS: str = "Content-Type"

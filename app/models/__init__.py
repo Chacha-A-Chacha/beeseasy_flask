@@ -1,4 +1,5 @@
 from app.models.contact import ContactMessage
+from app.models.newsletter import NewsletterSubscription
 from app.models.payment import (
     EmailLog,
     ExchangeRate,
@@ -56,4 +57,5 @@ __all__ = [
     "User",
     "UserRole",
     "ContactMessage",
+    "NewsletterSubscription",
 ]

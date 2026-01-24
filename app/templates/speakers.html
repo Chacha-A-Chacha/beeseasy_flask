@@ -667,28 +667,35 @@ document: Guest of Honor is TBC ============================================ #}
                 We're continuously confirming exceptional speakers. Be the first
                 to know when we announce new additions to our lineup.
             </p>
-            <div class="mt-10 flex items-center justify-center gap-3">
-                <div class="w-full max-w-md">
-                    <label for="email-address" class="sr-only"
-                        >Email address</label
+            <form id="speakersNewsletterForm" class="mt-10">
+                <div class="flex items-center justify-center gap-3">
+                    <div class="w-full max-w-md">
+                        <label for="speakers-email-address" class="sr-only"
+                            >Email address</label
+                        >
+                        <input
+                            id="speakers-email-address"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            required
+                            class="w-full rounded-full border-0 bg-white px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange text-base"
+                            placeholder="Enter your email"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        id="speakersSubmitBtn"
+                        class="flex-none rounded-full bg-accent-orange px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"
                     >
-                    <input
-                        id="email-address"
-                        name="email"
-                        type="email"
-                        autocomplete="email"
-                        required
-                        class="w-full rounded-full border-0 bg-white px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange text-base"
-                        placeholder="Enter your email"
-                    />
+                        Notify Me
+                    </button>
                 </div>
-                <button
-                    type="submit"
-                    class="flex-none rounded-full bg-accent-orange px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"
-                >
-                    Notify Me
-                </button>
-            </div>
+                <p
+                    id="speakersFormMessage"
+                    class="mt-3 text-sm text-center hidden"
+                ></p>
+            </form>
             <p class="mt-6 text-sm text-gray-600">
                 Or follow us on social media for the latest updates:
                 <a
@@ -711,4 +718,84 @@ document: Guest of Honor is TBC ============================================ #}
     </div>
 </div>
 
+<script>
+    // Get CSRF token from meta tag
+    function getCSRFToken() {
+        return document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute("content");
+    }
+
+    // Show message
+    function showSpeakersMessage(message, isError = false) {
+        const messageEl = document.getElementById("speakersFormMessage");
+        messageEl.textContent = message;
+        messageEl.className = `mt-3 text-sm text-center ${isError ? "text-red-600" : "text-green-600"}`;
+        messageEl.classList.remove("hidden");
+    }
+
+    // Handle newsletter form submission
+    document.addEventListener("DOMContentLoaded", function () {
+        const speakersForm = document.getElementById("speakersNewsletterForm");
+        if (speakersForm) {
+            speakersForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const emailInput = document.getElementById(
+                    "speakers-email-address",
+                );
+                const submitBtn = document.getElementById("speakersSubmitBtn");
+                const messageEl = document.getElementById(
+                    "speakersFormMessage",
+                );
+
+                const email = emailInput.value.trim();
+
+                if (!email) {
+                    showSpeakersMessage(
+                        "Please enter your email address",
+                        true,
+                    );
+                    return;
+                }
+
+                // Disable form
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Subscribing...";
+                messageEl.classList.add("hidden");
+
+                try {
+                    const response = await fetch("/newsletter/subscribe", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": getCSRFToken(),
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            source: "speakers_page",
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showSpeakersMessage(data.message, false);
+                        emailInput.value = "";
+                    } else {
+                        showSpeakersMessage(data.message, true);
+                    }
+                } catch (error) {
+                    showSpeakersMessage(
+                        "An error occurred. Please try again.",
+                        true,
+                    );
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Notify Me";
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

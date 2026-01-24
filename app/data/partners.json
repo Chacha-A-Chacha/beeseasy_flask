@@ -1,0 +1,227 @@
+{
+  "partners": [
+    {
+      "slug": "worker-bees-africa",
+      "name": "Worker Bees Africa",
+      "full_name": "Worker Bees Africa",
+      "logo_file": "worker-bees-africa.png",
+      "alt_text": "Worker Bees Africa logo - NGO dedicated to pollinator conservation and community empowerment in Tanzania",
+      "description": "A registered NGO in Tanzania dedicated to pollinator conservation and community empowerment. They blend conservation with socio-economic development, running education and advocacy programs. Founded by Ally Saburi, they highlight bees' role in biodiversity and food security.",
+      "website": "",
+      "tier": "platinum",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 0,
+      "is_active": true,
+      "seo": {
+        "title": "Worker Bees Africa - Pollinator Conservation NGO | Pollination Africa Summit Partner",
+        "keywords": [
+          "pollinator conservation",
+          "community empowerment",
+          "Tanzania",
+          "bee conservation",
+          "biodiversity",
+          "food security",
+          "NGO"
+        ],
+        "og_description": "Worker Bees Africa is a registered NGO dedicated to pollinator conservation and community empowerment, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "tapido",
+      "name": "TAPIDO",
+      "full_name": "Tanzania Apiculture Development Organization",
+      "logo_file": "tapido.jpeg",
+      "alt_text": "TAPIDO logo - Tanzania Apiculture Development Organization promoting sustainable beekeeping and environmental conservation",
+      "description": "Tanzania Apiculture Development Organization promotes sustainable beekeeping, environmental conservation, and community empowerment. They run training workshops, produce educational materials, and support women and youth in apiculture. Their mission is to improve livelihoods through honey production and pollinator conservation.",
+      "website": "",
+      "tier": "gold",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 1,
+      "is_active": true,
+      "seo": {
+        "title": "TAPIDO - Tanzania Apiculture Development | Pollination Africa Summit Partner",
+        "keywords": [
+          "apiculture",
+          "beekeeping",
+          "Tanzania",
+          "sustainable beekeeping",
+          "honey production",
+          "community empowerment",
+          "women in beekeeping"
+        ],
+        "og_description": "TAPIDO promotes sustainable beekeeping and environmental conservation in Tanzania, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "nan-organik-house",
+      "name": "NAN Organik House",
+      "full_name": "NAN Organik House",
+      "logo_file": "nan-organik-nigeria.jpeg",
+      "alt_text": "NAN Organik House logo - Beekeeping agribusiness and honeybee products from Nigeria",
+      "description": "An agribusiness venture focused on beekeeping and honeybee products including honey, beeswax, and royal jelly. They train and empower rural communities, women, and youth in modern beekeeping. Founded in Makurdi, Nigeria, by entrepreneur Abigail Anyorikyo.",
+      "website": "",
+      "tier": "gold",
+      "category": "corporate_sponsor",
+      "country": "Nigeria",
+      "display_order": 2,
+      "is_active": true,
+      "seo": {
+        "title": "NAN Organik House - Beekeeping Agribusiness | Pollination Africa Summit Partner",
+        "keywords": [
+          "beekeeping",
+          "honey products",
+          "Nigeria",
+          "agribusiness",
+          "beeswax",
+          "royal jelly",
+          "women empowerment",
+          "rural communities"
+        ],
+        "og_description": "NAN Organik House is a beekeeping agribusiness empowering rural communities in Nigeria, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "grc-green-rural-community",
+      "name": "Green Rural Community",
+      "full_name": "Green Rural Community",
+      "logo_file": "grc-green-rural-community.jpeg",
+      "alt_text": "Green Rural Community logo - Sustainable rural development and environmental conservation",
+      "description": "A grassroots organization focused on sustainable rural development including environmental conservation, apiculture and agriculture support, community empowerment, and green initiatives. They promote eco-friendly farming, reforestation, beekeeping, organic farming, and climate resilience in rural areas.",
+      "website": "",
+      "tier": "gold",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 3,
+      "is_active": true,
+      "seo": {
+        "title": "Green Rural Community - Sustainable Rural Development | Pollination Africa Summit Partner",
+        "keywords": [
+          "sustainable development",
+          "rural communities",
+          "environmental conservation",
+          "organic farming",
+          "beekeeping",
+          "climate resilience",
+          "Tanzania"
+        ],
+        "og_description": "Green Rural Community promotes sustainable rural development and environmental conservation, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "female-guides-community-initiative",
+      "name": "Female Guides Community Initiative",
+      "full_name": "Female Guides Community Initiative",
+      "logo_file": "female-guides-community-initiative.jpg",
+      "alt_text": "Female Guides Community Initiative logo - Empowering women tour guides in Tanzania",
+      "description": "Based in Moshi, Tanzania, this initiative supports women aspiring to become tour guides. They provide tuition, field gear, accommodation, and psychological support. Their mission is to reduce gender imbalance in the tourism sector and empower women with professional skills.",
+      "website": "",
+      "tier": "silver",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 4,
+      "is_active": true,
+      "seo": {
+        "title": "Female Guides Community Initiative - Women Empowerment in Tourism | Pollination Africa Summit Partner",
+        "keywords": [
+          "women empowerment",
+          "tour guides",
+          "gender equality",
+          "tourism",
+          "Tanzania",
+          "Moshi",
+          "professional development"
+        ],
+        "og_description": "Female Guides Community Initiative empowers women in Tanzania's tourism sector, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "nat-dmc",
+      "name": "NAT DMC",
+      "full_name": "North American Travel Destination Management Company",
+      "logo_file": "nat-dmc.png",
+      "alt_text": "NAT DMC logo - Professional destination management company for events and conferences",
+      "description": "A professional destination management company specializing in organizing events, conferences, and group travel logistics. They provide transport fleets, communication systems, and end-to-end event coordination for seamless event experiences.",
+      "website": "",
+      "tier": "silver",
+      "category": "corporate_sponsor",
+      "country": "Mexico",
+      "display_order": 5,
+      "is_active": true,
+      "seo": {
+        "title": "NAT DMC - Destination Management Company | Pollination Africa Summit Partner",
+        "keywords": [
+          "destination management",
+          "event planning",
+          "conferences",
+          "travel logistics",
+          "event coordination",
+          "DMC"
+        ],
+        "og_description": "NAT DMC provides professional event and conference management services, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "chacha-technologies",
+      "name": "Chacha Technologies",
+      "full_name": "Chacha Technologies",
+      "logo_file": "chacha-technologies.svg",
+      "alt_text": "Chacha Technologies logo - Web development and system integration partner",
+      "description": "A web development and system integration firm specializing in custom websites, payment gateway integration (e.g., M-Pesa APIs), and digital transformation consulting. Their focus is on scalable, reliable tech solutions for businesses.",
+      "website": "",
+      "tier": "silver",
+      "category": "corporate_sponsor",
+      "country": "Kenya",
+      "display_order": -1,
+      "is_active": true,
+      "seo": {
+        "title": "Chacha Technologies - Web Development Partner | Pollination Africa Summit",
+        "keywords": [
+          "web development",
+          "system integration",
+          "payment gateways",
+          "M-Pesa",
+          "digital transformation",
+          "Kenya",
+          "tech solutions"
+        ],
+        "og_description": "Chacha Technologies provides web development and system integration services, partnering with Pollination Africa Summit 2026."
+      }
+    }
+  ],
+  "tiers": {
+    "platinum": {
+      "name": "Platinum Partners",
+      "display_order": 1,
+      "logo_height": "80px",
+      "max_width": "250px"
+    },
+    "gold": {
+      "name": "Gold Partners",
+      "display_order": 2,
+      "logo_height": "60px",
+      "max_width": "200px"
+    },
+    "silver": {
+      "name": "Silver Partners",
+      "display_order": 3,
+      "logo_height": "50px",
+      "max_width": "180px"
+    },
+    "bronze": {
+      "name": "Bronze Partners",
+      "display_order": 4,
+      "logo_height": "40px",
+      "max_width": "160px"
+    }
+  },
+  "categories": {
+    "corporate_sponsor": "Corporate Sponsors",
+    "development_partner": "Development Partners",
+    "media_partner": "Media Partners",
+    "academic_partner": "Academic & Research Partners",
+    "government_partner": "Government Partners",
+    "technology_partner": "Technology Partners"
+  }
+}

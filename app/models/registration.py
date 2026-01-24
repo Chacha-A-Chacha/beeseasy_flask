@@ -588,13 +588,7 @@ class Registration(db.Model):
         UniqueConstraint(
             "email", "registration_type", "is_deleted", name="uq_email_type_active"
         ),
-        CheckConstraint(
-            r"email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'",
-            name="check_valid_email",
-        ),
-        CheckConstraint(
-            r"phone_country_code ~ '^\+[0-9]{1,4}$'", name="check_valid_country_code"
-        ),
+        # Note: Email and phone validation moved to application layer (SQLite doesn't support regex in CHECK constraints)
         Index("idx_status_created", "status", "created_at"),
         Index("idx_email_lower", func.lower("email")),
         Index("idx_reference_number", "reference_number"),

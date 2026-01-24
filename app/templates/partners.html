@@ -371,7 +371,7 @@
 <!-- ============================================ -->
 <div class="bg-gray-50 py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl lg:text-center">
+        <div class="mx-auto max-w-2xl lg:text-center mb-16">
             <h2 class="text-base/7 font-semibold text-accent-orange">
                 Our Partners
             </h2>
@@ -386,55 +386,27 @@
             </p>
         </div>
 
-        <!-- Partner Logos Grid -->
-        <div
-            class="mx-auto mt-16 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5"
-        >
-            <!-- Placeholder logos - replace with actual partner logos -->
-            <img
-                width="158"
-                height="48"
-                src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?auto=format&fit=crop&w=200&h=60&q=80"
-                alt="Partner 1"
-                class="col-span-2 max-h-12 w-full object-contain grayscale hover:grayscale-0 transition-all lg:col-span-1"
-            />
-            <img
-                width="158"
-                height="48"
-                src="https://images.unsplash.com/photo-1516245834210-c4c142787335?auto=format&fit=crop&w=200&h=60&q=80"
-                alt="Partner 2"
-                class="col-span-2 max-h-12 w-full object-contain grayscale hover:grayscale-0 transition-all lg:col-span-1"
-            />
-            <img
-                width="158"
-                height="48"
-                src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=200&h=60&q=80"
-                alt="Partner 3"
-                class="col-span-2 max-h-12 w-full object-contain grayscale hover:grayscale-0 transition-all lg:col-span-1"
-            />
-            <img
-                width="158"
-                height="48"
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&h=60&q=80"
-                alt="Partner 4"
-                class="col-span-2 max-h-12 w-full object-contain grayscale hover:grayscale-0 transition-all sm:col-start-2 lg:col-span-1"
-            />
-            <img
-                width="158"
-                height="48"
-                src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&h=60&q=80"
-                alt="Partner 5"
-                class="col-span-2 col-start-2 max-h-12 w-full object-contain grayscale hover:grayscale-0 transition-all sm:col-start-auto lg:col-span-1"
-            />
+        {# Partner Logos Display - Fixed Height Layout #} {# All logos display
+        at same height with variable width #} {# Logos show in full color with
+        subtle hover effects #}
+        <div class="mt-16">
+            {% set style = 'fixed-height' %} {% include
+            'components/partner_logos.html' %}
         </div>
+
+        {# Alternative layouts available in component: #} {# - 'fixed-width':
+        All logos same width, variable height #} {# - 'contained': Bordered card
+        boxes, premium look #} {# - 'flexible': Modern grid with fixed aspect
+        ratio #} {# - 'masonry': Pinterest-style columns #}
 
         <div class="mt-16 flex justify-center">
             <p
                 class="relative rounded-full bg-white px-4 py-1.5 text-sm/6 text-gray-600 ring-1 ring-inset ring-primary-dark/10"
             >
                 <span class="hidden md:inline"
-                    >Join 15+ organizations supporting pollinator conservation
-                    in Africa.</span
+                    >Join {{ partners|length if partners else '4' }}+
+                    organizations supporting pollinator conservation in
+                    Africa.</span
                 >
                 <a
                     href="{{ url_for('main.contact') }}"

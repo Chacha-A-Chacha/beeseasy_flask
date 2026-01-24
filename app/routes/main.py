@@ -1,3 +1,5 @@
+import json
+import os
 from pathlib import Path
 
 from flask import (
@@ -41,8 +43,45 @@ def speakers():
 
 @main_bp.route("/partners")
 def partners():
-    # Pass a list of speakers from DB (or stub) to template
-    return render_template("partners.html")
+    """Partners page with partner logos from JSON data"""
+    # Load partners data from JSON
+    json_path = os.path.join(os.path.dirname(__file__), "..", "data", "partners.json")
+
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            partners_data = json.load(f)
+
+        # Sort partners by display_order and add logo_url
+        partners_list = sorted(
+            partners_data["partners"], key=lambda x: x["display_order"]
+        )
+
+        # Add logo_url to each partner
+        for partner in partners_list:
+            partner["logo_url"] = url_for(
+                "static", filename=f"images/partners/{partner['logo_file']}"
+            )
+
+        # Group by tier
+        partners_by_tier = {}
+        for partner in partners_list:
+            if partner["is_active"]:
+                tier = partner["tier"]
+                if tier not in partners_by_tier:
+                    partners_by_tier[tier] = []
+                partners_by_tier[tier].append(partner)
+
+        return render_template(
+            "partners.html",
+            partners=partners_list,
+            partners_by_tier=partners_by_tier,
+            tiers=partners_data["tiers"],
+        )
+    except FileNotFoundError:
+        # Fallback if JSON doesn't exist
+        return render_template(
+            "partners.html", partners=[], partners_by_tier={}, tiers={}
+        )
 
 
 @main_bp.route("/agenda")

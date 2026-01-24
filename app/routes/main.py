@@ -37,8 +37,37 @@ def about():
 
 @main_bp.route("/speakers")
 def speakers():
-    # Pass a list of speakers from DB (or stub) to template
-    return render_template("speakers.html")
+    """Speakers page with speaker data from JSON"""
+    # Load speakers data from JSON
+    json_path = os.path.join(os.path.dirname(__file__), "..", "data", "speakers.json")
+
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            speakers_data = json.load(f)
+
+        # Sort speakers by display_order
+        speakers_list = sorted(
+            speakers_data["speakers"], key=lambda x: x["display_order"]
+        )
+
+        # Add photo_url to each speaker
+        for speaker in speakers_list:
+            speaker["photo_url"] = url_for(
+                "static", filename=f"images/speakers/{speaker['photo_file']}"
+            )
+
+        # Filter only active speakers
+        active_speakers = [s for s in speakers_list if s.get("is_active", True)]
+
+        return render_template(
+            "speakers.html",
+            speakers=active_speakers,
+            categories=speakers_data["categories"],
+            sessions=speakers_data["sessions"],
+        )
+    except FileNotFoundError:
+        # Fallback if JSON doesn't exist
+        return render_template("speakers.html", speakers=[], categories={}, sessions={})
 
 
 @main_bp.route("/partners")

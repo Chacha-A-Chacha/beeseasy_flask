@@ -89,24 +89,132 @@ endblock %} {% block content %}
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 2: SPEAKERS COMING SOON -->
+<!-- SECTION 2: KEYNOTE SPEAKERS -->
 <!-- ============================================ -->
-<div class="bg-primary-dark py-24 sm:py-32">
+<div class="bg-white py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl lg:text-center">
+        <div class="mx-auto max-w-2xl lg:max-w-4xl">
             <h2 class="text-base/7 font-semibold text-accent-orange">
                 Featured Speakers
             </h2>
             <p
-                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance"
+                class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-primary-dark sm:text-5xl"
             >
-                Speakers Coming Soon
+                Keynote Speakers
             </p>
-            <p class="mt-6 text-lg/8 text-gray-300">
-                We are assembling an exceptional lineup of scientists,
-                policymakers, innovators, and practitioners. Confirmed speakers
-                and their session details will be announced in due course.
+            <p class="mt-6 text-lg/8 text-gray-600">
+                Meet our distinguished keynote speakers bringing expertise from
+                across the globe in beekeeping, research, and pollinator
+                conservation.
             </p>
+
+            {# Speaker Cards #}
+            <div class="mt-16 space-y-20 lg:mt-20">
+                {% if speakers %} {% for speaker in speakers %}
+                <article
+                    class="relative isolate flex flex-col gap-8 lg:flex-row"
+                >
+                    {# Speaker Photo #}
+                    <div
+                        class="relative aspect-square sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0 lg:max-h-64"
+                    >
+                        {# Pattern Background #}
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-primary-medium"
+                            style="background-image: url('{{ url_for('static', filename='images/speakers/pattern.svg') }}'); background-size: cover; background-position: center;"
+                        ></div>
+                        {# Speaker Photo #}
+                        <img
+                            src="{{ speaker.photo_url }}"
+                            alt="{{ speaker.full_name }}"
+                            class="absolute inset-0 size-full rounded-2xl object-cover object-top sm:object-center lg:object-center"
+                        />
+                        <div
+                            class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"
+                        ></div>
+                    </div>
+
+                    {# Speaker Details #}
+                    <div>
+                        {# Category & Session #}
+                        <div class="flex items-center gap-x-4 text-xs">
+                            <span class="text-gray-500"
+                                >{{ categories[speaker.category] if
+                                speaker.category in categories else
+                                speaker.category|title }}</span
+                            >
+                            {% if speaker.session %}
+                            <span
+                                class="relative z-10 rounded-full bg-accent-orange/10 px-3 py-1.5 font-medium text-accent-orange hover:bg-accent-orange/20"
+                            >
+                                {{ sessions[speaker.session] if speaker.session
+                                in sessions else speaker.session|replace('_', '
+                                ')|title }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        {# Name & Title #}
+                        <div class="group relative max-w-xl">
+                            <h3
+                                class="mt-3 text-2xl font-bold text-primary-dark"
+                            >
+                                {{ speaker.full_name }}
+                            </h3>
+                            <p class="mt-2 text-base text-gray-600">
+                                {% if speaker.position %}{{ speaker.position
+                                }}{% endif %} {% if speaker.organization %}{% if
+                                speaker.position %}, {% endif %}{{
+                                speaker.organization }}{% endif %} {% if
+                                speaker.country %}
+                                <span class="text-gray-500"
+                                    >• {{ speaker.country }}</span
+                                >
+                                {% endif %}
+                            </p>
+
+                            {# Bio #}
+                            <p class="mt-5 text-base/7 text-gray-600">
+                                {{ speaker.bio }}
+                            </p>
+
+                            {# Presentation Topic #} {% if speaker.topic %}
+                            <div class="mt-4">
+                                <p
+                                    class="text-sm font-semibold text-accent-orange"
+                                >
+                                    Session Topic:
+                                </p>
+                                <p class="mt-1 text-base text-primary-dark">
+                                    {{ speaker.topic }}
+                                </p>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {# Expertise Tags #} {% if speaker.expertise %}
+                        <div
+                            class="mt-6 flex flex-wrap gap-2 border-t border-gray-900/5 pt-6"
+                        >
+                            {% for skill in speaker.expertise[:4] %}
+                            <span
+                                class="inline-flex items-center rounded-full bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+                            >
+                                {{ skill }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %} {% else %} {# Fallback if no speakers loaded #}
+                <div class="text-center py-12">
+                    <p class="text-lg text-gray-600">
+                        Speaker lineup coming soon. Check back for updates!
+                    </p>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

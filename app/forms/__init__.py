@@ -1,29 +1,32 @@
-from .auth_forms import (
-    LoginForm,
-    PasswordResetRequestForm,
-    PasswordResetForm,
-    PasswordChangeForm,
-)
-from .contact_form import ContactForm
-from .attendee_form import AttendeeRegistrationForm
-from .exhibitor_form import ExhibitorRegistrationForm
-from .payment_form import PromoCodeForm, PaymentMethodForm
 from .admin_forms import (
-    UserForm,
-    TicketPriceForm,
-    ExhibitorPackageForm,
     AddOnItemForm,
-    PromoCodeForm as AdminPromoCodeForm,
-    PaymentVerificationForm,
-    RefundForm,
     BoothAssignmentForm,
-    SendEmailForm,
     BulkEmailForm,
     ContactReplyForm,
     EditAttendeeForm,
     EditExhibitorForm,
     ExchangeRateForm,
+    ExhibitorPackageForm,
+    PaymentVerificationForm,
+    RefundForm,
+    SendEmailForm,
+    TicketPriceForm,
+    UserForm,
 )
+from .admin_forms import (
+    PromoCodeForm as AdminPromoCodeForm,
+)
+from .attendee_form import AttendeeRegistrationForm
+from .auth_forms import (
+    LoginForm,
+    PasswordChangeForm,
+    PasswordResetForm,
+    PasswordResetRequestForm,
+)
+from .contact_form import ContactForm
+from .exhibitor_form import ExhibitorRegistrationForm
+from .newsletter_form import NewsletterSubscriptionForm
+from .payment_form import PaymentMethodForm, PromoCodeForm
 
 __all__ = [
     "LoginForm",
@@ -33,6 +36,7 @@ __all__ = [
     "ContactForm",
     "AttendeeRegistrationForm",
     "ExhibitorRegistrationForm",
+    "NewsletterSubscriptionForm",
     "PromoCodeForm",
     "PaymentMethodForm",
     "UserForm",
@@ -49,19 +53,4 @@ __all__ = [
     "EditAttendeeForm",
     "EditExhibitorForm",
     "ExchangeRateForm",
-    "PaymentMethodForm",
-    "UserForm",
-    "TicketPriceForm",
-    "ExhibitorPackageForm",
-    "AddOnItemForm",
-    "AdminPromoCodeForm",
-    "PaymentVerificationForm",
-    "RefundForm",
-    "BoothAssignmentForm",
-    "SendEmailForm",
-    "BulkEmailForm",
-    "ContactReplyForm",
-    "EditAttendeeForm",
-    "EditExhibitorForm",
-    "ExchangeRateForm"
 ]

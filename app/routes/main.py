@@ -15,9 +15,10 @@ from flask import (
     url_for,
 )
 
-from app.forms import ContactForm
+from app.forms import ContactForm, NewsletterSubscriptionForm
 from app.models import Registration  # maybe for stats
 from app.services.contact_service import ContactService
+from app.services.newsletter_service import NewsletterService
 from app.utils.enhanced_email import EnhancedEmailService, Priority
 
 main_bp = Blueprint("main", __name__)
@@ -281,6 +282,80 @@ def send_test_email():
                 "message": f"Failed to send test email: {str(e)}",
             }
         ), 500
+
+
+# ============================================
+# NEWSLETTER SUBSCRIPTION ROUTES
+# ============================================
+
+
+@main_bp.route("/newsletter/subscribe", methods=["POST"])
+def newsletter_subscribe():
+    """
+    AJAX endpoint for newsletter subscriptions
+    Expects JSON: {email: string, source: string}
+    """
+    try:
+        data = request.get_json()
+
+        if not data or "email" not in data:
+            return jsonify({"success": False, "message": "Email is required"}), 400
+
+        email = data.get("email", "").strip()
+        source = data.get("source", "unknown")
+
+        # Validate email format
+        form = NewsletterSubscriptionForm(data={"email": email})
+        if not form.validate():
+            errors = [
+                error for field_errors in form.errors.values() for error in field_errors
+            ]
+            return jsonify(
+                {
+                    "success": False,
+                    "message": errors[0] if errors else "Invalid email address",
+                }
+            ), 400
+
+        # Subscribe
+        result = NewsletterService.subscribe(email=email, source=source)
+
+        if result["success"]:
+            return jsonify({"success": True, "message": result["message"]})
+        else:
+            return jsonify({"success": False, "message": result["message"]}), 400
+
+    except Exception as e:
+        current_app.logger.error(f"Newsletter subscription error: {str(e)}")
+        return jsonify(
+            {"success": False, "message": "An error occurred. Please try again."}
+        ), 500
+
+
+@main_bp.route("/newsletter/verify/<token>")
+def newsletter_verify(token):
+    """Verify newsletter subscription via email token"""
+    result = NewsletterService.verify(token=token)
+
+    if result["success"]:
+        flash(result["message"], "success")
+    else:
+        flash(result["message"], "error")
+
+    return redirect(url_for("main.index"))
+
+
+@main_bp.route("/newsletter/unsubscribe/<token>")
+def newsletter_unsubscribe(token):
+    """Unsubscribe from newsletter via email token"""
+    result = NewsletterService.unsubscribe(token=token)
+
+    if result["success"]:
+        flash(result["message"], "success")
+    else:
+        flash(result["message"], "error")
+
+    return redirect(url_for("main.index"))
 
 
 @main_bp.route("/test_email_config")

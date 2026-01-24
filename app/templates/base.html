@@ -7,6 +7,7 @@
             name="description"
             content="{{ event_name }} - {{ event_theme }}. {{ event_date }}, {{ event_location }}."
         />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <title>{% block title %}{{ event_name }}{% endblock %}</title>
 
         <!-- Tailwind CSS -->

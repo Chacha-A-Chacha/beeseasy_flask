@@ -338,11 +338,10 @@ def newsletter_verify(token):
     result = NewsletterService.verify(token=token)
 
     if result["success"]:
-        flash(result["message"], "success")
+        return render_template("newsletter_verified.html")
     else:
         flash(result["message"], "error")
-
-    return redirect(url_for("main.index"))
+        return redirect(url_for("main.index"))
 
 
 @main_bp.route("/newsletter/unsubscribe/<token>")

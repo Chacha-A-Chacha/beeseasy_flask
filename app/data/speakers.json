@@ -1,0 +1,113 @@
+{
+  "speakers": [
+    {
+      "slug": "abigail-anyorikyo",
+      "name": "Abigail Ngunan Anyorikyo",
+      "title": "",
+      "full_name": "Abigail Ngunan Anyorikyo",
+      "photo_file": "abigail-anyorikyo.png",
+      "position": "Founder/CEO",
+      "organization": "NAN Organik House",
+      "country": "Nigeria",
+      "bio": "Abigail is a trailblazing agribusiness entrepreneur and certified Modern Beekeeping Trainer from Nigeria. As the Founder/CEO of NAN Organik House, she champions sustainable apiculture and biodiversity through her flagship project, 'SAVE BEES, BEE A KEEPER,' which empowers rural women and youth with technical beekeeping skills to enhance food security. A 2025 Green Fellow and Fine Art graduate from Ahmadu Bello University, Abigail also serves as the Business Development Manager at Metalé-Care Foundation. A resilient advocate, she is an Ambassador for the Beyond a Curved Spine NGO, leveraging her lived experience with scoliosis to drive awareness and social inclusion. Abigail is dedicated to fostering environmental conservation and sustainable economic growth across Africa's agricultural landscape.",
+      "expertise": [
+        "Modern Beekeeping",
+        "Agribusiness",
+        "Women Empowerment",
+        "Sustainable Apiculture",
+        "Food Security",
+        "Biodiversity Conservation"
+      ],
+      "category": "keynote",
+      "session": "day1_morning",
+      "topic": "Empowering Communities Through Sustainable Beekeeping",
+      "presentation_title": "SAVE BEES, BEE A KEEPER: Transforming Rural Livelihoods",
+      "duration_minutes": 45,
+      "social_media": {
+        "linkedin": "",
+        "twitter": "",
+        "email": ""
+      },
+      "display_order": 1,
+      "is_featured": true,
+      "is_active": true
+    },
+    {
+      "slug": "christopher-mduda",
+      "name": "Christopher A. Mduda",
+      "title": "Dr.",
+      "full_name": "Dr. Christopher Alphonce Mduda",
+      "photo_file": "christopher-mduda.png",
+      "position": "Lecturer and Research Scientist",
+      "organization": "University of Dar es Salaam",
+      "country": "Tanzania",
+      "bio": "Dr. Christopher Alphonce Mduda serves as a lecturer and research scientist at the University of Dar es Salaam. He attained his PhD in Beekeeping Sciences from the University of Dar es Salaam in November 2023. Dr. Mduda has led and contributed to numerous research projects. He has a distinguished publication record covering stingless bee biology, bee health and characterization of bee products, and has received several prestigious awards, including the Commonwealth Professional Fellowship (2025) and the RUTA-MELI International Award for stingless bee research (2025). In addition to research, Dr. Mduda actively trains students, supervises postgraduate projects, and serves in academic leadership roles within his college.",
+      "expertise": [
+        "Beekeeping Sciences",
+        "Stingless Bee Biology",
+        "Bee Health",
+        "Bee Products Research",
+        "Academic Leadership"
+      ],
+      "category": "keynote",
+      "session": "day1_afternoon",
+      "topic": "Stingless Bee Research and Conservation in Africa",
+      "presentation_title": "",
+      "duration_minutes": 45,
+      "social_media": {
+        "linkedin": "",
+        "twitter": "",
+        "email": ""
+      },
+      "display_order": 2,
+      "is_featured": true,
+      "is_active": true
+    },
+    {
+      "slug": "lucy-parkinson",
+      "name": "Lucy Parkinson",
+      "title": "",
+      "full_name": "Lucy Parkinson",
+      "photo_file": "lucy-parkinson.png",
+      "position": "Deputy Director",
+      "organization": "BeeCraft",
+      "country": "United Kingdom",
+      "bio": "Lucy brings both practical beekeeping experience and editorial leadership from one of the world's most respected pollination and apiculture publications. Her work bridges science, field practice, and communication, helping translate complex pollinator research into knowledge that farmers, policymakers, and practitioners can use.",
+      "expertise": [
+        "Beekeeping Practice",
+        "Pollinator Research Communication",
+        "Editorial Leadership",
+        "Science Communication",
+        "Policy Translation"
+      ],
+      "category": "keynote",
+      "session": "day2_morning",
+      "topic": "Bridging Research and Practice in Global Pollinator Conservation",
+      "presentation_title": "",
+      "duration_minutes": 45,
+      "social_media": {
+        "linkedin": "",
+        "twitter": "",
+        "email": ""
+      },
+      "display_order": 3,
+      "is_featured": true,
+      "is_active": true
+    }
+  ],
+  "categories": {
+    "keynote": "Keynote Speakers",
+    "plenary": "Plenary Speakers",
+    "panel": "Panel Speakers",
+    "workshop": "Workshop Facilitators",
+    "technical": "Technical Presentations"
+  },
+  "sessions": {
+    "day1_morning": "Day 1 - Morning Session",
+    "day1_afternoon": "Day 1 - Afternoon Session",
+    "day2_morning": "Day 2 - Morning Session",
+    "day2_afternoon": "Day 2 - Afternoon Session",
+    "day3_morning": "Day 3 - Morning Session",
+    "day3_afternoon": "Day 3 - Afternoon Session"
+  }
+}

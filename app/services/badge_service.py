@@ -39,6 +39,7 @@ from app.models import (
     ExhibitorRegistration,
     ProfessionalCategory,
     Registration,
+    RegistrationStatus,
 )
 
 logger = logging.getLogger(__name__)
@@ -1060,8 +1061,6 @@ class BadgeService:
                 return False, "QR code mismatch", None
 
             # Check registration status
-            from app.models.registration_models import RegistrationStatus
-
             if registration.status != RegistrationStatus.CONFIRMED:
                 return (
                     False,

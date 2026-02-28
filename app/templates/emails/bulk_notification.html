@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>{{ subject }}</title>
         <style>
+            /* Reset and base styles */
             body {
                 margin: 0;
                 padding: 0;
@@ -16,8 +17,25 @@
                 line-height: 1.6;
                 color: #212529;
                 background-color: #f8f9fa;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
 
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            img {
+                border: 0;
+                height: auto;
+                line-height: 100%;
+                outline: none;
+                text-decoration: none;
+                max-width: 100%;
+            }
+
+            /* Container */
             .email-wrapper {
                 width: 100%;
                 background-color: #f8f9fa;
@@ -31,6 +49,7 @@
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             }
 
+            /* Header */
             .email-header {
                 background-color: #2c5f2d;
                 color: #ffffff;
@@ -51,6 +70,7 @@
                 opacity: 0.9;
             }
 
+            /* Content */
             .email-content {
                 padding: 30px;
             }
@@ -60,28 +80,101 @@
                 color: #212529;
             }
 
+            /* Footer */
             .email-footer {
-                background-color: #f8f9fa;
-                border-top: 1px solid #e9ecef;
-                padding: 24px 30px;
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 30px;
                 text-align: center;
-                font-size: 13px;
-                color: #6c757d;
             }
 
             .email-footer p {
                 margin: 0 0 8px;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .email-footer a {
+                color: #e8b030;
+                text-decoration: none;
+            }
+
+            .email-footer a:hover {
+                text-decoration: underline;
+            }
+
+            .footer-links {
+                margin: 16px 0;
+            }
+
+            .footer-divider {
+                height: 1px;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin: 20px 0;
+            }
+
+            .footer-small {
+                font-size: 12px;
+                opacity: 0.8;
+                margin-top: 16px;
+            }
+
+            .branding {
+                margin-top: 20px;
+                opacity: 0.7;
+            }
+
+            .branding-logo {
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .branding-logo img {
+                height: 18px;
+                margin-right: 8px;
+            }
+
+            .branding-text {
+                color: #e8b030;
+                font-weight: 600;
+                font-size: 13px;
+            }
+
+            /* Mobile responsive */
+            @media only screen and (max-width: 600px) {
+                .email-wrapper {
+                    padding: 10px 0;
+                }
+
+                .email-header {
+                    padding: 30px 20px;
+                }
+
+                .email-header h1 {
+                    font-size: 22px;
+                }
+
+                .email-content {
+                    padding: 20px;
+                }
+
+                .email-footer {
+                    padding: 24px 20px;
+                }
             }
         </style>
     </head>
     <body>
         <div class="email-wrapper">
             <div class="email-container">
+                <!-- Header -->
                 <div class="email-header">
                     <h1>{{ subject }}</h1>
                     <p>Pollination Africa Summit</p>
                 </div>
 
+                <!-- Content -->
                 <div class="email-content">
                     <p>
                         Dear
@@ -96,11 +189,40 @@
                     </p>
                 </div>
 
+                <!-- Footer -->
                 <div class="email-footer">
-                    <p>
+                    <p><strong>Pollination Africa Summit</strong></p>
+
+                    <div class="footer-links">
+                        <a href="https://pollinationafrica.com">Visit Website</a> |
+                        <a href="https://pollinationafrica.com/contact">Contact Us</a>
+                    </div>
+
+                    <div class="footer-divider"></div>
+
+                    <p class="footer-small">
                         This email was sent to {{ recipient_email }}
                         regarding the Pollination Africa Summit.
                     </p>
+
+                    <div class="branding">
+                        <p style="font-size: 11px; margin-bottom: 8px">
+                            Powered by
+                        </p>
+                        <a
+                            href="https://chach-a.com"
+                            target="_blank"
+                            class="branding-logo"
+                        >
+                            <img
+                                src="https://www.chach-a.com/logoMark.svg"
+                                alt="Chacha Technologies"
+                            />
+                            <span class="branding-text"
+                                >Chacha Technologies</span
+                            >
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

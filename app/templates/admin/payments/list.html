@@ -26,22 +26,32 @@
 <!-- Filters -->
 <div class="mt-6 flex flex-col sm:flex-row gap-4">
     <form method="GET" class="flex flex-col sm:flex-row gap-4 flex-1">
-        <select name="status" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Statuses</option>
-            <option value="completed" {{ 'selected' if status_filter == 'completed' }}>Completed</option>
-            <option value="pending" {{ 'selected' if status_filter == 'pending' }}>Pending</option>
-            <option value="failed" {{ 'selected' if status_filter == 'failed' }}>Failed</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="status" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Statuses</option>
+                <option value="completed" {{ 'selected' if status_filter == 'completed' }}>Completed</option>
+                <option value="pending" {{ 'selected' if status_filter == 'pending' }}>Pending</option>
+                <option value="failed" {{ 'selected' if status_filter == 'failed' }}>Failed</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
-        <select name="method" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Methods</option>
-            <option value="mobile_money" {{ 'selected' if method_filter == 'mobile_money' }}>Mobile Money</option>
-            <option value="bank_transfer" {{ 'selected' if method_filter == 'bank_transfer' }}>Bank Transfer</option>
-            <option value="credit_card" {{ 'selected' if method_filter == 'credit_card' }}>Credit Card</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="method" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Methods</option>
+                <option value="mobile_money" {{ 'selected' if method_filter == 'mobile_money' }}>Mobile Money</option>
+                <option value="bank_transfer" {{ 'selected' if method_filter == 'bank_transfer' }}>Bank Transfer</option>
+                <option value="credit_card" {{ 'selected' if method_filter == 'credit_card' }}>Credit Card</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
         <div class="flex flex-1">
-            <input type="text" name="search" value="{{ search }}" placeholder="Search by reference, email..." class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm/6">
+            <input type="text" name="search" value="{{ search }}" placeholder="Search by reference, email..." class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
             <button type="submit" class="ml-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                 Search
             </button>

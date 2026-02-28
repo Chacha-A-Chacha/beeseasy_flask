@@ -2285,47 +2285,59 @@ def registration_report():
 def revenue_report():
     """Revenue analytics"""
 
-    # Total revenue
-    total_revenue = db.session.query(func.sum(Payment.total_amount)).filter(
-        Payment.payment_status == PaymentStatus.COMPLETED
-    ).scalar() or Decimal("0.00")
+    # Total revenue by currency
+    total_by_currency = (
+        db.session.query(
+            Payment.currency,
+            func.sum(Payment.total_amount),
+        )
+        .filter(Payment.payment_status == PaymentStatus.COMPLETED)
+        .group_by(Payment.currency)
+        .all()
+    )
 
-    # By payment method
+    # By payment method (with currency)
     method_breakdown = (
         db.session.query(
             Payment.payment_method,
+            Payment.currency,
             func.sum(Payment.total_amount),
             func.count(Payment.id),
         )
         .filter(Payment.payment_status == PaymentStatus.COMPLETED)
-        .group_by(Payment.payment_method)
+        .group_by(Payment.payment_method, Payment.currency)
         .all()
     )
 
-    # By registration type
+    # By registration type (with currency)
     type_revenue = (
-        db.session.query(Registration.registration_type, func.sum(Payment.total_amount))
+        db.session.query(
+            Registration.registration_type,
+            Payment.currency,
+            func.sum(Payment.total_amount),
+        )
         .join(Payment)
         .filter(Payment.payment_status == PaymentStatus.COMPLETED)
-        .group_by(Registration.registration_type)
+        .group_by(Registration.registration_type, Payment.currency)
         .all()
     )
 
-    # Revenue over time
+    # Revenue over time (with currency)
     daily_revenue = (
         db.session.query(
             func.date(Payment.payment_completed_at).label("date"),
+            Payment.currency,
             func.sum(Payment.total_amount).label("revenue"),
         )
         .filter(Payment.payment_status == PaymentStatus.COMPLETED)
-        .group_by(func.date(Payment.payment_completed_at))
+        .group_by(func.date(Payment.payment_completed_at), Payment.currency)
         .order_by(func.date(Payment.payment_completed_at))
         .all()
     )
 
     return render_template(
         "admin/reports/revenue.html",
-        total_revenue=total_revenue,
+        total_by_currency=total_by_currency,
         method_breakdown=method_breakdown,
         type_revenue=type_revenue,
         daily_revenue=daily_revenue,
@@ -2359,23 +2371,50 @@ def create_user():
             user.role = UserRole(form.role.data)
             user.is_active = form.is_active.data
 
-            if form.password.data:
-                user.set_password(form.password.data)
-            else:
-                # Generate random password if not provided
-                import secrets
+            import secrets
 
-                temp_password = secrets.token_urlsafe(12)
-                user.set_password(temp_password)
-                flash(
-                    f"Temporary password: {temp_password} (send this to the user)",
-                    "info",
-                )
+            plain_password = form.password.data or secrets.token_urlsafe(12)
+            user.set_password(plain_password)
 
             db.session.add(user)
             db.session.commit()
 
-            flash("User created successfully.", "success")
+            # Email credentials to the new user
+            try:
+                from flask_mail import Message as EmailMessage
+
+                login_url = url_for("auth.login", _external=True)
+                html_body = render_template(
+                    "emails/account_credentials.html",
+                    user=user,
+                    password=plain_password,
+                    login_url=login_url,
+                )
+                msg = EmailMessage(
+                    subject="Your Account Credentials - Pollination Africa Summit",
+                    recipients=[user.email],
+                    html=html_body,
+                )
+                mail = current_app.extensions["mail"]
+                mail.send(msg)
+
+                EmailLog.log(
+                    recipient_email=user.email,
+                    recipient_name=user.name,
+                    subject=msg.subject,
+                    email_type="account_credentials",
+                    template_name="account_credentials",
+                    status="sent",
+                )
+                flash("User created. Login credentials sent to their email.", "success")
+            except Exception as mail_err:
+                logger.error(f"Failed to email credentials to {user.email}: {mail_err}")
+                flash(
+                    "User created but failed to send credentials email. "
+                    f"Temporary password: {plain_password}",
+                    "warning",
+                )
+
             return redirect(url_for("admin.list_users"))
 
         except Exception as e:

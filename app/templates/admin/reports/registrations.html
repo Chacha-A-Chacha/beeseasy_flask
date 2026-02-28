@@ -1,0 +1,180 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Registration Report{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Reports'},
+    {'name': 'Registration Report'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold text-gray-900">Registration Report</h1>
+        <p class="mt-2 text-sm text-gray-700">Registration analytics and breakdown by status, type, and ticket.</p>
+    </div>
+</div>
+
+<!-- Date Range Filter -->
+<div class="mt-6">
+    <form method="GET" class="flex flex-col sm:flex-row gap-4 items-end">
+        <div>
+            <label for="date_from" class="block text-sm font-medium text-gray-700">From</label>
+            <input type="date" name="date_from" id="date_from" value="{{ date_from or '' }}" class="mt-1 block rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+        </div>
+        <div>
+            <label for="date_to" class="block text-sm font-medium text-gray-700">To</label>
+            <input type="date" name="date_to" id="date_to" value="{{ date_to or '' }}" class="mt-1 block rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+        </div>
+        <button type="submit" class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500">Filter</button>
+        {% if date_from or date_to %}
+        <a href="{{ url_for('admin.registration_report') }}" class="text-sm text-gray-500 hover:text-gray-700">Clear</a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Stats Cards -->
+<div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+        <dt class="truncate text-sm font-medium text-gray-500">Total Registrations</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{{ total_registrations }}</dd>
+    </div>
+    {% for status, count in status_breakdown %}
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+        <dt class="truncate text-sm font-medium text-gray-500">{{ status.value|title if status.value is defined else status|title }}</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{{ count }}</dd>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- By Type -->
+<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-sm font-semibold text-gray-900">By Registration Type</h3>
+        </div>
+        <div class="border-t border-gray-200">
+            <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Type</th>
+                        <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Count</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    {% for reg_type, count in type_breakdown %}
+                    <tr>
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ reg_type|title }}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right">{{ count }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2" class="px-3 py-8 text-center text-sm text-gray-500">No data</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- By Ticket Type -->
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-sm font-semibold text-gray-900">By Ticket Type (Attendees)</h3>
+        </div>
+        <div class="border-t border-gray-200">
+            <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Ticket</th>
+                        <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Count</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    {% for ticket_type, count in ticket_breakdown %}
+                    <tr>
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ ticket_type.value|replace('_', ' ')|title if ticket_type.value is defined else ticket_type|title }}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right">{{ count }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2" class="px-3 py-8 text-center text-sm text-gray-500">No data</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- By Package Type -->
+<div class="mt-8">
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-sm font-semibold text-gray-900">By Package Type (Exhibitors)</h3>
+        </div>
+        <div class="border-t border-gray-200">
+            <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Package</th>
+                        <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Count</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    {% for package_type, count in package_breakdown %}
+                    <tr>
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ package_type.value|replace('_', ' ')|title if package_type.value is defined else package_type|title }}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right">{{ count }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2" class="px-3 py-8 text-center text-sm text-gray-500">No data</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Daily Registrations -->
+<div class="mt-8">
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-sm font-semibold text-gray-900">Registrations Over Time</h3>
+        </div>
+        <div class="border-t border-gray-200">
+            <div class="flow-root">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Date</th>
+                                    <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Registrations</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                                {% for row in daily_registrations %}
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">{{ row.date }}</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right">{{ row.count }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="2" class="px-3 py-8 text-center text-sm text-gray-500">No registration data</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

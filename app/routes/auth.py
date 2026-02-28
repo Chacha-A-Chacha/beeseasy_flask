@@ -38,26 +38,28 @@ def is_safe_url(target: str) -> bool:
     return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
 
 
+def _role_dashboard_url():
+    """Return the dashboard URL for the current user's role."""
+    if current_user.role == UserRole.ORGANIZER:
+        return url_for("checkin.dashboard")
+    return url_for("admin.dashboard")
+
+
 # --- Login ---
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     """User login route for all roles."""
     if current_user.is_authenticated:
-        # redirect based on role
-        if current_user.role == UserRole.ORGANIZER:
-            return redirect(url_for("checkin.dashboard"))
-        else:
-            return redirect(url_for("admin.dashboard"))
+        return redirect(_role_dashboard_url())
 
     form = LoginForm()
 
     # Set next_url from query parameter or form data (for POST retries)
     if request.method == "GET":
-        next_url = request.args.get("next", "/")
+        next_url = request.args.get("next", "")
         form.next_url.data = next_url
     else:
-        # On POST, preserve the next_url that was submitted
-        next_url = form.next_url.data or request.args.get("next", "/")
+        next_url = form.next_url.data or request.args.get("next", "")
 
     if form.validate_on_submit():
         email = (form.email.data or "").strip()
@@ -74,7 +76,6 @@ def login():
             if form.next_url.data and is_safe_url(form.next_url.data):
                 return redirect(form.next_url.data)
 
-            # Organizers go to check-in portal, others to admin dashboard
             if user.role == UserRole.ORGANIZER:
                 return redirect(url_for("checkin.dashboard"))
             return redirect(url_for("admin.dashboard"))
@@ -102,7 +103,7 @@ def logout():
 def password_reset_request():
     """Password reset initiation."""
     if current_user.is_authenticated:
-        return redirect(url_for("main.index"))
+        return redirect(_role_dashboard_url())
 
     form = PasswordResetRequestForm()
     if form.validate_on_submit():
@@ -124,12 +125,16 @@ def password_reset_sent():
 @auth_bp.route("/password-reset/<token>", methods=["GET", "POST"])
 def password_reset(token):
     """Complete reset via token."""
+    if current_user.is_authenticated:
+        return redirect(_role_dashboard_url())
+
     valid, user, message = AuthService.verify_reset_token(token)
     if not valid:
         flash(message, "error")
         return redirect(url_for("auth.password_reset_request"))
 
     form = PasswordResetForm()
+    form.token.data = token
     if form.validate_on_submit():
         success, message = AuthService.reset_password(
             user=user, new_password=form.password.data or ""

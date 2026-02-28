@@ -195,7 +195,7 @@ class TicketPrice(db.Model):
     __tablename__ = "ticket_prices"
 
     id = db.Column(db.Integer, primary_key=True)
-    ticket_type = db.Column(db.Enum(AttendeeTicketType), nullable=False, unique=True)
+    ticket_type = db.Column(db.Enum(AttendeeTicketType, values_callable=lambda x: [e.value for e in x]), nullable=False, unique=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False, default=0.0)
@@ -307,7 +307,7 @@ class ExhibitorPackagePrice(db.Model):
     __tablename__ = "exhibitor_package_prices"
 
     id = db.Column(db.Integer, primary_key=True)
-    package_type = db.Column(db.Enum(ExhibitorPackage), nullable=False, unique=True)
+    package_type = db.Column(db.Enum(ExhibitorPackage, values_callable=lambda x: [e.value for e in x]), nullable=False, unique=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False)
@@ -489,7 +489,7 @@ class Registration(db.Model):
 
     # Status tracking
     status = db.Column(
-        db.Enum(RegistrationStatus),
+        db.Enum(RegistrationStatus, values_callable=lambda x: [e.value for e in x]),
         default=RegistrationStatus.PENDING,
         nullable=False,
         index=True,
@@ -895,7 +895,7 @@ class AttendeeRegistration(Registration):
 
     # Ticket information
     ticket_type = db.Column(
-        db.Enum(AttendeeTicketType),
+        db.Enum(AttendeeTicketType, values_callable=lambda x: [e.value for e in x]),
         nullable=False,
         default=AttendeeTicketType.FREE,
         index=True,
@@ -1015,11 +1015,11 @@ class ExhibitorRegistration(Registration):
     alternate_contact_email = db.Column(db.String(255))  # Single backup contact
 
     # Company profile
-    industry_category = db.Column(db.Enum(IndustryCategory), nullable=False, index=True)
+    industry_category = db.Column(db.Enum(IndustryCategory, values_callable=lambda x: [e.value for e in x]), nullable=False, index=True)
     company_description = db.Column(db.Text, nullable=False)
 
     # Package selection
-    package_type = db.Column(db.Enum(ExhibitorPackage), nullable=False, index=True)
+    package_type = db.Column(db.Enum(ExhibitorPackage, values_callable=lambda x: [e.value for e in x]), nullable=False, index=True)
     package_price_id = db.Column(
         db.Integer, db.ForeignKey("exhibitor_package_prices.id")
     )

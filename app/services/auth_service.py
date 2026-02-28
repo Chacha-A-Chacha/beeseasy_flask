@@ -77,6 +77,14 @@ class AuthService:
                 # Hide whether user exists
                 return True, "If that email exists, a reset link has been sent.", None
 
+            # If a valid token already exists, reuse it instead of sending another email
+            if (
+                user.password_reset_token
+                and user.password_reset_expires
+                and datetime.now() < user.password_reset_expires
+            ):
+                return True, "If that email exists, a reset link has been sent.", user.password_reset_token
+
             token = secrets.token_urlsafe(32)
             user.password_reset_token = token
             user.password_reset_expires = datetime.now() + timedelta(hours=0.5)
@@ -116,7 +124,7 @@ class AuthService:
         if (
             not user
             or not user.password_reset_expires
-            or datetime.utcnow() > user.password_reset_expires
+            or datetime.now() > user.password_reset_expires
         ):
             return False, None, "Reset link invalid or expired"
 

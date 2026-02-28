@@ -26,9 +26,11 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), unique=True, index=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    role = db.Column(db.Enum(UserRole), index=True, default=UserRole.STAFF)
+    role = db.Column(db.Enum(UserRole, values_callable=lambda x: [e.value for e in x]), index=True, default=UserRole.STAFF)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.now, index=True)
+    password_reset_token = db.Column(db.String(64), unique=True, index=True)
+    password_reset_expires = db.Column(db.DateTime)
 
     # Relationships
     registrations = db.relationship(

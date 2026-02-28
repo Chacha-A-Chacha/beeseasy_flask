@@ -47,15 +47,15 @@
                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ addon.name }}</td>
                             <td class="px-3 py-4 text-sm text-gray-500 max-w-xs truncate">{{ addon.description }}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {% if addon.available_for == 'both' %}
+                                {% if addon.for_attendees and addon.for_exhibitors %}
                                 <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">All Registrations</span>
-                                {% elif addon.available_for == 'attendee' %}
+                                {% elif addon.for_attendees %}
                                 <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Attendees Only</span>
                                 {% else %}
                                 <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">Exhibitors Only</span>
                                 {% endif %}
                             </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">TZS {{ "{:,.0f}".format(addon.price) }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{ addon.currency }} {{ "{:,.0f}".format(addon.price) }}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {% if addon.is_active %}
                                 <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>

@@ -123,7 +123,7 @@ function searchApp() {
 
             try {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-                const res = await fetch('/checkin/api/checkin/' + r.id, {
+                const res = await fetch('{{ url_for("checkin.api_checkin_by_id", id=0) }}'.replace('0', r.id), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

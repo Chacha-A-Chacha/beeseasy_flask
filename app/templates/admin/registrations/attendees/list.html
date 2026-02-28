@@ -63,13 +63,13 @@
     <li class="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
         <div class="flex min-w-0 gap-x-4">
             <div class="flex size-12 flex-none items-center justify-center rounded-full bg-green-50 text-green-700 text-sm font-semibold">
-                {{ attendee.name[:2]|upper }}
+                {{ attendee.first_name[:1]|upper }}{{ attendee.last_name[:1]|upper }}
             </div>
             <div class="min-w-0 flex-auto">
                 <p class="text-sm/6 font-semibold text-gray-900">
                     <a href="{{ url_for('admin.view_attendee', id=attendee.id) }}">
                         <span class="absolute inset-x-0 -top-px bottom-0"></span>
-                        {{ attendee.name }}
+                        {{ attendee.computed_full_name }}
                     </a>
                 </p>
                 <p class="mt-1 flex text-xs/5 text-gray-500">

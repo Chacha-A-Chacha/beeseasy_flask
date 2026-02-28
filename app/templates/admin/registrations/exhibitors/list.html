@@ -63,28 +63,28 @@
     <li class="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
         <div class="flex min-w-0 gap-x-4">
             <div class="flex size-12 flex-none items-center justify-center rounded-full bg-purple-50 text-purple-700 text-sm font-semibold">
-                {{ exhibitor.organization[:2]|upper }}
+                {{ exhibitor.company_legal_name[:2]|upper }}
             </div>
             <div class="min-w-0 flex-auto">
                 <p class="text-sm/6 font-semibold text-gray-900">
                     <a href="{{ url_for('admin.view_exhibitor', id=exhibitor.id) }}">
                         <span class="absolute inset-x-0 -top-px bottom-0"></span>
-                        {{ exhibitor.organization }}
+                        {{ exhibitor.company_legal_name }}
                     </a>
                 </p>
                 <p class="mt-1 flex text-xs/5 text-gray-500">
-                    <span class="truncate">{{ exhibitor.name }} &middot; {{ exhibitor.email }}</span>
+                    <span class="truncate">{{ exhibitor.computed_full_name }} &middot; {{ exhibitor.email }}</span>
                 </p>
             </div>
         </div>
         <div class="flex shrink-0 items-center gap-x-4">
             <div class="hidden sm:flex sm:flex-col sm:items-end">
                 <div class="flex items-center gap-x-2">
-                    {% if exhibitor.package.value == 'platinum' %}
+                    {% if exhibitor.package_type.value == 'platinum' %}
                     <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">Platinum</span>
-                    {% elif exhibitor.package.value == 'gold' %}
+                    {% elif exhibitor.package_type.value == 'gold' %}
                     <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">Gold</span>
-                    {% elif exhibitor.package.value == 'silver' %}
+                    {% elif exhibitor.package_type.value == 'silver' %}
                     <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Silver</span>
                     {% else %}
                     <span class="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-medium text-orange-700 ring-1 ring-inset ring-orange-700/10">Bronze</span>

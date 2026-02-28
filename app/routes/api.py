@@ -551,11 +551,13 @@ def api_assign_booth(id):
         if not data or "booth_number" not in data:
             return jsonify({"success": False, "error": "Booth number required"}), 400
 
-        booth_number = data["booth_number"].strip()
+        booth_number = data["booth_number"].strip().upper()
 
         # Check if booth already assigned to someone else
         existing = ExhibitorRegistration.query.filter(
             ExhibitorRegistration.booth_number == booth_number,
+            ExhibitorRegistration.booth_assigned == True,
+            ExhibitorRegistration.is_deleted == False,
             ExhibitorRegistration.id != id,
         ).first()
 
@@ -563,17 +565,17 @@ def api_assign_booth(id):
             return jsonify(
                 {
                     "success": False,
-                    "error": f"Booth {booth_number} already assigned to {existing.name}",
+                    "error": f"Booth {booth_number} already assigned to {existing.company_legal_name}",
                 }
             ), 400
 
-        exhibitor.booth_number = booth_number
+        exhibitor.assign_booth(booth_number, assigned_by=current_user.name)
         db.session.commit()
 
         return jsonify(
             {
                 "success": True,
-                "message": f"Booth {booth_number} assigned to {exhibitor.name}",
+                "message": f"Booth {booth_number} assigned to {exhibitor.company_legal_name}",
             }
         )
     except Exception as e:

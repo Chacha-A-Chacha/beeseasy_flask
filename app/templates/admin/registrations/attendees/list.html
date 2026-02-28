@@ -26,29 +26,44 @@
 <!-- Filters -->
 <div class="mt-6 flex flex-col sm:flex-row gap-4">
     <form method="GET" class="flex flex-col sm:flex-row gap-4 flex-1">
-        <select name="status" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Statuses</option>
-            <option value="confirmed" {{ 'selected' if status_filter == 'confirmed' }}>Confirmed</option>
-            <option value="pending_payment" {{ 'selected' if status_filter == 'pending_payment' }}>Pending Payment</option>
-            <option value="cancelled" {{ 'selected' if status_filter == 'cancelled' }}>Cancelled</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="status" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Statuses</option>
+                <option value="confirmed" {{ 'selected' if status_filter == 'confirmed' }}>Confirmed</option>
+                <option value="pending_payment" {{ 'selected' if status_filter == 'pending_payment' }}>Pending Payment</option>
+                <option value="cancelled" {{ 'selected' if status_filter == 'cancelled' }}>Cancelled</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
-        <select name="ticket_type" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Ticket Types</option>
-            <option value="early_bird" {{ 'selected' if ticket_type_filter == 'early_bird' }}>Early Bird</option>
-            <option value="regular" {{ 'selected' if ticket_type_filter == 'regular' }}>Regular</option>
-            <option value="vip" {{ 'selected' if ticket_type_filter == 'vip' }}>VIP</option>
-            <option value="student" {{ 'selected' if ticket_type_filter == 'student' }}>Student</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="ticket_type" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Ticket Types</option>
+                <option value="early_bird" {{ 'selected' if ticket_type_filter == 'early_bird' }}>Early Bird</option>
+                <option value="regular" {{ 'selected' if ticket_type_filter == 'regular' }}>Regular</option>
+                <option value="vip" {{ 'selected' if ticket_type_filter == 'vip' }}>VIP</option>
+                <option value="student" {{ 'selected' if ticket_type_filter == 'student' }}>Student</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
-        <select name="checked_in" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Check-in</option>
-            <option value="true" {{ 'selected' if checked_in_filter == 'true' }}>Checked In</option>
-            <option value="false" {{ 'selected' if checked_in_filter == 'false' }}>Not Checked In</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="checked_in" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Check-in</option>
+                <option value="true" {{ 'selected' if checked_in_filter == 'true' }}>Checked In</option>
+                <option value="false" {{ 'selected' if checked_in_filter == 'false' }}>Not Checked In</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
         <div class="flex flex-1">
-            <input type="text" name="search" value="{{ search }}" placeholder="Search by name, email..." class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm/6">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Search by name, email..." class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
             <button type="submit" class="ml-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                 Search
             </button>

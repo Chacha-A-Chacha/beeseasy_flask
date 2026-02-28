@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from functools import wraps
 from io import BytesIO
+from pathlib import Path
 
 from flask import (
     Blueprint,
@@ -28,7 +29,6 @@ from app.extensions import db
 from app.forms import (
     AddOnItemForm,
     AdminPromoCodeForm,
-    BoothAssignmentForm,
     BulkEmailForm,
     ContactReplyForm,
     EditAttendeeForm,
@@ -651,49 +651,85 @@ def assign_booth(id):
     """Assign booth number to exhibitor"""
     exhibitor = ExhibitorRegistration.query.get_or_404(id)
 
-    form = BoothAssignmentForm()
+    booth_number = (request.form.get("booth_number") or "").strip().upper()
 
-    if form.validate_on_submit():
-        try:
-            booth_number = (form.booth_number.data or "").strip().upper()
+    if not booth_number:
+        flash("Booth number is required.", "error")
+        return redirect(request.referrer or url_for("admin.booth_management"))
 
-            # Check if booth number is already assigned
-            existing = (
-                ExhibitorRegistration.query.filter_by(
-                    booth_number=booth_number, booth_assigned=True, is_deleted=False
-                )
-                .filter(ExhibitorRegistration.id != id)
-                .first()
+    try:
+        # Check if booth number is already assigned
+        existing = (
+            ExhibitorRegistration.query.filter_by(
+                booth_number=booth_number, booth_assigned=True, is_deleted=False
+            )
+            .filter(ExhibitorRegistration.id != id)
+            .first()
+        )
+
+        if existing:
+            flash(
+                f"Booth {booth_number} is already assigned to {existing.company_legal_name}.",
+                "error",
+            )
+            return redirect(request.referrer or url_for("admin.booth_management"))
+
+        # Assign booth
+        exhibitor.assign_booth(booth_number, assigned_by=current_user.name)
+
+        # Add note if provided
+        notes = request.form.get("notes")
+        if notes:
+            if not exhibitor.admin_notes:
+                exhibitor.admin_notes = ""
+            exhibitor.admin_notes += (
+                f"\n[{datetime.now()}] Booth Assignment: {notes}"
             )
 
-            if existing:
-                flash(
-                    f"Booth {booth_number} is already assigned to {existing.company_legal_name}.",
-                    "error",
-                )
-                return redirect(url_for("admin.view_exhibitor", id=id))
+        db.session.commit()
 
-            # Assign booth
-            exhibitor.assign_booth(booth_number, assigned_by=current_user.name)
+        flash(f"Booth {booth_number} assigned successfully.", "success")
 
-            # Add note if provided
-            if form.notes.data:
-                if not exhibitor.admin_notes:
-                    exhibitor.admin_notes = ""
-                exhibitor.admin_notes += (
-                    f"\n[{datetime.now()}] Booth Assignment: {form.notes.data}"
-                )
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error assigning booth to exhibitor {id}: {str(e)}")
+        flash("Error assigning booth.", "error")
 
-            db.session.commit()
+    return redirect(request.referrer or url_for("admin.booth_management"))
 
-            flash(f"Booth {booth_number} assigned successfully.", "success")
 
-        except Exception as e:
-            db.session.rollback()
-            logger.error(f"Error assigning booth to exhibitor {id}: {str(e)}")
-            flash("Error assigning booth.", "error")
+@admin_bp.route("/registrations/exhibitors/<int:id>/unassign-booth", methods=["POST"])
+@admin_required
+def unassign_booth(id):
+    """Remove booth assignment from exhibitor"""
+    exhibitor = ExhibitorRegistration.query.get_or_404(id)
 
-    return redirect(url_for("admin.view_exhibitor", id=id))
+    if not exhibitor.booth_assigned:
+        flash("This exhibitor does not have a booth assigned.", "error")
+        return redirect(request.referrer or url_for("admin.booth_management"))
+
+    try:
+        old_booth = exhibitor.booth_number
+        exhibitor.booth_number = None
+        exhibitor.booth_assigned = False
+        exhibitor.booth_assigned_at = None
+        exhibitor.booth_assigned_by = None
+
+        if not exhibitor.admin_notes:
+            exhibitor.admin_notes = ""
+        exhibitor.admin_notes += (
+            f"\n[{datetime.now()}] Booth Unassigned: {old_booth} by {current_user.name}"
+        )
+
+        db.session.commit()
+        flash(f"Booth {old_booth} unassigned from {exhibitor.company_legal_name}.", "success")
+
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error unassigning booth from exhibitor {id}: {str(e)}")
+        flash("Error unassigning booth.", "error")
+
+    return redirect(request.referrer or url_for("admin.booth_management"))
 
 
 @admin_bp.route("/registrations/exhibitors/export")
@@ -1409,13 +1445,10 @@ def booth_management():
     assigned = [e for e in exhibitors if e.booth_assigned]
     unassigned = [e for e in exhibitors if not e.booth_assigned]
 
-    form = BoothAssignmentForm()
-
     return render_template(
         "admin/booths/list.html",
         assigned_exhibitors=assigned,
         unassigned_exhibitors=unassigned,
-        form=form,
     )
 
 
@@ -1538,6 +1571,62 @@ def checkin():
     )
 
 
+@admin_bp.route("/badges")
+@admin_required
+def list_badges():
+    """Badge management - view and generate badges for confirmed registrations"""
+    type_filter = request.args.get("type", "all")
+    badge_filter = request.args.get("badge_status", "all")
+    search_query = request.args.get("search", "").strip()
+
+    # Get confirmed registrations
+    query = Registration.query.filter_by(
+        status=RegistrationStatus.CONFIRMED, is_deleted=False
+    )
+
+    if type_filter == "attendee":
+        query = query.filter_by(registration_type="attendee")
+    elif type_filter == "exhibitor":
+        query = query.filter_by(registration_type="exhibitor")
+
+    if badge_filter == "generated":
+        query = query.filter(Registration.qr_code_image_url.isnot(None))
+    elif badge_filter == "pending":
+        query = query.filter(Registration.qr_code_image_url.is_(None))
+
+    if search_query:
+        query = query.filter(
+            or_(
+                Registration.first_name.ilike(f"%{search_query}%"),
+                Registration.last_name.ilike(f"%{search_query}%"),
+                Registration.email.ilike(f"%{search_query}%"),
+                Registration.reference_number.ilike(f"%{search_query}%"),
+            )
+        )
+
+    registrations = query.order_by(Registration.created_at.desc()).all()
+
+    # Stats
+    total_confirmed = Registration.query.filter_by(
+        status=RegistrationStatus.CONFIRMED, is_deleted=False
+    ).count()
+    badges_generated = Registration.query.filter(
+        Registration.status == RegistrationStatus.CONFIRMED,
+        Registration.is_deleted == False,
+        Registration.qr_code_image_url.isnot(None),
+    ).count()
+
+    return render_template(
+        "admin/badges/list.html",
+        registrations=registrations,
+        type_filter=type_filter,
+        badge_filter=badge_filter,
+        search_query=search_query,
+        total_confirmed=total_confirmed,
+        badges_generated=badges_generated,
+    )
+
+
 @admin_bp.route("/badges/generate", methods=["POST"])
 @admin_required
 def generate_badges():
@@ -1547,7 +1636,7 @@ def generate_badges():
 
     if not registration_ids:
         flash("No registrations selected for badge generation.", "error")
-        return redirect(request.referrer or url_for("admin.dashboard"))
+        return redirect(url_for("admin.list_badges"))
 
     try:
         generated_count = 0
@@ -1569,7 +1658,79 @@ def generate_badges():
         logger.error(f"Error generating badges: {str(e)}")
         flash("Error generating badges.", "error")
 
-    return redirect(request.referrer or url_for("admin.dashboard"))
+    return redirect(url_for("admin.list_badges"))
+
+
+@admin_bp.route("/badges/<int:id>/email", methods=["POST"])
+@admin_required
+def email_badge(id):
+    """Email badge PDF to registrant"""
+    from flask_mail import Message as EmailMessage
+
+    from app.extensions import mail
+
+    registration = Registration.query.get_or_404(id)
+
+    if not registration.qr_code_image_url:
+        flash("Badge has not been generated yet. Generate it first.", "error")
+        return redirect(url_for("admin.list_badges"))
+
+    # Resolve PDF file path
+    badge_path = Path(current_app.root_path) / registration.qr_code_image_url.lstrip("/")
+
+    if not badge_path.exists():
+        flash("Badge file not found. Try regenerating the badge.", "error")
+        return redirect(url_for("admin.list_badges"))
+
+    try:
+        download_url = url_for(
+            "main.download_badge",
+            reference=registration.reference_number,
+            _external=True,
+        )
+
+        msg = EmailMessage(
+            subject="Your Event Badge — Pollination Africa Summit",
+            sender=current_app.config.get("MAIL_DEFAULT_SENDER"),
+            recipients=[registration.email],
+        )
+
+        msg.html = render_template(
+            "emails/badge_delivery.html",
+            registration=registration,
+            download_url=download_url,
+        )
+
+        msg.body = (
+            f"Dear {registration.computed_full_name},\n\n"
+            f"Your badge for Pollination Africa Summit is attached to this email.\n"
+            f"Print it or save it on your phone for event check-in.\n\n"
+            f"Reference: {registration.reference_number}\n\n"
+            f"You can also download your badge here: {download_url}\n\n"
+            f"Best regards,\n"
+            f"Pollination Africa Summit Team"
+        )
+
+        # Attach PDF
+        with open(badge_path, "rb") as f:
+            msg.attach(
+                filename=f"{registration.reference_number}_badge.pdf",
+                content_type="application/pdf",
+                data=f.read(),
+            )
+
+        mail.send(msg)
+
+        flash(f"Badge emailed to {registration.email}.", "success")
+        logger.info(
+            f"Badge emailed to {registration.email} for {registration.reference_number} by {current_user.name}"
+        )
+
+    except Exception as e:
+        logger.error(f"Error emailing badge for registration {id}: {str(e)}")
+        flash("Error sending badge email.", "error")
+
+    return redirect(url_for("admin.list_badges"))
 
 
 # ============================================

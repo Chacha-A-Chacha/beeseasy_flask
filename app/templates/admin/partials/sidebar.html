@@ -313,8 +313,8 @@
                             </li>
                             <li>
                                 <a
-                                    href="{{ url_for('admin.list_attendees') }}?tab=badges"
-                                    class="block rounded-md py-2 pl-9 pr-2 text-sm/6 text-gray-700 hover:bg-gray-50"
+                                    href="{{ url_for('admin.list_badges') }}"
+                                    class="block rounded-md py-2 pl-9 pr-2 text-sm/6 {{ 'text-green-600 font-semibold' if request.endpoint == 'admin.list_badges' else 'text-gray-700 hover:bg-gray-50' }}"
                                 >
                                     Generate Badges
                                 </a>

@@ -167,7 +167,7 @@
                                 {% endif %}
                                 <div class="relative flex space-x-3">
                                     <div>
-                                        <span class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white {% if payment.status.value == 'completed' %}bg-green-500{% elif payment.status.value == 'pending' %}bg-yellow-500{% else %}bg-red-500{% endif %}">
+                                        <span class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white {% if payment.payment_status.value == 'completed' %}bg-green-500{% elif payment.payment_status.value == 'pending' %}bg-yellow-500{% else %}bg-red-500{% endif %}">
                                             <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" />
                                             </svg>
@@ -176,11 +176,11 @@
                                     <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                                         <div>
                                             <p class="text-sm text-gray-500">
-                                                TZS {{ "{:,.0f}".format(payment.amount) }} via
-                                                <span class="font-medium text-gray-900">{{ payment.method.value|replace('_', ' ')|title }}</span>
+                                                {{ payment.currency }} {{ "{:,.0f}".format(payment.total_amount) }} via
+                                                <span class="font-medium text-gray-900">{{ payment.payment_method.value|replace('_', ' ')|title }}</span>
                                             </p>
-                                            {% if payment.reference_number %}
-                                            <p class="mt-0.5 text-xs text-gray-500">Ref: {{ payment.reference_number }}</p>
+                                            {% if payment.payment_reference %}
+                                            <p class="mt-0.5 text-xs text-gray-500">Ref: {{ payment.payment_reference }}</p>
                                             {% endif %}
                                         </div>
                                         <div class="whitespace-nowrap text-right text-sm text-gray-500">
@@ -260,7 +260,7 @@
                     <div class="px-4 py-6 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Amount Paid</dt>
                         <dd class="mt-2 text-2xl font-semibold text-gray-900">
-                            TZS {{ "{:,.0f}".format(attendee.total_amount) }}
+                            TZS {{ "{:,.0f}".format(attendee.get_total_paid()) }}
                         </dd>
                     </div>
                     {% if attendee.promo_code %}

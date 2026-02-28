@@ -54,18 +54,18 @@
                                 {% endif %}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {{ promo.times_used }} / {{ promo.usage_limit if promo.usage_limit else 'Unlimited' }}
-                                {% if promo.usage_limit and promo.times_used >= promo.usage_limit %}
+                                {{ promo.current_uses }} / {{ promo.max_uses if promo.max_uses else 'Unlimited' }}
+                                {% if promo.max_uses and promo.current_uses >= promo.max_uses %}
                                 <span class="ml-1 text-xs text-red-600">(Limit reached)</span>
                                 {% endif %}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {% if promo.is_active and (not promo.expires_at or promo.expires_at > now()) %}
+                                {% if promo.is_valid() %}
                                 <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
-                                {% elif promo.expires_at and promo.expires_at <= now() %}
-                                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Expired</span>
-                                {% else %}
+                                {% elif not promo.is_active %}
                                 <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Inactive</span>
+                                {% else %}
+                                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Expired</span>
                                 {% endif %}
                             </td>
                             <td class="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

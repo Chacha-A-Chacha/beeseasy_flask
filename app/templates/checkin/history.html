@@ -1,0 +1,82 @@
+{% extends "checkin/base.html" %}
+
+{% block title %}History - Check-in{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
+
+    <!-- Header with stats -->
+    <div class="flex items-center justify-between">
+        <h1 class="text-lg font-semibold text-gray-900">Today's Check-ins</h1>
+        <span class="text-sm font-medium text-green-600">{{ entries|length }} total</span>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="mt-4 flex gap-x-1 rounded-lg bg-gray-100 p-1">
+        <a href="{{ url_for('checkin.history', type='all') }}"
+           class="flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium {{ 'bg-white text-gray-900 shadow-sm' if filter_type == 'all' else 'text-gray-500 hover:text-gray-700' }}">
+            All
+        </a>
+        <a href="{{ url_for('checkin.history', type='attendees') }}"
+           class="flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium {{ 'bg-white text-gray-900 shadow-sm' if filter_type == 'attendees' else 'text-gray-500 hover:text-gray-700' }}">
+            Attendees
+        </a>
+        <a href="{{ url_for('checkin.history', type='exhibitors') }}"
+           class="flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium {{ 'bg-white text-gray-900 shadow-sm' if filter_type == 'exhibitors' else 'text-gray-500 hover:text-gray-700' }}">
+            Exhibitors
+        </a>
+    </div>
+
+    <!-- Check-in List -->
+    {% if entries %}
+    <ul class="mt-4 divide-y divide-gray-100 rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+        {% for entry in entries %}
+        <li class="px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="min-w-0 flex-1">
+                    <a href="{{ url_for('checkin.registration_detail', id=entry.id) }}" class="text-sm font-medium text-gray-900 hover:text-green-600">
+                        {{ entry.name }}
+                    </a>
+                    <div class="mt-0.5 flex items-center gap-x-2">
+                        <span class="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium {{ 'bg-blue-50 text-blue-700' if entry.type == 'Attendee' else 'bg-purple-50 text-purple-700' }}">
+                            {{ entry.type }}
+                        </span>
+                        <span class="text-xs text-gray-500">{{ entry.reference }}</span>
+                        {% if entry.method != 'manual' %}
+                        <span class="text-xs text-gray-400">via {{ entry.method }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="ml-4 text-right">
+                    <p class="text-sm font-medium text-gray-900">{{ entry.time }}</p>
+                    <p class="text-xs text-gray-500">by {{ entry.checked_in_by }}</p>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="mt-6 rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-900/5">
+        <svg class="mx-auto size-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <p class="mt-2 text-sm text-gray-500">No check-ins yet today</p>
+        <a href="{{ url_for('checkin.scan') }}" class="mt-3 inline-block text-sm font-medium text-green-600 hover:text-green-500">
+            Start scanning &rarr;
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Summary Stats -->
+    <div class="mt-6 grid grid-cols-2 gap-3">
+        <div class="rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-gray-900/5">
+            <p class="text-lg font-bold text-gray-900">{{ stats.checked_in_attendees }}</p>
+            <p class="text-xs text-gray-500">Attendees / {{ stats.total_confirmed_attendees }}</p>
+        </div>
+        <div class="rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-gray-900/5">
+            <p class="text-lg font-bold text-gray-900">{{ stats.checked_in_exhibitors }}</p>
+            <p class="text-xs text-gray-500">Exhibitors / {{ stats.total_confirmed_exhibitors }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

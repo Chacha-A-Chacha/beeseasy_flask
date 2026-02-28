@@ -1,0 +1,34 @@
+<!-- Mobile Bottom Navigation -->
+<div class="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white sm:hidden">
+    <div class="grid grid-cols-4">
+        <a href="{{ url_for('checkin.dashboard') }}"
+           class="flex flex-col items-center gap-y-1 py-2.5 {{ 'text-green-600' if request.endpoint == 'checkin.dashboard' else 'text-gray-500' }}">
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a href="{{ url_for('checkin.scan') }}"
+           class="flex flex-col items-center gap-y-1 py-2.5 {{ 'text-green-600' if request.endpoint == 'checkin.scan' else 'text-gray-500' }}">
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z" />
+            </svg>
+            <span class="text-[10px] font-medium">Scan</span>
+        </a>
+        <a href="{{ url_for('checkin.search') }}"
+           class="flex flex-col items-center gap-y-1 py-2.5 {{ 'text-green-600' if request.endpoint == 'checkin.search' else 'text-gray-500' }}">
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <span class="text-[10px] font-medium">Search</span>
+        </a>
+        <a href="{{ url_for('checkin.history') }}"
+           class="flex flex-col items-center gap-y-1 py-2.5 {{ 'text-green-600' if request.endpoint == 'checkin.history' else 'text-gray-500' }}">
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <span class="text-[10px] font-medium">History</span>
+        </a>
+    </div>
+</div>

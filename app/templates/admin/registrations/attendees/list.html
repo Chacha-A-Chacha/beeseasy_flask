@@ -26,7 +26,6 @@
 <!-- Filters -->
 <div class="mt-6 flex flex-col sm:flex-row gap-4">
     <form method="GET" class="flex flex-col sm:flex-row gap-4 flex-1">
-        <!-- Status filter -->
         <select name="status" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
             <option value="">All Statuses</option>
             <option value="confirmed" {{ 'selected' if status_filter == 'confirmed' }}>Confirmed</option>
@@ -34,7 +33,6 @@
             <option value="cancelled" {{ 'selected' if status_filter == 'cancelled' }}>Cancelled</option>
         </select>
 
-        <!-- Ticket type filter -->
         <select name="ticket_type" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
             <option value="">All Ticket Types</option>
             <option value="early_bird" {{ 'selected' if ticket_type_filter == 'early_bird' }}>Early Bird</option>
@@ -43,14 +41,12 @@
             <option value="student" {{ 'selected' if ticket_type_filter == 'student' }}>Student</option>
         </select>
 
-        <!-- Check-in filter -->
         <select name="checked_in" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
             <option value="">All Check-in</option>
             <option value="true" {{ 'selected' if checked_in_filter == 'true' }}>Checked In</option>
             <option value="false" {{ 'selected' if checked_in_filter == 'false' }}>Not Checked In</option>
         </select>
 
-        <!-- Search -->
         <div class="flex flex-1">
             <input type="text" name="search" value="{{ search }}" placeholder="Search by name, email..." class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm/6">
             <button type="submit" class="ml-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
@@ -60,82 +56,83 @@
     </form>
 </div>
 
-<!-- Table -->
-<div class="-mx-4 mt-6 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
-    <table class="relative min-w-full divide-y divide-gray-300">
-        <thead>
-            <tr>
-                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
-                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Email</th>
-                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Ticket Type</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Check-in</th>
-                <th scope="col" class="py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span class="sr-only">Actions</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for attendee in attendees %}
-            <tr>
-                <td class="relative py-4 pl-4 pr-3 text-sm sm:pl-6">
-                    <div class="font-medium text-gray-900">{{ attendee.name }}</div>
-                    <div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
-                        <span>{{ attendee.email }}</span>
-                        <span class="hidden sm:inline">·</span>
-                        <span>{{ attendee.ticket_type.value|replace('_', ' ')|title }}</span>
-                    </div>
-                    {% if not loop.first %}
-                    <div class="absolute -top-px left-6 right-0 h-px bg-gray-200"></div>
-                    {% endif %}
-                </td>
-                <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
-                    {{ attendee.email }}
-                </td>
-                <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
-                    {{ attendee.ticket_type.value|replace('_', ' ')|title }}
-                </td>
-                <td class="{% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500">
-                    {% if attendee.status.value == 'confirmed' %}
-                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Confirmed</span>
-                    {% elif attendee.status.value == 'pending_payment' %}
-                    <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">Pending</span>
-                    {% elif attendee.status.value == 'cancelled' %}
-                    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Cancelled</span>
-                    {% else %}
-                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{{ attendee.status.value|title }}</span>
-                    {% endif %}
-                </td>
-                <td class="hidden {% if not loop.first %}border-t border-gray-200{% else %}border-t border-transparent{% endif %} px-3 py-3.5 text-sm text-gray-500 lg:table-cell">
-                    {% if attendee.daily_checkins %}
-                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">✓ Checked In</span>
-                    {% else %}
-                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Not Checked In</span>
-                    {% endif %}
-                </td>
-                <td class="relative {% if not loop.first %}border-t border-transparent{% endif %} py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <a href="{{ url_for('admin.view_attendee', id=attendee.id) }}" class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                        View<span class="sr-only">, {{ attendee.name }}</span>
+<!-- List -->
+{% if attendees %}
+<ul role="list" class="mt-6 divide-y divide-gray-100 overflow-hidden bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl">
+    {% for attendee in attendees %}
+    <li class="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
+        <div class="flex min-w-0 gap-x-4">
+            <div class="flex size-12 flex-none items-center justify-center rounded-full bg-green-50 text-green-700 text-sm font-semibold">
+                {{ attendee.name[:2]|upper }}
+            </div>
+            <div class="min-w-0 flex-auto">
+                <p class="text-sm/6 font-semibold text-gray-900">
+                    <a href="{{ url_for('admin.view_attendee', id=attendee.id) }}">
+                        <span class="absolute inset-x-0 -top-px bottom-0"></span>
+                        {{ attendee.name }}
                     </a>
-                    {% if not loop.first %}
-                    <div class="absolute -top-px left-0 right-6 h-px bg-gray-200"></div>
+                </p>
+                <p class="mt-1 flex text-xs/5 text-gray-500">
+                    <a href="mailto:{{ attendee.email }}" class="relative truncate hover:underline">{{ attendee.email }}</a>
+                </p>
+            </div>
+        </div>
+        <div class="flex shrink-0 items-center gap-x-4">
+            <div class="hidden sm:flex sm:flex-col sm:items-end">
+                <p class="text-sm/6 text-gray-900">{{ attendee.ticket_type.value|replace('_', ' ')|title }}</p>
+                <div class="mt-1 flex items-center gap-x-2">
+                    {% if attendee.status.value == 'confirmed' %}
+                    <div class="flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+                            <div class="size-1.5 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <p class="text-xs/5 text-gray-500">Confirmed</p>
+                    </div>
+                    {% elif attendee.status.value == 'pending_payment' %}
+                    <div class="flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-yellow-500/20 p-1">
+                            <div class="size-1.5 rounded-full bg-yellow-500"></div>
+                        </div>
+                        <p class="text-xs/5 text-gray-500">Pending</p>
+                    </div>
+                    {% elif attendee.status.value == 'cancelled' %}
+                    <div class="flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-red-500/20 p-1">
+                            <div class="size-1.5 rounded-full bg-red-500"></div>
+                        </div>
+                        <p class="text-xs/5 text-gray-500">Cancelled</p>
+                    </div>
+                    {% else %}
+                    <div class="flex items-center gap-x-1.5">
+                        <div class="flex-none rounded-full bg-gray-500/20 p-1">
+                            <div class="size-1.5 rounded-full bg-gray-500"></div>
+                        </div>
+                        <p class="text-xs/5 text-gray-500">{{ attendee.status.value|title }}</p>
+                    </div>
                     {% endif %}
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="6" class="px-3 py-8 text-center text-sm text-gray-500">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    <p class="mt-2">No attendees found</p>
-                    <p class="mt-1 text-xs text-gray-400">Try adjusting your search or filter criteria</p>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    {% if attendee.daily_checkins %}
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Checked In</span>
+                    {% endif %}
+                </div>
+            </div>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 flex-none text-gray-400">
+                <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="mt-6 overflow-hidden bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl">
+    <div class="px-4 py-12 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <p class="mt-2 text-sm text-gray-500">No attendees found</p>
+        <p class="mt-1 text-xs text-gray-400">Try adjusting your search or filter criteria</p>
+    </div>
 </div>
+{% endif %}
 
 <!-- Pagination -->
 {% if pagination.pages > 1 %}

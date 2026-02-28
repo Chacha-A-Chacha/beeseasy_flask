@@ -44,10 +44,9 @@ def login():
     """User login route for all roles."""
     if current_user.is_authenticated:
         # redirect based on role
-        if current_user.role == UserRole.ADMIN:
-            return redirect(url_for("admin.dashboard"))
+        if current_user.role == UserRole.ORGANIZER:
+            return redirect(url_for("checkin.dashboard"))
         else:
-            # Staff and organizers also go to admin dashboard
             return redirect(url_for("admin.dashboard"))
 
     form = LoginForm()
@@ -75,7 +74,9 @@ def login():
             if form.next_url.data and is_safe_url(form.next_url.data):
                 return redirect(form.next_url.data)
 
-            # All user roles go to admin dashboard (ADMIN, STAFF, ORGANIZER)
+            # Organizers go to check-in portal, others to admin dashboard
+            if user.role == UserRole.ORGANIZER:
+                return redirect(url_for("checkin.dashboard"))
             return redirect(url_for("admin.dashboard"))
         else:
             flash(message, "error")

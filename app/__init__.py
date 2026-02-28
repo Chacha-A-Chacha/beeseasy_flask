@@ -102,6 +102,7 @@ def create_app(config_name=None):
     from app.routes.admin import admin_bp
     from app.routes.api import api_bp
     from app.routes.auth import auth_bp
+    from app.routes.checkin import checkin_bp
     from app.routes.main import main_bp
     from app.routes.payment import payments_bp
     from app.routes.register import register_bp
@@ -114,6 +115,7 @@ def create_app(config_name=None):
     app.register_blueprint(register_bp, url_prefix="/register")
     app.register_blueprint(payments_bp, url_prefix="/payments")
     app.register_blueprint(admin_bp, url_prefix="/admin")
+    app.register_blueprint(checkin_bp)
     app.register_blueprint(api_bp, url_prefix="/api")
 
     # --- Register CLI Commands ---

@@ -12,192 +12,203 @@
 {% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="sm:flex sm:items-center">
-        <div class="sm:flex-auto">
-            <h1 class="text-2xl font-semibold text-gray-900">{{ 'Edit' if mode == 'edit' else 'Create' }} Ticket</h1>
-            <p class="mt-2 text-sm text-gray-700">
-                {{ 'Update ticket information and pricing.' if mode == 'edit' else 'Add a new ticket type for attendees.' }}
-            </p>
-        </div>
-    </div>
+<form method="POST">
+    {{ form.hidden_tag() }}
 
-    <!-- Form -->
-    <div class="mt-8">
-        <form method="POST" class="space-y-8">
-            {{ form.hidden_tag() }}
+    <div class="divide-y divide-gray-900/10">
+        <!-- Basic Information -->
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Basic Information</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">{{ 'Update ticket information and pricing.' if mode == 'edit' else 'Add a new ticket type for attendees.' }}</p>
+            </div>
 
-            <div class="bg-white shadow sm:rounded-lg ring-1 ring-gray-300">
-                <!-- Basic Information -->
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                        <!-- Ticket Type -->
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div class="sm:col-span-3">
-                            <label for="ticket_type" class="block text-sm font-medium leading-6 text-gray-900">
-                                {{ form.ticket_type.label.text }}
-                                <span class="text-red-600">*</span>
+                            <label for="ticket_type" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.ticket_type.label.text }} <span class="text-red-600">*</span>
                             </label>
-                            {{ form.ticket_type(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2 grid grid-cols-1">
+                                {{ form.ticket_type(class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                                    <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                                </svg>
+                            </div>
                             {% if form.ticket_type.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.ticket_type.errors[0] }}</p>
                             {% endif %}
                         </div>
 
-                        <!-- Ticket Name -->
                         <div class="sm:col-span-3">
-                            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">
-                                {{ form.name.label.text }}
-                                <span class="text-red-600">*</span>
+                            <label for="name" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.name.label.text }} <span class="text-red-600">*</span>
                             </label>
-                            {{ form.name(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2">
+                                {{ form.name(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
                             {% if form.name.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.name.errors[0] }}</p>
                             {% endif %}
                         </div>
 
-                        <!-- Description -->
-                        <div class="sm:col-span-6">
-                            <label for="description" class="block text-sm font-medium leading-6 text-gray-900">
+                        <div class="col-span-full">
+                            <label for="description" class="block text-sm/6 font-medium text-gray-900">
                                 {{ form.description.label.text }}
                             </label>
-                            {{ form.description(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2">
+                                {{ form.description(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="3") }}
+                            </div>
                             {% if form.description.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.description.errors[0] }}</p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Pricing -->
-                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Pricing</h3>
-                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                        <!-- Price -->
+        <!-- Pricing -->
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Pricing</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Set the standard and early bird pricing for this ticket type.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div class="sm:col-span-2">
-                            <label for="price" class="block text-sm font-medium leading-6 text-gray-900">
-                                {{ form.price.label.text }}
-                                <span class="text-red-600">*</span>
+                            <label for="price" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.price.label.text }} <span class="text-red-600">*</span>
                             </label>
                             <div class="mt-2">
-                                {{ form.price(class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                                {{ form.price(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
                             </div>
                             {% if form.price.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.price.errors[0] }}</p>
                             {% endif %}
                         </div>
 
-                        <!-- Currency -->
                         <div class="sm:col-span-2">
-                            <label for="currency" class="block text-sm font-medium leading-6 text-gray-900">
-                                {{ form.currency.label.text }}
-                                <span class="text-red-600">*</span>
+                            <label for="currency" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.currency.label.text }} <span class="text-red-600">*</span>
                             </label>
-                            {{ form.currency(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2 grid grid-cols-1">
+                                {{ form.currency(class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                                    <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                                </svg>
+                            </div>
                             {% if form.currency.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.currency.errors[0] }}</p>
                             {% endif %}
                         </div>
 
-                        <!-- Max Quantity -->
                         <div class="sm:col-span-2">
-                            <label for="max_quantity" class="block text-sm font-medium leading-6 text-gray-900">
+                            <label for="max_quantity" class="block text-sm/6 font-medium text-gray-900">
                                 {{ form.max_quantity.label.text }}
                             </label>
-                            {{ form.max_quantity(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2">
+                                {{ form.max_quantity(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
                             {% if form.max_quantity.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.max_quantity.errors[0] }}</p>
                             {% endif %}
                         </div>
 
-                        <!-- Early Bird Price -->
                         <div class="sm:col-span-3">
-                            <label for="early_bird_price" class="block text-sm font-medium leading-6 text-gray-900">
+                            <label for="early_bird_price" class="block text-sm/6 font-medium text-gray-900">
                                 {{ form.early_bird_price.label.text }}
                             </label>
-                            {{ form.early_bird_price(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2">
+                                {{ form.early_bird_price(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
                             {% if form.early_bird_price.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.early_bird_price.errors[0] }}</p>
                             {% endif %}
                         </div>
 
-                        <!-- Early Bird Deadline -->
                         <div class="sm:col-span-3">
-                            <label for="early_bird_deadline" class="block text-sm font-medium leading-6 text-gray-900">
+                            <label for="early_bird_deadline" class="block text-sm/6 font-medium text-gray-900">
                                 {{ form.early_bird_deadline.label.text }}
                             </label>
-                            {{ form.early_bird_deadline(class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6") }}
+                            <div class="mt-2">
+                                {{ form.early_bird_deadline(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
                             {% if form.early_bird_deadline.errors %}
                             <p class="mt-2 text-sm text-red-600">{{ form.early_bird_deadline.errors[0] }}</p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Inclusions -->
-                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">What's Included</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="flex h-6 items-center">
-                                {{ form.includes_lunch(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+        <!-- What's Included -->
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">What's Included</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Select what is included with this ticket type.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="max-w-2xl space-y-6">
+                        <div class="flex gap-3">
+                            <div class="flex h-6 shrink-0 items-center">
+                                {{ form.includes_lunch(class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
                             </div>
-                            <div class="ml-3 text-sm leading-6">
+                            <div class="text-sm/6">
                                 <label for="includes_lunch" class="font-medium text-gray-900">{{ form.includes_lunch.label.text }}</label>
                             </div>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex h-6 items-center">
-                                {{ form.includes_materials(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                        <div class="flex gap-3">
+                            <div class="flex h-6 shrink-0 items-center">
+                                {{ form.includes_materials(class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
                             </div>
-                            <div class="ml-3 text-sm leading-6">
+                            <div class="text-sm/6">
                                 <label for="includes_materials" class="font-medium text-gray-900">{{ form.includes_materials.label.text }}</label>
                             </div>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex h-6 items-center">
-                                {{ form.includes_certificate(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                        <div class="flex gap-3">
+                            <div class="flex h-6 shrink-0 items-center">
+                                {{ form.includes_certificate(class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
                             </div>
-                            <div class="ml-3 text-sm leading-6">
+                            <div class="text-sm/6">
                                 <label for="includes_certificate" class="font-medium text-gray-900">{{ form.includes_certificate.label.text }}</label>
                             </div>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex h-6 items-center">
-                                {{ form.includes_networking(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                        <div class="flex gap-3">
+                            <div class="flex h-6 shrink-0 items-center">
+                                {{ form.includes_networking(class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
                             </div>
-                            <div class="ml-3 text-sm leading-6">
+                            <div class="text-sm/6">
                                 <label for="includes_networking" class="font-medium text-gray-900">{{ form.includes_networking.label.text }}</label>
                             </div>
                         </div>
 
-                        <div class="flex items-start">
-                            <div class="flex h-6 items-center">
-                                {{ form.is_active(class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                        <div class="flex gap-3">
+                            <div class="flex h-6 shrink-0 items-center">
+                                {{ form.is_active(class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
                             </div>
-                            <div class="ml-3 text-sm leading-6">
+                            <div class="text-sm/6">
                                 <label for="is_active" class="font-medium text-gray-900">{{ form.is_active.label.text }}</label>
                                 <p class="text-gray-500">This ticket type will be available for registration</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Form Actions -->
-                <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                    <div class="flex justify-end gap-x-3">
-                        <a href="{{ url_for('admin.list_tickets') }}"
-                           class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                            Cancel
-                        </a>
-                        {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
-                    </div>
+                <div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                    <a href="{{ url_for('admin.list_tickets') }}" class="text-sm/6 font-semibold text-gray-900">Cancel</a>
+                    {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 {% endblock %}

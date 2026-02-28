@@ -1,0 +1,172 @@
+{% extends "checkin/base.html" %}
+
+{% block title %}{{ registration.computed_full_name }} - Check-in{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8" x-data="registrationPage()">
+
+    <!-- Back link -->
+    <a href="{{ request.referrer or url_for('checkin.search') }}" class="inline-flex items-center gap-x-1 text-sm text-gray-500 hover:text-gray-700">
+        <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+        Back
+    </a>
+
+    <!-- Registration Card -->
+    <div class="mt-4 rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+        <!-- Header -->
+        <div class="border-b border-gray-100 px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-lg font-semibold text-gray-900">{{ registration.computed_full_name }}</h1>
+                    <div class="mt-1 flex items-center gap-x-2">
+                        <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium {{ 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-700/10' if reg_type == 'Attendee' else 'bg-purple-50 text-purple-700 ring-1 ring-inset ring-purple-700/10' }}">
+                            {{ reg_type }}
+                        </span>
+                        <span class="text-sm text-gray-500 font-mono">{{ registration.reference_number }}</span>
+                    </div>
+                </div>
+
+                <!-- Check-in status badge -->
+                <div x-show="checkedIn" class="flex items-center gap-x-1.5 rounded-full bg-green-50 px-3 py-1.5 ring-1 ring-inset ring-green-600/20">
+                    <svg class="size-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-xs font-medium text-green-700">Checked In</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details -->
+        <div class="px-4 py-4 sm:px-6">
+            <dl class="space-y-3">
+                {% if registration.email %}
+                <div class="flex justify-between">
+                    <dt class="text-sm text-gray-500">Email</dt>
+                    <dd class="text-sm text-gray-900">{{ registration.email }}</dd>
+                </div>
+                {% endif %}
+
+                {% if registration.phone %}
+                <div class="flex justify-between">
+                    <dt class="text-sm text-gray-500">Phone</dt>
+                    <dd class="text-sm text-gray-900">{{ registration.phone }}</dd>
+                </div>
+                {% endif %}
+
+                {% if registration.organization %}
+                <div class="flex justify-between">
+                    <dt class="text-sm text-gray-500">Organization</dt>
+                    <dd class="text-sm text-gray-900">{{ registration.organization }}</dd>
+                </div>
+                {% endif %}
+
+                <div class="flex justify-between">
+                    <dt class="text-sm text-gray-500">Status</dt>
+                    <dd>
+                        <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium
+                            {% if registration.status.value == 'confirmed' %}bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20
+                            {% elif registration.status.value == 'pending' %}bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/20
+                            {% else %}bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20{% endif %}">
+                            {{ registration.status.value|title }}
+                        </span>
+                    </dd>
+                </div>
+
+                {% if reg_type == 'Attendee' and registration.ticket_type %}
+                <div class="flex justify-between">
+                    <dt class="text-sm text-gray-500">Ticket</dt>
+                    <dd class="text-sm text-gray-900">{{ registration.ticket_type.value|replace('_', ' ')|title }}</dd>
+                </div>
+                {% endif %}
+
+                {% if reg_type == 'Exhibitor' and registration.booth_number %}
+                <div class="flex justify-between">
+                    <dt class="text-sm text-gray-500">Booth</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ registration.booth_number }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+        </div>
+
+        <!-- Check-in History -->
+        {% if registration.daily_checkins %}
+        <div class="border-t border-gray-100 px-4 py-4 sm:px-6">
+            <h3 class="text-sm font-medium text-gray-900 mb-2">Attendance History</h3>
+            <ul class="space-y-1.5">
+                {% for checkin in registration.daily_checkins|sort(attribute='event_date', reverse=True) %}
+                <li class="flex items-center justify-between text-sm">
+                    <span class="text-gray-700">{{ checkin.event_date.strftime('%b %d, %Y') }}</span>
+                    <span class="text-xs text-gray-500">{{ checkin.checked_in_at.strftime('%I:%M %p') }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Check-in Button -->
+        <div x-show="!checkedIn" class="border-t border-gray-100 px-4 py-4 sm:px-6">
+            <button @click="doCheckin()"
+                    :disabled="checkingIn"
+                    class="w-full rounded-lg bg-green-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span x-show="!checkingIn">Check In Now</span>
+                <span x-show="checkingIn" x-cloak class="flex items-center justify-center gap-x-2">
+                    <svg class="size-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    Checking in...
+                </span>
+            </button>
+        </div>
+    </div>
+
+    {% if registration.qr_code_image_url %}
+    <!-- Badge Link -->
+    <div class="mt-4 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+        <a href="{{ registration.qr_code_image_url }}" target="_blank"
+           class="flex items-center justify-between text-sm font-medium text-green-600 hover:text-green-500">
+            <span class="flex items-center gap-x-2">
+                <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
+                </svg>
+                View Badge
+            </span>
+            <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function registrationPage() {
+    return {
+        checkingIn: false,
+        checkedIn: {{ 'true' if is_checked_in_today else 'false' }},
+
+        async doCheckin() {
+            this.checkingIn = true;
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+                const res = await fetch('/checkin/api/checkin/{{ registration.id }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                });
+                const data = await res.json();
+                if (data.success || data.already_checked_in) {
+                    this.checkedIn = true;
+                }
+            } catch(e) {}
+            this.checkingIn = false;
+        }
+    }
+}
+</script>

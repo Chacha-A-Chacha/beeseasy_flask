@@ -1,0 +1,120 @@
+{% extends "checkin/base.html" %}
+
+{% block title %}Dashboard - Check-in{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center">
+        <h1 class="text-xl font-semibold text-gray-900">Event Check-in</h1>
+        <p class="mt-1 text-sm text-gray-500">{{ event_name }}</p>
+    </div>
+
+    <!-- Start Scanning CTA -->
+    <div class="mt-6">
+        <a href="{{ url_for('checkin.scan') }}"
+           class="flex items-center justify-center gap-x-3 rounded-xl bg-green-600 px-6 py-4 text-base font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z" />
+            </svg>
+            Start Scanning
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="mt-6 grid grid-cols-2 gap-3" x-data="{ stats: null }" x-init="
+        setInterval(async () => {
+            try {
+                const res = await fetch('{{ url_for('checkin.api_stats') }}');
+                stats = await res.json();
+            } catch(e) {}
+        }, 30000)
+    ">
+        <!-- Total Checked In -->
+        <div class="col-span-2 rounded-xl bg-white p-4 text-center shadow-sm ring-1 ring-gray-900/5">
+            <p class="text-sm font-medium text-gray-500">Checked In Today</p>
+            <p class="mt-1 text-3xl font-bold text-green-600">
+                <span x-text="stats ? stats.total_checked_in : '{{ stats.total_checked_in }}'">{{ stats.total_checked_in }}</span>
+                <span class="text-lg font-normal text-gray-400">
+                    / <span x-text="stats ? stats.total_expected : '{{ stats.total_expected }}'">{{ stats.total_expected }}</span>
+                </span>
+            </p>
+            {% set rate = ((stats.total_checked_in / stats.total_expected * 100)|round if stats.total_expected > 0 else 0)|int %}
+            <div class="mt-2 h-2 w-full rounded-full bg-gray-100">
+                <div class="h-2 rounded-full bg-green-500 transition-all" style="width: {{ rate }}%"></div>
+            </div>
+            <p class="mt-1 text-xs text-gray-500">{{ rate }}% check-in rate</p>
+        </div>
+
+        <!-- Attendees -->
+        <div class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+            <div class="flex items-center gap-x-2">
+                <svg class="size-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+                <p class="text-sm font-medium text-gray-500">Attendees</p>
+            </div>
+            <p class="mt-2 text-2xl font-bold text-gray-900">
+                <span x-text="stats ? stats.checked_in_attendees : '{{ stats.checked_in_attendees }}'">{{ stats.checked_in_attendees }}</span>
+                <span class="text-sm font-normal text-gray-400">
+                    / <span x-text="stats ? stats.total_confirmed_attendees : '{{ stats.total_confirmed_attendees }}'">{{ stats.total_confirmed_attendees }}</span>
+                </span>
+            </p>
+        </div>
+
+        <!-- Exhibitors -->
+        <div class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+            <div class="flex items-center gap-x-2">
+                <svg class="size-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                </svg>
+                <p class="text-sm font-medium text-gray-500">Exhibitors</p>
+            </div>
+            <p class="mt-2 text-2xl font-bold text-gray-900">
+                <span x-text="stats ? stats.checked_in_exhibitors : '{{ stats.checked_in_exhibitors }}'">{{ stats.checked_in_exhibitors }}</span>
+                <span class="text-sm font-normal text-gray-400">
+                    / <span x-text="stats ? stats.total_confirmed_exhibitors : '{{ stats.total_confirmed_exhibitors }}'">{{ stats.total_confirmed_exhibitors }}</span>
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Recent Check-ins -->
+    <div class="mt-6">
+        <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-gray-900">Recent Check-ins</h2>
+            <a href="{{ url_for('checkin.history') }}" class="text-sm font-medium text-green-600 hover:text-green-500">View all</a>
+        </div>
+
+        {% if recent_checkins %}
+        <ul class="mt-3 divide-y divide-gray-100 rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+            {% for entry in recent_checkins %}
+            <li class="px-4 py-3">
+                <div class="flex items-center justify-between">
+                    <div class="min-w-0 flex-1">
+                        <p class="truncate text-sm font-medium text-gray-900">{{ entry.name }}</p>
+                        <div class="flex items-center gap-x-2 mt-0.5">
+                            <span class="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium {{ 'bg-blue-50 text-blue-700' if entry.type == 'Attendee' else 'bg-purple-50 text-purple-700' }}">
+                                {{ entry.type }}
+                            </span>
+                            <span class="text-xs text-gray-500">{{ entry.reference }}</span>
+                        </div>
+                    </div>
+                    <p class="ml-4 text-xs text-gray-500">{{ entry.time }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="mt-3 rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-900/5">
+            <svg class="mx-auto size-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-500">No check-ins yet today</p>
+            <p class="text-xs text-gray-400">Start scanning to check in attendees</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

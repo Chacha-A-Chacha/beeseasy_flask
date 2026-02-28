@@ -91,6 +91,15 @@ class AuthService:
             msg = Message(subject=subject, recipients=[user.email], html=html)
             mail.send(msg)
 
+            from app.models.payment import EmailLog
+            EmailLog.log(
+                recipient_email=user.email,
+                recipient_name=user.name,
+                subject=subject,
+                email_type="password_reset",
+                template_name="password_reset",
+            )
+
             return True, "If that email exists, a reset link has been sent.", token
 
         except Exception as e:
@@ -134,6 +143,15 @@ class AuthService:
                 ),
             )
             mail.send(msg)
+
+            from app.models.payment import EmailLog
+            EmailLog.log(
+                recipient_email=user.email,
+                recipient_name=user.name,
+                subject=msg.subject,
+                email_type="password_reset_confirmation",
+                template_name="password_reset_confirmation",
+            )
         except Exception:
             logging.warning(
                 "Password change email could not be sent, but password was updated."
@@ -163,6 +181,15 @@ class AuthService:
                 ),
             )
             mail.send(msg)
+
+            from app.models.payment import EmailLog
+            EmailLog.log(
+                recipient_email=user.email,
+                recipient_name=user.name,
+                subject=msg.subject,
+                email_type="password_change",
+                template_name="password_change_confirmation",
+            )
         except Exception:
             logging.warning("Password change confirmation email failed to send.")
 

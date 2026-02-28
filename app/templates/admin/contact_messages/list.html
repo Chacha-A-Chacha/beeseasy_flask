@@ -34,33 +34,48 @@
 <!-- Filters -->
 <div class="mt-6 flex flex-col sm:flex-row gap-4">
     <form method="GET" class="flex flex-col sm:flex-row gap-4 flex-1">
-        <select name="status" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Statuses</option>
-            <option value="new" {{ 'selected' if status_filter == 'new' }}>New</option>
-            <option value="in_progress" {{ 'selected' if status_filter == 'in_progress' }}>In Progress</option>
-            <option value="resolved" {{ 'selected' if status_filter == 'resolved' }}>Resolved</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="status" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Statuses</option>
+                <option value="new" {{ 'selected' if status_filter == 'new' }}>New</option>
+                <option value="in_progress" {{ 'selected' if status_filter == 'in_progress' }}>In Progress</option>
+                <option value="resolved" {{ 'selected' if status_filter == 'resolved' }}>Resolved</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
-        <select name="inquiry_type" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Types</option>
-            <option value="registration" {{ 'selected' if inquiry_type_filter == 'registration' }}>Registration</option>
-            <option value="exhibition" {{ 'selected' if inquiry_type_filter == 'exhibition' }}>Exhibition</option>
-            <option value="sponsorship" {{ 'selected' if inquiry_type_filter == 'sponsorship' }}>Sponsorship</option>
-            <option value="speaking" {{ 'selected' if inquiry_type_filter == 'speaking' }}>Speaking</option>
-            <option value="media" {{ 'selected' if inquiry_type_filter == 'media' }}>Media</option>
-            <option value="other" {{ 'selected' if inquiry_type_filter == 'other' }}>Other</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="inquiry_type" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Types</option>
+                <option value="registration" {{ 'selected' if inquiry_type_filter == 'registration' }}>Registration</option>
+                <option value="exhibition" {{ 'selected' if inquiry_type_filter == 'exhibition' }}>Exhibition</option>
+                <option value="sponsorship" {{ 'selected' if inquiry_type_filter == 'sponsorship' }}>Sponsorship</option>
+                <option value="speaking" {{ 'selected' if inquiry_type_filter == 'speaking' }}>Speaking</option>
+                <option value="media" {{ 'selected' if inquiry_type_filter == 'media' }}>Media</option>
+                <option value="other" {{ 'selected' if inquiry_type_filter == 'other' }}>Other</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
-        <select name="priority" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Priorities</option>
-            <option value="urgent" {{ 'selected' if priority_filter == 'urgent' }}>Urgent</option>
-            <option value="high" {{ 'selected' if priority_filter == 'high' }}>High</option>
-            <option value="normal" {{ 'selected' if priority_filter == 'normal' }}>Normal</option>
-            <option value="low" {{ 'selected' if priority_filter == 'low' }}>Low</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="priority" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Priorities</option>
+                <option value="urgent" {{ 'selected' if priority_filter == 'urgent' }}>Urgent</option>
+                <option value="high" {{ 'selected' if priority_filter == 'high' }}>High</option>
+                <option value="normal" {{ 'selected' if priority_filter == 'normal' }}>Normal</option>
+                <option value="low" {{ 'selected' if priority_filter == 'low' }}>Low</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
         <div class="flex flex-1">
-            <input type="text" name="search" value="{{ search }}" placeholder="Search by name, email, reference..." class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm/6">
+            <input type="text" name="search" value="{{ search }}" placeholder="Search by name, email, reference..." class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
             <button type="submit" class="ml-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                 Search
             </button>

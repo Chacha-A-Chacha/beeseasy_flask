@@ -414,6 +414,22 @@ class EnhancedEmailService:
                 )
                 server.send_message(msg)
                 server.quit()
+
+                # Log to database
+                try:
+                    from app.models.payment import EmailLog
+
+                    EmailLog.log(
+                        recipient_email=recipient,
+                        subject=subject,
+                        email_type=task.get("group_id", "notification"),
+                        template_name=task.get("task_id", "").split("_")[0] if task.get("task_id") else None,
+                        status="sent",
+                        provider="smtp",
+                    )
+                except Exception as log_err:
+                    self.logger.warning(f"Failed to log email: {log_err}")
+
                 return
 
             except smtplib.SMTPServerDisconnected as e:

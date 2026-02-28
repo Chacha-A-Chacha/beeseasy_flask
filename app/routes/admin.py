@@ -1721,6 +1721,15 @@ def email_badge(id):
 
         mail.send(msg)
 
+        EmailLog.log(
+            recipient_email=registration.email,
+            recipient_name=registration.computed_full_name,
+            subject="Your Event Badge — Pollination Africa Summit",
+            email_type="badge_delivery",
+            registration_id=registration.id,
+            template_name="badge_delivery",
+        )
+
         flash(f"Badge emailed to {registration.email}.", "success")
         logger.info(
             f"Badge emailed to {registration.email} for {registration.reference_number} by {current_user.name}"
@@ -1744,8 +1753,9 @@ def email_logs():
     """View email tracking logs"""
 
     # Get filter parameters
-    email_type_filter = request.args.get("type")
+    email_type_filter = request.args.get("email_type")
     status_filter = request.args.get("status")
+    search_query = request.args.get("search", "").strip()
     page = request.args.get("page", 1, type=int)
     per_page = 50
 
@@ -1756,6 +1766,15 @@ def email_logs():
 
     if status_filter:
         query = query.filter_by(status=status_filter)
+
+    if search_query:
+        query = query.filter(
+            db.or_(
+                EmailLog.recipient_email.ilike(f"%{search_query}%"),
+                EmailLog.subject.ilike(f"%{search_query}%"),
+                EmailLog.recipient_name.ilike(f"%{search_query}%"),
+            )
+        )
 
     query = query.order_by(EmailLog.sent_at.desc())
 
@@ -1768,6 +1787,7 @@ def email_logs():
         pagination=pagination,
         email_type_filter=email_type_filter,
         status_filter=status_filter,
+        search_query=search_query,
     )
 
 
@@ -1775,6 +1795,12 @@ def email_logs():
 @admin_required
 def bulk_email():
     """Send bulk emails to registrants"""
+    import re
+
+    from flask_mail import Message as EmailMessage
+
+    from app.extensions import mail
+
     form = BulkEmailForm()
 
     if form.validate_on_submit():
@@ -1782,54 +1808,152 @@ def bulk_email():
             recipient_type = form.recipient_type.data
 
             # Build recipient query based on type
-            if recipient_type == "all_attendees":
-                recipients = AttendeeRegistration.query.filter_by(
+            recipient_queries = {
+                "all_attendees": lambda: AttendeeRegistration.query.filter_by(
                     is_deleted=False
-                ).all()
-            elif recipient_type == "all_exhibitors":
-                recipients = ExhibitorRegistration.query.filter_by(
+                ).all(),
+                "all_exhibitors": lambda: ExhibitorRegistration.query.filter_by(
                     is_deleted=False
-                ).all()
-            elif recipient_type == "confirmed_attendees":
-                recipients = AttendeeRegistration.query.filter_by(
+                ).all(),
+                "confirmed_attendees": lambda: AttendeeRegistration.query.filter_by(
                     status=RegistrationStatus.CONFIRMED, is_deleted=False
-                ).all()
-            elif recipient_type == "confirmed_exhibitors":
-                recipients = ExhibitorRegistration.query.filter_by(
+                ).all(),
+                "confirmed_exhibitors": lambda: ExhibitorRegistration.query.filter_by(
                     status=RegistrationStatus.CONFIRMED, is_deleted=False
-                ).all()
-            elif recipient_type == "pending_payment":
-                recipients = Registration.query.filter_by(
+                ).all(),
+                "pending_payment": lambda: Registration.query.filter_by(
                     status=RegistrationStatus.PENDING, is_deleted=False
-                ).all()
-            elif recipient_type == "checked_in":
-                recipients = AttendeeRegistration.query.filter_by(
+                ).all(),
+                "checked_in": lambda: AttendeeRegistration.query.filter_by(
                     checked_in=True, is_deleted=False
-                ).all()
-            else:
-                recipients = []
+                ).all(),
+            }
+
+            query_fn = recipient_queries.get(recipient_type)
+            recipients = query_fn() if query_fn else []
+
+            if not recipients:
+                flash("No recipients found for the selected group.", "error")
+                return render_template("admin/communications/bulk.html", form=form)
+
+            subject = form.subject.data.strip()
+            message_text = form.message.data.strip()
+            # Convert plain text line breaks to HTML paragraphs
+            paragraphs = message_text.split("\n\n")
+            message_html = "".join(
+                f"<p>{re.sub(chr(10), '<br />', p.strip())}</p>"
+                for p in paragraphs
+                if p.strip()
+            )
 
             # Send test email first if requested
             if form.send_test.data and form.test_email.data:
-                # TODO: Implement test email sending
-                flash(f"Test email would be sent to {form.test_email.data}", "info")
+                test_email = form.test_email.data.strip()
+                try:
+                    msg = EmailMessage(
+                        subject=f"[TEST] {subject}",
+                        sender=current_app.config.get("MAIL_DEFAULT_SENDER"),
+                        recipients=[test_email],
+                    )
+                    msg.html = render_template(
+                        "emails/bulk_notification.html",
+                        subject=subject,
+                        recipient_name="Test Recipient",
+                        recipient_email=test_email,
+                        message_html=message_html,
+                    )
+                    msg.body = render_template(
+                        "emails/bulk_notification.txt",
+                        subject=subject,
+                        recipient_name="Test Recipient",
+                        recipient_email=test_email,
+                        message_text=message_text,
+                    )
+                    mail.send(msg)
+                    flash(f"Test email sent to {test_email}. Review it before sending to all {len(recipients)} recipients.", "success")
+                except Exception as e:
+                    logger.error(f"Test email failed: {str(e)}")
+                    flash(f"Test email failed: {str(e)}", "error")
                 return render_template("admin/communications/bulk.html", form=form)
 
-            # Queue bulk emails (would integrate with email service)
-            recipient_count = len(recipients)
+            # Confirmation step — require explicit confirm parameter
+            if not request.form.get("confirmed"):
+                return render_template(
+                    "admin/communications/bulk.html",
+                    form=form,
+                    confirm_send=True,
+                    recipient_count=len(recipients),
+                    recipient_type_label=dict(form.recipient_type.choices).get(recipient_type, recipient_type),
+                )
 
-            # TODO: Implement actual bulk email sending
-            # For now, just show confirmation
-            flash(f"Bulk email queued for {recipient_count} recipients.", "success")
+            # Send bulk emails
+            sent_count = 0
+            fail_count = 0
+
+            for recipient in recipients:
+                try:
+                    name = recipient.computed_full_name
+                    email = recipient.email
+
+                    msg = EmailMessage(
+                        subject=subject,
+                        sender=current_app.config.get("MAIL_DEFAULT_SENDER"),
+                        recipients=[email],
+                    )
+                    msg.html = render_template(
+                        "emails/bulk_notification.html",
+                        subject=subject,
+                        recipient_name=name,
+                        recipient_email=email,
+                        message_html=message_html,
+                    )
+                    msg.body = render_template(
+                        "emails/bulk_notification.txt",
+                        subject=subject,
+                        recipient_name=name,
+                        recipient_email=email,
+                        message_text=message_text,
+                    )
+                    mail.send(msg)
+
+                    EmailLog.log(
+                        recipient_email=email,
+                        recipient_name=name,
+                        subject=subject,
+                        email_type="bulk",
+                        registration_id=recipient.id,
+                        template_name="bulk_notification",
+                    )
+                    sent_count += 1
+
+                except Exception as e:
+                    fail_count += 1
+                    logger.error(f"Bulk email failed for {recipient.email}: {str(e)}")
+                    EmailLog.log(
+                        recipient_email=recipient.email,
+                        recipient_name=recipient.computed_full_name,
+                        subject=subject,
+                        email_type="bulk",
+                        registration_id=recipient.id,
+                        template_name="bulk_notification",
+                        status="failed",
+                        error_message=str(e),
+                    )
+
+            flash(
+                f"Bulk email sent to {sent_count} recipients."
+                + (f" {fail_count} failed." if fail_count else ""),
+                "success" if fail_count == 0 else "warning",
+            )
             logger.info(
-                f"Bulk email queued by {current_user.name} to {recipient_count} {recipient_type}"
+                f"Bulk email sent by {current_user.name}: {sent_count} sent, {fail_count} failed ({recipient_type})"
             )
 
             return redirect(url_for("admin.email_logs"))
 
         except Exception as e:
             logger.error(f"Error sending bulk email: {str(e)}")
-            flash("Error queuing bulk email.", "error")
+            flash("Error sending bulk email.", "error")
 
     return render_template("admin/communications/bulk.html", form=form)
 
@@ -1886,6 +2010,7 @@ def list_contact_messages():
     return render_template(
         "admin/contact_messages/list.html",
         messages=messages,
+        pagination=messages,
         total_new=total_new,
         total_in_progress=total_in_progress,
         total_resolved=total_resolved,
@@ -1964,6 +2089,14 @@ This is a response to your inquiry submitted on {message.submitted_at.strftime("
             """
 
             mail.send(msg)
+
+            EmailLog.log(
+                recipient_email=message.email,
+                recipient_name=f"{message.first_name} {message.last_name}",
+                subject=f"Re: {message.subject}",
+                email_type="contact_response",
+                template_name="contact_response",
+            )
 
             # Update message status
             message.mark_as_resolved(

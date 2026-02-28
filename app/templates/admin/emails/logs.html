@@ -21,15 +21,34 @@
 <!-- Filters -->
 <div class="mt-6 flex flex-col sm:flex-row gap-4">
     <form method="GET" class="flex flex-col sm:flex-row gap-4 flex-1">
-        <select name="email_type" onchange="this.form.submit()" class="block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-green-600 sm:text-sm/6">
-            <option value="">All Types</option>
-            <option value="confirmation" {{ 'selected' if email_type_filter == 'confirmation' }}>Confirmations</option>
-            <option value="notification" {{ 'selected' if email_type_filter == 'notification' }}>Notifications</option>
-            <option value="bulk" {{ 'selected' if email_type_filter == 'bulk' }}>Bulk Emails</option>
-        </select>
+        <div class="grid grid-cols-1">
+            <select name="email_type" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Types</option>
+                <option value="confirmation" {{ 'selected' if email_type_filter == 'confirmation' }}>Confirmations</option>
+                <option value="notification" {{ 'selected' if email_type_filter == 'notification' }}>Notifications</option>
+                <option value="bulk" {{ 'selected' if email_type_filter == 'bulk' }}>Bulk Emails</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
+
+        <div class="grid grid-cols-1">
+            <select name="status" onchange="this.form.submit()" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
+                <option value="">All Statuses</option>
+                <option value="sent" {{ 'selected' if status_filter == 'sent' }}>Sent</option>
+                <option value="delivered" {{ 'selected' if status_filter == 'delivered' }}>Delivered</option>
+                <option value="opened" {{ 'selected' if status_filter == 'opened' }}>Opened</option>
+                <option value="bounced" {{ 'selected' if status_filter == 'bounced' }}>Bounced</option>
+                <option value="failed" {{ 'selected' if status_filter == 'failed' }}>Failed</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+            </svg>
+        </div>
 
         <div class="flex flex-1">
-            <input type="text" name="search" value="{{ search }}" placeholder="Search by recipient email..." class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm/6">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Search by recipient email..." class="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6">
             <button type="submit" class="ml-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                 Search
             </button>
@@ -47,21 +66,44 @@
                         <tr>
                             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Recipient</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Subject</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sent At</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sent By</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
                         {% for email in emails %}
                         <tr>
-                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ email.recipient_email }}</td>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                                <div class="font-medium text-gray-900">{{ email.recipient_email }}</div>
+                                {% if email.recipient_name %}
+                                <div class="text-gray-400">{{ email.recipient_name }}</div>
+                                {% endif %}
+                            </td>
                             <td class="px-3 py-4 text-sm text-gray-500 max-w-xs truncate">{{ email.subject }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{{ email.email_type|title }}</span>
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                {% if email.status == 'sent' %}
+                                <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">Sent</span>
+                                {% elif email.status == 'delivered' %}
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Delivered</span>
+                                {% elif email.status == 'opened' %}
+                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Opened</span>
+                                {% elif email.status == 'bounced' %}
+                                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">Bounced</span>
+                                {% elif email.status == 'failed' %}
+                                <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">Failed</span>
+                                {% else %}
+                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{{ email.status|title }}</span>
+                                {% endif %}
+                            </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ email.sent_at.strftime('%b %d, %Y %I:%M %p') }}</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ email.sent_by if email.sent_by else 'System' }}</td>
                         </tr>
                         {% else %}
                         <tr>
-                            <td colspan="4" class="px-3 py-12 text-center text-sm text-gray-500">
+                            <td colspan="5" class="px-3 py-12 text-center text-sm text-gray-500">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>

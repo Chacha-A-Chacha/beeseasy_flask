@@ -1,0 +1,9 @@
+Dear {{ recipient_name }},
+
+{{ message_text }}
+
+Best regards,
+Pollination Africa Summit Team
+
+---
+This email was sent to {{ recipient_email }} regarding the Pollination Africa Summit.

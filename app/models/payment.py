@@ -49,7 +49,7 @@ class Payment(db.Model):
 
     # Payment type
     payment_type = db.Column(
-        db.Enum(PaymentType), default=PaymentType.INITIAL, nullable=False
+        db.Enum(PaymentType, values_callable=lambda x: [e.value for e in x]), default=PaymentType.INITIAL, nullable=False
     )
 
     # Amount details
@@ -65,9 +65,9 @@ class Payment(db.Model):
     base_currency_amount = db.Column(db.Numeric(10, 2))  # Amount in base currency
 
     # Payment details
-    payment_method = db.Column(db.Enum(PaymentMethod), nullable=False)
+    payment_method = db.Column(db.Enum(PaymentMethod, values_callable=lambda x: [e.value for e in x]), nullable=False)
     payment_status = db.Column(
-        db.Enum(PaymentStatus),
+        db.Enum(PaymentStatus, values_callable=lambda x: [e.value for e in x]),
         default=PaymentStatus.PENDING,
         nullable=False,
         index=True,
@@ -718,6 +718,31 @@ class EmailLog(db.Model):
         self.click_count += 1
         if self.status in ["delivered", "sent", "opened"]:
             self.status = "clicked"
+
+    @classmethod
+    def log(cls, recipient_email, subject, email_type, recipient_name=None,
+            registration_id=None, template_name=None, status="sent",
+            provider=None, error_message=None):
+        """Create and persist an email log entry"""
+        from app.extensions import db as _db
+
+        entry = cls(
+            recipient_email=recipient_email,
+            recipient_name=recipient_name,
+            subject=subject,
+            email_type=email_type,
+            registration_id=registration_id,
+            template_name=template_name,
+            status=status,
+            provider=provider or "smtp",
+            error_message=error_message,
+        )
+        _db.session.add(entry)
+        try:
+            _db.session.commit()
+        except Exception:
+            _db.session.rollback()
+        return entry
 
     def __repr__(self):
         return f"<EmailLog {self.email_type} to {self.recipient_email[:20]}... - {self.status}>"

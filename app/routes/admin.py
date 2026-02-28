@@ -1555,8 +1555,8 @@ def generate_badges():
         for reg_id in registration_ids:
             registration = Registration.query.get(int(reg_id))
             if registration and not registration.qr_code_image_url:
-                # Generate QR code using BadgeService
-                success = BadgeService.generate_qr_code(registration)
+                # Generate badge using BadgeService
+                success, msg, badge_url = BadgeService.generate_badge(registration.id)
                 if success:
                     generated_count += 1
 
@@ -1765,6 +1765,8 @@ def respond_contact_message(id):
             # Send response email
             from flask_mail import Message as EmailMessage
 
+            from app.extensions import mail
+
             msg = EmailMessage(
                 subject=f"Re: {message.subject}",
                 sender=current_app.config.get("MAIL_DEFAULT_SENDER"),
@@ -1772,10 +1774,12 @@ def respond_contact_message(id):
                 reply_to=current_app.config.get("CONTACT_EMAIL", "info@beeseasy.org"),
             )
 
+            reply_text = form.reply_message.data
+
             # Create email context
             email_context = {
                 "message": message,
-                "response": form.response.data,
+                "response": reply_text,
                 "admin_name": current_user.name,
                 "reference_number": message.reference_number,
             }
@@ -1786,13 +1790,13 @@ Dear {message.first_name},
 
 Thank you for contacting us regarding "{message.subject}".
 
-{form.response.data}
+{reply_text}
 
 Reference Number: {message.reference_number}
 
 Best regards,
 {current_user.name}
-Bee East Africa Symposium Team
+Pollination Africa Summit Team
 
 ---
 This is a response to your inquiry submitted on {message.submitted_at.strftime("%B %d, %Y")}
@@ -1803,8 +1807,7 @@ This is a response to your inquiry submitted on {message.submitted_at.strftime("
             # Update message status
             message.mark_as_resolved(
                 resolved_by=current_user.name,
-                response_message=form.response.data,
-                notes=form.internal_notes.data,
+                response_message=reply_text,
             )
             db.session.commit()
 

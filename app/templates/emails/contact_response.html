@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                background: linear-gradient(135deg, #2c5f2d 0%, #5c3a21 100%);
+                color: white;
+                padding: 40px 30px;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0 0 10px 0;
+                font-size: 26px;
+                font-weight: bold;
+            }
+            .header p {
+                margin: 0;
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+            }
+            .content p {
+                margin: 15px 0;
+            }
+            .response-box {
+                background: #f0fdf4;
+                border-left: 4px solid #2c5f2d;
+                padding: 20px;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+            .response-box p {
+                margin: 0;
+                white-space: pre-wrap;
+            }
+            .info-box {
+                background: #f9fafb;
+                padding: 15px 20px;
+                border-radius: 5px;
+                margin: 20px 0;
+                border: 1px solid #e5e7eb;
+            }
+            .info-row {
+                padding: 5px 0;
+                color: #5c3a21;
+            }
+            .divider {
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    #2c5f2d 0%,
+                    #f5c342 50%,
+                    #2c5f2d 100%
+                );
+                margin: 25px 0;
+            }
+            .footer {
+                background: #2c5f2d;
+                color: white;
+                padding: 25px 30px;
+                text-align: center;
+            }
+            .footer p {
+                margin: 8px 0;
+                font-size: 13px;
+            }
+            .footer a {
+                color: #f5c342;
+                text-decoration: none;
+            }
+            .footer a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>Response to Your Inquiry</h1>
+                <p>Pollination Africa Summit</p>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <p>Dear <strong>{{ message.first_name }}</strong>,</p>
+
+                <p>
+                    Thank you for contacting us regarding
+                    <strong>"{{ message.subject }}"</strong>. Here is our response:
+                </p>
+
+                <!-- Response -->
+                <div class="response-box">
+                    <p>{{ response }}</p>
+                </div>
+
+                <!-- Reference Info -->
+                <div class="info-box">
+                    <div class="info-row">
+                        <strong>Reference Number:</strong> {{ reference_number }}
+                    </div>
+                    <div class="info-row">
+                        <strong>Responded by:</strong> {{ admin_name }}
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <p>
+                    If you have any further questions, please don't hesitate to
+                    reach out by replying to this email or contacting us directly.
+                </p>
+
+                <p style="margin-top: 30px">
+                    Best regards,<br />
+                    <strong style="color: #2c5f2d"
+                        >The Pollination Africa Summit Team</strong
+                    >
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p><strong>Pollination Africa Summit</strong></p>
+                <p style="font-size: 12px; opacity: 0.8; margin-top: 20px">
+                    This is a response to your inquiry submitted on
+                    {{ message.submitted_at.strftime("%B %d, %Y") }}.
+                </p>
+                <div
+                    style="
+                        margin-top: 25px;
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.2);
+                    "
+                >
+                    <p style="font-size: 11px; opacity: 0.7; margin: 5px 0">
+                        Developed and Powered by
+                    </p>
+                    <a
+                        href="https://chach-a.com"
+                        target="_blank"
+                        style="
+                            text-decoration: none;
+                            display: inline-flex;
+                            align-items: center;
+                            margin-top: 8px;
+                        "
+                    >
+                        <img
+                            src="https://www.chach-a.com/logoMark.svg"
+                            alt="Chacha Technologies"
+                            style="
+                                height: 20px;
+                                width: auto;
+                                margin-right: 8px;
+                                vertical-align: middle;
+                            "
+                        />
+                        <span
+                            style="
+                                color: #f5c342;
+                                font-weight: bold;
+                                font-size: 13px;
+                            "
+                            >Chacha Technologies</span
+                        >
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

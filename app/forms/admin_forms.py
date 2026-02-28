@@ -782,6 +782,38 @@ class EditExhibitorForm(FlaskForm):
         render_kw={"class": "form-input", "type": "url"},
     )
 
+    industry_category = SelectField(
+        "Industry Category",
+        choices=[
+            ("agriculture_inputs", "Agriculture Inputs"),
+            ("equipment_machinery", "Equipment & Machinery"),
+            ("processing_packaging", "Processing & Packaging"),
+            ("technology_innovation", "Technology & Innovation"),
+            ("financial_services", "Financial Services"),
+            ("training_education", "Training & Education"),
+            ("research_development", "Research & Development"),
+            ("consulting_advisory", "Consulting & Advisory"),
+            ("conservation_environment", "Conservation & Environment"),
+            ("certification_standards", "Certification & Standards"),
+            ("logistics_supply_chain", "Logistics & Supply Chain"),
+            ("marketing_trade", "Marketing & Trade"),
+            ("government_agency", "Government Agency"),
+            ("ngo_development", "NGO & Development"),
+            ("media_communications", "Media & Communications"),
+            ("healthcare_nutrition", "Healthcare & Nutrition"),
+            ("tourism_hospitality", "Tourism & Hospitality"),
+            ("other", "Other"),
+        ],
+        validators=[DataRequired()],
+        render_kw={"class": "form-select"},
+    )
+
+    company_description = TextAreaField(
+        "Company Description",
+        validators=[Optional()],
+        render_kw={"rows": 4, "class": "form-textarea"},
+    )
+
     number_of_staff = IntegerField(
         "Number of Staff",
         validators=[Optional(), NumberRange(min=1)],

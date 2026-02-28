@@ -1,0 +1,155 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Exchange Rates{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Settings'},
+    {'name': 'Exchange Rates'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- Add Exchange Rate Form -->
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="divide-y divide-gray-900/10">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Add Exchange Rate</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Configure currency conversion rates for multi-currency payment support.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="from_currency" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.from_currency.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2 grid grid-cols-1">
+                                {{ form.from_currency(class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                                    <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                                </svg>
+                            </div>
+                            {% if form.from_currency.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.from_currency.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="to_currency" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.to_currency.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2 grid grid-cols-1">
+                                {{ form.to_currency(class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                                    <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                                </svg>
+                            </div>
+                            {% if form.to_currency.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.to_currency.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="rate" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.rate.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.rate(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.rate.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.rate.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="effective_date" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.effective_date.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.effective_date(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.effective_date.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.effective_date.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="source" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.source.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.source(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.source.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.source.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                    {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Current Rates Table -->
+<div class="mt-8">
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h2 class="text-base font-semibold text-gray-900">Current Exchange Rates</h2>
+            <p class="mt-2 text-sm text-gray-700">All configured exchange rates ordered by effective date.</p>
+        </div>
+    </div>
+
+    <div class="mt-6 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div class="overflow-hidden shadow outline outline-1 outline-black/5 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">From</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">To</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Rate</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Effective Date</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Source</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Added By</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            {% for rate in rates %}
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ rate.from_currency }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{{ rate.to_currency }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{ rate.rate }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ rate.effective_date.strftime('%b %d, %Y') }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ rate.source or '—' }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ rate.created_by or '—' }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="px-3 py-12 text-center text-sm text-gray-500">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    <p class="mt-2">No exchange rates configured</p>
+                                    <p class="mt-1 text-xs text-gray-400">Add a rate using the form above</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

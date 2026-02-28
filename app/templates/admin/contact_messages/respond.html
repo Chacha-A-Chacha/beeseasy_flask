@@ -62,32 +62,31 @@
                             </div>
                         </div>
 
-                        <!-- Response Message -->
+                        <!-- Reply Message -->
                         <div class="col-span-full">
-                            <label for="response" class="block text-sm/6 font-medium text-gray-900">
-                                {{ form.response.label.text }} <span class="text-red-600">*</span>
+                            <label for="reply_message" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.reply_message.label.text }} <span class="text-red-600">*</span>
                             </label>
                             <div class="mt-2">
-                                {{ form.response(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="12") }}
+                                {{ form.reply_message(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="12") }}
                             </div>
-                            {% if form.response.errors %}
-                            <p class="mt-2 text-sm text-red-600">{{ form.response.errors[0] }}</p>
+                            {% if form.reply_message.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.reply_message.errors[0] }}</p>
                             {% endif %}
                             <p class="mt-3 text-sm/6 text-gray-600">This message will be sent to the user's email address</p>
                         </div>
 
-                        <!-- Internal Notes -->
+                        <!-- Mark as Resolved -->
                         <div class="col-span-full">
-                            <label for="internal_notes" class="block text-sm/6 font-medium text-gray-900">
-                                {{ form.internal_notes.label.text }}
-                            </label>
-                            <div class="mt-2">
-                                {{ form.internal_notes(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="3") }}
+                            <div class="flex gap-3">
+                                <div class="flex h-6 shrink-0 items-center">
+                                    {{ form.mark_resolved(class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600") }}
+                                </div>
+                                <div class="text-sm/6">
+                                    <label for="mark_resolved" class="font-medium text-gray-900">{{ form.mark_resolved.label.text }}</label>
+                                    <p class="text-gray-500">Automatically update the message status to resolved</p>
+                                </div>
                             </div>
-                            {% if form.internal_notes.errors %}
-                            <p class="mt-2 text-sm text-red-600">{{ form.internal_notes.errors[0] }}</p>
-                            {% endif %}
-                            <p class="mt-3 text-sm/6 text-gray-600">Internal notes (not sent to user)</p>
                         </div>
                     </div>
                 </div>

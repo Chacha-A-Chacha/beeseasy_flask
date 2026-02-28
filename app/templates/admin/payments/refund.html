@@ -1,0 +1,108 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Process Refund{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Payments', 'url': url_for('admin.list_payments')},
+    {'name': payment.payment_reference, 'url': url_for('admin.view_payment', id=payment.id)},
+    {'name': 'Process Refund'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- Payment Summary -->
+<div class="mb-8 overflow-hidden bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-base/7 font-semibold text-gray-900">Payment Summary</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Review the payment details before processing a refund.</p>
+    </div>
+    <div class="border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Reference</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ payment.payment_reference }}</dd>
+            </div>
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Total Amount</dt>
+                <dd class="mt-1 text-sm font-medium text-gray-900 sm:col-span-2 sm:mt-0">{{ payment.currency }} {{ "{:,.2f}".format(payment.total_amount) }}</dd>
+            </div>
+            {% if payment.refund_amount > 0 %}
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Already Refunded</dt>
+                <dd class="mt-1 text-sm font-medium text-red-600 sm:col-span-2 sm:mt-0">{{ payment.currency }} {{ "{:,.2f}".format(payment.refund_amount) }}</dd>
+            </div>
+            {% endif %}
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Payment Method</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ payment.payment_method.value|replace('_', ' ')|title }}</dd>
+            </div>
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Paid On</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ payment.payment_completed_at.strftime('%B %d, %Y at %I:%M %p') if payment.payment_completed_at else '—' }}</dd>
+            </div>
+        </dl>
+    </div>
+</div>
+
+<!-- Refund Form -->
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="divide-y divide-gray-900/10">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Refund Details</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Specify the refund amount and reason. This action cannot be undone.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="refund_amount" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.refund_amount.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.refund_amount(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.refund_amount.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.refund_amount.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="refund_reference" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.refund_reference.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.refund_reference(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.refund_reference.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.refund_reference.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-span-full">
+                            <label for="refund_reason" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.refund_reason.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.refund_reason(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="4") }}
+                            </div>
+                            {% if form.refund_reason.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.refund_reason.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                    <a href="{{ url_for('admin.view_payment', id=payment.id) }}" class="text-sm/6 font-semibold text-gray-900">Cancel</a>
+                    {{ form.submit(class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

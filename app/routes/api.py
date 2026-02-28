@@ -594,14 +594,14 @@ def api_generate_badge(id):
     try:
         registration = Registration.query.get_or_404(id)
 
-        success = BadgeService.generate_qr_code(registration)
+        success, message, badge_url = BadgeService.generate_badge(registration.id)
 
         if success:
             return jsonify(
                 {
                     "success": True,
-                    "message": f"Badge generated for {registration.name}",
-                    "qr_code_filename": registration.qr_code_filename,
+                    "message": f"Badge generated for {registration.computed_full_name}",
+                    "badge_url": badge_url,
                 }
             )
         else:

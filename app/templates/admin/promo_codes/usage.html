@@ -1,0 +1,112 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Promo Code Usage - {{ promo_code.code }}{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Event Management', 'url': url_for('admin.list_promo_codes')},
+    {'name': 'Promo Codes', 'url': url_for('admin.list_promo_codes')},
+    {'name': promo_code.code},
+    {'name': 'Usage'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- Promo Code Summary -->
+<div class="overflow-hidden bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="text-base/7 font-semibold text-gray-900">{{ promo_code.code }}</h3>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ promo_code.description or 'No description' }}</p>
+            </div>
+            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset {{ 'bg-green-50 text-green-700 ring-green-600/20' if promo_code.is_active else 'bg-gray-50 text-gray-600 ring-gray-500/10' }}">
+                {{ 'Active' if promo_code.is_active else 'Inactive' }}
+            </span>
+        </div>
+    </div>
+    <div class="border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Total Uses</dt>
+                <dd class="mt-1 text-sm font-medium text-gray-900 sm:col-span-2 sm:mt-0">{{ usages|length }}{% if promo_code.max_uses %} / {{ promo_code.max_uses }}{% endif %}</dd>
+            </div>
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Total Discount Given</dt>
+                <dd class="mt-1 text-sm font-medium text-green-600 sm:col-span-2 sm:mt-0">TZS {{ "{:,.2f}".format(total_discount) }}</dd>
+            </div>
+            <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Discount Type</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    {% if promo_code.discount_type.value == 'percentage' %}
+                    {{ promo_code.discount_value }}% off
+                    {% else %}
+                    TZS {{ "{:,.2f}".format(promo_code.discount_value) }} off
+                    {% endif %}
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+
+<!-- Usage Table -->
+<div class="mt-8">
+    <h2 class="text-base font-semibold text-gray-900">Usage History</h2>
+
+    <div class="mt-4 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div class="overflow-hidden shadow outline outline-1 outline-black/5 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Registrant</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Original Amount</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Discount</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Final Amount</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Used At</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            {% for usage in usages %}
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                                    {% if usage.registration %}
+                                    <div class="font-medium text-gray-900">{{ usage.registration.computed_full_name }}</div>
+                                    <div class="text-gray-400">{{ usage.registration.email }}</div>
+                                    {% else %}
+                                    <span class="text-gray-400">Deleted registration</span>
+                                    {% endif %}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">TZS {{ "{:,.2f}".format(usage.original_amount) }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-green-600">-TZS {{ "{:,.2f}".format(usage.discount_amount) }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">TZS {{ "{:,.2f}".format(usage.final_amount) }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ usage.used_at.strftime('%b %d, %Y %I:%M %p') }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="px-3 py-12 text-center text-sm text-gray-500">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6h.008v.008H6V6Z" />
+                                    </svg>
+                                    <p class="mt-2">No usage recorded</p>
+                                    <p class="mt-1 text-xs text-gray-400">This promo code has not been used yet</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-6">
+    <a href="{{ url_for('admin.list_promo_codes') }}" class="text-sm font-medium text-green-600 hover:text-green-500">
+        &larr; Back to Promo Codes
+    </a>
+</div>
+{% endblock %}

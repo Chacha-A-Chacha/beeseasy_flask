@@ -1,0 +1,214 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit Exhibitor{% endblock %}
+
+{% block breadcrumbs %}
+{% set breadcrumbs = [
+    {'name': 'Registrations', 'url': url_for('admin.list_exhibitors')},
+    {'name': 'Exhibitors', 'url': url_for('admin.list_exhibitors')},
+    {'name': exhibitor.computed_full_name, 'url': url_for('admin.view_exhibitor', id=exhibitor.id)},
+    {'name': 'Edit'}
+] %}
+{% include 'admin/partials/breadcrumbs.html' %}
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="divide-y divide-gray-900/10">
+        <!-- Contact Person -->
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Contact Person</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Primary contact details for this exhibitor.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="first_name" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.first_name.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.first_name(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.first_name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.first_name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="last_name" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.last_name.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.last_name(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.last_name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.last_name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-4">
+                            <label for="email" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.email.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.email(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.email.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.email.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="phone_number" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.phone_number.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.phone_number(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.phone_number.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.phone_number.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Details -->
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Company Details</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Update the exhibitor's company information.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="col-span-full">
+                            <label for="company_legal_name" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.company_legal_name.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.company_legal_name(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.company_legal_name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.company_legal_name.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="company_country" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.company_country.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.company_country(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.company_country.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.company_country.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="company_website" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.company_website.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.company_website(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.company_website.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.company_website.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-span-full">
+                            <label for="company_address" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.company_address.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2">
+                                {{ form.company_address(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="3") }}
+                            </div>
+                            {% if form.company_address.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.company_address.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="industry_category" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.industry_category.label.text }} <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-2 grid grid-cols-1">
+                                {{ form.industry_category(class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4">
+                                    <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                                </svg>
+                            </div>
+                            {% if form.industry_category.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.industry_category.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="number_of_staff" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.number_of_staff.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.number_of_staff(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6") }}
+                            </div>
+                            {% if form.number_of_staff.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.number_of_staff.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-span-full">
+                            <label for="company_description" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.company_description.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.company_description(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="4") }}
+                            </div>
+                            {% if form.company_description.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.company_description.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Notes -->
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 py-10 md:grid-cols-3">
+            <div class="px-4 sm:px-0">
+                <h2 class="text-base/7 font-semibold text-gray-900">Admin Notes</h2>
+                <p class="mt-1 text-sm/6 text-gray-600">Internal notes visible only to administrators.</p>
+            </div>
+
+            <div class="bg-white shadow-sm outline outline-1 outline-gray-900/5 sm:rounded-xl md:col-span-2">
+                <div class="px-4 py-6 sm:p-8">
+                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="col-span-full">
+                            <label for="admin_notes" class="block text-sm/6 font-medium text-gray-900">
+                                {{ form.admin_notes.label.text }}
+                            </label>
+                            <div class="mt-2">
+                                {{ form.admin_notes(class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6", rows="3") }}
+                            </div>
+                            {% if form.admin_notes.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.admin_notes.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                    <a href="{{ url_for('admin.view_exhibitor', id=exhibitor.id) }}" class="text-sm/6 font-semibold text-gray-900">Cancel</a>
+                    {{ form.submit(class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

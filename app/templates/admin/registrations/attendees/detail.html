@@ -104,7 +104,7 @@
                 <dl class="divide-y divide-gray-100">
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Full name</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.title }} {{ attendee.first_name }} {{ attendee.last_name }}</dd>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.first_name }} {{ attendee.last_name }}</dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Email address</dt>
@@ -114,30 +114,36 @@
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Phone number</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.phone }}</dd>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.phone_number or '—' }}</dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Organization</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.organization or '—' }}</dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">Role</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.role or '—' }}</dd>
+                        <dt class="text-sm font-medium text-gray-900">Job title</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.job_title or '—' }}</dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Country</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.country }}</dd>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.country or '—' }}</dd>
                     </div>
-                    {% if attendee.dietary_requirements %}
+                    {% if attendee.dietary_requirement %}
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">Dietary requirements</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.dietary_requirements }}</dd>
+                        <dt class="text-sm font-medium text-gray-900">Dietary requirement</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.dietary_requirement }}</dd>
                     </div>
                     {% endif %}
-                    {% if attendee.special_needs %}
+                    {% if attendee.accessibility_needs %}
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">Special needs</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.special_needs }}</dd>
+                        <dt class="text-sm font-medium text-gray-900">Accessibility needs</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.accessibility_needs }}</dd>
+                    </div>
+                    {% endif %}
+                    {% if attendee.special_requirements %}
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900">Special requirements</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ attendee.special_requirements }}</dd>
                     </div>
                     {% endif %}
                 </dl>

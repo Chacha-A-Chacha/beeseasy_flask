@@ -7,7 +7,7 @@
         <title>{% block title %}Check-in{% endblock %} - {{ event_name }}</title>
 
         <!-- Tailwind CSS -->
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='src/output.css') }}" />
 
         <!-- Alpine.js -->
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -67,6 +67,14 @@
             <main>
                 {% block content %}{% endblock %}
             </main>
+
+            <!-- Attribution -->
+            <footer class="mt-12 mb-4 text-center">
+                <p class="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Designed, developed & maintained by</p>
+                <a href="https://chach-a.com" target="_blank" class="inline-block cursor-pointer">
+                    <img src="{{ url_for('static', filename='images/partners/chacha-technologies.svg') }}" alt="Chacha Technologies" class="h-6 w-auto mx-auto" />
+                </a>
+            </footer>
         </div>
 
         {% include 'checkin/partials/bottom_nav.html' %}

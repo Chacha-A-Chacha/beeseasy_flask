@@ -724,6 +724,49 @@ def success(ref):
     return render_template("payments/success.html", registration=registration)
 
 
+@payments_bp.route("/cancel")
+def dpo_cancel():
+    """
+    Handle DPO BackURL redirect when user cancels payment on DPO page.
+    DPO sends: TransID, CCDapproval, PnrID, TransactionToken, CompanyRef
+    """
+    trans_token = request.args.get("TransactionToken")
+    company_ref = request.args.get("CompanyRef")
+    pnr_id = request.args.get("PnrID")
+
+    logger.info(
+        f"DPO cancel redirect received - Token: {trans_token}, CompanyRef: {company_ref}, PnrID: {pnr_id}"
+    )
+
+    # Try to find the payment and registration
+    payment = None
+    registration = None
+
+    # First try by DPO transaction token
+    if trans_token:
+        payment = Payment.query.filter_by(dpo_trans_token=trans_token).first()
+
+    # Fallback: try by payment reference (CompanyRef or PnrID)
+    if not payment and (company_ref or pnr_id):
+        ref_to_find = company_ref or pnr_id
+        payment = Payment.query.filter_by(payment_reference=ref_to_find).first()
+
+    if payment:
+        registration = payment.registration
+        logger.info(f"Payment cancel redirect for: {payment.payment_reference}")
+
+        return redirect(
+            url_for("payments.cancelled", ref=registration.reference_number)
+        )
+
+    # If we can't find the payment, redirect to home with a message
+    logger.warning(
+        f"Could not find payment for DPO cancel - Token: {trans_token}, CompanyRef: {company_ref}"
+    )
+    flash("Payment was cancelled.", "info")
+    return redirect(url_for("main.index"))
+
+
 @payments_bp.route("/cancelled/<ref>")
 def cancelled(ref):
     """Payment cancelled page"""

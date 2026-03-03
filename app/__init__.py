@@ -103,6 +103,7 @@ def create_app(config_name=None):
     from app.routes.api import api_bp
     from app.routes.auth import auth_bp
     from app.routes.checkin import checkin_bp
+    from app.routes.legal import legal_bp
     from app.routes.main import main_bp
     from app.routes.payment import payments_bp
     from app.routes.register import register_bp
@@ -111,6 +112,7 @@ def create_app(config_name=None):
     csrf.exempt(api_bp)
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(legal_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(register_bp, url_prefix="/register")
     app.register_blueprint(payments_bp, url_prefix="/payments")

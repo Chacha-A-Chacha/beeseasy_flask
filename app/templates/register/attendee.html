@@ -785,8 +785,20 @@
                         </div>
 
                         <p class="text-xs text-gray-500 mt-4 text-center">
-                            By completing registration, you agree to our terms
-                            and conditions.
+                            By completing registration, you agree to our
+                            <a
+                                href="{{ url_for('legal.terms') }}"
+                                target="_blank"
+                                class="text-accent-orange hover:text-accent-yellow font-semibold transition-colors underline"
+                                >Terms & Conditions</a
+                            >
+                            and
+                            <a
+                                href="{{ url_for('legal.refund_policy') }}"
+                                target="_blank"
+                                class="text-accent-orange hover:text-accent-yellow font-semibold transition-colors underline"
+                                >Refund Policy</a
+                            >.
                         </p>
                     </form>
                 </div>

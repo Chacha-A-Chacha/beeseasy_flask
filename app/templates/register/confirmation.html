@@ -759,6 +759,22 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                         >{{ support_whatsapp }}</a
                     >
                 </p>
+                <p class="text-xs text-gray-400 mt-3">
+                    View our
+                    <a
+                        href="{{ url_for('legal.refund_policy') }}"
+                        target="_blank"
+                        class="text-accent-orange hover:text-accent-yellow font-semibold transition-colors underline"
+                        >Refund & Cancellation Policy</a
+                    >
+                    and
+                    <a
+                        href="{{ url_for('legal.terms') }}"
+                        target="_blank"
+                        class="text-accent-orange hover:text-accent-yellow font-semibold transition-colors underline"
+                        >Terms & Conditions</a
+                    >.
+                </p>
             </div>
         </div>
     </div>

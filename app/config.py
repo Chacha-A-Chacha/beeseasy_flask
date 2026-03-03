@@ -182,7 +182,7 @@ class Config:
     WEBSITE_URL: str = os.getenv("WEBSITE_URL", "https://pollination.africa")
 
     # --- Registration Settings ---
-    REGISTRATION_OPEN: bool = os.getenv("REGISTRATION_OPEN", "False").lower() == "true"
+    REGISTRATION_OPEN: bool = os.getenv("REGISTRATION_OPEN", "True").lower() == "true"
 
     # --- Other Options ---
     DEBUG_TB_INTERCEPT_REDIRECTS: bool = False

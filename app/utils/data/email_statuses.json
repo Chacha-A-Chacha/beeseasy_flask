@@ -1,16 +1,16 @@
 {
-  "newsletter_verification_1769294003_calex2607": {
-    "task_id": "newsletter_verification_1769294003_calex2607",
-    "recipient": "calex2607@gmail.com",
-    "subject": "Verify your subscription - Pollination Africa Summit 2026",
-    "group_id": "notification_newsletter_verification",
-    "batch_id": "single_newsletter_verification_1769294003",
+  "registration_received_exhibitor_1772540822_calex.chacha": {
+    "task_id": "registration_received_exhibitor_1772540822_calex.chacha",
+    "recipient": "calex.chacha@outlook.com",
+    "subject": "Exhibitor Registration Received - Complete Payment",
+    "group_id": "notification_registration_received_exhibitor",
+    "batch_id": "single_registration_received_exhibitor_1772540822",
     "status": "sent",
     "attempts": 1,
     "max_attempts": 3,
-    "timestamp": "2026-01-25T01:33:23.558687",
-    "last_attempt": "2026-01-25T01:33:23.558687",
-    "sent_time": "2026-01-25T01:33:30.294244",
+    "timestamp": "2026-03-03T15:27:02.557222",
+    "last_attempt": "2026-03-03T15:27:02.557222",
+    "sent_time": "2026-03-03T15:27:10.421475",
     "error": null,
     "priority": 1
   }

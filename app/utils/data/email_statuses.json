@@ -1,17 +1,17 @@
 {
-  "registration_received_exhibitor_1772540822_calex.chacha": {
-    "task_id": "registration_received_exhibitor_1772540822_calex.chacha",
+  "payment_confirmed_exhibitor_1772545348_calex.chacha": {
+    "task_id": "payment_confirmed_exhibitor_1772545348_calex.chacha",
     "recipient": "calex.chacha@outlook.com",
-    "subject": "Exhibitor Registration Received - Complete Payment",
-    "group_id": "notification_registration_received_exhibitor",
-    "batch_id": "single_registration_received_exhibitor_1772540822",
+    "subject": "Payment Confirmed - Exhibitor Badge Ready",
+    "group_id": "notification_payment_confirmed_exhibitor",
+    "batch_id": "single_payment_confirmed_exhibitor_1772545348",
     "status": "sent",
     "attempts": 1,
     "max_attempts": 3,
-    "timestamp": "2026-03-03T15:27:02.557222",
-    "last_attempt": "2026-03-03T15:27:02.557222",
-    "sent_time": "2026-03-03T15:27:10.421475",
+    "timestamp": "2026-03-03T16:42:28.666040",
+    "last_attempt": "2026-03-03T16:42:28.666040",
+    "sent_time": "2026-03-03T16:42:36.477808",
     "error": null,
-    "priority": 1
+    "priority": 0
   }
 }

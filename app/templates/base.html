@@ -392,15 +392,12 @@
                     >
                         Register
                     </a>
-                    {# Exhibit button - commented out until exhibition details
-                    are finalized
                     <a
                         href="{{ url_for('register.exhibitor_index') }}"
                         class="rounded-full px-6 py-2 text-sm font-semibold border-1 border-[#E8B030] text-[#E8B030] transition-all duration-300 hover:-translate-y-0.5"
                     >
                         Exhibit
                     </a>
-                    #}
                 </div>
             </nav>
 
@@ -505,15 +502,12 @@
                                         >
                                             Register Now
                                         </a>
-                                        {# Exhibitor button - commented out
-                                        until exhibition details are finalized
                                         <a
                                             href="{{ url_for('register.exhibitor_index') }}"
                                             class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold border-2 border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-primary-dark text-center"
                                         >
                                             Become an Exhibitor
                                         </a>
-                                        #}
                                     </div>
                                 </div>
                             </div>
@@ -874,8 +868,8 @@
 
                 phoneInputs.forEach(function (input) {
                     const iti = window.intlTelInput(input, {
-                        // Initial country (Kenya - event location)
-                        initialCountry: "ke",
+                        // Initial country (Tanzania - event location)
+                        initialCountry: "tz",
 
                         // Preferred countries (East Africa priority)
                         preferredCountries: ["ke", "tz", "ug", "rw", "bi"],

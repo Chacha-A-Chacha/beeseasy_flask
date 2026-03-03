@@ -1,8 +1,6 @@
-{% extends "base.html" %}
-{% block title %}Email Verified - {{ event_name }}{% endblock %}
-
-{% block content %}
-<div class="relative isolate overflow-hidden bg-white">
+{% extends "base.html" %} {% block title %}Email Verified - {{ event_name }}{%
+endblock %} {% block content %}
+<div class="relative isolate overflow-hidden bg-green-50">
     <div class="relative py-24 sm:py-32">
         <img
             src="{{ url_for('static', filename='images/speakers/pattern.svg') }}"
@@ -46,7 +44,9 @@
                     Thank you for verifying your email address.
                 </p>
                 <p class="text-lg text-gray-600 mb-8">
-                    You're all set to receive updates about {{ event_name }}. We'll keep you informed about registration openings, speaker announcements, and important event details.
+                    You're all set to receive updates about {{ event_name }}.
+                    We'll keep you informed about registration openings, speaker
+                    announcements, and important event details.
                 </p>
 
                 <!-- Info Box -->
@@ -58,22 +58,52 @@
                     </h3>
                     <ul class="space-y-3 text-gray-700">
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-accent-orange mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-5 h-5 text-accent-orange mt-0.5 mr-3 flex-shrink-0"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
-                            <span>You'll receive an email when registration opens</span>
+                            <span
+                                >You'll receive an email when registration
+                                opens</span
+                            >
                         </li>
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-accent-orange mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-5 h-5 text-accent-orange mt-0.5 mr-3 flex-shrink-0"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
                             <span>Get updates about speakers and sessions</span>
                         </li>
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-accent-orange mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            <svg
+                                class="w-5 h-5 text-accent-orange mt-0.5 mr-3 flex-shrink-0"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"
+                                ></path>
                             </svg>
-                            <span>Receive event schedule and agenda releases</span>
+                            <span
+                                >Receive event schedule and agenda
+                                releases</span
+                            >
                         </li>
                     </ul>
                 </div>

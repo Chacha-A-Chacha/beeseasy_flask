@@ -717,6 +717,30 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
             </div>
             {% endif %}
 
+            <!-- Print Confirmation -->
+            <div class="text-center mb-6">
+                <a
+                    href="{{ url_for('payments.print_confirmation', ref=registration.reference_number) }}"
+                    target="_blank"
+                    class="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 font-semibold rounded-full shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all text-sm"
+                >
+                    <svg
+                        class="w-5 h-5 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                        ></path>
+                    </svg>
+                    Print Confirmation
+                </a>
+            </div>
+
             <!-- Email Confirmation Notice -->
             <div
                 class="text-center bg-gray-50 rounded-lg p-6 border border-gray-200"

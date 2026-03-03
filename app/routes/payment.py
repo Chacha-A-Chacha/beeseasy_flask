@@ -724,6 +724,26 @@ def success(ref):
     return render_template("payments/success.html", registration=registration)
 
 
+@payments_bp.route("/print-confirmation/<ref>")
+def print_confirmation(ref):
+    """
+    Dedicated A4 print-optimised confirmation page.
+    Renders a clean, standalone document layout suitable for printing or saving as PDF.
+    Auto-triggers window.print() on load.
+    """
+    registration = Registration.query.filter_by(
+        reference_number=ref, is_deleted=False
+    ).first_or_404()
+
+    payment = registration.payments[0] if registration.payments else None
+
+    return render_template(
+        "payments/print_confirmation.html",
+        registration=registration,
+        payment=payment,
+    )
+
+
 @payments_bp.route("/cancel")
 def dpo_cancel():
     """

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Confirmation - {{ registration.reference_number }} | {{ event_name
+            }}
+        </title>
+        <style>
+            /* ============================================ */
+            /* BASE RESET & A4 PAGE SETUP                   */
+            /* ============================================ */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 15mm 18mm 20mm 18mm;
+            }
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, "Helvetica Neue", Arial, sans-serif;
+                font-size: 11pt;
+                line-height: 1.5;
+                color: #1a1a1a;
+                background: #f9fafb;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ============================================ */
+            /* SCREEN WRAPPER (centers on screen)            */
+            /* ============================================ */
+            .page-wrapper {
+                max-width: 210mm;
+                margin: 20px auto;
+                background: #fff;
+                box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+                padding: 15mm 18mm 20mm 18mm;
+            }
+
+            /* ============================================ */
+            /* HEADER                                       */
+            /* ============================================ */
+            .header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-bottom: 14px;
+                border-bottom: 3px solid #1b4d2e;
+                margin-bottom: 20px;
+            }
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+
+            .header-logo {
+                height: 48px;
+                width: auto;
+            }
+
+            .header-text h1 {
+                font-size: 16pt;
+                font-weight: 700;
+                color: #1b4d2e;
+                line-height: 1.2;
+            }
+
+            .header-text p {
+                font-size: 9pt;
+                color: #555;
+                margin-top: 2px;
+            }
+
+            .header-right {
+                text-align: right;
+            }
+
+            .doc-title {
+                font-size: 13pt;
+                font-weight: 700;
+                color: #1b4d2e;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .doc-date {
+                font-size: 8.5pt;
+                color: #666;
+                margin-top: 2px;
+            }
+
+            /* ============================================ */
+            /* STATUS BANNER                                */
+            /* ============================================ */
+            .status-banner {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 16px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-weight: 600;
+                font-size: 10.5pt;
+            }
+
+            .status-confirmed {
+                background: #dcfce7;
+                color: #166534;
+                border: 1px solid #bbf7d0;
+            }
+
+            .status-pending {
+                background: #fef9c3;
+                color: #854d0e;
+                border: 1px solid #fde68a;
+            }
+
+            .status-icon {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+            }
+
+            /* ============================================ */
+            /* SECTION STYLING                              */
+            /* ============================================ */
+            .section {
+                margin-bottom: 18px;
+            }
+
+            .section-title {
+                font-size: 10pt;
+                font-weight: 700;
+                color: #1b4d2e;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+                padding-bottom: 6px;
+                border-bottom: 1.5px solid #e5e7eb;
+                margin-bottom: 10px;
+            }
+
+            /* ============================================ */
+            /* DATA TABLE                                   */
+            /* ============================================ */
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .data-table td {
+                padding: 6px 0;
+                vertical-align: top;
+                font-size: 10pt;
+            }
+
+            .data-table .label {
+                width: 38%;
+                color: #555;
+                font-weight: 500;
+            }
+
+            .data-table .value {
+                color: #1a1a1a;
+                font-weight: 600;
+            }
+
+            .data-table .mono {
+                font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+                letter-spacing: 0.3px;
+            }
+
+            .data-table tr + tr td {
+                border-top: 1px solid #f3f4f6;
+            }
+
+            /* ============================================ */
+            /* PAYMENT SUMMARY                              */
+            /* ============================================ */
+            .payment-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .payment-table td {
+                padding: 5px 0;
+                font-size: 10pt;
+            }
+
+            .payment-table .amount {
+                text-align: right;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .payment-table .discount {
+                color: #16a34a;
+            }
+
+            .payment-table .total-row td {
+                padding-top: 8px;
+                border-top: 2px solid #1b4d2e;
+                font-size: 12pt;
+                font-weight: 700;
+            }
+
+            .payment-table .total-row .amount {
+                color: #1b4d2e;
+            }
+
+            .payment-status-badge {
+                display: inline-block;
+                padding: 2px 10px;
+                border-radius: 20px;
+                font-size: 8.5pt;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+            }
+
+            .badge-paid {
+                background: #dcfce7;
+                color: #166534;
+                border: 1px solid #bbf7d0;
+            }
+
+            .badge-pending {
+                background: #fef9c3;
+                color: #854d0e;
+                border: 1px solid #fde68a;
+            }
+
+            /* ============================================ */
+            /* TWO COLUMN LAYOUT                            */
+            /* ============================================ */
+            .two-col {
+                display: flex;
+                gap: 24px;
+            }
+
+            .two-col > .col {
+                flex: 1;
+            }
+
+            /* ============================================ */
+            /* QR CODE / BADGE SECTION                      */
+            /* ============================================ */
+            .qr-section {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 12px 16px;
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                margin-bottom: 18px;
+            }
+
+            .qr-code {
+                width: 80px;
+                height: 80px;
+                flex-shrink: 0;
+            }
+
+            .qr-code img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .qr-info {
+                font-size: 9pt;
+                color: #555;
+            }
+
+            .qr-info strong {
+                display: block;
+                font-size: 10pt;
+                color: #1a1a1a;
+                margin-bottom: 2px;
+            }
+
+            /* ============================================ */
+            /* IMPORTANT NOTES                              */
+            /* ============================================ */
+            .notes {
+                padding: 12px 16px;
+                background: #fffbeb;
+                border: 1px solid #fde68a;
+                border-radius: 8px;
+                margin-bottom: 18px;
+            }
+
+            .notes h4 {
+                font-size: 9pt;
+                font-weight: 700;
+                color: #854d0e;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                margin-bottom: 6px;
+            }
+
+            .notes ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .notes li {
+                font-size: 9pt;
+                color: #713f12;
+                padding: 2px 0 2px 16px;
+                position: relative;
+            }
+
+            .notes li::before {
+                content: "•";
+                position: absolute;
+                left: 4px;
+                color: #d97706;
+            }
+
+            /* ============================================ */
+            /* FOOTER                                       */
+            /* ============================================ */
+            .footer {
+                margin-top: 24px;
+                padding-top: 12px;
+                border-top: 1.5px solid #e5e7eb;
+                text-align: center;
+                font-size: 8pt;
+                color: #888;
+                line-height: 1.6;
+            }
+
+            .footer strong {
+                color: #555;
+            }
+
+            /* ============================================ */
+            /* SCREEN-ONLY TOOLBAR                          */
+            /* ============================================ */
+            .screen-toolbar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                padding: 14px;
+                background: #1b4d2e;
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+
+            .screen-toolbar button,
+            .screen-toolbar a {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 20px;
+                border-radius: 999px;
+                font-size: 10pt;
+                font-weight: 600;
+                text-decoration: none;
+                cursor: pointer;
+                border: none;
+                transition: all 0.15s ease;
+            }
+
+            .btn-print {
+                background: #f5c342;
+                color: #1b4d2e;
+            }
+
+            .btn-print:hover {
+                background: #fbbf24;
+            }
+
+            .btn-back {
+                background: transparent;
+                color: #fff;
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            }
+
+            .btn-back:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .btn-icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            /* ============================================ */
+            /* PRINT OVERRIDES                              */
+            /* ============================================ */
+            @media print {
+                body {
+                    background: #fff;
+                }
+
+                .page-wrapper {
+                    max-width: none;
+                    box-shadow: none;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .screen-toolbar {
+                    display: none !important;
+                }
+
+                .no-print {
+                    display: none !important;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Screen-only toolbar -->
+        <div class="screen-toolbar no-print">
+            <button class="btn-print" onclick="window.print()">
+                <svg
+                    class="btn-icon"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                    />
+                </svg>
+                Print / Save as PDF
+            </button>
+            <a
+                class="btn-back"
+                href="{{ url_for('payments.success', ref=registration.reference_number) }}"
+            >
+                <svg
+                    class="btn-icon"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                </svg>
+                Back to Confirmation
+            </a>
+        </div>
+
+        <!-- A4 page content -->
+        <div class="page-wrapper">
+            <!-- ====== HEADER ====== -->
+            <div class="header">
+                <div class="header-left">
+                    <img
+                        src="{{ url_for('static', filename='images/logo.svg', _external=True) }}"
+                        alt="{{ organization_name }}"
+                        class="header-logo"
+                    />
+                    <div class="header-text">
+                        <h1>{{ event_name }}</h1>
+                        <p>{{ event_date }} &bull; {{ event_venue }}</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="doc-title">
+                        {% if registration.status.value == 'confirmed' %}
+                        Registration Confirmation {% else %} Registration
+                        Receipt {% endif %}
+                    </div>
+                    <div class="doc-date">
+                        Issued: {{ registration.created_at.strftime('%d %B %Y')
+                        }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== STATUS BANNER ====== -->
+            {% if registration.status.value == 'confirmed' %}
+            <div class="status-banner status-confirmed">
+                <svg class="status-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                Registration Confirmed — You are registered for {{ event_short_name }}
+            </div>
+            {% else %}
+            <div class="status-banner status-pending">
+                <svg class="status-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+                Payment Pending — Complete payment to confirm your registration
+            </div>
+            {% endif %}
+
+            <!-- ====== QR CODE (if available) ====== -->
+            {% if registration.qr_code_image_url %}
+            <div class="qr-section">
+                <div class="qr-code">
+                    <img
+                        src="{{ registration.qr_code_image_url }}"
+                        alt="QR Code"
+                    />
+                </div>
+                <div class="qr-info">
+                    <strong>Event Check-in QR Code</strong>
+                    Present this QR code at the registration desk for fast
+                    check-in. You can also show the digital badge from your
+                    confirmation email.
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- ====== REGISTRATION & CONTACT DETAILS (2 columns) ====== -->
+            <div class="two-col">
+                <!-- Registration Details -->
+                <div class="col">
+                    <div class="section">
+                        <div class="section-title">Registration Details</div>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Reference Number</td>
+                                <td class="value mono">
+                                    {{ registration.reference_number }}
+                                </td>
+                            </tr>
+                            {% if registration.confirmation_code %}
+                            <tr>
+                                <td class="label">Confirmation Code</td>
+                                <td class="value mono">
+                                    {{ registration.confirmation_code }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="label">Registration Type</td>
+                                <td class="value">
+                                    {{ registration.registration_type|title }}
+                                </td>
+                            </tr>
+                            {% if registration.registration_type == 'attendee' %}
+                            <tr>
+                                <td class="label">Ticket Type</td>
+                                <td class="value">
+                                    {{ registration.ticket_type.value|replace('_', ' ')|title }}
+                                </td>
+                            </tr>
+                            {% elif registration.registration_type == 'exhibitor' %}
+                            <tr>
+                                <td class="label">Package</td>
+                                <td class="value">
+                                    {{ registration.package_type.value|title }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Company</td>
+                                <td class="value">
+                                    {{ registration.company_legal_name }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="label">Status</td>
+                                <td class="value">
+                                    {{ registration.status.value|upper }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Registered On</td>
+                                <td class="value">
+                                    {{ registration.created_at.strftime('%d %B %Y at %H:%M') }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="col">
+                    <div class="section">
+                        <div class="section-title">Registrant Details</div>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Full Name</td>
+                                <td class="value">
+                                    {{ registration.first_name }} {{ registration.last_name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Email</td>
+                                <td class="value">
+                                    {{ registration.email }}
+                                </td>
+                            </tr>
+                            {% if registration.full_phone %}
+                            <tr>
+                                <td class="label">Phone</td>
+                                <td class="value">
+                                    {{ registration.full_phone }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% if registration.registration_type == 'attendee' and registration.organization %}
+                            <tr>
+                                <td class="label">Organization</td>
+                                <td class="value">
+                                    {{ registration.organization }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% if registration.registration_type == 'exhibitor' %}
+                            {% if registration.job_title %}
+                            <tr>
+                                <td class="label">Job Title</td>
+                                <td class="value">
+                                    {{ registration.job_title }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% if registration.company_country %}
+                            <tr>
+                                <td class="label">Country</td>
+                                <td class="value">
+                                    {{ registration.company_country }}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PAYMENT SUMMARY ====== -->
+            {% if payment %}
+            <div class="section">
+                <div class="section-title">Payment Summary</div>
+                <table class="payment-table">
+                    <tr>
+                        <td>
+                            {% if registration.registration_type == 'attendee' %}Ticket Price{% else %}Package Price{% endif %}
+                        </td>
+                        <td class="amount">
+                            {{ payment.currency }} {{ "%.2f"|format(payment.subtotal) }}
+                        </td>
+                    </tr>
+                    {% if payment.discount_amount and payment.discount_amount > 0 %}
+                    <tr class="discount">
+                        <td>Discount</td>
+                        <td class="amount">
+                            -{{ payment.currency }} {{ "%.2f"|format(payment.discount_amount) }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if payment.tax_amount and payment.tax_amount > 0 %}
+                    <tr>
+                        <td>Tax</td>
+                        <td class="amount">
+                            {{ payment.currency }} {{ "%.2f"|format(payment.tax_amount) }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    <tr class="total-row">
+                        <td>
+                            Total Amount
+                            &nbsp;
+                            {% if payment.payment_status.value == 'completed' %}
+                            <span class="payment-status-badge badge-paid">Paid</span>
+                            {% else %}
+                            <span class="payment-status-badge badge-pending">{{ payment.payment_status.value|title }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="amount">
+                            {{ payment.currency }} {{ "{:,.2f}".format(payment.total_amount) }}
+                        </td>
+                    </tr>
+                </table>
+
+                {% if payment.payment_completed_at %}
+                <table class="data-table" style="margin-top: 10px">
+                    <tr>
+                        <td class="label">Payment Date</td>
+                        <td class="value">
+                            {{ payment.payment_completed_at.strftime('%d %B %Y at %H:%M') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Payment Method</td>
+                        <td class="value">
+                            {{ payment.payment_method.value|replace('_', ' ')|title }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Payment Reference</td>
+                        <td class="value mono">
+                            {{ payment.payment_reference }}
+                        </td>
+                    </tr>
+                    {% if payment.transaction_id %}
+                    <tr>
+                        <td class="label">Transaction ID</td>
+                        <td class="value mono">
+                            {{ payment.transaction_id }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- ====== IMPORTANT NOTES ====== -->
+            <div class="notes">
+                <h4>Important Information</h4>
+                <ul>
+                    <li>
+                        Please bring this confirmation or your digital badge
+                        (sent via email) to the event for check-in
+                    </li>
+                    <li>
+                        Event dates: {{ event_date }} at {{ event_venue }},
+                        {{ event_location }}
+                    </li>
+                    {% if registration.status.value != 'confirmed' %}
+                    <li>
+                        Your registration will be confirmed once payment is
+                        received and verified
+                    </li>
+                    {% endif %}
+                    <li>
+                        For questions or changes, contact {{ contact_email }} or
+                        call {{ support_phone }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ====== FOOTER ====== -->
+            <div class="footer">
+                <strong>{{ organization_name }}</strong> &bull;
+                {{ event_name }}<br />
+                {{ event_venue }}, {{ event_location }} &bull; {{ event_date
+                }}<br />
+                {{ contact_email }} &bull; {{ website_url }}<br />
+                <br />
+                <em
+                    >This document was generated on {{
+                    registration.created_at.strftime('%d %B %Y') }} and serves
+                    as {% if registration.status.value == 'confirmed' %}official
+                    confirmation{% else %}a record{% endif %} of your
+                    registration.</em
+                >
+            </div>
+        </div>
+
+        <!-- Auto-trigger print dialog -->
+        <script>
+            window.addEventListener("DOMContentLoaded", function () {
+                // Small delay to ensure rendering is complete
+                setTimeout(function () {
+                    window.print();
+                }, 400);
+            });
+        </script>
+    </body>
+</html>

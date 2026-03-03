@@ -429,8 +429,9 @@
                 Return to Home
             </a>
 
-            <button
-                onclick="window.print()"
+            <a
+                href="{{ url_for('payments.print_confirmation', ref=registration.reference_number) }}"
+                target="_blank"
                 class="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-semibold text-gray-700 shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all duration-300"
             >
                 <svg
@@ -447,7 +448,7 @@
                     ></path>
                 </svg>
                 Print Confirmation
-            </button>
+            </a>
         </div>
 
         <!-- Contact Information -->
@@ -529,24 +530,4 @@
     </div>
 </div>
 
-<!-- Print Styles -->
-<style media="print">
-    @page {
-        margin: 1cm;
-    }
-
-    body {
-        background: white !important;
-    }
-
-    .bg-green-50,
-    .bg-gradient-to-b {
-        background: white !important;
-    }
-
-    button,
-    a[href="/"] {
-        display: none !important;
-    }
-</style>
 {% endblock %}

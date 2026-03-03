@@ -161,9 +161,7 @@ class Config:
     EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Summit 2026")
     EVENT_SHORT_NAME: str = os.getenv("EVENT_SHORT_NAME", "Pollination Africa 2026")
     EVENT_DATE: str = os.getenv("EVENT_DATE", "3-5 June 2026")
-    EVENT_LOCATION: str = os.getenv(
-        "EVENT_LOCATION", "Arusha International Conference Centre, Arusha, Tanzania"
-    )
+    EVENT_LOCATION: str = os.getenv("EVENT_LOCATION", "AICC, Arusha, Tanzania")
     EVENT_VENUE: str = os.getenv(
         "EVENT_VENUE", "Arusha International Conference Centre"
     )
@@ -180,7 +178,7 @@ class Config:
     ORGANIZATION_NAME: str = os.getenv("ORGANIZATION_NAME", "Pollination Africa")
     CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "info@pollination.africa")
     SUPPORT_PHONE: str = os.getenv("SUPPORT_PHONE", "+255 767 727 619")
-    SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+255 767 727 619")
+    SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+255 683 136 393")
     WEBSITE_URL: str = os.getenv("WEBSITE_URL", "https://pollination.africa")
 
     # --- Registration Settings ---

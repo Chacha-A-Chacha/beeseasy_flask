@@ -78,14 +78,18 @@ def register_attendee_form():
 
     if selected_ticket_type and request.method == "GET":
         form.ticket_type.data = selected_ticket_type
-        # Get the actual ticket object for sidebar display
+
+    # Resolve selected_ticket for sidebar display on both GET and POST.
+    # On GET it comes from the query param; on POST it comes from the submitted form data.
+    ticket_type_value = form.ticket_type.data or selected_ticket_type
+    if ticket_type_value:
         try:
-            ticket_enum = AttendeeTicketType(selected_ticket_type)
+            ticket_enum = AttendeeTicketType(ticket_type_value)
             selected_ticket = TicketPrice.query.filter_by(
                 ticket_type=ticket_enum, is_active=True
             ).first()
         except (ValueError, AttributeError):
-            logger.warning(f"Invalid ticket type: {selected_ticket_type}")
+            logger.warning(f"Invalid ticket type: {ticket_type_value}")
 
     if form.validate_on_submit():
         # Process phone data from enhanced or fallback inputs
@@ -164,14 +168,18 @@ def register_exhibitor_form():
 
     if selected_package_type and request.method == "GET":
         form.package_type.data = selected_package_type
-        # Get the actual package object for sidebar display
+
+    # Resolve selected_package for sidebar display on both GET and POST.
+    # On GET it comes from the query param; on POST it comes from the submitted form data.
+    package_type_value = form.package_type.data or selected_package_type
+    if package_type_value:
         try:
-            package_enum = ExhibitorPackage(selected_package_type)
+            package_enum = ExhibitorPackage(package_type_value)
             selected_package = ExhibitorPackagePrice.query.filter_by(
                 package_type=package_enum, is_active=True
             ).first()
         except (ValueError, AttributeError):
-            logger.warning(f"Invalid package type: {selected_package_type}")
+            logger.warning(f"Invalid package type: {package_type_value}")
 
     if form.validate_on_submit():
         # Process phone data from enhanced or fallback inputs

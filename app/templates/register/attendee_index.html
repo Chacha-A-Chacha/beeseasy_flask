@@ -1,12 +1,13 @@
 {% extends "base.html" %} {% block title %}Delegate Registration - {{ event_name
 }}{% endblock %} {% block content %}
 <!-- Hero Section -->
-<div
-    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"
->
-    <!-- Decorative background elements -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <div
-        aria-hidden="true"
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-green-950/80 via-green-950/60 to-green-950/90"
+    ></div>
+
+    <!-- Decorative Gradients -->
+    <div
         class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
     >
         <div
@@ -30,11 +31,10 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
     <div
-        aria-hidden="true"
         class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
     >
         <div
@@ -58,21 +58,23 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto max-w-2xl lg:mx-0">
             <h1
-                class="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
             >
-                Join Pollination Africa 2026
+                Join {{ event_short_name }}
             </h1>
-            <p class="mt-4 text-lg text-[#F5C342]">
-                3-5 June 2026 • Arusha, Tanzania
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
+            >
+                {{ event_date }} · {{ event_location }}
             </p>
-            <p class="mt-4 text-lg text-white/90">
+            <p class="mt-4 text-base text-gray-300">
                 Be part of Africa's premier gathering celebrating all
                 pollinators and their vital role in food security and
                 sustainable livelihoods.
@@ -125,11 +127,11 @@
         <div class="mx-auto max-w-5xl">
             <div class="text-center mb-12">
                 <h2
-                    class="text-3xl font-bold tracking-tight text-primary-dark sm:text-4xl"
+                    class="text-3xl font-semibold tracking-tight text-primary-dark sm:text-4xl"
                 >
                     Choose Your Ticket
                 </h2>
-                <p class="mt-4 text-lg text-gray-600">
+                <p class="mt-4 text-lg/8 text-gray-600">
                     Select the ticket type that best fits your needs.
                 </p>
             </div>
@@ -139,7 +141,7 @@
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {% for ticket in tickets %}
                 <div
-                    class="flex flex-col rounded-2xl border border-gray-200 bg-white p-8 hover:ring-1 hover:ring-[#F5C342]/50 transition-all"
+                    class="flex flex-col rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5 hover:ring-accent-yellow/50 hover:shadow-md transition-all duration-300"
                 >
                     <!-- Ticket Header -->
                     <h3 class="text-2xl font-bold text-primary-dark">
@@ -258,14 +260,14 @@
                         {% endif %}
                         <a
                             href="{{ url_for('register.register_attendee_form', ticket_type=ticket.ticket_type.value) }}"
-                            class="block w-full rounded-lg bg-accent-orange px-6 py-3 text-center font-semibold text-white hover:bg-accent-yellow hover:text-primary-dark transition-colors"
+                            class="block w-full rounded-full bg-accent-orange px-6 py-3.5 text-center text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
                         >
                             Select Ticket
                         </a>
                         {% else %}
                         <button
                             disabled
-                            class="block w-full rounded-lg bg-gray-300 px-6 py-3 text-center font-semibold text-gray-500 cursor-not-allowed"
+                            class="block w-full rounded-full bg-gray-200 px-6 py-3.5 text-center text-base font-semibold text-gray-500 cursor-not-allowed"
                         >
                             Sold Out
                         </button>
@@ -278,7 +280,7 @@
             {% else %}
             <!-- Empty State -->
             <div
-                class="rounded-2xl border border-gray-200 bg-white p-12 text-center"
+                class="rounded-2xl bg-white p-12 text-center shadow-sm ring-1 ring-gray-900/5"
             >
                 <svg
                     class="mx-auto h-20 w-20 text-gray-300"
@@ -302,7 +304,7 @@
                 </p>
                 <a
                     href="{{ url_for('main.contact') }}"
-                    class="mt-6 inline-block rounded-lg bg-accent-orange px-6 py-3 font-semibold text-white hover:bg-accent-yellow hover:text-primary-dark transition-colors"
+                    class="mt-6 inline-block rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
                 >
                     Contact Us
                 </a>

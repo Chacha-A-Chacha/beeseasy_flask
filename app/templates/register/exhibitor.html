@@ -1,12 +1,13 @@
 {% extends "base.html" %} {% block title %}Complete Exhibition Registration - {{
 event_name }}{% endblock %} {% block content %}
 <!-- Hero Section -->
-<div
-    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"
->
-    <!-- Decorative background elements -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <div
-        aria-hidden="true"
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-green-950/80 via-green-950/60 to-green-950/90"
+    ></div>
+
+    <!-- Decorative Gradients -->
+    <div
         class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
     >
         <div
@@ -30,11 +31,10 @@ event_name }}{% endblock %} {% block content %}
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
     <div
-        aria-hidden="true"
         class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
     >
         <div
@@ -58,20 +58,21 @@ event_name }}{% endblock %} {% block content %}
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto max-w-2xl lg:mx-0">
             <h1
-                class="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
             >
                 Complete Exhibition Registration
             </h1>
-            <p class="mt-4 text-lg text-[#F5C342]">
-                Pollination Africa Symposium 2026 • 3-5 June 2026 • Arusha,
-                Tanzania
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
+            >
+                {{ event_name }} · {{ event_date }} · {{ event_venue }}
             </p>
         </div>
     </div>
@@ -116,16 +117,16 @@ event_name }}{% endblock %} {% block content %}
 </div>
 
 <!-- Main Content -->
-<div class="container mx-auto px-4 py-12">
-    <div class="max-w-6xl mx-auto">
+<div class="bg-green-50 py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- LEFT SIDEBAR - Package Info Card (Sticky) -->
             <div class="lg:col-span-1">
                 <div
-                    class="bg-white rounded-lg shadow-lg border-2 border-accent-orange sticky top-6"
+                    class="sticky top-28 rounded-2xl bg-white shadow-sm ring-1 ring-gray-900/5 overflow-hidden"
                 >
                     <div
-                        class="bg-gradient-to-r from-primary-dark to-primary-medium p-4"
+                        class="bg-gradient-to-r from-primary-dark to-primary-medium p-5"
                     >
                         <h3 class="text-lg font-bold text-white">
                             Your Package
@@ -135,21 +136,23 @@ event_name }}{% endblock %} {% block content %}
                     <div class="p-6">
                         {% if selected_package %}
                         <!-- Package Details -->
-                        <div class="mb-4">
+                        <div class="mb-5">
                             <h4
                                 class="text-xl font-bold text-primary-dark mb-2"
                             >
                                 {{ selected_package.name }}
                             </h4>
                             {% if selected_package.description %}
-                            <p class="text-sm text-gray-600 mb-3">
+                            <p class="text-sm text-gray-600">
                                 {{ selected_package.description }}
                             </p>
                             {% endif %}
                         </div>
 
                         <!-- Price -->
-                        <div class="mb-4 p-4 bg-accent-orange/10 rounded-lg">
+                        <div
+                            class="mb-5 p-4 rounded-xl bg-accent-orange/10 border border-accent-orange/30"
+                        >
                             <div class="flex items-baseline justify-between">
                                 <span class="text-sm text-gray-600"
                                     >Package Price</span
@@ -170,7 +173,7 @@ event_name }}{% endblock %} {% block content %}
 
                         <!-- Booth Size -->
                         <div
-                            class="mb-4 p-3 bg-accent-yellow/5 rounded-lg border border-accent-yellow/20"
+                            class="mb-5 p-3 rounded-xl bg-accent-yellow/10 border border-accent-yellow/30"
                         >
                             <div class="flex items-center text-sm">
                                 <svg
@@ -194,13 +197,13 @@ event_name }}{% endblock %} {% block content %}
                         </div>
 
                         <!-- Features -->
-                        <div class="mb-4">
+                        <div class="mb-5">
                             <h5
-                                class="text-sm font-semibold text-primary-dark mb-2"
+                                class="text-sm font-semibold text-primary-dark mb-3"
                             >
                                 Package Includes
                             </h5>
-                            <ul class="space-y-2">
+                            <ul class="space-y-2.5">
                                 <li
                                     class="flex items-start text-sm text-gray-700"
                                 >
@@ -316,13 +319,13 @@ event_name }}{% endblock %} {% block content %}
                         {% endif %}
 
                         <!-- Change Selection -->
-                        <div class="pt-4 border-t border-gray-200">
+                        <div class="pt-5 border-t border-gray-200">
                             <a
                                 href="{{ url_for('register.exhibitor_index') }}"
-                                class="text-sm text-accent-orange hover:text-accent-yellow transition-colors flex items-center"
+                                class="inline-flex items-center gap-1.5 text-sm font-medium text-accent-orange hover:text-accent-yellow transition-colors"
                             >
                                 <svg
-                                    class="w-4 h-4 mr-1"
+                                    class="w-4 h-4"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -341,22 +344,52 @@ event_name }}{% endblock %} {% block content %}
                 </div>
 
                 <!-- Help Section -->
-                <div class="mt-6 bg-primary-dark/5 rounded-lg p-4 text-center">
+                <div
+                    class="mt-6 rounded-2xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6 text-center"
+                >
+                    <svg
+                        class="w-8 h-8 text-accent-orange mx-auto mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
                     <p class="text-sm text-gray-600 mb-2">
                         Need a custom package?
                     </p>
                     <a
                         href="{{ url_for('main.contact') }}"
-                        class="text-sm text-accent-orange hover:text-accent-yellow font-semibold"
+                        class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
                     >
-                        Contact Sales →
+                        Contact Sales
+                        <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            />
+                        </svg>
                     </a>
                 </div>
             </div>
 
             <!-- RIGHT SIDE - Registration Form -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-lg p-8">
+                <div
+                    class="rounded-2xl bg-white p-8 sm:p-12 shadow-sm ring-1 ring-gray-900/5"
+                >
                     <form
                         method="POST"
                         action="{{ url_for('register.register_exhibitor_form') }}"
@@ -373,7 +406,7 @@ event_name }}{% endblock %} {% block content %}
                         />
 
                         <!-- Contact Person -->
-                        <div class="mb-8">
+                        <div class="mb-10">
                             <h2
                                 class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
                             >
@@ -385,12 +418,18 @@ event_name }}{% endblock %} {% block content %}
                             >
                                 <div>
                                     {{ form.first_name.label(class="block
-                                    text-sm font-medium text-primary-dark mb-1")
-                                    }} {{ form.first_name(class="w-full px-3.5
-                                    py-2 border border-gray-300 rounded-md
-                                    focus:ring-accent-yellow
-                                    focus:border-accent-yellow") }} {% if
-                                    form.first_name.errors %}
+                                    text-sm font-semibold text-primary-dark
+                                    mb-1") }}
+                                    <div class="mt-1">
+                                        {{ form.first_name(class="block w-full
+                                        rounded-xl bg-white px-4 py-2.5
+                                        text-base text-gray-900 ring-1
+                                        ring-inset ring-gray-300
+                                        placeholder:text-gray-400 focus:ring-2
+                                        focus:ring-inset
+                                        focus:ring-accent-orange sm:text-sm") }}
+                                    </div>
+                                    {% if form.first_name.errors %}
                                     <p class="text-red-600 text-xs mt-1">
                                         {{ form.first_name.errors[0] }}
                                     </p>
@@ -399,12 +438,17 @@ event_name }}{% endblock %} {% block content %}
 
                                 <div>
                                     {{ form.last_name.label(class="block text-sm
-                                    font-medium text-primary-dark mb-1") }} {{
-                                    form.last_name(class="w-full px-3.5 py-2
-                                    border border-gray-300 rounded-md
-                                    focus:ring-accent-yellow
-                                    focus:border-accent-yellow") }} {% if
-                                    form.last_name.errors %}
+                                    font-semibold text-primary-dark mb-1") }}
+                                    <div class="mt-1">
+                                        {{ form.last_name(class="block w-full
+                                        rounded-xl bg-white px-4 py-2.5
+                                        text-base text-gray-900 ring-1
+                                        ring-inset ring-gray-300
+                                        placeholder:text-gray-400 focus:ring-2
+                                        focus:ring-inset
+                                        focus:ring-accent-orange sm:text-sm") }}
+                                    </div>
+                                    {% if form.last_name.errors %}
                                     <p class="text-red-600 text-xs mt-1">
                                         {{ form.last_name.errors[0] }}
                                     </p>
@@ -414,12 +458,16 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.email.label(class="block text-sm
-                                font-medium text-primary-dark mb-1") }} {{
-                                form.email(class="w-full px-3.5 py-2 border
-                                border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }} {% if
-                                form.email.errors %}
+                                font-semibold text-primary-dark mb-1") }}
+                                <div class="mt-1">
+                                    {{ form.email(class="block w-full rounded-xl
+                                    bg-white px-4 py-2.5 text-base text-gray-900
+                                    ring-1 ring-inset ring-gray-300
+                                    placeholder:text-gray-400 focus:ring-2
+                                    focus:ring-inset focus:ring-accent-orange
+                                    sm:text-sm") }}
+                                </div>
+                                {% if form.email.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.email.errors[0] }}
                                 </p>
@@ -429,13 +477,18 @@ event_name }}{% endblock %} {% block content %}
                             <!-- Enhanced Phone Input with Progressive Enhancement -->
                             <div class="phone-input-container mb-4">
                                 {{ form.phone_international.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
 
-                                <!-- Enhanced phone input (JavaScript-enabled) -->
-                                {{ form.phone_international(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }}
+                                <div class="mt-1">
+                                    <!-- Enhanced phone input (JavaScript-enabled) -->
+                                    {{ form.phone_international(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
 
                                 <!-- Hidden fields (populated by JavaScript) -->
                                 <input
@@ -467,23 +520,38 @@ event_name }}{% endblock %} {% block content %}
                                     <div class="md:col-span-1">
                                         {{
                                         form.phone_country_code_fallback.label(class="block
-                                        text-sm font-medium text-primary-dark
-                                        mb-1") }} {{
-                                        form.phone_country_code_fallback(class="w-full
-                                        px-3.5 py-2 border border-gray-300
-                                        rounded-md focus:ring-accent-yellow
-                                        focus:border-accent-yellow") }}
+                                        text-sm font-semibold text-primary-dark
+                                        mb-1") }}
+                                        <div class="mt-1">
+                                            {{
+                                            form.phone_country_code_fallback(class="block
+                                            w-full rounded-xl bg-white px-4
+                                            py-2.5 text-base text-gray-900
+                                            ring-1 ring-inset ring-gray-300
+                                            placeholder:text-gray-400
+                                            focus:ring-2 focus:ring-inset
+                                            focus:ring-accent-orange
+                                            sm:text-sm") }}
+                                        </div>
                                     </div>
                                     <div class="md:col-span-2">
                                         {{
                                         form.phone_number_fallback.label(class="block
-                                        text-sm font-medium text-primary-dark
-                                        mb-1") }} {{
-                                        form.phone_number_fallback(class="w-full
-                                        px-3.5 py-2 border border-gray-300
-                                        rounded-md focus:ring-accent-yellow
-                                        focus:border-accent-yellow") }} {% if
-                                        form.phone_number_fallback.errors %}
+                                        text-sm font-semibold text-primary-dark
+                                        mb-1") }}
+                                        <div class="mt-1">
+                                            {{
+                                            form.phone_number_fallback(class="block
+                                            w-full rounded-xl bg-white px-4
+                                            py-2.5 text-base text-gray-900
+                                            ring-1 ring-inset ring-gray-300
+                                            placeholder:text-gray-400
+                                            focus:ring-2 focus:ring-inset
+                                            focus:ring-accent-orange
+                                            sm:text-sm") }}
+                                        </div>
+                                        {% if form.phone_number_fallback.errors
+                                        %}
                                         <p class="text-red-600 text-xs mt-1">
                                             {{
                                             form.phone_number_fallback.errors[0]
@@ -496,16 +564,20 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.job_title.label(class="block text-sm
-                                font-medium text-primary-dark mb-1") }} {{
-                                form.job_title(class="w-full px-3.5 py-2 border
-                                border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }}
+                                font-semibold text-primary-dark mb-1") }}
+                                <div class="mt-1">
+                                    {{ form.job_title(class="block w-full
+                                    rounded-xl bg-white px-4 py-2.5 text-base
+                                    text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
                             </div>
                         </div>
 
                         <!-- Company Information -->
-                        <div class="mb-8">
+                        <div class="mb-10">
                             <h2
                                 class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
                             >
@@ -514,12 +586,17 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.company_legal_name.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.company_legal_name(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }} {% if
-                                form.company_legal_name.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.company_legal_name(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
+                                {% if form.company_legal_name.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.company_legal_name.errors[0] }}
                                 </p>
@@ -528,12 +605,17 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.company_country.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.company_country(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }} {% if
-                                form.company_country.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.company_country(class="block w-full
+                                    rounded-xl bg-white px-4 py-2.5 text-base
+                                    text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
+                                {% if form.company_country.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.company_country.errors[0] }}
                                 </p>
@@ -542,12 +624,18 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.company_address.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.company_address(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow", rows="2") }} {% if
-                                form.company_address.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.company_address(class="block w-full
+                                    rounded-xl bg-white px-4 py-2.5 text-base
+                                    text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm",
+                                    rows="2") }}
+                                </div>
+                                {% if form.company_address.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.company_address.errors[0] }}
                                 </p>
@@ -556,12 +644,17 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.company_website.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.company_website(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }} {% if
-                                form.company_website.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.company_website(class="block w-full
+                                    rounded-xl bg-white px-4 py-2.5 text-base
+                                    text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
+                                {% if form.company_website.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.company_website.errors[0] }}
                                 </p>
@@ -570,12 +663,17 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.industry_category.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.industry_category(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }} {% if
-                                form.industry_category.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.industry_category(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
+                                {% if form.industry_category.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.industry_category.errors[0] }}
                                 </p>
@@ -584,12 +682,18 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.company_description.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.company_description(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow", rows="4") }} {% if
-                                form.company_description.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.company_description(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm",
+                                    rows="4") }}
+                                </div>
+                                {% if form.company_description.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.company_description.errors[0] }}
                                 </p>
@@ -603,17 +707,22 @@ event_name }}{% endblock %} {% block content %}
                             <div class="mb-4">
                                 {{
                                 form.alternate_contact_email.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.alternate_contact_email(class="w-full
-                                px-3.5 py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.alternate_contact_email(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
                             </div>
                             {% endif %}
                         </div>
 
                         <!-- Exhibition Details -->
-                        <div class="mb-8">
+                        <div class="mb-10">
                             <h2
                                 class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
                             >
@@ -622,12 +731,18 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.products_to_exhibit.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.products_to_exhibit(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow", rows="3") }} {% if
-                                form.products_to_exhibit.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.products_to_exhibit(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm",
+                                    rows="3") }}
+                                </div>
+                                {% if form.products_to_exhibit.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.products_to_exhibit.errors[0] }}
                                 </p>
@@ -636,13 +751,18 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.number_of_staff.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.number_of_staff(class="w-full px-3.5
-                                py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow", type="number",
-                                min="1", max="20") }} {% if
-                                form.number_of_staff.errors %}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.number_of_staff(class="block w-full
+                                    rounded-xl bg-white px-4 py-2.5 text-base
+                                    text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm",
+                                    type="number", min="1", max="20") }}
+                                </div>
+                                {% if form.number_of_staff.errors %}
                                 <p class="text-red-600 text-xs mt-1">
                                     {{ form.number_of_staff.errors[0] }}
                                 </p>
@@ -654,11 +774,17 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.special_requirements.label(class="block
-                                text-sm font-medium text-primary-dark mb-1") }}
-                                {{ form.special_requirements(class="w-full
-                                px-3.5 py-2 border border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow", rows="3") }}
+                                text-sm font-semibold text-primary-dark mb-1")
+                                }}
+                                <div class="mt-1">
+                                    {{ form.special_requirements(class="block
+                                    w-full rounded-xl bg-white px-4 py-2.5
+                                    text-base text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm",
+                                    rows="3") }}
+                                </div>
                                 <p class="text-xs text-gray-500 mt-1">
                                     e.g., additional electricity, special
                                     lighting, booth equipment
@@ -667,7 +793,7 @@ event_name }}{% endblock %} {% block content %}
                         </div>
 
                         <!-- Promo Code -->
-                        <div class="mb-8">
+                        <div class="mb-10">
                             <h2
                                 class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
                             >
@@ -679,36 +805,48 @@ event_name }}{% endblock %} {% block content %}
 
                             <div class="mb-4">
                                 {{ form.promo_code.label(class="block text-sm
-                                font-medium text-primary-dark mb-1") }} {{
-                                form.promo_code(class="w-full px-3.5 py-2 border
-                                border-gray-300 rounded-md
-                                focus:ring-accent-yellow
-                                focus:border-accent-yellow") }}
+                                font-semibold text-primary-dark mb-1") }}
+                                <div class="mt-1">
+                                    {{ form.promo_code(class="block w-full
+                                    rounded-xl bg-white px-4 py-2.5 text-base
+                                    text-gray-900 ring-1 ring-inset
+                                    ring-gray-300 placeholder:text-gray-400
+                                    focus:ring-2 focus:ring-inset
+                                    focus:ring-accent-orange sm:text-sm") }}
+                                </div>
                             </div>
                         </div>
 
                         <!-- Marketing & Consent -->
-                        <div class="mb-8">
+                        <div class="mb-10">
                             <h2
                                 class="text-xl font-bold text-primary-dark mb-4 pb-2 border-b border-accent-orange/30"
                             >
                                 Marketing & Consent
                             </h2>
 
-                            <div class="space-y-3">
+                            <div class="space-y-1">
                                 {% if form.referral_source %}
                                 <div class="mb-4">
                                     {{ form.referral_source.label(class="block
-                                    text-sm font-medium text-primary-dark mb-1")
-                                    }} {{ form.referral_source(class="w-full
-                                    px-3.5 py-2 border border-gray-300
-                                    rounded-md focus:ring-accent-yellow
-                                    focus:border-accent-yellow") }}
+                                    text-sm font-semibold text-primary-dark
+                                    mb-1") }}
+                                    <div class="mt-1">
+                                        {{ form.referral_source(class="block
+                                        w-full rounded-xl bg-white px-4 py-2.5
+                                        text-base text-gray-900 ring-1
+                                        ring-inset ring-gray-300
+                                        placeholder:text-gray-400 focus:ring-2
+                                        focus:ring-inset
+                                        focus:ring-accent-orange sm:text-sm") }}
+                                    </div>
                                 </div>
                                 {% endif %}
 
-                                <label class="flex items-start">
-                                    {{ form.consent_photography(class="mt-1 mr-2
+                                <label
+                                    class="flex items-start p-3 rounded-xl hover:bg-green-50 transition-colors cursor-pointer"
+                                >
+                                    {{ form.consent_photography(class="mt-1 mr-3
                                     text-accent-yellow focus:ring-accent-yellow
                                     rounded") }}
                                     <span class="text-sm text-gray-700"
@@ -717,8 +855,10 @@ event_name }}{% endblock %} {% block content %}
                                     >
                                 </label>
 
-                                <label class="flex items-start">
-                                    {{ form.consent_catalog(class="mt-1 mr-2
+                                <label
+                                    class="flex items-start p-3 rounded-xl hover:bg-green-50 transition-colors cursor-pointer"
+                                >
+                                    {{ form.consent_catalog(class="mt-1 mr-3
                                     text-accent-yellow focus:ring-accent-yellow
                                     rounded") }}
                                     <span class="text-sm text-gray-700"
@@ -727,8 +867,10 @@ event_name }}{% endblock %} {% block content %}
                                     >
                                 </label>
 
-                                <label class="flex items-start">
-                                    {{ form.newsletter_signup(class="mt-1 mr-2
+                                <label
+                                    class="flex items-start p-3 rounded-xl hover:bg-green-50 transition-colors cursor-pointer"
+                                >
+                                    {{ form.newsletter_signup(class="mt-1 mr-3
                                     text-accent-yellow focus:ring-accent-yellow
                                     rounded") }}
                                     <span class="text-sm text-gray-700"
@@ -743,19 +885,19 @@ event_name }}{% endblock %} {% block content %}
                         <div class="flex flex-col sm:flex-row gap-4">
                             <button
                                 type="submit"
-                                class="flex-1 px-8 py-3 bg-accent-orange text-white font-semibold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg"
+                                class="flex-1 rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300"
                             >
                                 Complete Registration →
                             </button>
                             <a
                                 href="{{ url_for('register.exhibitor_index') }}"
-                                class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-accent-orange hover:text-primary-dark transition-all text-center"
+                                class="rounded-full bg-transparent border-2 border-gray-300 px-8 py-3 text-base font-semibold text-gray-700 hover:border-accent-orange hover:text-primary-dark transition-all duration-300 text-center"
                             >
                                 Back
                             </a>
                         </div>
 
-                        <p class="text-xs text-gray-500 mt-4 text-center">
+                        <p class="text-xs text-gray-500 mt-6 text-center">
                             By completing registration, you agree to our
                             <a
                                 href="{{ url_for('legal.terms') }}"

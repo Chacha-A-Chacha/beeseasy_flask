@@ -1,12 +1,13 @@
 {% extends "base.html" %} {% block title %}Exhibitor Registration - {{
 event_name }}{% endblock %} {% block content %}
 <!-- Hero Section -->
-<div
-    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"
->
-    <!-- Decorative background elements -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <div
-        aria-hidden="true"
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-green-950/80 via-green-950/60 to-green-950/90"
+    ></div>
+
+    <!-- Decorative Gradients -->
+    <div
         class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
     >
         <div
@@ -30,11 +31,10 @@ event_name }}{% endblock %} {% block content %}
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
     <div
-        aria-hidden="true"
         class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
     >
         <div
@@ -58,21 +58,23 @@ event_name }}{% endblock %} {% block content %}
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto max-w-2xl lg:mx-0">
             <h1
-                class="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
             >
-                Exhibit at Pollination Africa 2026
+                Exhibit at {{ event_short_name }}
             </h1>
-            <p class="mt-4 text-lg text-[#F5C342]">
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
+            >
                 Showcase Your Innovation to 500+ Conservation Leaders
             </p>
-            <p class="mt-4 text-lg text-white/90">
+            <p class="mt-4 text-base text-gray-300">
                 Join East Africa's premier symposium and connect with
                 conservationists, researchers, and policymakers driving the
                 future of biodiversity and agriculture.
@@ -124,18 +126,18 @@ event_name }}{% endblock %} {% block content %}
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-4xl text-center mb-12">
             <h2
-                class="text-3xl font-bold tracking-tight text-primary-dark sm:text-4xl"
+                class="text-3xl font-semibold tracking-tight text-primary-dark sm:text-4xl"
             >
                 Why Exhibit With Us?
             </h2>
-            <p class="mt-4 text-lg text-gray-600">
+            <p class="mt-4 text-lg/8 text-gray-600">
                 Position your brand at the forefront of pollinator conservation
             </p>
         </div>
 
         <div class="grid gap-6 md:grid-cols-3">
             <div
-                class="rounded-2xl border border-gray-200 bg-gradient-to-br from-accent-yellow/5 to-white p-6"
+                class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
             >
                 <div class="text-4xl font-bold text-accent-orange">500+</div>
                 <h3 class="mt-2 font-semibold text-primary-dark">Delegates</h3>
@@ -144,7 +146,7 @@ event_name }}{% endblock %} {% block content %}
                 </p>
             </div>
             <div
-                class="rounded-2xl border border-gray-200 bg-gradient-to-br from-accent-yellow/5 to-white p-6"
+                class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
             >
                 <div class="text-4xl font-bold text-accent-orange">2 Days</div>
                 <h3 class="mt-2 font-semibold text-primary-dark">
@@ -155,7 +157,7 @@ event_name }}{% endblock %} {% block content %}
                 </p>
             </div>
             <div
-                class="rounded-2xl border border-gray-200 bg-gradient-to-br from-accent-yellow/5 to-white p-6"
+                class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
             >
                 <div class="text-4xl font-bold text-accent-orange">100%</div>
                 <h3 class="mt-2 font-semibold text-primary-dark">
@@ -175,11 +177,11 @@ event_name }}{% endblock %} {% block content %}
         <div class="mx-auto max-w-5xl">
             <div class="text-center mb-12">
                 <h2
-                    class="text-3xl font-bold tracking-tight text-primary-dark sm:text-4xl"
+                    class="text-3xl font-semibold tracking-tight text-primary-dark sm:text-4xl"
                 >
                     Exhibition Packages
                 </h2>
-                <p class="mt-4 text-lg text-gray-600">
+                <p class="mt-4 text-lg/8 text-gray-600">
                     Choose the package that maximizes your impact
                 </p>
             </div>
@@ -189,7 +191,7 @@ event_name }}{% endblock %} {% block content %}
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {% for package in packages %}
                 <div
-                    class="flex flex-col rounded-2xl border {% if package.package_type.value == 'platinum' %}border-accent-orange ring-1 ring-accent-orange/20{% else %}border-gray-200{% endif %} bg-white p-8 hover:ring-1 hover:ring-[#F5C342]/50 transition-all"
+                    class="flex flex-col rounded-2xl bg-white p-8 shadow-sm {% if package.package_type.value == 'platinum' %}ring-2 ring-accent-orange{% else %}ring-1 ring-gray-900/5{% endif %} hover:ring-accent-yellow/50 hover:shadow-md transition-all duration-300"
                 >
                     {% if package.package_type.value == 'platinum' %}
                     <div
@@ -220,7 +222,9 @@ event_name }}{% endblock %} {% block content %}
                     </div>
 
                     <!-- Booth Info -->
-                    <div class="mt-6 rounded-lg bg-accent-yellow/10 p-3">
+                    <div
+                        class="mt-6 rounded-xl bg-accent-yellow/10 border border-accent-yellow/30 p-3"
+                    >
                         <div
                             class="flex items-center gap-2 text-sm font-semibold text-primary-dark"
                         >
@@ -339,14 +343,14 @@ event_name }}{% endblock %} {% block content %}
                         {% if package.is_available() %}
                         <a
                             href="{{ url_for('register.register_exhibitor_form', package_type=package.package_type.value) }}"
-                            class="block w-full rounded-lg {% if package.package_type.value == 'platinum' %}bg-accent-orange{% else %}bg-primary-dark{% endif %} px-6 py-3 text-center font-semibold text-white hover:bg-accent-yellow hover:text-primary-dark transition-colors"
+                            class="block w-full rounded-full {% if package.package_type.value == 'platinum' %}bg-accent-orange{% else %}bg-primary-dark{% endif %} px-6 py-3.5 text-center text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
                         >
                             Select Package
                         </a>
                         {% else %}
                         <button
                             disabled
-                            class="block w-full rounded-lg bg-gray-300 px-6 py-3 text-center font-semibold text-gray-500 cursor-not-allowed"
+                            class="block w-full rounded-full bg-gray-200 px-6 py-3.5 text-center text-base font-semibold text-gray-500 cursor-not-allowed"
                         >
                             Sold Out
                         </button>
@@ -359,7 +363,7 @@ event_name }}{% endblock %} {% block content %}
             {% else %}
             <!-- Empty State -->
             <div
-                class="rounded-2xl border border-gray-200 bg-white p-12 text-center"
+                class="rounded-2xl bg-white p-12 text-center shadow-sm ring-1 ring-gray-900/5"
             >
                 <svg
                     class="mx-auto h-20 w-20 text-gray-300"
@@ -383,7 +387,7 @@ event_name }}{% endblock %} {% block content %}
                 </p>
                 <a
                     href="{{ url_for('main.contact') }}"
-                    class="mt-6 inline-block rounded-lg bg-accent-orange px-6 py-3 font-semibold text-white hover:bg-accent-yellow hover:text-primary-dark transition-colors"
+                    class="mt-6 inline-block rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
                 >
                     Contact Us
                 </a>
@@ -398,13 +402,13 @@ event_name }}{% endblock %} {% block content %}
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-4xl">
             <h3
-                class="text-2xl font-bold tracking-tight text-primary-dark text-center"
+                class="text-2xl font-semibold tracking-tight text-primary-dark text-center"
             >
                 Event Details
             </h3>
             <div class="mt-12 grid gap-6 md:grid-cols-2">
                 <div
-                    class="rounded-2xl border border-gray-200 bg-gradient-to-br from-accent-yellow/5 to-white p-6"
+                    class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
                 >
                     <h4
                         class="flex items-center font-semibold text-primary-dark"
@@ -439,7 +443,7 @@ event_name }}{% endblock %} {% block content %}
                     </p>
                 </div>
                 <div
-                    class="rounded-2xl border border-gray-200 bg-gradient-to-br from-accent-yellow/5 to-white p-6"
+                    class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
                 >
                     <h4
                         class="flex items-center font-semibold text-primary-dark"

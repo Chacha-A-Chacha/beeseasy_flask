@@ -87,8 +87,8 @@ EXHIBITOR SUPPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Email: exhibitors@pollination.africa
-Phone: +254 719 740 938
-WhatsApp: +254 719 740 938
+Phone: {{ support_phone }}
+WhatsApp: {{ support_whatsapp }}
 
 Exhibitor Portal: https://pollination.africa/partners
 Twitter: https://twitter.com/beeseasy

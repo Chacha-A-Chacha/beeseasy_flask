@@ -289,7 +289,7 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                     Download Badge (PDF)
                 </a>
                 <p class="text-sm text-gray-500 mt-3">
-                    💡 Print or save to your phone for event check-in
+                    Print or save to your phone for event check-in
                 </p>
             </div>
             {% endif %}
@@ -509,7 +509,7 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                     <div>Card, M-Pesa, Bank Transfer</div>
                 </div>
                 <p class="text-xs text-gray-500 mt-2">
-                    🔒 SSL encrypted payment processing via DPO
+                    SSL encrypted payment processing via DPO
                 </p>
             </div>
 
@@ -754,9 +754,9 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                     >
                     or WhatsApp
                     <a
-                        href="https://wa.me/254719740938"
+                        href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
                         class="text-accent-orange hover:text-accent-yellow font-semibold"
-                        >+254 719 740 938</a
+                        >{{ support_whatsapp }}</a
                     >
                 </p>
             </div>

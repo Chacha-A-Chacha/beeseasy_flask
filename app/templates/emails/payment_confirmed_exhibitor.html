@@ -512,10 +512,12 @@
                             >exhibitors@pollination.africa</a
                         ><br />
                         Phone:
-                        <a href="tel:+254719740938">+254 719 740 938</a><br />
+                        <a href="tel:{{ support_phone }}">{{ support_phone }}</a
+                        ><br />
                         WhatsApp:
-                        <a href="https://wa.me/254719740938"
-                            >+254 719 740 938</a
+                        <a
+                            href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
+                            >{{ support_whatsapp }}</a
                         >
                     </p>
 

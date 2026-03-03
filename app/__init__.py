@@ -182,8 +182,8 @@ def create_app(config_name=None):
             event_guest_of_honor=app.config.get("EVENT_GUEST_OF_HONOR", "TBC"),
             organization_name=app.config.get("ORGANIZATION_NAME", "Pollination Africa"),
             contact_email=app.config.get("CONTACT_EMAIL", "info@pollination.africa"),
-            support_phone=app.config.get("SUPPORT_PHONE", "+254 719 740 938"),
-            support_whatsapp=app.config.get("SUPPORT_WHATSAPP", "+254 719 740 938"),
+            support_phone=app.config.get("SUPPORT_PHONE", "+255 767 727 619"),
+            support_whatsapp=app.config.get("SUPPORT_WHATSAPP", "+255 767 727 619"),
             website_url=app.config.get("WEBSITE_URL", "https://pollination.africa"),
         )
 

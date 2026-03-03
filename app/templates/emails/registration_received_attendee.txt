@@ -60,8 +60,8 @@ NEED HELP?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Email: {{ contact_email }}
-Phone: +254 719 740 938
-WhatsApp: +254 719 740 938
+Phone: {{ support_phone }}
+WhatsApp: {{ support_whatsapp }}
 
 Visit Website: https://pollination.africa
 Twitter: https://twitter.com/beeseasy

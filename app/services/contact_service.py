@@ -127,10 +127,10 @@ class ContactService:
                     "CONTACT_EMAIL", "info@pollination.africa"
                 ),
                 "support_phone": current_app.config.get(
-                    "SUPPORT_PHONE", "+254 719 740 938"
+                    "SUPPORT_PHONE", "+255 767 727 619"
                 ),
                 "support_whatsapp": current_app.config.get(
-                    "SUPPORT_WHATSAPP", "+254 719 740 938"
+                    "SUPPORT_WHATSAPP", "+255 767 727 619"
                 ),
                 "website_url": current_app.config.get(
                     "WEBSITE_URL", "https://pollination.africa"

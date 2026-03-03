@@ -2,7 +2,24 @@
   "permissions": {
     "allow": [
       "mcp__acp__Edit",
-      "mcp__acp__Bash"
+      "mcp__acp__Bash",
+      "Bash(grep -n \"class.*PromoCode\" /c/Users/USER/Documents/GitHub/beeseasy_flask/app/forms/*.py)",
+      "Bash(grep -r -n -i \"csrf\\\\|CSRFProtect\" C:/Users/USER/Documents/GitHub/beeseasy_flask/app/*.py C:/Users/USER/Documents/GitHub/beeseasy_flask/app/**/*.py C:/Users/USER/Documents/GitHub/beeseasy_flask/*.py)",
+      "Bash(git add app/__init__.py app/routes/auth.py app/routes/checkin.py app/data/speakers.json app/static/src/output.css app/templates/admin/addons/form.html app/templates/admin/addons/list.html app/templates/admin/base.html app/templates/admin/booths/list.html app/templates/admin/checkin/index.html app/templates/admin/contact_messages/detail.html app/templates/admin/contact_messages/list.html app/templates/admin/contact_messages/respond.html app/templates/admin/emails/list.html app/templates/admin/emails/logs.html app/templates/admin/packages/form.html app/templates/admin/packages/list.html app/templates/admin/payments/detail.html app/templates/admin/payments/list.html app/templates/admin/promo_codes/form.html app/templates/admin/promo_codes/list.html app/templates/admin/registrations/attendees/detail.html app/templates/admin/registrations/attendees/list.html app/templates/admin/registrations/exhibitors/detail.html app/templates/admin/registrations/exhibitors/list.html app/templates/admin/tickets/form.html app/templates/admin/tickets/list.html app/templates/admin/users/form.html app/templates/admin/users/list.html app/templates/base.html app/templates/checkin/)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git add app/forms/admin_forms.py app/routes/admin.py app/routes/api.py app/templates/admin/contact_messages/respond.html app/templates/admin/registrations/attendees/detail.html app/templates/admin/registrations/exhibitors/detail.html app/templates/admin/communications/bulk.html app/templates/admin/payments/failed.html app/templates/admin/payments/pending.html app/templates/admin/payments/refund.html app/templates/admin/promo_codes/usage.html app/templates/admin/registrations/attendees/edit.html app/templates/admin/registrations/exhibitors/edit.html app/templates/admin/settings/exchange.html app/templates/emails/contact_response.html)",
+      "Bash(git add app/templates/admin/registrations/attendees/list.html app/templates/admin/registrations/exhibitors/list.html app/templates/admin/payments/list.html)",
+      "Bash(git add app/templates/admin/partials/sidebar.html)",
+      "Bash(python -m flask db upgrade)",
+      "Bash(./venv/Scripts/python -m flask db upgrade)",
+      "Bash(./venv/Scripts/python -m flask db heads)",
+      "Bash(./venv/Scripts/python -m flask db current)",
+      "Bash(find /c/Users/USER/Documents/GitHub/beeseasy_flask/app/routes -name \"*.py\" -exec grep -l \"promo\\\\|coupon\\\\|discount\" {} ;)",
+      "Bash(find /c/Users/USER/Documents/GitHub/beeseasy_flask/app/templates -name \"*.html\" -exec grep -l \"promo\\\\|coupon\\\\|discount\" {} ;)",
+      "Bash(xargs grep -l \"AdminPromoCodeForm\\\\|class.*PromoCodeForm\")",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(python -c \":*)"
     ]
   }
 }

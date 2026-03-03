@@ -498,11 +498,14 @@
                         <a href="mailto:{{ contact_email }}"
                             >{{ contact_email }}</a
                         ><br />
-                        Phone: <a href="tel:+254719740938">+254 719 740 938</a
+                        Phone:
+                        <a href="tel:{{ support_phone.replace(' ', '') }}"
+                            >{{ support_phone }}</a
                         ><br />
                         WhatsApp:
-                        <a href="https://wa.me/254719740938"
-                            >+254 719 740 938</a
+                        <a
+                            href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
+                            >{{ support_whatsapp }}</a
                         >
                     </p>
 

@@ -175,8 +175,8 @@ class Config:
     EVENT_GUEST_OF_HONOR: str = os.getenv("EVENT_GUEST_OF_HONOR", "TBC")
     ORGANIZATION_NAME: str = os.getenv("ORGANIZATION_NAME", "Pollination Africa")
     CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "info@pollination.africa")
-    SUPPORT_PHONE: str = os.getenv("SUPPORT_PHONE", "+254 719 740 938")
-    SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+254 719 740 938")
+    SUPPORT_PHONE: str = os.getenv("SUPPORT_PHONE", "+255 767 727 619")
+    SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+255 767 727 619")
     WEBSITE_URL: str = os.getenv("WEBSITE_URL", "https://pollination.africa")
 
     # --- Registration Settings ---

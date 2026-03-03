@@ -417,6 +417,12 @@
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
+  .left-\[25\%\] {
+    left: 25%;
+  }
+  .left-\[75\%\] {
+    left: 75%;
+  }
   .left-\[calc\(50\%\+3rem\)\] {
     left: calc(50% + 3rem);
   }
@@ -786,6 +792,10 @@
   .size-12 {
     width: calc(var(--spacing) * 12);
     height: calc(var(--spacing) * 12);
+  }
+  .size-\[28rem\] {
+    width: 28rem;
+    height: 28rem;
   }
   .size-\[40rem\] {
     width: 40rem;

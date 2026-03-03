@@ -809,21 +809,40 @@
             <div
                 class="pointer-events-auto relative isolate mx-auto max-w-7xl overflow-hidden bg-primary-dark px-4 py-2.5 shadow-2xl sm:rounded-xl sm:px-6 sm:py-3"
             >
-                <!-- Radial gradient decoration -->
+                <!-- Radial gradient glows at 25% and 75% -->
                 <svg
                     viewBox="0 0 1024 1024"
                     aria-hidden="true"
-                    class="absolute left-1/2 top-1/2 -z-10 size-[40rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+                    class="absolute left-[25%] top-1/2 -z-10 size-[28rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
                 >
                     <circle
                         r="512"
                         cx="512"
                         cy="512"
-                        fill="url(#earlybird-gradient)"
+                        fill="url(#earlybird-gradient-l)"
                         fill-opacity="0.5"
                     />
                     <defs>
-                        <radialGradient id="earlybird-gradient">
+                        <radialGradient id="earlybird-gradient-l">
+                            <stop stop-color="#F5C342" />
+                            <stop offset="1" stop-color="#2C5F2D" />
+                        </radialGradient>
+                    </defs>
+                </svg>
+                <svg
+                    viewBox="0 0 1024 1024"
+                    aria-hidden="true"
+                    class="absolute left-[75%] top-1/2 -z-10 size-[28rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+                >
+                    <circle
+                        r="512"
+                        cx="512"
+                        cy="512"
+                        fill="url(#earlybird-gradient-r)"
+                        fill-opacity="0.5"
+                    />
+                    <defs>
+                        <radialGradient id="earlybird-gradient-r">
                             <stop stop-color="#F5C342" />
                             <stop offset="1" stop-color="#2C5F2D" />
                         </radialGradient>

@@ -1,197 +1,582 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}Payment Pending - {{ event_name }}{%
+endblock %} {% block content %}
 
-{% block title %}Payment Pending - Pollination Africa Summit 2026{% endblock %}
+<!-- ============================================ -->
+<!-- HERO SECTION -->
+<!-- ============================================ -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+    <div
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-green-950/80 via-green-950/60 to-green-950/90"
+    ></div>
 
-{% block content %}
-<div class="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto">
-        <!-- Pending Icon -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-24 h-24 bg-yellow-100 rounded-full mb-4">
-                <svg class="w-12 h-12 text-yellow-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    <!-- Decorative Gradients -->
+    <div
+        class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
+        ></div>
+    </div>
+    <div
+        class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
+        ></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+            <h1
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
+            >
+                Payment Pending
+            </h1>
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
+            >
+                {{ event_name }} · {{ event_date }}
+            </p>
+            <p class="mt-4 text-base text-gray-300">
+                We're processing your payment — hang tight.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PROGRESS INDICATOR -->
+<!-- ============================================ -->
+<div class="border-b border-gray-200 bg-green-50">
+    <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
+        <div class="mx-auto max-w-3xl">
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white"
+                    >
+                        ✓
+                    </div>
+                    <span class="ml-2 text-gray-600">Registration</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-green-500 mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white"
+                    >
+                        ✓
+                    </div>
+                    <span class="ml-2 text-gray-600">Payment</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-accent-yellow mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-full bg-accent-yellow text-primary-dark font-bold animate-pulse"
+                    >
+                        <svg
+                            class="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <span class="ml-2 font-semibold text-primary-dark"
+                        >Verifying</span
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- MAIN CONTENT -->
+<!-- ============================================ -->
+<div class="bg-green-50 py-16 sm:py-24">
+    <div class="mx-auto max-w-3xl px-6 lg:px-8">
+        <!-- Status Icon & Headline -->
+        <div class="text-center mb-12">
+            <div
+                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-amber-100 ring-1 ring-amber-200"
+            >
+                <svg
+                    class="h-12 w-12 text-amber-600 animate-pulse"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Payment Pending</h1>
-            <p class="text-lg text-gray-600">We're processing your payment</p>
+            <h2
+                class="mt-6 text-3xl font-semibold tracking-tight text-gray-900"
+            >
+                Payment Verification in Progress
+            </h2>
+            <p class="mt-3 text-lg text-gray-600">
+                Your payment is being processed — this usually takes a few
+                minutes.
+            </p>
         </div>
 
-        <!-- Information Card -->
-        <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
-            <div class="border-b border-gray-200 pb-4 mb-6">
-                <h2 class="text-2xl font-semibold text-gray-900">Payment Status</h2>
-                <p class="text-sm text-gray-500 mt-1">Your payment is being verified</p>
-            </div>
-
-            <!-- Status Notice -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <div class="flex items-start">
-                    <svg class="w-5 h-5 text-yellow-600 mr-3 mt-0.5 flex-shrink-0 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+        <!-- Verification Notice -->
+        <div class="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-200 mb-8">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 mt-0.5">
+                    <svg
+                        class="h-6 w-6 text-amber-600 animate-pulse"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clip-rule="evenodd"
+                        ></path>
                     </svg>
-                    <div>
-                        <h4 class="text-sm font-semibold text-yellow-900 mb-1">Payment Verification in Progress</h4>
-                        <p class="text-sm text-yellow-800">
-                            Your payment is being processed and verified. This usually takes a few minutes but can take up to 24 hours depending on your payment method.
-                        </p>
-                    </div>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold text-amber-900">
+                        Your payment is being verified
+                    </h3>
+                    <p class="mt-1 text-sm text-amber-800">
+                        This usually takes a few minutes but can take up to 24
+                        hours depending on your payment method. This page will
+                        automatically refresh to check the status.
+                    </p>
                 </div>
             </div>
+        </div>
 
-            <!-- Registration Details -->
-            <div class="space-y-4">
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Registration Reference:</span>
-                    <span class="text-lg font-bold text-blue-600">{{ registration.reference_number }}</span>
+        <!-- Registration Details Card -->
+        <div
+            class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5 mb-8"
+        >
+            <div class="border-b border-gray-100 pb-4 mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">
+                    Payment Status
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    Your payment is being verified with the provider
+                </p>
+            </div>
+
+            <div class="space-y-0 divide-y divide-gray-100">
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600"
+                        >Registration Reference</span
+                    >
+                    <span
+                        class="text-base font-bold font-mono text-primary-dark"
+                        >{{ registration.reference_number }}</span
+                    >
                 </div>
 
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Name:</span>
-                    <span class="text-gray-900 font-semibold">{{ registration.first_name }} {{ registration.last_name }}</span>
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600">Name</span>
+                    <span class="text-sm font-semibold text-gray-900"
+                        >{{ registration.first_name }} {{ registration.last_name
+                        }}</span
+                    >
                 </div>
 
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Email:</span>
-                    <span class="text-gray-900">{{ registration.email }}</span>
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600">Email</span>
+                    <span class="text-sm text-gray-900"
+                        >{{ registration.email }}</span
+                    >
                 </div>
 
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Registration Type:</span>
-                    <span class="text-gray-900 capitalize">
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600"
+                        >Registration Type</span
+                    >
+                    <span>
                         {% if registration.registration_type == 'attendee' %}
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                🎫 Attendee
-                            </span>
+                        <span
+                            class="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-800 ring-1 ring-green-200"
+                        >
+                            🎫 Attendee
+                        </span>
                         {% elif registration.registration_type == 'exhibitor' %}
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                                📦 Exhibitor
-                            </span>
+                        <span
+                            class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800 ring-1 ring-amber-200"
+                        >
+                            📦 Exhibitor
+                        </span>
                         {% endif %}
                     </span>
                 </div>
 
                 {% if payment %}
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Payment Reference:</span>
-                    <span class="font-mono text-sm text-gray-900">{{ payment.payment_reference }}</span>
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600"
+                        >Payment Reference</span
+                    >
+                    <span class="text-sm font-mono text-gray-900"
+                        >{{ payment.payment_reference }}</span
+                    >
                 </div>
 
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Payment Method:</span>
-                    <span class="text-gray-900 capitalize">{{ payment.payment_method.replace('_', ' ') }}</span>
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600"
+                        >Payment Method</span
+                    >
+                    <span class="text-sm text-gray-900 capitalize"
+                        >{{ payment.payment_method.replace('_', ' ') }}</span
+                    >
                 </div>
 
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-gray-600 font-medium">Amount:</span>
-                    <span class="text-lg font-semibold text-gray-900">{{ payment.currency }} {{ "{:,.2f}".format(payment.amount) }}</span>
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600"
+                        >Amount</span
+                    >
+                    <span class="text-lg font-bold text-gray-900"
+                        >{{ payment.currency }} {{
+                        "{:,.2f}".format(payment.amount) }}</span
+                    >
                 </div>
                 {% endif %}
 
-                <div class="flex justify-between items-center py-3">
-                    <span class="text-gray-600 font-medium">Payment Status:</span>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 animate-pulse">
+                <div class="flex justify-between items-center py-4">
+                    <span class="text-sm font-medium text-gray-600"
+                        >Payment Status</span
+                    >
+                    <span
+                        class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800 ring-1 ring-amber-200 animate-pulse"
+                    >
                         ⏳ Pending Verification
                     </span>
                 </div>
             </div>
         </div>
 
-        <!-- What's Next Card -->
-        <div class="bg-blue-50 rounded-lg border border-blue-200 p-6 mb-6">
-            <h3 class="text-lg font-semibold text-blue-900 mb-4 flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        <!-- What Happens Next Card -->
+        <div
+            class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5 mb-8"
+        >
+            <h3
+                class="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2"
+            >
+                <svg
+                    class="h-5 w-5 text-accent-orange"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
                 </svg>
                 What Happens Next?
             </h3>
-            <ul class="space-y-3">
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            <ul class="space-y-4">
+                <li class="flex items-start gap-3">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-yellow mt-0.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"
+                        ></path>
                     </svg>
-                    <span class="text-blue-900">We are verifying your payment with the payment provider</span>
+                    <span class="text-sm text-gray-700"
+                        >We are verifying your payment with the payment
+                        provider</span
+                    >
                 </li>
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                <li class="flex items-start gap-3">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-yellow mt-0.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"
+                        ></path>
                     </svg>
-                    <span class="text-blue-900">Once confirmed, you will receive an email at <strong>{{ registration.email }}</strong></span>
+                    <span class="text-sm text-gray-700"
+                        >Once confirmed, you will receive an email at
+                        <strong class="font-semibold"
+                            >{{ registration.email }}</strong
+                        ></span
+                    >
                 </li>
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                <li class="flex items-start gap-3">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-yellow mt-0.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"
+                        ></path>
                     </svg>
-                    <span class="text-blue-900">Your badge and confirmation details will be included in the email</span>
+                    <span class="text-sm text-gray-700"
+                        >Your badge and confirmation details will be included in
+                        the email</span
+                    >
                 </li>
-                <li class="flex items-start">
-                    <svg class="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                <li class="flex items-start gap-3">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-yellow mt-0.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"
+                        ></path>
                     </svg>
-                    <span class="text-blue-900">This page will automatically refresh every 30 seconds to check the status</span>
+                    <span class="text-sm text-gray-700"
+                        >This page will automatically refresh every 30 seconds
+                        to check the status</span
+                    >
                 </li>
             </ul>
         </div>
 
         <!-- Important Notice -->
-        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-            <div class="flex items-start">
-                <svg class="w-5 h-5 text-orange-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                </svg>
+        <div class="rounded-2xl bg-orange-50 p-6 ring-1 ring-orange-200 mb-8">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 mt-0.5">
+                    <svg
+                        class="h-6 w-6 text-orange-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd"
+                        ></path>
+                    </svg>
+                </div>
                 <div>
-                    <h4 class="text-sm font-semibold text-orange-900 mb-1">Please Do Not Close This Page</h4>
-                    <p class="text-sm text-orange-800">
-                        Keep this page open while we verify your payment. You can bookmark this page to check the status later if needed.
+                    <h3 class="text-base font-semibold text-orange-900">
+                        Please Do Not Close This Page
+                    </h3>
+                    <p class="mt-1 text-sm text-orange-800">
+                        Keep this page open while we verify your payment. You
+                        can bookmark this page to check the status later if
+                        needed.
                     </p>
                 </div>
             </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-            <button onclick="location.reload()" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+            <button
+                onclick="location.reload()"
+                class="inline-flex items-center justify-center rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
+            >
+                <svg
+                    class="h-5 w-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    ></path>
                 </svg>
                 Refresh Status
             </button>
 
-            <a href="/" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            <a
+                href="/"
+                class="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-semibold text-gray-700 shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all duration-300"
+            >
+                <svg
+                    class="h-5 w-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    ></path>
                 </svg>
                 Return to Home
             </a>
         </div>
 
-        <!-- Contact Information -->
-        <div class="bg-gray-50 rounded-lg border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        <!-- Contact / Need Help Card -->
+        <div
+            class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5"
+        >
+            <h3
+                class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2"
+            >
+                <svg
+                    class="h-5 w-5 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
+                    ></path>
                 </svg>
                 Need Help?
             </h3>
-            <p class="text-gray-700 mb-3">
-                If your payment status doesn't update within 24 hours, please contact us:
+            <p class="text-sm text-gray-600 mb-4">
+                If your payment status doesn't update within 24 hours, please
+                contact us:
             </p>
-            <div class="space-y-2 text-sm">
-                <div class="flex items-center text-gray-600">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            <div class="space-y-3">
+                <div class="flex items-center gap-3 text-sm text-gray-700">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-orange"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        ></path>
                     </svg>
-                    <span>Email: <a href="mailto:info@pollinationafrica.org" class="text-blue-600 hover:underline">info@pollinationafrica.org</a></span>
+                    <span
+                        >Email:
+                        <a
+                            href="mailto:{{ contact_email }}"
+                            class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
+                            >{{ contact_email }}</a
+                        ></span
+                    >
                 </div>
-                <div class="flex items-center text-gray-600">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                <div class="flex items-center gap-3 text-sm text-gray-700">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-orange"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        ></path>
                     </svg>
-                    <span>Website: <a href="https://www.pollinationafrica.org" class="text-blue-600 hover:underline" target="_blank">www.pollinationafrica.org</a></span>
+                    <span
+                        >Phone:
+                        <a
+                            href="tel:{{ support_phone }}"
+                            class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
+                            >{{ support_phone }}</a
+                        ></span
+                    >
+                </div>
+                <div class="flex items-center gap-3 text-sm text-gray-700">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-orange"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                        ></path>
+                    </svg>
+                    <span
+                        >Website:
+                        <a
+                            href="{{ website_url }}"
+                            class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
+                            target="_blank"
+                            >{{ website_url }}</a
+                        ></span
+                    >
                 </div>
             </div>
-            <p class="text-sm text-gray-500 mt-3">
-                📝 Reference: <span class="font-mono font-semibold text-gray-900">{{ registration.reference_number }}</span>
-            </p>
+            <div class="mt-6 pt-4 border-t border-gray-100">
+                <p class="text-xs text-gray-500">
+                    📝 Reference:
+                    <span class="font-mono font-semibold text-gray-900"
+                        >{{ registration.reference_number }}</span
+                    >
+                </p>
+            </div>
         </div>
     </div>
 </div>
@@ -199,7 +584,7 @@
 <!-- Auto-refresh script -->
 <script>
     // Auto-refresh every 30 seconds
-    setTimeout(function() {
+    setTimeout(function () {
         location.reload();
     }, 30000);
 </script>

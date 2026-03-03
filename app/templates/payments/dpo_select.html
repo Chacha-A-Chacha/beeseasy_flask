@@ -2,12 +2,12 @@
 }}{% endblock %} {% block content %}
 
 <!-- Hero Section -->
-<div
-    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"
->
-    <!-- Decorative background elements -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <div
-        aria-hidden="true"
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-green-950/80 via-green-950/60 to-green-950/90"
+    ></div>
+    <!-- Decorative Gradients -->
+    <div
         class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
     >
         <div
@@ -31,21 +31,50 @@
                     74.1% 44.1%
                 );
             "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
+        ></div>
+    </div>
+    <div
+        class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
         ></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto max-w-2xl lg:mx-0">
             <h1
-                class="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
             >
                 Complete Your Payment
             </h1>
-            <p class="mt-4 text-lg text-[#F5C342]">
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
+            >
                 Secure payment powered by DPO Pay
             </p>
-            <p class="mt-3 text-base text-white/90">
+            <p class="mt-4 text-base text-gray-300">
                 Choose your preferred payment method below
             </p>
         </div>
@@ -53,13 +82,13 @@
 </div>
 
 <!-- Main Content -->
-<div class="container mx-auto px-4 py-12">
-    <div class="max-w-5xl mx-auto">
+<div class="bg-green-50 py-12 sm:py-16">
+    <div class="mx-auto max-w-5xl px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- LEFT SIDEBAR - Order Summary (Sticky) -->
             <div class="lg:col-span-1">
                 <div
-                    class="bg-white rounded-lg shadow-lg border-2 border-accent-yellow sticky top-6"
+                    class="rounded-2xl bg-white shadow-sm ring-1 ring-gray-900/5 sticky top-6 overflow-hidden"
                 >
                     <div
                         class="bg-gradient-to-r from-accent-yellow to-accent-orange p-4"
@@ -220,7 +249,9 @@
 
             <!-- RIGHT SIDE - Payment Method Selection -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-lg p-8">
+                <div
+                    class="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5"
+                >
                     <h2 class="text-2xl font-bold text-primary-dark mb-2">
                         Choose Your Payment Method
                     </h2>
@@ -237,7 +268,7 @@
 
                         <!-- Unified Payment Methods Display -->
                         <div
-                            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border-2 border-gray-200 mb-6"
+                            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 ring-1 ring-gray-200 mb-6"
                         >
                             <!-- Credit & Debit Cards Section -->
                             <div class="mb-6">
@@ -618,7 +649,7 @@
                         <div class="flex flex-col sm:flex-row gap-4">
                             <button
                                 type="submit"
-                                class="flex-1 px-8 py-4 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg text-lg"
+                                class="flex-1 px-8 py-4 bg-accent-orange text-white font-bold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg hover:shadow-xl text-lg"
                             >
                                 <span class="flex items-center justify-center">
                                     <svg
@@ -639,7 +670,7 @@
                             </button>
                             <a
                                 href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
-                                class="px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-accent-yellow hover:text-primary-dark transition-all text-center"
+                                class="px-8 py-4 bg-white text-gray-700 font-semibold rounded-full ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all text-center shadow-sm"
                             >
                                 Back
                             </a>
@@ -654,11 +685,11 @@
 
                 <!-- Payment Information -->
                 <div
-                    class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6"
+                    class="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
                 >
                     <div class="flex items-start">
                         <svg
-                            class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-0.5"
+                            class="w-6 h-6 text-accent-orange mr-3 flex-shrink-0 mt-0.5"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -671,10 +702,10 @@
                             />
                         </svg>
                         <div>
-                            <h3 class="font-semibold text-blue-900 mb-2">
+                            <h3 class="font-semibold text-gray-900 mb-2">
                                 How It Works
                             </h3>
-                            <ul class="text-sm text-blue-800 space-y-1">
+                            <ul class="text-sm text-gray-600 space-y-1">
                                 <li>
                                     • Select your preferred payment method above
                                 </li>

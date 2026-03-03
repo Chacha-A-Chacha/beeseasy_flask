@@ -1,24 +1,156 @@
 {% extends "base.html" %} {% block title %}Bank Transfer - {{ event_name }}{%
 endblock %} {% block content %}
 
-<!-- Header -->
-<div class="bg-primary-dark py-12">
-    <div class="mx-auto max-w-4xl px-6">
-        <h1 class="text-3xl font-bold text-white mb-2">Bank Transfer</h1>
-        <p class="text-white/80">{{ event_name }}</p>
+<!-- ============================================ -->
+<!-- HERO SECTION -->
+<!-- ============================================ -->
+<div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
+    <div
+        class="absolute inset-0 -z-10 bg-gradient-to-b from-green-950/80 via-green-950/60 to-green-950/90"
+    ></div>
+
+    <!-- Decorative Gradients -->
+    <div
+        class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
+        ></div>
+    </div>
+    <div
+        class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
+    >
+        <div
+            style="
+                clip-path: polygon(
+                    74.1% 44.1%,
+                    100% 61.6%,
+                    97.5% 26.9%,
+                    85.5% 0.1%,
+                    80.7% 2%,
+                    72.5% 32.5%,
+                    60.2% 62.4%,
+                    52.4% 68.1%,
+                    47.5% 58.3%,
+                    45.2% 34.5%,
+                    27.5% 76.7%,
+                    0.1% 64.9%,
+                    17.9% 100%,
+                    27.6% 76.8%,
+                    76.1% 97.7%,
+                    74.1% 44.1%
+                );
+            "
+            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-15"
+        ></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+            <h1
+                class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
+            >
+                Bank Transfer
+            </h1>
+            <p
+                class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
+            >
+                {{ event_name }}
+            </p>
+            <p class="mt-4 text-base text-gray-300">
+                Complete your registration by transferring the amount below to
+                our bank account.
+            </p>
+        </div>
     </div>
 </div>
 
-<!-- Main Content -->
-<div class="container mx-auto px-6 py-12">
-    <div class="max-w-4xl mx-auto">
-        <!-- Reference & Amount -->
+<!-- ============================================ -->
+<!-- PROGRESS INDICATOR -->
+<!-- ============================================ -->
+<div class="border-b border-gray-200 bg-green-50">
+    <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
+        <div class="mx-auto max-w-3xl">
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white"
+                    >
+                        ✓
+                    </div>
+                    <span class="ml-2 text-gray-600">Registration</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-green-500 mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-full bg-accent-yellow text-primary-dark font-bold"
+                    >
+                        <svg
+                            class="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <span class="ml-2 font-semibold text-primary-dark"
+                        >Bank Transfer</span
+                    >
+                </div>
+                <div class="flex-1 h-0.5 bg-gray-200 mx-4"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-400"
+                    >
+                        3
+                    </div>
+                    <span class="ml-2 text-gray-400">Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- MAIN CONTENT -->
+<!-- ============================================ -->
+<div class="bg-green-50 py-16 sm:py-24">
+    <div class="mx-auto max-w-4xl px-6 lg:px-8">
+        <!-- Reference & Amount Card -->
         <div
-            class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8"
+            class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5 mb-8"
         >
             <div class="grid md:grid-cols-2 gap-8">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">
+                    <p
+                        class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2"
+                    >
                         Your Reference Number
                     </p>
                     <p class="text-2xl font-bold text-primary-dark font-mono">
@@ -29,8 +161,12 @@ endblock %} {% block content %}
                     </p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Amount to Transfer</p>
-                    <p class="text-2xl font-bold text-primary-dark">
+                    <p
+                        class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2"
+                    >
+                        Amount to Transfer
+                    </p>
+                    <p class="text-2xl font-bold text-accent-orange">
                         {{ payment.currency }} {{
                         "{:,.2f}".format(payment.total_amount) }}
                     </p>
@@ -42,22 +178,64 @@ endblock %} {% block content %}
             </div>
         </div>
 
-        <!-- Bank Details -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">
+        <!-- Important Notice -->
+        <div class="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-200 mb-8">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 mt-0.5">
+                    <svg
+                        class="h-6 w-6 text-amber-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clip-rule="evenodd"
+                        ></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold text-amber-900">
+                        Important
+                    </h3>
+                    <p class="mt-1 text-sm text-amber-800">
+                        Please include your reference number
+                        <strong class="font-mono font-semibold"
+                            >{{ registration.reference_number }}</strong
+                        >
+                        in the transfer description / narration so we can match
+                        your payment to your registration.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Details Card -->
+        <div
+            class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5 mb-8"
+        >
+            <h2 class="text-xl font-semibold text-gray-900 mb-8">
                 Bank Account Details
             </h2>
 
-            <div class="space-y-4">
-                <div class="grid md:grid-cols-2 gap-4">
+            <div class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <p class="text-sm text-gray-600">Bank Name</p>
+                        <p
+                            class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1"
+                        >
+                            Bank Name
+                        </p>
                         <p class="text-base font-semibold text-gray-900">
                             {{ bank_details.bank_name }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-600">Branch</p>
+                        <p
+                            class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1"
+                        >
+                            Branch
+                        </p>
                         <p class="text-base font-semibold text-gray-900">
                             {{ bank_details.branch }}
                         </p>
@@ -65,21 +243,33 @@ endblock %} {% block content %}
                 </div>
 
                 <div>
-                    <p class="text-sm text-gray-600">Account Name</p>
+                    <p
+                        class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1"
+                    >
+                        Account Name
+                    </p>
                     <p class="text-base font-semibold text-gray-900">
                         {{ bank_details.account_name }}
                     </p>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-4">
+                <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <p class="text-sm text-gray-600">Account Number</p>
+                        <p
+                            class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1"
+                        >
+                            Account Number
+                        </p>
                         <p class="text-lg font-bold text-gray-900 font-mono">
                             {{ bank_details.account_number }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-600">SWIFT Code</p>
+                        <p
+                            class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1"
+                        >
+                            SWIFT Code
+                        </p>
                         <p class="text-lg font-bold text-gray-900 font-mono">
                             {{ bank_details.swift_code }}
                         </p>
@@ -87,23 +277,159 @@ endblock %} {% block content %}
                 </div>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-gray-200">
+            <div class="mt-8 pt-6 border-t border-gray-100">
                 <p class="text-sm text-gray-600">
-                    Payment verification typically takes 1-2 business days. You
-                    will receive a confirmation email once your payment is
-                    verified.
+                    Payment verification typically takes 1–2 business days. You
+                    will receive a confirmation email at
+                    <strong class="font-semibold"
+                        >{{ registration.email }}</strong
+                    >
+                    once your payment is verified.
                 </p>
             </div>
         </div>
 
-        <!-- Action -->
-        <div class="mt-8 text-center">
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <a
                 href="{{ url_for('register.confirmation', ref=registration.reference_number) }}"
-                class="inline-block px-6 py-3 bg-primary-dark text-white font-semibold rounded hover:bg-primary-medium transition"
+                class="inline-flex items-center justify-center rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
             >
+                <svg
+                    class="h-5 w-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                    ></path>
+                </svg>
                 Return to Confirmation
             </a>
+
+            <a
+                href="/"
+                class="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-semibold text-gray-700 shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all duration-300"
+            >
+                <svg
+                    class="h-5 w-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    ></path>
+                </svg>
+                Return to Home
+            </a>
+        </div>
+
+        <!-- Contact / Need Help Card -->
+        <div
+            class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5"
+        >
+            <h3
+                class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2"
+            >
+                <svg
+                    class="h-5 w-5 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
+                    ></path>
+                </svg>
+                Need Help?
+            </h3>
+            <p class="text-sm text-gray-600 mb-4">
+                If you have any questions about the bank transfer process,
+                please contact us:
+            </p>
+            <div class="space-y-3">
+                <div class="flex items-center gap-3 text-sm text-gray-700">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-orange"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        ></path>
+                    </svg>
+                    <span
+                        >Email:
+                        <a
+                            href="mailto:{{ contact_email }}"
+                            class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
+                            >{{ contact_email }}</a
+                        ></span
+                    >
+                </div>
+                <div class="flex items-center gap-3 text-sm text-gray-700">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-orange"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        ></path>
+                    </svg>
+                    <span
+                        >Phone:
+                        <a
+                            href="tel:{{ support_phone }}"
+                            class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
+                            >{{ support_phone }}</a
+                        ></span
+                    >
+                </div>
+                <div class="flex items-center gap-3 text-sm text-gray-700">
+                    <svg
+                        class="h-5 w-5 flex-shrink-0 text-accent-orange"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                        ></path>
+                    </svg>
+                    <span
+                        >Website:
+                        <a
+                            href="{{ website_url }}"
+                            class="font-semibold text-accent-orange hover:text-accent-yellow transition-colors"
+                            target="_blank"
+                            >{{ website_url }}</a
+                        ></span
+                    >
+                </div>
+            </div>
         </div>
     </div>
 </div>

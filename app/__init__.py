@@ -168,8 +168,13 @@ def create_app(config_name=None):
                 "EVENT_SHORT_NAME", "Pollination Africa 2026"
             ),
             event_date=app.config.get("EVENT_DATE", "3-5 June 2026"),
-            event_location=app.config.get("EVENT_LOCATION", "Arusha, Tanzania"),
-            event_venue=app.config.get("EVENT_VENUE", "TBA"),
+            event_location=app.config.get(
+                "EVENT_LOCATION",
+                "Arusha International Conference Centre, Arusha, Tanzania",
+            ),
+            event_venue=app.config.get(
+                "EVENT_VENUE", "Arusha International Conference Centre"
+            ),
             event_time=app.config.get("EVENT_TIME", "Daily 9am-5pm"),
             event_duration=app.config.get("EVENT_DURATION", "3 Days"),
             event_theme=app.config.get(

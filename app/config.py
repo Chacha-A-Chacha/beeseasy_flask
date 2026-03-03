@@ -161,8 +161,12 @@ class Config:
     EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Summit 2026")
     EVENT_SHORT_NAME: str = os.getenv("EVENT_SHORT_NAME", "Pollination Africa 2026")
     EVENT_DATE: str = os.getenv("EVENT_DATE", "3-5 June 2026")
-    EVENT_LOCATION: str = os.getenv("EVENT_LOCATION", "Arusha, Tanzania")
-    EVENT_VENUE: str = os.getenv("EVENT_VENUE", "TBA")
+    EVENT_LOCATION: str = os.getenv(
+        "EVENT_LOCATION", "Arusha International Conference Centre, Arusha, Tanzania"
+    )
+    EVENT_VENUE: str = os.getenv(
+        "EVENT_VENUE", "Arusha International Conference Centre"
+    )
     EVENT_TIME: str = os.getenv("EVENT_TIME", "Daily 9am-5pm")
     EVENT_DURATION: str = os.getenv("EVENT_DURATION", "3 Days")
     EVENT_THEME: str = os.getenv(

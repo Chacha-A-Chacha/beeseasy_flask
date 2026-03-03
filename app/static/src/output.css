@@ -2675,13 +2675,6 @@
   .ring-inset {
     --tw-ring-inset: inset;
   }
-  .group-hover\:opacity-100 {
-    &:is(:where(.group):hover *) {
-      @media (hover: hover) {
-        opacity: 100%;
-      }
-    }
-  }
   .group-has-\[\:checked\]\:opacity-100 {
     &:is(:where(.group):has(*:is(:checked)) *) {
       opacity: 100%;

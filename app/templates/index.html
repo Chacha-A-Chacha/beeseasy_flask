@@ -143,13 +143,12 @@
                     >
                         Register as Delegate
                     </a>
-
-                    <!--<a
-                        href="{{ url_for('register.attendee_index') }}"
-                        class="rounded-md bg-orange-400 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark transition-all"
+                    <a
+                        href="{{ url_for('register.exhibitor_index') }}"
+                        class="rounded-full bg-transparent border-2 border-accent-yellow text-accent-yellow px-6 py-3 text-base font-semibold hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300"
                     >
-                        Register as Delegate
-                    </a>-->
+                        Become an Exhibitor
+                    </a>
                 </div>
             </div>
         </div>
@@ -1301,8 +1300,14 @@
                     Register Now
                 </a>
                 <a
+                    href="{{ url_for('register.exhibitor_index') }}"
+                    class="rounded-full bg-transparent border-2 border-accent-orange text-accent-orange px-6 py-3 text-base font-semibold hover:bg-accent-orange hover:text-white transition-all duration-300"
+                >
+                    Exhibit With Us
+                </a>
+                <a
                     href="{{ url_for('main.contact') }}"
-                    class="rounded-full bg-transparent border-2 border-accent-orange text-accent-orange px-6 py-3 text-base font-semibold hover:bg-accent-orange hover:text-primary-dark transition-all duration-300"
+                    class="rounded-full bg-transparent border-2 border-gray-400 text-gray-600 px-6 py-3 text-base font-semibold hover:border-accent-orange hover:text-accent-orange transition-all duration-300"
                 >
                     Contact us <span aria-hidden="true">→</span>
                 </a>

@@ -508,6 +508,25 @@
                 </svg>
             </a>
             <a
+                href="{{ url_for('register.exhibitor_index') }}"
+                class="inline-flex items-center px-8 py-3 bg-transparent border-2 border-accent-yellow text-accent-yellow font-semibold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 transform hover:scale-105"
+            >
+                Become an Exhibitor
+                <svg
+                    class="ml-2 w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                </svg>
+            </a>
+            <a
                 href="{{ url_for('main.agenda') }}"
                 class="inline-flex items-center px-8 py-3 bg-transparent border border-accent-yellow text-accent-yellow font-semibold rounded-full hover:bg-accent-yellow hover:text-primary-dark transition-all duration-300 transform hover:scale-105"
             >
@@ -945,8 +964,14 @@
                     Register Now
                 </a>
                 <a
+                    href="{{ url_for('register.exhibitor_index') }}"
+                    class="rounded-full bg-transparent border-2 border-accent-orange text-accent-orange px-6 py-3 text-base font-semibold hover:bg-accent-orange hover:text-white transition-all duration-300"
+                >
+                    Exhibit With Us
+                </a>
+                <a
                     href="{{ url_for('main.contact') }}"
-                    class="rounded-full bg-transparent border-2 border-accent-orange text-accent-orange px-6 py-3 text-base font-semibold hover:bg-accent-orange hover:text-primary-dark transition-all duration-300"
+                    class="rounded-full bg-transparent border-2 border-gray-400 text-gray-300 px-6 py-3 text-base font-semibold hover:border-accent-orange hover:text-accent-orange transition-all duration-300"
                 >
                     Contact Us <span aria-hidden="true">→</span>
                 </a>

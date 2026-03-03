@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -21,12 +21,13 @@
 
             @page {
                 size: A4 portrait;
-                margin: 15mm 18mm 20mm 18mm;
+                margin: 18mm 20mm 20mm 20mm;
             }
 
             body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                    Roboto, "Helvetica Neue", Arial, sans-serif;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, sans-serif;
                 font-size: 11pt;
                 line-height: 1.5;
                 color: #1a1a1a;
@@ -36,14 +37,14 @@
             }
 
             /* ============================================ */
-            /* SCREEN WRAPPER (centers on screen)            */
+            /* SCREEN WRAPPER                                */
             /* ============================================ */
             .page-wrapper {
                 max-width: 210mm;
                 margin: 20px auto;
                 background: #fff;
                 box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
-                padding: 15mm 18mm 20mm 18mm;
+                padding: 18mm 20mm 20mm 20mm;
             }
 
             /* ============================================ */
@@ -55,7 +56,7 @@
                 justify-content: space-between;
                 padding-bottom: 14px;
                 border-bottom: 3px solid #1b4d2e;
-                margin-bottom: 20px;
+                margin-bottom: 22px;
             }
 
             .header-left {
@@ -65,12 +66,12 @@
             }
 
             .header-logo {
-                height: 48px;
+                height: 44px;
                 width: auto;
             }
 
             .header-text h1 {
-                font-size: 16pt;
+                font-size: 15pt;
                 font-weight: 700;
                 color: #1b4d2e;
                 line-height: 1.2;
@@ -87,7 +88,7 @@
             }
 
             .doc-title {
-                font-size: 13pt;
+                font-size: 12pt;
                 font-weight: 700;
                 color: #1b4d2e;
                 text-transform: uppercase;
@@ -108,8 +109,8 @@
                 align-items: center;
                 gap: 10px;
                 padding: 10px 16px;
-                border-radius: 8px;
-                margin-bottom: 20px;
+                border-radius: 6px;
+                margin-bottom: 22px;
                 font-weight: 600;
                 font-size: 10.5pt;
             }
@@ -127,8 +128,8 @@
             }
 
             .status-icon {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
                 flex-shrink: 0;
             }
 
@@ -136,18 +137,18 @@
             /* SECTION STYLING                              */
             /* ============================================ */
             .section {
-                margin-bottom: 18px;
+                margin-bottom: 20px;
             }
 
             .section-title {
-                font-size: 10pt;
+                font-size: 9.5pt;
                 font-weight: 700;
                 color: #1b4d2e;
                 text-transform: uppercase;
                 letter-spacing: 0.6px;
                 padding-bottom: 6px;
                 border-bottom: 1.5px solid #e5e7eb;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
 
             /* ============================================ */
@@ -159,13 +160,13 @@
             }
 
             .data-table td {
-                padding: 6px 0;
+                padding: 5px 0;
                 vertical-align: top;
                 font-size: 10pt;
             }
 
             .data-table .label {
-                width: 38%;
+                width: 35%;
                 color: #555;
                 font-weight: 500;
             }
@@ -210,7 +211,7 @@
             .payment-table .total-row td {
                 padding-top: 8px;
                 border-top: 2px solid #1b4d2e;
-                font-size: 12pt;
+                font-size: 11.5pt;
                 font-weight: 700;
             }
 
@@ -222,7 +223,7 @@
                 display: inline-block;
                 padding: 2px 10px;
                 border-radius: 20px;
-                font-size: 8.5pt;
+                font-size: 8pt;
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.3px;
@@ -241,99 +242,22 @@
             }
 
             /* ============================================ */
-            /* TWO COLUMN LAYOUT                            */
+            /* DISCLAIMER                                   */
             /* ============================================ */
-            .two-col {
-                display: flex;
-                gap: 24px;
-            }
-
-            .two-col > .col {
-                flex: 1;
-            }
-
-            /* ============================================ */
-            /* QR CODE / BADGE SECTION                      */
-            /* ============================================ */
-            .qr-section {
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                padding: 12px 16px;
-                background: #f9fafb;
-                border: 1px solid #e5e7eb;
-                border-radius: 8px;
-                margin-bottom: 18px;
-            }
-
-            .qr-code {
-                width: 80px;
-                height: 80px;
-                flex-shrink: 0;
-            }
-
-            .qr-code img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-            }
-
-            .qr-info {
-                font-size: 9pt;
-                color: #555;
-            }
-
-            .qr-info strong {
-                display: block;
-                font-size: 10pt;
-                color: #1a1a1a;
-                margin-bottom: 2px;
-            }
-
-            /* ============================================ */
-            /* IMPORTANT NOTES                              */
-            /* ============================================ */
-            .notes {
-                padding: 12px 16px;
-                background: #fffbeb;
-                border: 1px solid #fde68a;
-                border-radius: 8px;
-                margin-bottom: 18px;
-            }
-
-            .notes h4 {
-                font-size: 9pt;
-                font-weight: 700;
-                color: #854d0e;
-                text-transform: uppercase;
-                letter-spacing: 0.4px;
-                margin-bottom: 6px;
-            }
-
-            .notes ul {
-                list-style: none;
-                padding: 0;
-            }
-
-            .notes li {
-                font-size: 9pt;
-                color: #713f12;
-                padding: 2px 0 2px 16px;
-                position: relative;
-            }
-
-            .notes li::before {
-                content: "•";
-                position: absolute;
-                left: 4px;
-                color: #d97706;
+            .disclaimer {
+                font-size: 8.5pt;
+                color: #888;
+                font-style: italic;
+                margin-top: 6px;
+                padding-top: 8px;
+                border-top: 1px solid #f3f4f6;
             }
 
             /* ============================================ */
             /* FOOTER                                       */
             /* ============================================ */
             .footer {
-                margin-top: 24px;
+                margin-top: 28px;
                 padding-top: 12px;
                 border-top: 1.5px solid #e5e7eb;
                 text-align: center;
@@ -344,6 +268,41 @@
 
             .footer strong {
                 color: #555;
+            }
+
+            /* ============================================ */
+            /* ATTRIBUTION                                  */
+            /* ============================================ */
+            .attribution {
+                margin-top: 20px;
+                padding-top: 10px;
+                border-top: 1px solid #f3f4f6;
+                text-align: center;
+            }
+
+            .attribution-label {
+                font-size: 6pt;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+                color: #b0b0b0;
+                margin-bottom: 4px;
+            }
+
+            .attribution a {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                text-decoration: none;
+                transition: opacity 0.15s ease;
+            }
+
+            .attribution a:hover {
+                opacity: 0.75;
+            }
+
+            .attribution-logo {
+                height: 18px;
+                width: auto;
             }
 
             /* ============================================ */
@@ -418,16 +377,12 @@
                 .screen-toolbar {
                     display: none !important;
                 }
-
-                .no-print {
-                    display: none !important;
-                }
             }
         </style>
     </head>
     <body>
         <!-- Screen-only toolbar -->
-        <div class="screen-toolbar no-print">
+        <div class="screen-toolbar">
             <button class="btn-print" onclick="window.print()">
                 <svg
                     class="btn-icon"
@@ -461,7 +416,7 @@
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"
                     />
                 </svg>
-                Back to Confirmation
+                Back
             </a>
         </div>
 
@@ -483,12 +438,10 @@
                 <div class="header-right">
                     <div class="doc-title">
                         {% if registration.status.value == 'confirmed' %}
-                        Registration Confirmation {% else %} Registration
-                        Receipt {% endif %}
+                        Confirmation {% else %} Receipt {% endif %}
                     </div>
                     <div class="doc-date">
-                        Issued: {{ registration.created_at.strftime('%d %B %Y')
-                        }}
+                        {{ registration.created_at.strftime('%d %B %Y') }}
                     </div>
                 </div>
             </div>
@@ -496,164 +449,99 @@
             <!-- ====== STATUS BANNER ====== -->
             {% if registration.status.value == 'confirmed' %}
             <div class="status-banner status-confirmed">
-                <svg class="status-icon" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                    class="status-icon"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
                     <path
                         fill-rule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clip-rule="evenodd"
                     />
                 </svg>
-                Registration Confirmed — You are registered for {{ event_short_name }}
+                Registration Confirmed
             </div>
             {% else %}
             <div class="status-banner status-pending">
-                <svg class="status-icon" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                    class="status-icon"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
                     <path
                         fill-rule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                         clip-rule="evenodd"
                     />
                 </svg>
-                Payment Pending — Complete payment to confirm your registration
+                Payment Pending
             </div>
             {% endif %}
 
-            <!-- ====== QR CODE (if available) ====== -->
-            {% if registration.qr_code_image_url %}
-            <div class="qr-section">
-                <div class="qr-code">
-                    <img
-                        src="{{ registration.qr_code_image_url }}"
-                        alt="QR Code"
-                    />
-                </div>
-                <div class="qr-info">
-                    <strong>Event Check-in QR Code</strong>
-                    Present this QR code at the registration desk for fast
-                    check-in. You can also show the digital badge from your
-                    confirmation email.
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- ====== REGISTRATION & CONTACT DETAILS (2 columns) ====== -->
-            <div class="two-col">
-                <!-- Registration Details -->
-                <div class="col">
-                    <div class="section">
-                        <div class="section-title">Registration Details</div>
-                        <table class="data-table">
-                            <tr>
-                                <td class="label">Reference Number</td>
-                                <td class="value mono">
-                                    {{ registration.reference_number }}
-                                </td>
-                            </tr>
-                            {% if registration.confirmation_code %}
-                            <tr>
-                                <td class="label">Confirmation Code</td>
-                                <td class="value mono">
-                                    {{ registration.confirmation_code }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            <tr>
-                                <td class="label">Registration Type</td>
-                                <td class="value">
-                                    {{ registration.registration_type|title }}
-                                </td>
-                            </tr>
-                            {% if registration.registration_type == 'attendee' %}
-                            <tr>
-                                <td class="label">Ticket Type</td>
-                                <td class="value">
-                                    {{ registration.ticket_type.value|replace('_', ' ')|title }}
-                                </td>
-                            </tr>
-                            {% elif registration.registration_type == 'exhibitor' %}
-                            <tr>
-                                <td class="label">Package</td>
-                                <td class="value">
-                                    {{ registration.package_type.value|title }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">Company</td>
-                                <td class="value">
-                                    {{ registration.company_legal_name }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            <tr>
-                                <td class="label">Status</td>
-                                <td class="value">
-                                    {{ registration.status.value|upper }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">Registered On</td>
-                                <td class="value">
-                                    {{ registration.created_at.strftime('%d %B %Y at %H:%M') }}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Contact Details -->
-                <div class="col">
-                    <div class="section">
-                        <div class="section-title">Registrant Details</div>
-                        <table class="data-table">
-                            <tr>
-                                <td class="label">Full Name</td>
-                                <td class="value">
-                                    {{ registration.first_name }} {{ registration.last_name }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">Email</td>
-                                <td class="value">
-                                    {{ registration.email }}
-                                </td>
-                            </tr>
-                            {% if registration.full_phone %}
-                            <tr>
-                                <td class="label">Phone</td>
-                                <td class="value">
-                                    {{ registration.full_phone }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            {% if registration.registration_type == 'attendee' and registration.organization %}
-                            <tr>
-                                <td class="label">Organization</td>
-                                <td class="value">
-                                    {{ registration.organization }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            {% if registration.registration_type == 'exhibitor' %}
-                            {% if registration.job_title %}
-                            <tr>
-                                <td class="label">Job Title</td>
-                                <td class="value">
-                                    {{ registration.job_title }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            {% if registration.company_country %}
-                            <tr>
-                                <td class="label">Country</td>
-                                <td class="value">
-                                    {{ registration.company_country }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            {% endif %}
-                        </table>
-                    </div>
-                </div>
+            <!-- ====== REGISTRATION DETAILS ====== -->
+            <div class="section">
+                <div class="section-title">Registration Details</div>
+                <table class="data-table">
+                    <tr>
+                        <td class="label">Reference Number</td>
+                        <td class="value mono">
+                            {{ registration.reference_number }}
+                        </td>
+                    </tr>
+                    {% if registration.confirmation_code %}
+                    <tr>
+                        <td class="label">Confirmation Code</td>
+                        <td class="value mono">
+                            {{ registration.confirmation_code }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td class="label">Name</td>
+                        <td class="value">
+                            {{ registration.first_name }} {{
+                            registration.last_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Email</td>
+                        <td class="value">{{ registration.email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Type</td>
+                        <td class="value">
+                            {{ registration.registration_type|title }} — {% if
+                            registration.registration_type == 'attendee' %} {{
+                            registration.ticket_type.value|replace('_','&nbsp;')|title
+                            }} Ticket {% elif registration.registration_type ==
+                            'exhibitor' %} {{
+                            registration.package_type.value|title }} Package {%
+                            endif %}
+                        </td>
+                    </tr>
+                    {% if registration.registration_type == 'exhibitor' and
+                    registration.company_legal_name %}
+                    <tr>
+                        <td class="label">Company</td>
+                        <td class="value">
+                            {{ registration.company_legal_name }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td class="label">Status</td>
+                        <td class="value">
+                            {{ registration.status.value|upper }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Registered</td>
+                        <td class="value">
+                            {{ registration.created_at.strftime('%d %B %Y') }}
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <!-- ====== PAYMENT SUMMARY ====== -->
@@ -663,60 +551,71 @@
                 <table class="payment-table">
                     <tr>
                         <td>
-                            {% if registration.registration_type == 'attendee' %}Ticket Price{% else %}Package Price{% endif %}
+                            {% if registration.registration_type == 'attendee'
+                            %}Ticket{% else %}Package{% endif %}
                         </td>
                         <td class="amount">
-                            {{ payment.currency }} {{ "%.2f"|format(payment.subtotal) }}
+                            {{ payment.currency }} {{
+                            "%.2f"|format(payment.subtotal) }}
                         </td>
                     </tr>
-                    {% if payment.discount_amount and payment.discount_amount > 0 %}
+                    {% if payment.discount_amount and payment.discount_amount >
+                    0 %}
                     <tr class="discount">
                         <td>Discount</td>
                         <td class="amount">
-                            -{{ payment.currency }} {{ "%.2f"|format(payment.discount_amount) }}
+                            &minus;{{ payment.currency }} {{
+                            "%.2f"|format(payment.discount_amount) }}
                         </td>
                     </tr>
-                    {% endif %}
-                    {% if payment.tax_amount and payment.tax_amount > 0 %}
+                    {% endif %} {% if payment.tax_amount and payment.tax_amount
+                    > 0 %}
                     <tr>
                         <td>Tax</td>
                         <td class="amount">
-                            {{ payment.currency }} {{ "%.2f"|format(payment.tax_amount) }}
+                            {{ payment.currency }} {{
+                            "%.2f"|format(payment.tax_amount) }}
                         </td>
                     </tr>
                     {% endif %}
                     <tr class="total-row">
                         <td>
-                            Total Amount
-                            &nbsp;
-                            {% if payment.payment_status.value == 'completed' %}
-                            <span class="payment-status-badge badge-paid">Paid</span>
+                            Total {% if payment.payment_status.value ==
+                            'completed' %}
+                            <span class="payment-status-badge badge-paid"
+                                >Paid</span
+                            >
                             {% else %}
-                            <span class="payment-status-badge badge-pending">{{ payment.payment_status.value|title }}</span>
+                            <span class="payment-status-badge badge-pending"
+                                >{{ payment.payment_status.value|title }}</span
+                            >
                             {% endif %}
                         </td>
                         <td class="amount">
-                            {{ payment.currency }} {{ "{:,.2f}".format(payment.total_amount) }}
+                            {{ payment.currency }} {{
+                            "{:,.2f}".format(payment.total_amount) }}
                         </td>
                     </tr>
                 </table>
 
                 {% if payment.payment_completed_at %}
-                <table class="data-table" style="margin-top: 10px">
+                <table class="data-table" style="margin-top: 8px">
                     <tr>
-                        <td class="label">Payment Date</td>
+                        <td class="label">Paid On</td>
                         <td class="value">
-                            {{ payment.payment_completed_at.strftime('%d %B %Y at %H:%M') }}
+                            {{ payment.payment_completed_at.strftime('%d %B %Y')
+                            }}
                         </td>
                     </tr>
                     <tr>
-                        <td class="label">Payment Method</td>
+                        <td class="label">Method</td>
                         <td class="value">
-                            {{ payment.payment_method.value|replace('_', ' ')|title }}
+                            {{ payment.payment_method.value|replace('_','
+                            ')|title }}
                         </td>
                     </tr>
                     <tr>
-                        <td class="label">Payment Reference</td>
+                        <td class="label">Payment Ref</td>
                         <td class="value mono">
                             {{ payment.payment_reference }}
                         </td>
@@ -724,63 +623,51 @@
                     {% if payment.transaction_id %}
                     <tr>
                         <td class="label">Transaction ID</td>
-                        <td class="value mono">
-                            {{ payment.transaction_id }}
-                        </td>
+                        <td class="value mono">{{ payment.transaction_id }}</td>
                     </tr>
                     {% endif %}
                 </table>
                 {% endif %}
+
+                <p class="disclaimer">
+                    This is a registration confirmation, not an official tax
+                    invoice. For event check-in, please present your digital
+                    badge sent to {{ registration.email }}.
+                </p>
             </div>
             {% endif %}
 
-            <!-- ====== IMPORTANT NOTES ====== -->
-            <div class="notes">
-                <h4>Important Information</h4>
-                <ul>
-                    <li>
-                        Please bring this confirmation or your digital badge
-                        (sent via email) to the event for check-in
-                    </li>
-                    <li>
-                        Event dates: {{ event_date }} at {{ event_venue }},
-                        {{ event_location }}
-                    </li>
-                    {% if registration.status.value != 'confirmed' %}
-                    <li>
-                        Your registration will be confirmed once payment is
-                        received and verified
-                    </li>
-                    {% endif %}
-                    <li>
-                        For questions or changes, contact {{ contact_email }} or
-                        call {{ support_phone }}
-                    </li>
-                </ul>
-            </div>
-
             <!-- ====== FOOTER ====== -->
             <div class="footer">
-                <strong>{{ organization_name }}</strong> &bull;
-                {{ event_name }}<br />
+                <strong>{{ organization_name }}</strong> &bull; {{ event_name
+                }}<br />
                 {{ event_venue }}, {{ event_location }} &bull; {{ event_date
                 }}<br />
-                {{ contact_email }} &bull; {{ website_url }}<br />
-                <br />
-                <em
-                    >This document was generated on {{
-                    registration.created_at.strftime('%d %B %Y') }} and serves
-                    as {% if registration.status.value == 'confirmed' %}official
-                    confirmation{% else %}a record{% endif %} of your
-                    registration.</em
+                {{ contact_email }} &bull; {{ website_url }}
+            </div>
+
+            <!-- ====== ATTRIBUTION ====== -->
+            <div class="attribution">
+                <p class="attribution-label">
+                    Designed, developed &amp; maintained by
+                </p>
+                <a
+                    href="https://chach-a.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
+                    <img
+                        src="{{ url_for('static', filename='external/CC_logo_full.svg', _external=True) }}"
+                        alt="Chacha Technologies"
+                        class="attribution-logo"
+                    />
+                </a>
             </div>
         </div>
 
         <!-- Auto-trigger print dialog -->
         <script>
             window.addEventListener("DOMContentLoaded", function () {
-                // Small delay to ensure rendering is complete
                 setTimeout(function () {
                     window.print();
                 }, 400);

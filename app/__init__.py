@@ -190,6 +190,7 @@ def create_app(config_name=None):
             support_phone=app.config.get("SUPPORT_PHONE", "+255 767 727 619"),
             support_whatsapp=app.config.get("SUPPORT_WHATSAPP", "+255 767 727 619"),
             website_url=app.config.get("WEBSITE_URL", "https://pollination.africa"),
+            registration_open=app.config.get("REGISTRATION_OPEN", False),
         )
 
     # --- Error Handlers ---

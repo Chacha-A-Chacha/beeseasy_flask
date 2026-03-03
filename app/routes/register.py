@@ -8,6 +8,7 @@ from decimal import Decimal
 
 from flask import (
     Blueprint,
+    current_app,
     flash,
     jsonify,
     redirect,
@@ -42,10 +43,10 @@ register_bp = Blueprint("register", __name__)
 @register_bp.route("/attendee")
 def attendee_index():
     """Attendee ticket selection landing page"""
-    # Registration not open yet - show coming soon page
-    return render_template(
-        "register/registration_closed.html", registration_type="attendee"
-    )
+    if not current_app.config.get("REGISTRATION_OPEN", False):
+        return render_template(
+            "register/registration_closed.html", registration_type="attendee"
+        )
 
     tickets = (
         TicketPrice.query.filter_by(is_active=True).order_by(TicketPrice.price).all()
@@ -121,10 +122,10 @@ def register_attendee_form():
 @register_bp.route("/exhibitor")
 def exhibitor_index():
     """Exhibitor package selection landing page"""
-    # Registration not open yet - show coming soon page
-    return render_template(
-        "register/registration_closed.html", registration_type="exhibitor"
-    )
+    if not current_app.config.get("REGISTRATION_OPEN", False):
+        return render_template(
+            "register/registration_closed.html", registration_type="exhibitor"
+        )
 
     packages = (
         ExhibitorPackagePrice.query.filter_by(is_active=True)

@@ -1006,8 +1006,9 @@
             });
         </script>
 
-        <!-- Registration Coming Soon Overlay -->
-        {% include 'components/registration_overlay.html' %}
+        <!-- Registration Coming Soon Overlay (only when registration is closed) -->
+        {% if not registration_open %} {% include
+        'components/registration_overlay.html' %} {% endif %}
 
         <!-- Page-specific scripts -->
         {% block extra_js %}{% endblock %}

@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
+@theme {
+    --color-primary-dark: #142601;
+    --color-primary-medium: #25400a;
+    --color-accent-yellow: #f2c12e;
+    --color-accent-orange: #bf7e04;
+    --color-accent-brown: #8c5c03;
+}
 
-/* 
-npx @tailwindcss/cli -i ./app/static/src/input.css -o ./app/static/src/output.css --watch 
+/* Remove default browser focus outline on inputs that use Tailwind ring */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+}
+
+/*
+npx @tailwindcss/cli -i ./app/static/src/input.css -o ./app/static/src/output.css --watch
 */

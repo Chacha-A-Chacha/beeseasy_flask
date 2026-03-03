@@ -292,7 +292,7 @@ endblock %} {% block content %}
                 <div>
                     {{ form.first_name.label(class="block text-sm font-semibold
                     text-primary-dark") }}
-                    <div class="mt-2.5">{{ form.first_name() }}</div>
+                    <div class="mt-2.5">{{ form.first_name(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                     {% if form.first_name.errors %} {% for error in
                     form.first_name.errors %}
                     <p class="mt-1 text-sm text-red-600">{{ error }}</p>
@@ -303,7 +303,7 @@ endblock %} {% block content %}
                 <div>
                     {{ form.last_name.label(class="block text-sm font-semibold
                     text-primary-dark") }}
-                    <div class="mt-2.5">{{ form.last_name() }}</div>
+                    <div class="mt-2.5">{{ form.last_name(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                     {% if form.last_name.errors %} {% for error in
                     form.last_name.errors %}
                     <p class="mt-1 text-sm text-red-600">{{ error }}</p>
@@ -315,7 +315,7 @@ endblock %} {% block content %}
             <div>
                 {{ form.email.label(class="block text-sm font-semibold
                 text-primary-dark") }}
-                <div class="mt-2.5">{{ form.email() }}</div>
+                <div class="mt-2.5">{{ form.email(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                 {% if form.email.errors %} {% for error in form.email.errors %}
                 <p class="mt-1 text-sm text-red-600">{{ error }}</p>
                 {% endfor %} {% endif %}
@@ -328,7 +328,7 @@ endblock %} {% block content %}
 
                 <div class="mt-2.5">
                     <!-- Enhanced phone input (JavaScript-enabled) -->
-                    {{ form.phone_international() }}
+                    {{ form.phone_international(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}
 
                     <!-- Hidden fields (populated by JavaScript) -->
                     {{ form.phone_country_code }} {{ form.phone_number }}
@@ -350,12 +350,12 @@ endblock %} {% block content %}
                             {{
                             form.phone_country_code_fallback.label(class="block
                             text-sm font-semibold text-primary-dark mb-1") }} {{
-                            form.phone_country_code_fallback() }}
+                            form.phone_country_code_fallback(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}
                         </div>
                         <div class="col-span-2">
                             {{ form.phone_number_fallback.label(class="block
                             text-sm font-semibold text-primary-dark mb-1") }} {{
-                            form.phone_number_fallback() }} {% if
+                            form.phone_number_fallback(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }} {% if
                             form.phone_number_fallback.errors %}
                             <p class="text-red-600 text-xs mt-1">
                                 {{ form.phone_number_fallback.errors[0] }}
@@ -370,7 +370,7 @@ endblock %} {% block content %}
             <div>
                 {{ form.inquiry_type.label(class="block text-sm font-semibold
                 text-primary-dark") }}
-                <div class="mt-2.5">{{ form.inquiry_type() }}</div>
+                <div class="mt-2.5">{{ form.inquiry_type(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                 {% if form.inquiry_type.errors %} {% for error in
                 form.inquiry_type.errors %}
                 <p class="mt-1 text-sm text-red-600">{{ error }}</p>
@@ -381,7 +381,7 @@ endblock %} {% block content %}
             <div>
                 {{ form.subject.label(class="block text-sm font-semibold
                 text-primary-dark") }}
-                <div class="mt-2.5">{{ form.subject() }}</div>
+                <div class="mt-2.5">{{ form.subject(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                 {% if form.subject.errors %} {% for error in form.subject.errors
                 %}
                 <p class="mt-1 text-sm text-red-600">{{ error }}</p>
@@ -394,14 +394,14 @@ endblock %} {% block content %}
                 <div>
                     {{ form.organization.label(class="block text-sm
                     font-semibold text-primary-dark") }}
-                    <div class="mt-2.5">{{ form.organization() }}</div>
+                    <div class="mt-2.5">{{ form.organization(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                 </div>
 
                 <!-- Role -->
                 <div>
                     {{ form.role.label(class="block text-sm font-semibold
                     text-primary-dark") }}
-                    <div class="mt-2.5">{{ form.role() }}</div>
+                    <div class="mt-2.5">{{ form.role(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm") }}</div>
                 </div>
             </div>
 
@@ -410,7 +410,7 @@ endblock %} {% block content %}
                 {{ form.message.label(class="block text-sm font-semibold
                 text-primary-dark") }}
                 <div class="mt-2.5">
-                    {{ form.message() }}
+                    {{ form.message(class="block w-full rounded-xl bg-white px-4 py-2.5 text-base text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent-orange sm:text-sm", rows="4") }}
                     <p class="mt-2 text-sm text-gray-500" id="message-counter">
                         <span id="char-count">0</span> / 2000 characters
                     </p>
@@ -441,13 +441,13 @@ endblock %} {% block content %}
 
             <!-- Newsletter Signup -->
             <div class="flex items-start gap-x-3">
-                {{ form.newsletter_signup() }} {{
+                {{ form.newsletter_signup(class="mt-1 mr-3 text-accent-yellow focus:ring-accent-yellow rounded") }} {{
                 form.newsletter_signup.label(class="text-sm text-gray-700") }}
             </div>
 
             <!-- Privacy Consent -->
             <div class="flex items-start gap-x-3">
-                {{ form.privacy_consent() }}
+                {{ form.privacy_consent(class="mt-1 mr-3 text-accent-yellow focus:ring-accent-yellow rounded") }}
                 <label for="privacy_consent" class="text-sm text-gray-700">
                     I agree to the
                     <a
@@ -465,7 +465,7 @@ endblock %} {% block content %}
             {% endfor %} {% endif %}
 
             <!-- Submit Button -->
-            <div class="mt-10">{{ form.submit() }}</div>
+            <div class="mt-10">{{ form.submit(class="w-full rounded-full bg-accent-orange px-8 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-accent-yellow hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-yellow transition-all duration-300 cursor-pointer") }}</div>
         </form>
     </div>
 </section>

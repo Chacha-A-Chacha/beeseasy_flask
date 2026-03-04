@@ -278,9 +278,10 @@ def search_registrations():
         results = (
             search_query.filter(
                 db.or_(
-                    Registration.name.ilike(f"%{query}%"),
+                    Registration.first_name.ilike(f"%{query}%"),
+                    Registration.last_name.ilike(f"%{query}%"),
                     Registration.email.ilike(f"%{query}%"),
-                    Registration.phone.ilike(f"%{query}%"),
+                    Registration.phone_number.ilike(f"%{query}%"),
                 )
             )
             .order_by(Registration.created_at.desc())
@@ -360,7 +361,7 @@ def api_cancel_registration(id):
         return jsonify(
             {
                 "success": True,
-                "message": f"Registration for {registration.name} cancelled",
+                "message": f"Registration for {registration.computed_full_name} cancelled",
             }
         )
     except Exception as e:
@@ -395,7 +396,7 @@ def get_payment(id):
             "verified_by": payment.verified_by,
             "registration": {
                 "id": payment.registration.id,
-                "name": payment.registration.name,
+                "name": payment.registration.computed_full_name,
                 "email": payment.registration.email,
             },
         }
@@ -845,7 +846,7 @@ def get_email_log(id):
             "sent_by": email_log.sent_by,
             "registration": {
                 "id": email_log.registration.id,
-                "name": email_log.registration.name,
+                "name": email_log.registration.computed_full_name,
                 "email": email_log.registration.email,
             }
             if email_log.registration

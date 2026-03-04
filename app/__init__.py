@@ -1,7 +1,7 @@
 import os
 
-from flask import Flask, render_template, request
-from flask_wtf.csrf import CSRFProtect
+from flask import Flask, flash, redirect, render_template, request
+from flask_wtf.csrf import CSRFError, CSRFProtect
 from sqlalchemy import inspect
 
 # Import config dictionary
@@ -203,6 +203,11 @@ def create_app(config_name=None):
     @app.errorhandler(500)
     def internal_server_error(error):
         return render_template("errors/500.html"), 500
+
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        flash("Your session has expired. Please try again.", "error")
+        return redirect(request.referrer or request.url)
 
     # --- Shell Context (for Flask CLI) ---
     @app.shell_context_processor

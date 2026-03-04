@@ -2325,6 +2325,9 @@
     font-size: var(--text-xs);
     line-height: calc(var(--spacing) * 5);
   }
+  .text-\[0px\] {
+    font-size: 0px;
+  }
   .text-\[10px\] {
     font-size: 10px;
   }
@@ -2335,6 +2338,10 @@
   .leading-7 {
     --tw-leading: calc(var(--spacing) * 7);
     line-height: calc(var(--spacing) * 7);
+  }
+  .leading-none {
+    --tw-leading: 1;
+    line-height: 1;
   }
   .leading-relaxed {
     --tw-leading: var(--leading-relaxed);
@@ -2515,6 +2522,9 @@
   }
   .text-red-800 {
     color: var(--color-red-800);
+  }
+  .text-transparent {
+    color: transparent;
   }
   .text-white {
     color: var(--color-white);
@@ -3338,6 +3348,13 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-primary-dark);
+      }
+    }
+  }
+  .hover\:text-red-400 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-red-400);
       }
     }
   }

@@ -171,7 +171,7 @@ def create_admin_command(email, password, name):
     # Check if user exists
     existing = User.query.filter_by(email=email).first()
     if existing:
-        click.echo(f'❌ User with email {email} already exists.')
+        click.echo(f'[ERROR] User with email {email} already exists.')
         return
 
     # Create admin user
@@ -186,7 +186,7 @@ def create_admin_command(email, password, name):
     db.session.add(admin)
     db.session.commit()
 
-    click.echo(f'✅ Admin user created: {email}')
+    click.echo(f'[OK] Admin user created: {email}')
 
 
 def register_cli_commands(app):

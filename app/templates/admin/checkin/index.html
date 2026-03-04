@@ -142,7 +142,7 @@
                 <tbody class="divide-y divide-gray-200">
                     {% for attendee in recent_attendee_checkins %}
                     <tr>
-                        <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ attendee.name }}</td>
+                        <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ attendee.computed_full_name }}</td>
                         <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ attendee.email }}</td>
                         <td class="px-3 py-4 text-sm text-gray-500">
                             {% if attendee.daily_checkins %}{{ attendee.daily_checkins[-1].checked_in_at.strftime('%I:%M %p') }}{% else %}-{% endif %}
@@ -178,7 +178,7 @@
                     {% for exhibitor in recent_exhibitor_checkins %}
                     <tr>
                         <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ exhibitor.organization }}</td>
-                        <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ exhibitor.name }}</td>
+                        <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ exhibitor.computed_full_name }}</td>
                         <td class="px-3 py-4 text-sm text-gray-500">
                             {% if exhibitor.daily_checkins %}{{ exhibitor.daily_checkins[-1].checked_in_at.strftime('%I:%M %p') }}{% else %}-{% endif %}
                         </td>

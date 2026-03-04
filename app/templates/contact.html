@@ -193,8 +193,21 @@ endblock %} {% block content %}
                     <div class="text-base/7">
                         <h3 class="font-semibold text-white">Social Media</h3>
                         <p class="mt-2 text-sm text-white">
-                            WhatsApp Business<br />
-                            X | Instagram | LinkedIn
+                            <a
+                                href="https://wa.me/{{ support_whatsapp | replace('+', '') | replace(' ', '') }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hover:text-accent-yellow transition-colors"
+                                >WhatsApp Business</a
+                            ><br />
+                            <a
+                                href="https://www.instagram.com/pollination_africa/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hover:text-accent-yellow transition-colors"
+                                >Instagram</a
+                            >
+                            {# X | LinkedIn – uncomment when real links are available #}
                         </p>
                     </div>
                 </div>
@@ -451,8 +464,8 @@ endblock %} {% block content %}
                 <label for="privacy_consent" class="text-sm text-gray-700">
                     I agree to the
                     <a
-                        href="#"
-                        class="text-accent-yellow underline hover:text-accent-orange transition-colors"
+                        href="{{ url_for('legal.terms') }}"
+                        class="text-accent-orange underline hover:text-accent-yellow transition-colors"
                         >privacy policy</a
                     >
                     and consent to my information being used to respond to this

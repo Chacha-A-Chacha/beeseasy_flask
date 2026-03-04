@@ -188,8 +188,7 @@ def contact():
 
 @main_bp.route("/become-exhibitor")
 def become_exhibitor():
-    # Explanation, benefits, link to exhibitor registration form
-    return render_template("become_exhibitor.html")
+    return redirect(url_for("register.exhibitor_index"))
 
 
 @main_bp.route("/badge/download/<reference>")

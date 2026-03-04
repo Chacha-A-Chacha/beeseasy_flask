@@ -421,7 +421,8 @@ def api_search():
             AttendeeRegistration.is_deleted == False,
             AttendeeRegistration.status == RegistrationStatus.CONFIRMED,
             or_(
-                AttendeeRegistration.name.ilike(search_term),
+                AttendeeRegistration.first_name.ilike(search_term),
+                AttendeeRegistration.last_name.ilike(search_term),
                 AttendeeRegistration.email.ilike(search_term),
                 AttendeeRegistration.reference_number.ilike(search_term),
             ),
@@ -436,7 +437,8 @@ def api_search():
             ExhibitorRegistration.is_deleted == False,
             ExhibitorRegistration.status == RegistrationStatus.CONFIRMED,
             or_(
-                ExhibitorRegistration.name.ilike(search_term),
+                ExhibitorRegistration.first_name.ilike(search_term),
+                ExhibitorRegistration.last_name.ilike(search_term),
                 ExhibitorRegistration.email.ilike(search_term),
                 ExhibitorRegistration.reference_number.ilike(search_term),
                 ExhibitorRegistration.organization.ilike(search_term),

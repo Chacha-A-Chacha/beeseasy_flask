@@ -306,10 +306,22 @@ class Payment(db.Model):
             verification_result: Dict from dpo_service.verify_token()
         """
         self.dpo_result_code = verification_result.get("result_code", "")
-        self.dpo_result_explanation = verification_result.get("message", "")
+        self.dpo_result_explanation = verification_result.get(
+            "message", verification_result.get("error", "")
+        )
 
         # Store full response in gateway_response JSON field
         self.gateway_response = verification_result
+
+        # Update payment method from DPO's AccRef (actual method used)
+        acc_ref = verification_result.get("payment_method", "")
+        if acc_ref:
+            self.dpo_payment_type = acc_ref
+            card_keywords = ["visa", "mastercard", "amex", "card", "cc"]
+            if any(kw in acc_ref.lower() for kw in card_keywords):
+                self.payment_method = PaymentMethod.CARD
+            else:
+                self.payment_method = PaymentMethod.MOBILE_MONEY
 
         # Update payment status based on result code
         result_code = verification_result.get("result_code", "")

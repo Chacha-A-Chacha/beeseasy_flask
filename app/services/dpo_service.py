@@ -421,7 +421,6 @@ class DPOService:
         customer_email = xml_escape(payment_data.get("customer_email", ""))
         customer_phone = xml_escape(payment_data.get("customer_phone", ""))
         customer_country = xml_escape(payment_data.get("customer_country", ""))
-        customer_dial_code = xml_escape(payment_data.get("customer_dial_code", ""))
         company_ref = xml_escape(str(payment_data.get("company_ref", "")))
         service_description = xml_escape(payment_data.get("service_description", "Event Payment"))
 
@@ -514,7 +513,6 @@ class DPOService:
                 <customerEmail>{customer_email}</customerEmail>
                 <customerPhone>{customer_phone}</customerPhone>
                 <customerCountry>{customer_country}</customerCountry>
-                <customerDialCode>{customer_dial_code}</customerDialCode>
                 {default_payment}
             </Transaction>
             <Services>

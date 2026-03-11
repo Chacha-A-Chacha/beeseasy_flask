@@ -325,6 +325,11 @@ class RegistrationService:
             if not payment:
                 return False, "Payment not found"
 
+            # Idempotency guard — skip if already completed
+            if payment.payment_status == PaymentStatus.COMPLETED:
+                logger.info(f"Payment {payment_id} already completed, skipping duplicate processing")
+                return True, "Payment already processed"
+
             registration = payment.registration
             if not registration:
                 return False, "Registration not found"

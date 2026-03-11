@@ -9,6 +9,7 @@ Supported Payment Methods:
 
 import logging
 from typing import Dict, Optional
+from xml.sax.saxutils import escape as xml_escape
 
 import requests
 import xmltodict
@@ -305,7 +306,9 @@ class DPOService:
 
                 return {
                     "success": True,
+                    "result_code": "000",
                     "status": "Approved",
+                    "message": "Payment successful",
                     "customer_name": api_response.get("CustomerName", ""),
                     "customer_phone": api_response.get("CustomerPhone", ""),
                     "payment_method": api_response.get("AccRef", ""),
@@ -327,6 +330,7 @@ class DPOService:
                     "success": False,
                     "status": "Declined",
                     "error": status_explanation,
+                    "message": status_explanation,
                     "result_code": result_code,
                     "full_response": api_response,
                 }
@@ -409,11 +413,17 @@ class DPOService:
         """
         from datetime import datetime
 
-        # Extract customer name parts
+        # Extract customer name parts and escape all user-supplied values
         customer_name = payment_data.get("customer_name", "").strip()
         name_parts = customer_name.split(" ", 1)
-        first_name = name_parts[0] if len(name_parts) > 0 else ""
-        last_name = name_parts[1] if len(name_parts) > 1 else ""
+        first_name = xml_escape(name_parts[0] if len(name_parts) > 0 else "")
+        last_name = xml_escape(name_parts[1] if len(name_parts) > 1 else "")
+        customer_email = xml_escape(payment_data.get("customer_email", ""))
+        customer_phone = xml_escape(payment_data.get("customer_phone", ""))
+        customer_country = xml_escape(payment_data.get("customer_country", ""))
+        customer_dial_code = xml_escape(payment_data.get("customer_dial_code", ""))
+        company_ref = xml_escape(str(payment_data.get("company_ref", "")))
+        service_description = xml_escape(payment_data.get("service_description", "Event Payment"))
 
         # Format service date - DPO requires "YYYY/MM/DD HH:MM" format
         service_date = payment_data.get("service_date", "")
@@ -494,21 +504,23 @@ class DPOService:
             <Transaction>
                 <PaymentAmount>{payment_data["amount"]}</PaymentAmount>
                 <PaymentCurrency>{currency}</PaymentCurrency>
-                <CompanyRef>{payment_data["company_ref"]}</CompanyRef>
+                <CompanyRef>{company_ref}</CompanyRef>
                 <RedirectURL>{self.redirect_url}</RedirectURL>
                 <BackURL>{self.back_url}</BackURL>
                 <CompanyRefUnique>1</CompanyRefUnique>
                 <PTL>{self.token_lifetime}</PTL>
                 <customerFirstName>{first_name}</customerFirstName>
                 <customerLastName>{last_name}</customerLastName>
-                <customerEmail>{payment_data.get("customer_email", "")}</customerEmail>
-                <customerPhone>{payment_data.get("customer_phone", "")}</customerPhone>
+                <customerEmail>{customer_email}</customerEmail>
+                <customerPhone>{customer_phone}</customerPhone>
+                <customerCountry>{customer_country}</customerCountry>
+                <customerDialCode>{customer_dial_code}</customerDialCode>
                 {default_payment}
             </Transaction>
             <Services>
                 <Service>
                     <ServiceType>{self.service_type}</ServiceType>
-                    <ServiceDescription>{payment_data.get("service_description", "Event Payment")}</ServiceDescription>
+                    <ServiceDescription>{service_description}</ServiceDescription>
                     <ServiceDate>{service_date}</ServiceDate>
                 </Service>
             </Services>

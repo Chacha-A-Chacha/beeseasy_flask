@@ -296,6 +296,8 @@ def dpo_direct(ref):
         "customer_name": customer_name,
         "customer_email": customer_email,
         "customer_phone": customer_phone,
+        "customer_country": registration.country or "",
+        "customer_dial_code": registration.phone_country_code or "",
         "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
         "service_date": (datetime.now() + timedelta(days=30)).strftime(
             "%Y/%m/%d 09:00"
@@ -391,6 +393,8 @@ def dpo_initiate(ref):
             "customer_name": customer_name,
             "customer_email": customer_email,
             "customer_phone": customer_phone,
+            "customer_country": registration.country or "",
+            "customer_dial_code": registration.phone_country_code or "",
             "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
             "service_date": (datetime.now() + timedelta(days=30)).strftime(
                 "%Y/%m/%d 09:00"
@@ -774,6 +778,18 @@ def dpo_cancel():
     if payment:
         registration = payment.registration
         logger.info(f"Payment cancel redirect for: {payment.payment_reference}")
+
+        # Cancel the DPO token so it can't be used after user cancelled
+        if payment.dpo_trans_token:
+            cancel_result = dpo_service.cancel_token(payment.dpo_trans_token)
+            logger.info(f"DPO token cancel result: {cancel_result}")
+
+        # Mark payment as failed/cancelled
+        payment.payment_status = PaymentStatus.FAILED
+        payment.failure_reason = "Cancelled by user"
+        payment.failure_code = "904"
+        payment.payment_failed_at = datetime.now()
+        db.session.commit()
 
         return redirect(
             url_for("payments.cancelled", ref=registration.reference_number)

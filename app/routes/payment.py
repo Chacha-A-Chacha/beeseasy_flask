@@ -393,7 +393,7 @@ def dpo_initiate(ref):
             "customer_email": customer_email,
             "customer_phone": customer_phone,
             "customer_country": registration.country or "",
-                "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
+            "service_description": f"{current_app.config.get('EVENT_SHORT_NAME')} - {registration.registration_type.title()} Registration",
             "service_date": (datetime.now() + timedelta(days=30)).strftime(
                 "%Y/%m/%d 09:00"
             ),

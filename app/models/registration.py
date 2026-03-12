@@ -89,6 +89,7 @@ class AttendeeTicketType(Enum):
 
     FREE = "free"
     STANDARD = "standard"
+    AFRICAN = "african"
     VIP = "vip"
     STUDENT = "student"
     GROUP = "group"

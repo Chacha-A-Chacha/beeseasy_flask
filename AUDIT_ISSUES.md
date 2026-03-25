@@ -253,7 +253,7 @@ Emailed checkout link flow:
 | 10 | MEDIUM | Payment method default inconsistency | Small | Fixed |
 | 11 | MEDIUM | Race condition in `process_payment_completion()` | Small | Fixed |
 | 12 | MEDIUM | Bank transfer / invoice payments no expiry | Small | Fixed |
-| 13 | MEDIUM | CSRF token mixed approach | Trivial | Open |
+| 13 | ~~MEDIUM~~ | ~~CSRF token mixed approach~~ | — | Cancelled |
 | 14 | LOW | Phone fallback country list inconsistency | Trivial | Open |
 | 15 | LOW | `professional_category` silent enum conversion | Small | Open |
 | 16 | LOW | LSAPI file errors (infrastructure) | None | N/A |

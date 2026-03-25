@@ -91,8 +91,8 @@ def register_attendee_form():
         except (ValueError, AttributeError):
             logger.warning(f"Invalid ticket type: {ticket_type_value}")
 
-    # On GET, redirect to selection page if no valid ticket could be resolved
-    if request.method == "GET" and not selected_ticket:
+    # Redirect to selection page if no valid ticket could be resolved
+    if not selected_ticket:
         flash("Please select a ticket type first.", "warning")
         return redirect(url_for("register.attendee_index"))
 
@@ -186,8 +186,8 @@ def register_exhibitor_form():
         except (ValueError, AttributeError):
             logger.warning(f"Invalid package type: {package_type_value}")
 
-    # On GET, redirect to selection page if no valid package could be resolved
-    if request.method == "GET" and not selected_package:
+    # Redirect to selection page if no valid package could be resolved
+    if not selected_package:
         flash("Please select a package first.", "warning")
         return redirect(url_for("register.exhibitor_index"))
 

@@ -334,10 +334,8 @@ def dpo_direct(ref):
             payment_type="dpo",  # Generic type
         )
 
-        # Payment method will be determined after user pays on DPO's site
-        payment.payment_method = (
-            PaymentMethod.MOBILE_MONEY
-        )  # Default, will update via webhook
+        # Payment method will be determined after DPO verification via AccRef.
+        # Don't override here — update_from_dpo_verification() sets it accurately.
 
         db.session.commit()
 
@@ -520,9 +518,7 @@ def dpo_callback():
         success, message = RegistrationService.process_payment_completion(
             payment_id=payment.id,
             transaction_id=verification_result.get("trans_id", ""),
-            payment_method=PaymentMethod.MOBILE_MONEY
-            if payment.payment_method == PaymentMethod.MOBILE_MONEY
-            else PaymentMethod.CARD,
+            payment_method=payment.payment_method,
         )
 
         if success:
@@ -587,9 +583,7 @@ def dpo_verify(ref):
         success, message = RegistrationService.process_payment_completion(
             payment_id=payment.id,
             transaction_id=verification_result.get("trans_id", ""),
-            payment_method=PaymentMethod.MOBILE_MONEY
-            if payment.payment_method == PaymentMethod.MOBILE_MONEY
-            else PaymentMethod.CARD,
+            payment_method=payment.payment_method,
         )
 
         if success:

@@ -251,7 +251,7 @@ Emailed checkout link flow:
 | 8 | HIGH | Promo `applicable_ticket_types`/`applicable_packages` not enforced | Small | Fixed |
 | 9 | MEDIUM | Stale PENDING registrations block re-use | Medium | Fixed |
 | 10 | MEDIUM | Payment method default inconsistency | Small | Fixed |
-| 11 | MEDIUM | Race condition in `process_payment_completion()` | Small | Open |
+| 11 | MEDIUM | Race condition in `process_payment_completion()` | Small | Fixed |
 | 12 | MEDIUM | Bank transfer / invoice payments no expiry | Small | Open |
 | 13 | MEDIUM | CSRF token mixed approach | Trivial | Open |
 | 14 | LOW | Phone fallback country list inconsistency | Trivial | Open |

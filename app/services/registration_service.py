@@ -343,7 +343,11 @@ class RegistrationService:
         - M-Pesa callback (when implemented)
         """
         try:
-            payment = Payment.query.get(payment_id)
+            # Row-level lock prevents concurrent completion (e.g. DPO callback
+            # + user clicking "Check Status" simultaneously).
+            payment = db.session.get(
+                Payment, payment_id, with_for_update=True
+            )
             if not payment:
                 return False, "Payment not found"
 

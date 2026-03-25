@@ -362,8 +362,20 @@ def cancel_attendee(id):
         return redirect(url_for("admin.list_attendees"))
 
     try:
+        # Release ticket inventory
+        if attendee.ticket_price:
+            attendee.ticket_price.release_tickets(
+                quantity=attendee.group_size if attendee.group_size else 1
+            )
+
         attendee.status = RegistrationStatus.CANCELLED
         attendee.updated_at = datetime.now()
+
+        # Mark pending payments as failed
+        for p in attendee.payments:
+            if p.payment_status in (PaymentStatus.PENDING, PaymentStatus.PROCESSING):
+                p.payment_status = PaymentStatus.FAILED
+                p.failure_reason = f"Registration cancelled by {current_user.name}"
 
         # Add admin note
         if not attendee.admin_notes:
@@ -372,7 +384,7 @@ def cancel_attendee(id):
 
         db.session.commit()
 
-        flash("Attendee registration cancelled successfully.", "success")
+        flash("Registration cancelled and ticket released.", "success")
 
     except Exception as e:
         db.session.rollback()
@@ -380,6 +392,46 @@ def cancel_attendee(id):
         flash("Could not cancel the registration. Please try again.", "error")
 
     return redirect(url_for("admin.view_attendee", id=id))
+
+
+@admin_bp.route("/registrations/exhibitors/<int:id>/cancel", methods=["POST"])
+@admin_required
+def cancel_exhibitor(id):
+    """Cancel exhibitor registration and release package"""
+    exhibitor = ExhibitorRegistration.query.get_or_404(id)
+
+    if exhibitor.is_deleted:
+        flash("This registration is already deleted.", "error")
+        return redirect(url_for("admin.list_exhibitors"))
+
+    try:
+        # Release package inventory
+        if exhibitor.package_price:
+            exhibitor.package_price.release_package()
+
+        exhibitor.status = RegistrationStatus.CANCELLED
+        exhibitor.updated_at = datetime.now()
+
+        # Mark pending payments as failed
+        for p in exhibitor.payments:
+            if p.payment_status in (PaymentStatus.PENDING, PaymentStatus.PROCESSING):
+                p.payment_status = PaymentStatus.FAILED
+                p.failure_reason = f"Registration cancelled by {current_user.name}"
+
+        if not exhibitor.admin_notes:
+            exhibitor.admin_notes = ""
+        exhibitor.admin_notes += f"\n[{datetime.now()}] Cancelled by {current_user.name}"
+
+        db.session.commit()
+
+        flash("Registration cancelled and package released.", "success")
+
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error cancelling exhibitor {id}: {str(e)}")
+        flash("Could not cancel the registration. Please try again.", "error")
+
+    return redirect(url_for("admin.view_exhibitor", id=id))
 
 
 @admin_bp.route("/registrations/attendees/<int:id>/check-in", methods=["POST"])

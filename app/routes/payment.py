@@ -64,6 +64,15 @@ def checkout(ref):
         flash("Payment record not found. Please contact support.", "error")
         return redirect(url_for("register.confirmation", ref=ref))
 
+    # Check if payment has expired
+    if (
+        payment.payment_due_date
+        and payment.payment_due_date < datetime.now()
+        and payment.payment_status in (PaymentStatus.PENDING, PaymentStatus.FAILED)
+    ):
+        flash("This payment link has expired. Please register again or contact support.", "warning")
+        return redirect(url_for("register.confirmation", ref=ref))
+
     form = PaymentMethodForm()
 
     # Calculate amounts

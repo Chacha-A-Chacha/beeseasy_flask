@@ -157,18 +157,23 @@ class RegistrationService:
 
                 db.session.commit()
 
-                # Generate badge immediately
-                badge_success, badge_message, badge_url = BadgeService.generate_badge(
-                    attendee.id
-                )
-                if not badge_success:
-                    logger.error(
-                        f"Badge generation failed for free ticket: {badge_message}"
+                # Post-commit side effects (email, badge) — failures here
+                # must not mask the successful registration.
+                try:
+                    badge_url = None
+                    badge_success, badge_message, badge_url = (
+                        BadgeService.generate_badge(attendee.id)
                     )
-                    # Continue anyway - badge can be regenerated later
-
-                # Send confirmation email WITH badge
-                RegistrationService._send_confirmation_email(attendee, badge_url)
+                    if not badge_success:
+                        logger.error(
+                            f"Badge generation failed for free ticket: {badge_message}"
+                        )
+                    RegistrationService._send_confirmation_email(attendee, badge_url)
+                except Exception as post_err:
+                    logger.error(
+                        f"Post-commit side effect failed for {attendee.reference_number}: {post_err}",
+                        exc_info=True,
+                    )
 
                 logger.info(
                     f"Free ticket registration completed: {attendee.reference_number}"
@@ -180,9 +185,16 @@ class RegistrationService:
                 )
 
             else:
-                # Paid ticket - send registration received email with checkout link
+                # Paid ticket - commit first, then send email
                 db.session.commit()
-                RegistrationService._send_registration_email(attendee, payment)
+
+                try:
+                    RegistrationService._send_registration_email(attendee, payment)
+                except Exception as email_err:
+                    logger.error(
+                        f"Failed to send registration email for {attendee.reference_number}: {email_err}",
+                        exc_info=True,
+                    )
 
                 logger.info(
                     f"Paid ticket registration created: {attendee.reference_number}"
@@ -289,8 +301,14 @@ class RegistrationService:
 
             db.session.commit()
 
-            # Send registration received email with checkout link
-            RegistrationService._send_registration_email(exhibitor, payment)
+            # Post-commit: send email. Failure must not mask successful registration.
+            try:
+                RegistrationService._send_registration_email(exhibitor, payment)
+            except Exception as email_err:
+                logger.error(
+                    f"Failed to send registration email for {exhibitor.reference_number}: {email_err}",
+                    exc_info=True,
+                )
 
             logger.info(f"Exhibitor registered: {exhibitor.reference_number}")
             return True, "Registration successful!", exhibitor

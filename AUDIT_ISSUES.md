@@ -243,7 +243,7 @@ Emailed checkout link flow:
 |---|----------|-------|--------|--------|
 | 1 | ~~CRITICAL~~ | ~~DPO callback no signature verification~~ | — | Cancelled |
 | 2 | CRITICAL | Checkout links never expire, no auth | Medium | Fixed |
-| 3 | CRITICAL | Ticket claim rollback not guaranteed on all paths | Medium | Open |
+| 3 | CRITICAL → MEDIUM | Ticket claim rollback — post-commit side effects isolated | Small | Fixed |
 | 4 | CRITICAL | Promo code usage not atomic with payment | Medium | Open |
 | 5 | HIGH | No recovery for missed DPO callbacks | Medium | Open |
 | 6 | HIGH | Payment amount not re-validated at DPO token creation | Small | Open |

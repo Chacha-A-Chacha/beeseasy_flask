@@ -32,6 +32,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship, validates
 
 from app.extensions import db
+from app.utils.countries import get_country_name
 
 # ============================================
 # ENUMS FOR CONSISTENT DATA
@@ -160,11 +161,12 @@ class IndustryCategory(Enum):
 def generate_reference_number(prefix: str = "PA") -> str:
     """
     Generate unique reference number
-    Format: {prefix}{timestamp}{random} e.g., PAA20260103AB12CD
+    Format: {prefix}{timestamp}{random} e.g., PAA20260103AB12CD9XKR4M
+    Uses 12-char random suffix (~62 bits entropy) to prevent enumeration.
     """
     timestamp = datetime.now().strftime("%Y%m%d")
     random_str = "".join(
-        secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6)
+        secrets.choice(string.ascii_uppercase + string.digits) for _ in range(12)
     )
     return f"{prefix}{timestamp}{random_str}"
 
@@ -623,6 +625,11 @@ class Registration(db.Model):
             return f"{self.phone_country_code} {self.phone_number}"
         return None
 
+    @property
+    def country_name(self) -> str:
+        """Get human-readable country name from ISO code"""
+        return get_country_name(self.country) if self.country else ""
+
     @validates("email")
     def validate_email(self, key, value):
         """Validate and normalize email"""
@@ -982,9 +989,9 @@ class AttendeeRegistration(Registration):
     )
 
     def get_base_price(self) -> Decimal:
-        """Get base ticket price"""
+        """Get base ticket price (respects early bird deadline)"""
         if self.ticket_price:
-            return Decimal(str(self.ticket_price.price))
+            return self.ticket_price.get_current_price()
         return Decimal("0.00")
 
     def get_total_amount_due(self) -> Decimal:
@@ -1077,6 +1084,11 @@ class ExhibitorRegistration(Registration):
         super(ExhibitorRegistration, self).__init__(**kwargs)
         if not self.reference_number:
             self.reference_number = generate_reference_number("PAE")
+
+    @property
+    def company_country_name(self) -> str:
+        """Get human-readable company country name from ISO code"""
+        return get_country_name(self.company_country) if self.company_country else ""
 
     # Relationships
     package_price = relationship(

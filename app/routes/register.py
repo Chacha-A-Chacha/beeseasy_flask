@@ -91,6 +91,11 @@ def register_attendee_form():
         except (ValueError, AttributeError):
             logger.warning(f"Invalid ticket type: {ticket_type_value}")
 
+    # On GET, redirect to selection page if no valid ticket could be resolved
+    if request.method == "GET" and not selected_ticket:
+        flash("Please select a ticket type first.", "warning")
+        return redirect(url_for("register.attendee_index"))
+
     if form.validate_on_submit():
         # Process phone data from enhanced or fallback inputs
         country_code, phone_number = form.process_phone_data()
@@ -181,6 +186,11 @@ def register_exhibitor_form():
         except (ValueError, AttributeError):
             logger.warning(f"Invalid package type: {package_type_value}")
 
+    # On GET, redirect to selection page if no valid package could be resolved
+    if request.method == "GET" and not selected_package:
+        flash("Please select a package first.", "warning")
+        return redirect(url_for("register.exhibitor_index"))
+
     if form.validate_on_submit():
         # Process phone data from enhanced or fallback inputs
         country_code, phone_number = form.process_phone_data()
@@ -252,7 +262,7 @@ def validate_email():
     existing = Registration.query.filter(
         db.func.lower(Registration.email) == email,
         Registration.registration_type == registration_type,
-        not Registration.is_deleted,
+        Registration.is_deleted == False,
     ).first()
 
     if existing:
@@ -424,13 +434,7 @@ def calculate_total():
 
     # Apply promo discount
     discount = Decimal(str(data.get("discount", 0)))
-    subtotal_after_discount = subtotal - discount
-
-    # Calculate tax
-    tax_rate = Decimal("0.16")
-    tax = subtotal_after_discount * tax_rate
-
-    total = subtotal_after_discount + tax
+    total = subtotal - discount
 
     return jsonify(
         {
@@ -438,9 +442,6 @@ def calculate_total():
             "addons_total": float(addons_total),
             "subtotal": float(subtotal),
             "discount": float(discount),
-            "subtotal_after_discount": float(subtotal_after_discount),
-            "tax": float(tax),
-            "tax_rate": float(tax_rate),
             "total": float(total),
             "currency": "USD",
         }

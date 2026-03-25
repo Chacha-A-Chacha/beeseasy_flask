@@ -36,6 +36,18 @@ payments_bp = Blueprint("payments", __name__)
 @payments_bp.route("/checkout/<ref>")
 def checkout(ref):
     """Payment checkout page"""
+    from app.utils.checkout_tokens import verify_checkout_token
+
+    # If a token is present, verify it matches this ref.
+    # Reject tampered tokens; allow missing tokens for backwards compat.
+    token = request.args.get("t")
+    if token is not None:
+        verified_ref = verify_checkout_token(token)
+        if verified_ref != ref:
+            logger.warning(f"Invalid checkout token for ref {ref}")
+            flash("This payment link is invalid. Please use the link from your email.", "error")
+            return redirect(url_for("main.index"))
+
     registration = Registration.query.filter_by(
         reference_number=ref, is_deleted=False
     ).first_or_404()

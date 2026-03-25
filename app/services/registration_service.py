@@ -149,7 +149,7 @@ class RegistrationService:
                 payment.payment_status = PaymentStatus.COMPLETED
                 payment.payment_method = PaymentMethod.FREE
                 payment.transaction_id = f"FREE-{attendee.reference_number}"
-                payment.paid_at = datetime.now()
+                payment.payment_completed_at = datetime.utcnow()
 
                 # Confirm registration
                 attendee.status = RegistrationStatus.CONFIRMED
@@ -459,8 +459,14 @@ class RegistrationService:
             # Initialize email service
             email_service = EnhancedEmailService(current_app)
 
+            from app.utils.checkout_tokens import generate_checkout_token
+
+            token = generate_checkout_token(registration.reference_number)
             checkout_url = url_for(
-                "payments.checkout", ref=registration.reference_number, _external=True
+                "payments.checkout",
+                ref=registration.reference_number,
+                t=token,
+                _external=True,
             )
 
             context = {

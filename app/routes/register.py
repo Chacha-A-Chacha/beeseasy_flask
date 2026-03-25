@@ -299,7 +299,7 @@ def validate_promo():
             {"valid": False, "message": "You have already used this promo code"}
         )
 
-    # Check applicability
+    # Check applicability by registration type
     if registration_type == "attendee" and not promo.applicable_to_attendees:
         return jsonify(
             {"valid": False, "message": "This code is not valid for attendees"}
@@ -309,6 +309,22 @@ def validate_promo():
         return jsonify(
             {"valid": False, "message": "This code is not valid for exhibitors"}
         )
+
+    # Check applicability by specific ticket type or package
+    ticket_type = request.json.get("ticket_type", "")
+    package_type = request.json.get("package_type", "")
+
+    if ticket_type and promo.applicable_ticket_types:
+        if ticket_type not in promo.applicable_ticket_types:
+            return jsonify(
+                {"valid": False, "message": "This code is not valid for your ticket type"}
+            )
+
+    if package_type and promo.applicable_packages:
+        if package_type not in promo.applicable_packages:
+            return jsonify(
+                {"valid": False, "message": "This code is not valid for your package"}
+            )
 
     # Calculate discount preview
     amount = Decimal(request.json.get("amount", "0"))

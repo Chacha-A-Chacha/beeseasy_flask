@@ -840,6 +840,7 @@
                             <div
                                 data-validate-url="{{ promo_validate_url }}"
                                 data-reg-type="attendee"
+                                data-ticket-type="{{ selected_ticket.ticket_type.value if selected_ticket else '' }}"
                                 data-price="{{ selected_ticket.get_current_price() if selected_ticket else 0 }}"
                                 data-currency="{{ selected_ticket.currency if selected_ticket else '' }}"
                                 x-data="{
@@ -862,7 +863,7 @@
                                         fetch(root.dataset.validateUrl, {
                                             method: 'POST',
                                             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf ? csrf.content : '' },
-                                            body: JSON.stringify({ code: val, email: emailEl ? emailEl.value : '', type: root.dataset.regType, amount: parseFloat(root.dataset.price) })
+                                            body: JSON.stringify({ code: val, email: emailEl ? emailEl.value : '', type: root.dataset.regType, ticket_type: root.dataset.ticketType || '', amount: parseFloat(root.dataset.price) })
                                         })
                                         .then(r => r.json())
                                         .then(data => {

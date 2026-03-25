@@ -831,6 +831,7 @@ event_name }}{% endblock %} {% block content %}
                             <div
                                 data-validate-url="{{ promo_validate_url }}"
                                 data-reg-type="exhibitor"
+                                data-package-type="{{ selected_package.package_type.value if selected_package else '' }}"
                                 data-price="{{ selected_package.price if selected_package else 0 }}"
                                 data-currency="{{ selected_package.currency if selected_package else '' }}"
                                 x-data="{
@@ -853,7 +854,7 @@ event_name }}{% endblock %} {% block content %}
                                         fetch(root.dataset.validateUrl, {
                                             method: 'POST',
                                             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf ? csrf.content : '' },
-                                            body: JSON.stringify({ code: val, email: emailEl ? emailEl.value : '', type: root.dataset.regType, amount: parseFloat(root.dataset.price) })
+                                            body: JSON.stringify({ code: val, email: emailEl ? emailEl.value : '', type: root.dataset.regType, package_type: root.dataset.packageType || '', amount: parseFloat(root.dataset.price) })
                                         })
                                         .then(r => r.json())
                                         .then(data => {

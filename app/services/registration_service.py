@@ -433,7 +433,7 @@ class RegistrationService:
             if not promo.is_valid_for_user(registration.email):
                 return False, "You have already used this promo code"
 
-            # Check applicability
+            # Check applicability by registration type
             if (
                 registration.registration_type == "attendee"
                 and not promo.applicable_to_attendees
@@ -444,6 +444,15 @@ class RegistrationService:
                 and not promo.applicable_to_exhibitors
             ):
                 return False, "Code not valid for exhibitors"
+
+            # Check applicability by specific ticket type or package
+            if promo.applicable_ticket_types and hasattr(registration, "ticket_type"):
+                if registration.ticket_type.value not in promo.applicable_ticket_types:
+                    return False, "Code not valid for your ticket type"
+
+            if promo.applicable_packages and hasattr(registration, "package_type"):
+                if registration.package_type.value not in promo.applicable_packages:
+                    return False, "Code not valid for your package"
 
             # Calculate and apply discount
             discount = promo.calculate_discount(payment.subtotal)

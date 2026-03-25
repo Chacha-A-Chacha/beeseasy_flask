@@ -248,7 +248,7 @@ Emailed checkout link flow:
 | 5 | HIGH | No recovery for missed DPO callbacks | Medium | Fixed |
 | 6 | HIGH → LOW | Payment amount sanity check at DPO token creation | Small | Fixed |
 | 7 | HIGH | `selected_ticket` None on POST validation failure | Small | Fixed |
-| 8 | HIGH | Promo `applicable_ticket_types`/`applicable_packages` not enforced | Small | Open |
+| 8 | HIGH | Promo `applicable_ticket_types`/`applicable_packages` not enforced | Small | Fixed |
 | 9 | MEDIUM | Stale PENDING registrations block re-use | Medium | Open |
 | 10 | MEDIUM | Payment method default inconsistency | Small | Open |
 | 11 | MEDIUM | Race condition in `process_payment_completion()` | Small | Open |

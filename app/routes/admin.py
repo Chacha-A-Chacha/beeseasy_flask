@@ -24,6 +24,8 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from sqlalchemy import and_, func, or_
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 
 from app.extensions import db
 from app.forms import (
@@ -342,7 +344,7 @@ def edit_attendee(id):
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating attendee {id}: {str(e)}")
-            flash("Error updating attendee registration.", "error")
+            flash("Something went wrong while updating the attendee registration. Please try again.", "error")
 
     return render_template(
         "admin/registrations/attendees/edit.html", attendee=attendee, form=form
@@ -375,7 +377,7 @@ def cancel_attendee(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error cancelling attendee {id}: {str(e)}")
-        flash("Error cancelling registration.", "error")
+        flash("Could not cancel the registration. Please try again.", "error")
 
     return redirect(url_for("admin.view_attendee", id=id))
 
@@ -407,7 +409,7 @@ def checkin_attendee(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error checking in attendee {id}: {str(e)}")
-        flash("Error during check-in.", "error")
+        flash("Check-in failed. Please try again.", "error")
 
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"success": False, "message": str(e)}), 400
@@ -481,7 +483,7 @@ def export_attendees():
                 attendee.full_phone or "",
                 attendee.organization or "",
                 attendee.job_title or "",
-                attendee.country or "",
+                attendee.country_name or "",
                 attendee.city or "",
                 attendee.ticket_type.value if attendee.ticket_type else "",
                 attendee.status.value,
@@ -638,7 +640,7 @@ def edit_exhibitor(id):
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating exhibitor {id}: {str(e)}")
-            flash("Error updating exhibitor registration.", "error")
+            flash("Something went wrong while updating the exhibitor registration. Please try again.", "error")
 
     return render_template(
         "admin/registrations/exhibitors/edit.html", exhibitor=exhibitor, form=form
@@ -693,7 +695,7 @@ def assign_booth(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error assigning booth to exhibitor {id}: {str(e)}")
-        flash("Error assigning booth.", "error")
+        flash("Could not assign the booth. Please try again.", "error")
 
     return redirect(request.referrer or url_for("admin.booth_management"))
 
@@ -727,7 +729,7 @@ def unassign_booth(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error unassigning booth from exhibitor {id}: {str(e)}")
-        flash("Error unassigning booth.", "error")
+        flash("Could not unassign the booth. Please try again.", "error")
 
     return redirect(request.referrer or url_for("admin.booth_management"))
 
@@ -793,7 +795,7 @@ def export_exhibitors():
                 f"{exhibitor.first_name} {exhibitor.last_name}",
                 exhibitor.email,
                 exhibitor.full_phone or "",
-                exhibitor.company_country or "",
+                exhibitor.company_country_name or "",
                 exhibitor.company_website or "",
                 exhibitor.package_type.value if exhibitor.package_type else "",
                 exhibitor.booth_number or "",
@@ -945,34 +947,83 @@ def view_payment(id):
 @admin_bp.route("/payments/<int:id>/verify", methods=["POST"])
 @admin_required
 def verify_payment(id):
-    """Manually verify payment"""
+    """Manually verify payment (bank transfer / invoice)"""
     payment = Payment.query.get_or_404(id)
 
     form = PaymentVerificationForm()
 
     if form.validate_on_submit():
         try:
-            # Mark payment as completed
-            payment.mark_as_completed(transaction_id=form.transaction_id.data)
             payment.payment_notes = form.payment_notes.data
             payment.verified_by = current_user.name
             payment.verified_at = datetime.now()
+            db.session.flush()
 
-            # Update registration status
-            registration = Registration.query.get(payment.registration_id)
-            if registration and registration.is_fully_paid():
-                registration.status = RegistrationStatus.CONFIRMED
-                registration.confirmed_at = datetime.now()
+            success, message = RegistrationService.process_payment_completion(
+                payment_id=payment.id,
+                transaction_id=form.transaction_id.data,
+                payment_method=payment.payment_method or PaymentMethod.BANK_TRANSFER,
+            )
 
-            db.session.commit()
-
-            flash("Payment verified successfully.", "success")
-            logger.info(f"Payment {id} verified by {current_user.name}")
+            if success:
+                flash("Payment verified — confirmation email and badge sent.", "success")
+                logger.info(f"Payment {id} manually verified by {current_user.name}")
+            else:
+                flash(f"Payment marked complete but post-processing issue: {message}", "warning")
 
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error verifying payment {id}: {str(e)}")
-            flash("Error verifying payment.", "error")
+            flash("Could not verify the payment. Please try again.", "error")
+
+    return redirect(url_for("admin.view_payment", id=id))
+
+
+@admin_bp.route("/payments/<int:id>/verify-dpo", methods=["POST"])
+@admin_required
+def verify_dpo_payment(id):
+    """Check payment status with DPO gateway and complete if paid"""
+    from app.services.dpo_service import dpo_service
+
+    payment = Payment.query.get_or_404(id)
+
+    if not payment.dpo_trans_token:
+        flash("This payment has no DPO transaction token.", "error")
+        return redirect(url_for("admin.view_payment", id=id))
+
+    if payment.payment_status == PaymentStatus.COMPLETED:
+        flash("This payment is already completed.", "info")
+        return redirect(url_for("admin.view_payment", id=id))
+
+    try:
+        verification = dpo_service.verify_token(payment.dpo_trans_token)
+        payment.update_from_dpo_verification(verification)
+        db.session.commit()
+
+        if verification.get("success"):
+            success, message = RegistrationService.process_payment_completion(
+                payment_id=payment.id,
+                transaction_id=verification.get("trans_ref", ""),
+                payment_method=PaymentMethod.MOBILE_MONEY
+                if payment.payment_method == PaymentMethod.MOBILE_MONEY
+                else PaymentMethod.CARD,
+            )
+            if success:
+                flash("DPO confirmed payment — registration confirmed, badge and email sent.", "success")
+            else:
+                flash(f"DPO confirmed payment but post-processing issue: {message}", "warning")
+
+            logger.info(f"DPO payment {id} verified by admin {current_user.name}: PAID")
+        else:
+            status = verification.get("status", "Unknown")
+            dpo_msg = verification.get("message", verification.get("error", ""))
+            flash(f"DPO status: {status}. {dpo_msg}", "warning")
+            logger.info(f"DPO payment {id} checked by admin {current_user.name}: {status}")
+
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error verifying DPO payment {id}: {str(e)}", exc_info=True)
+        flash("Could not reach DPO gateway. Please try again.", "error")
 
     return redirect(url_for("admin.view_payment", id=id))
 
@@ -1133,6 +1184,9 @@ def create_ticket():
         try:
             ticket = TicketPrice()
             form.populate_obj(ticket)
+            # Convert string value to enum
+            ticket.ticket_type = AttendeeTicketType(form.ticket_type.data)
+            ticket.version = 1
             ticket.created_at = datetime.now()
 
             db.session.add(ticket)
@@ -1141,10 +1195,13 @@ def create_ticket():
             flash("Ticket type created successfully.", "success")
             return redirect(url_for("admin.list_tickets"))
 
+        except IntegrityError:
+            db.session.rollback()
+            flash("A ticket with this type already exists. Please edit the existing one instead.", "error")
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error creating ticket: {str(e)}")
-            flash("Error creating ticket type.", "error")
+            flash("Could not create the ticket. Please try again.", "error")
 
     return render_template("admin/tickets/form.html", form=form, mode="create")
 
@@ -1156,9 +1213,17 @@ def edit_ticket(id):
     ticket = TicketPrice.query.get_or_404(id)
     form = TicketPriceForm(obj=ticket)
 
+    # Fix enum→string so the SelectField displays the correct value
+    if request.method == "GET" and ticket.ticket_type:
+        form.ticket_type.data = ticket.ticket_type.value
+
     if form.validate_on_submit():
         try:
+            # Preserve the original ticket_type — it must not change after creation
+            original_type = ticket.ticket_type
             form.populate_obj(ticket)
+            ticket.ticket_type = original_type
+            ticket.version = (ticket.version or 0) + 1
             ticket.updated_at = datetime.now()
 
             db.session.commit()
@@ -1166,10 +1231,17 @@ def edit_ticket(id):
             flash("Ticket type updated successfully.", "success")
             return redirect(url_for("admin.list_tickets"))
 
+        except StaleDataError:
+            db.session.rollback()
+            logger.warning(f"Concurrent edit conflict on ticket {id}")
+            flash("This ticket was modified by another process. Please review and try again.", "warning")
+        except IntegrityError:
+            db.session.rollback()
+            flash("A ticket with this type already exists. Each ticket type must be unique.", "error")
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating ticket {id}: {str(e)}")
-            flash("Error updating ticket type.", "error")
+            flash("Could not update the ticket. Please try again.", "error")
 
     return render_template(
         "admin/tickets/form.html", form=form, ticket=ticket, mode="edit"
@@ -1195,7 +1267,7 @@ def toggle_ticket_status(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error toggling ticket {id}: {str(e)}")
-        flash("Error updating ticket status.", "error")
+        flash("Could not update the ticket status. Please try again.", "error")
 
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"success": False, "message": str(e)}), 400
@@ -1234,10 +1306,13 @@ def create_package():
             flash("Package created successfully.", "success")
             return redirect(url_for("admin.list_packages"))
 
+        except IntegrityError:
+            db.session.rollback()
+            flash("A package with this type already exists. Please edit the existing one instead.", "error")
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error creating package: {str(e)}")
-            flash("Error creating package.", "error")
+            flash("Could not create the package. Please try again.", "error")
 
     return render_template("admin/packages/form.html", form=form, mode="create")
 
@@ -1249,9 +1324,18 @@ def edit_package(id):
     package = ExhibitorPackagePrice.query.get_or_404(id)
     form = ExhibitorPackageForm(obj=package)
 
+    # Fix enum→string so the SelectField displays the correct value
+    if request.method == "GET" and package.package_type:
+        form.package_type.data = package.package_type.value
+
     if form.validate_on_submit():
         try:
+            # Save package_type before populate_obj overwrites it with a string
+            original_package_type = package.package_type
             form.populate_obj(package)
+            # Restore the original enum — package_type shouldn't change on edit
+            package.package_type = original_package_type
+            package.version = (package.version or 0) + 1
             package.updated_at = datetime.now()
 
             db.session.commit()
@@ -1259,10 +1343,17 @@ def edit_package(id):
             flash("Package updated successfully.", "success")
             return redirect(url_for("admin.list_packages"))
 
+        except StaleDataError:
+            db.session.rollback()
+            logger.warning(f"Concurrent edit conflict on package {id}")
+            flash("This package was modified by another process. Please review and try again.", "warning")
+        except IntegrityError:
+            db.session.rollback()
+            flash("A package with this type already exists. Each package type must be unique.", "error")
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating package {id}: {str(e)}")
-            flash("Error updating package.", "error")
+            flash("Could not update the package. Please try again.", "error")
 
     return render_template(
         "admin/packages/form.html", form=form, package=package, mode="edit"
@@ -1288,7 +1379,7 @@ def toggle_package_status(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error toggling package {id}: {str(e)}")
-        flash("Error updating package status.", "error")
+        flash("Could not update the package status. Please try again.", "error")
 
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"success": False, "message": str(e)}), 400
@@ -1330,7 +1421,7 @@ def create_addon():
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error creating add-on: {str(e)}")
-            flash("Error creating add-on item.", "error")
+            flash("Could not create the add-on item. Please try again.", "error")
 
     return render_template("admin/addons/form.html", form=form, mode="create")
 
@@ -1355,7 +1446,7 @@ def edit_addon(id):
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating add-on {id}: {str(e)}")
-            flash("Error updating add-on item.", "error")
+            flash("Could not update the add-on item. Please try again.", "error")
 
     return render_template(
         "admin/addons/form.html", form=form, addon=addon, mode="edit"
@@ -1377,7 +1468,7 @@ def delete_addon(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error deleting add-on {id}: {str(e)}")
-        flash("Error deleting add-on item. It may be in use.", "error")
+        flash("Could not delete the add-on item. It may be in use by a registration.", "error")
 
     return redirect(url_for("admin.list_addons"))
 
@@ -1417,7 +1508,7 @@ def create_promo_code():
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error creating promo code: {str(e)}")
-            flash("Error creating promo code.", "error")
+            flash("Could not create the promo code. The code may already exist.", "error")
 
     return render_template("admin/promo_codes/form.html", form=form, mode="create")
 
@@ -1656,7 +1747,7 @@ def generate_badges():
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error generating badges: {str(e)}")
-        flash("Error generating badges.", "error")
+        flash("Could not generate badges. Please try again.", "error")
 
     return redirect(url_for("admin.list_badges"))
 
@@ -1737,7 +1828,7 @@ def email_badge(id):
 
     except Exception as e:
         logger.error(f"Error emailing badge for registration {id}: {str(e)}")
-        flash("Error sending badge email.", "error")
+        flash("Could not send the badge email. Please check email settings and try again.", "error")
 
     return redirect(url_for("admin.list_badges"))
 
@@ -1953,7 +2044,7 @@ def bulk_email():
 
         except Exception as e:
             logger.error(f"Error sending bulk email: {str(e)}")
-            flash("Error sending bulk email.", "error")
+            flash("Could not send bulk email. Please check email settings and try again.", "error")
 
     return render_template("admin/communications/bulk.html", form=form)
 
@@ -2115,7 +2206,7 @@ This is a response to your inquiry submitted on {message.submitted_at.strftime("
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error responding to contact message {id}: {str(e)}")
-            flash("Error sending response.", "error")
+            flash("Could not send the response. Please check email settings and try again.", "error")
 
     return render_template(
         "admin/contact_messages/respond.html", message=message, form=form
@@ -2137,7 +2228,7 @@ def assign_contact_message(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error assigning contact message {id}: {str(e)}")
-        flash("Error assigning message.", "error")
+        flash("Could not assign the message. Please try again.", "error")
 
     return redirect(url_for("admin.view_contact_message", id=id))
 
@@ -2162,7 +2253,7 @@ def set_contact_priority(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error setting priority for contact message {id}: {str(e)}")
-        flash("Error setting priority.", "error")
+        flash("Could not update the priority. Please try again.", "error")
 
     return redirect(url_for("admin.view_contact_message", id=id))
 
@@ -2187,7 +2278,7 @@ def delete_contact_message(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error deleting contact message {id}: {str(e)}")
-        flash("Error deleting message.", "error")
+        flash("Could not delete the message. Please try again.", "error")
         return redirect(url_for("admin.view_contact_message", id=id))
 
 
@@ -2420,7 +2511,7 @@ def create_user():
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error creating user: {str(e)}")
-            flash("Error creating user. Email may already exist.", "error")
+            flash("Could not create the user. The email may already be in use.", "error")
 
     return render_template("admin/users/form.html", form=form, mode="create")
 
@@ -2454,7 +2545,7 @@ def edit_user(id):
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating user {id}: {str(e)}")
-            flash("Error updating user.", "error")
+            flash("Could not update the user. Please try again.", "error")
 
     return render_template("admin/users/form.html", form=form, user=user, mode="edit")
 
@@ -2479,7 +2570,7 @@ def toggle_user_status(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error toggling user {id}: {str(e)}")
-        flash("Error updating user status.", "error")
+        flash("Could not update the user status. Please try again.", "error")
 
     return redirect(url_for("admin.list_users"))
 
@@ -2511,7 +2602,7 @@ def exchange_rates():
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error adding exchange rate: {str(e)}")
-            flash("Error adding exchange rate.", "error")
+            flash("Could not add the exchange rate. Please try again.", "error")
 
     # Get all current rates
     rates = ExchangeRate.query.order_by(ExchangeRate.effective_date.desc()).all()
@@ -2540,7 +2631,7 @@ def edit_promo_code(id):
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error updating promo code {id}: {str(e)}")
-            flash("Error updating promo code.", "error")
+            flash("Could not update the promo code. Please try again.", "error")
 
     return render_template(
         "admin/promo_codes/form.html", form=form, promo_code=promo_code, mode="edit"
@@ -2590,7 +2681,7 @@ def toggle_promo_code(id):
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error toggling promo code {id}: {str(e)}")
-        flash("Error updating promo code status.", "error")
+        flash("Could not update the promo code status. Please try again.", "error")
 
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"success": False, "message": str(e)}), 400

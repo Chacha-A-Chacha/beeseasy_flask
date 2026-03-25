@@ -295,6 +295,12 @@ def dpo_direct(ref):
         flash("This registration is already paid.", "info")
         return redirect(url_for("register.confirmation", ref=ref))
 
+    # Sanity check: don't send zero or negative amounts to DPO
+    if payment.total_amount <= 0:
+        logger.error(f"Payment {payment.payment_reference} has non-positive amount: {payment.total_amount}")
+        flash("Payment amount is invalid. Please contact support.", "error")
+        return redirect(url_for("payments.checkout", ref=ref))
+
     # Get customer details
     customer_name = f"{registration.first_name} {registration.last_name}"
     customer_email = registration.email
@@ -389,6 +395,12 @@ def dpo_initiate(ref):
                 payment=payment,
                 payment_methods=dpo_service.get_supported_payment_methods(),
             )
+
+        # Sanity check: don't send zero or negative amounts to DPO
+        if payment.total_amount <= 0:
+            logger.error(f"Payment {payment.payment_reference} has non-positive amount: {payment.total_amount}")
+            flash("Payment amount is invalid. Please contact support.", "error")
+            return redirect(url_for("payments.checkout", ref=ref))
 
         # Get attendee/exhibitor details
         # Note: With JTI, registration is already the subclass (AttendeeRegistration or ExhibitorRegistration)

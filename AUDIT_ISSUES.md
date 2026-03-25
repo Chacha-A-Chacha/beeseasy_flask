@@ -246,7 +246,7 @@ Emailed checkout link flow:
 | 3 | CRITICAL → MEDIUM | Ticket claim rollback — post-commit side effects isolated | Small | Fixed |
 | 4 | CRITICAL | Promo code usage not atomic with payment | Small | Fixed |
 | 5 | HIGH | No recovery for missed DPO callbacks | Medium | Fixed |
-| 6 | HIGH | Payment amount not re-validated at DPO token creation | Small | Open |
+| 6 | HIGH → LOW | Payment amount sanity check at DPO token creation | Small | Fixed |
 | 7 | HIGH | `selected_ticket` None on POST validation failure | Small | Partial |
 | 8 | HIGH | Promo `applicable_ticket_types`/`applicable_packages` not enforced | Small | Open |
 | 9 | MEDIUM | Stale PENDING registrations block re-use | Medium | Open |

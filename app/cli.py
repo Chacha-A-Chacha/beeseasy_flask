@@ -189,6 +189,69 @@ def create_admin_command(email, password, name):
     click.echo(f'[OK] Admin user created: {email}')
 
 
+@click.command('expire-stale')
+@click.option('--days', default=7, help='Expire PENDING registrations older than this many days.')
+@click.option('--dry-run', is_flag=True, help='Show what would be expired without making changes.')
+@with_appcontext
+def expire_stale_command(days, dry_run):
+    """Expire stale PENDING registrations and release their tickets."""
+    from datetime import datetime, timedelta
+    from app.models import (
+        AttendeeRegistration,
+        ExhibitorRegistration,
+        Payment,
+        PaymentStatus,
+        Registration,
+        RegistrationStatus,
+    )
+
+    cutoff = datetime.utcnow() - timedelta(days=days)
+
+    stale = Registration.query.filter(
+        Registration.status.in_([RegistrationStatus.PENDING, RegistrationStatus.PAYMENT_PENDING]),
+        Registration.is_deleted == False,
+        Registration.created_at < cutoff,
+    ).all()
+
+    if not stale:
+        click.echo(f'No stale registrations older than {days} days.')
+        return
+
+    click.echo(f'Found {len(stale)} stale registration(s) older than {days} days:')
+
+    expired_count = 0
+    for reg in stale:
+        click.echo(f'  {reg.reference_number}  {reg.email}  created {reg.created_at.date()}')
+
+        if dry_run:
+            continue
+
+        # Release ticket/package inventory
+        if isinstance(reg, AttendeeRegistration) and reg.ticket_price:
+            reg.ticket_price.release_tickets(
+                quantity=reg.group_size if reg.group_size else 1
+            )
+        elif isinstance(reg, ExhibitorRegistration) and reg.package_price:
+            reg.package_price.release_package()
+
+        # Mark registration as expired
+        reg.status = RegistrationStatus.EXPIRED
+
+        # Mark any pending/processing payments as failed
+        for payment in reg.payments:
+            if payment.payment_status in (PaymentStatus.PENDING, PaymentStatus.PROCESSING):
+                payment.payment_status = PaymentStatus.FAILED
+                payment.failure_reason = f'Registration expired after {days} days'
+
+        expired_count += 1
+
+    if dry_run:
+        click.echo(f'[DRY RUN] Would expire {len(stale)} registration(s). Run without --dry-run to apply.')
+    else:
+        db.session.commit()
+        click.echo(f'[OK] Expired {expired_count} registration(s) and released inventory.')
+
+
 def register_cli_commands(app):
     """Register all CLI commands with Flask app."""
     app.cli.add_command(init_db_command)
@@ -199,3 +262,4 @@ def register_cli_commands(app):
     app.cli.add_command(seed_packages_command)
     app.cli.add_command(seed_addons_command)
     app.cli.add_command(create_admin_command)
+    app.cli.add_command(expire_stale_command)

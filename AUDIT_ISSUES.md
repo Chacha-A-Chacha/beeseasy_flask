@@ -249,7 +249,7 @@ Emailed checkout link flow:
 | 6 | HIGH → LOW | Payment amount sanity check at DPO token creation | Small | Fixed |
 | 7 | HIGH | `selected_ticket` None on POST validation failure | Small | Fixed |
 | 8 | HIGH | Promo `applicable_ticket_types`/`applicable_packages` not enforced | Small | Fixed |
-| 9 | MEDIUM | Stale PENDING registrations block re-use | Medium | Open |
+| 9 | MEDIUM | Stale PENDING registrations block re-use | Medium | Fixed |
 | 10 | MEDIUM | Payment method default inconsistency | Small | Open |
 | 11 | MEDIUM | Race condition in `process_payment_completion()` | Small | Open |
 | 12 | MEDIUM | Bank transfer / invoice payments no expiry | Small | Open |

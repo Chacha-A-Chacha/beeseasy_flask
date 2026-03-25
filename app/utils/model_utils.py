@@ -16,6 +16,7 @@ from sqlalchemy import and_, case, extract, func, or_
 from sqlalchemy.orm import joinedload
 
 from app.extensions import db
+from app.utils.countries import get_country_name
 from app.models import (
     AttendeeRegistration,
     AttendeeTicketType,
@@ -339,7 +340,7 @@ class RegistrationReports:
             .all()
         )
 
-        return {country: count for country, count in results if country}
+        return {get_country_name(code): count for code, count in results if code}
 
     @staticmethod
     def get_revenue_summary() -> Dict[str, Any]:
@@ -436,15 +437,8 @@ class DataExport:
                 "booth_number": exh.booth_number or "TBA",
                 "description": exh.company_description,
                 "website": exh.company_website,
-                "logo_url": exh.company_logo_url,
                 "industry": exh.industry_category.value,
-                "contact_email": exh.company_email,
-                "social_media": {
-                    "facebook": exh.facebook_url,
-                    "linkedin": exh.linkedin_url,
-                    "twitter": exh.twitter_handle,
-                    "instagram": exh.instagram_handle,
-                },
+                "contact_email": exh.alternate_contact_email or exh.email,
             }
             for exh in exhibitors
         ]
@@ -469,12 +463,11 @@ class DataExport:
                 "professional_category": att.professional_category.value
                 if att.professional_category
                 else "",
-                "interests": att.session_interests or [],
+                "interests": att.event_preferences or [],
             }
 
             if include_contact_info and att.consent_data_sharing:
                 entry["email"] = att.email
-                entry["linkedin"] = att.linkedin_url
 
             data.append(entry)
 
@@ -499,10 +492,16 @@ class ValidationHelpers:
         Returns:
             Tuple of (is_available, message)
         """
+        from app.models import RegistrationStatus
+
         query = Registration.query.filter(
             func.lower(Registration.email) == email.lower(),
             Registration.registration_type == registration_type,
             Registration.is_deleted == False,
+            Registration.status.notin_([
+                RegistrationStatus.EXPIRED,
+                RegistrationStatus.CANCELLED,
+            ]),
         )
 
         if exclude_id:

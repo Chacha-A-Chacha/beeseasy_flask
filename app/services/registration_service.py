@@ -155,6 +155,10 @@ class RegistrationService:
                 attendee.status = RegistrationStatus.CONFIRMED
                 attendee.confirmed_at = datetime.utcnow()
 
+                # Finalize promo code usage now that payment is confirmed
+                if payment.promo_code_usage:
+                    payment.promo_code_usage.promo_code.use_code()
+
                 db.session.commit()
 
                 # Post-commit side effects (email, badge) — failures here
@@ -360,6 +364,10 @@ class RegistrationService:
             registration.status = RegistrationStatus.CONFIRMED
             registration.confirmed_at = datetime.utcnow()
 
+            # Finalize promo code usage now that payment is confirmed
+            if payment.promo_code_usage:
+                payment.promo_code_usage.promo_code.use_code()
+
             db.session.commit()
 
             logger.info(f"Payment completed: {registration.reference_number}")
@@ -445,7 +453,9 @@ class RegistrationService:
             payment.discount_amount = discount
             payment.total_amount = payment.subtotal - discount
 
-            # Record usage
+            # Record usage (but don't increment current_uses yet — that
+            # happens at payment completion so abandoned registrations
+            # don't exhaust limited-use codes).
             usage = PromoCodeUsage(
                 promo_code_id=promo.id,
                 registration_id=registration.id,
@@ -455,7 +465,6 @@ class RegistrationService:
                 final_amount=payment.total_amount,
             )
             db.session.add(usage)
-            promo.use_code()
 
             return True, f"Promo applied! Saved ${discount}"
 

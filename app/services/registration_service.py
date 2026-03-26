@@ -519,9 +519,6 @@ class RegistrationService:
                 "checkout_url": checkout_url,
                 "amount_due": float(payment.total_amount),
                 "currency": payment.currency,
-                "due_date": payment.payment_due_date.strftime("%B %d, %Y")
-                if payment.payment_due_date
-                else None,
                 "event_name": current_app.config.get(
                     "EVENT_NAME", "Pollination Africa Symposium 2026"
                 ),

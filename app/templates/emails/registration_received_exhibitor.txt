@@ -33,7 +33,6 @@ PAYMENT INFORMATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Package Investment: {{ currency }} {{ amount_due }}
-Payment Deadline: {{ due_date }}
 Included Passes: {{ registration.number_of_staff }} staff badges
 
 ═══════════════════════════════════════════════════════════════

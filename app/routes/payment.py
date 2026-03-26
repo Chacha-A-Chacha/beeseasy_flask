@@ -355,7 +355,23 @@ def dpo_direct(ref):
         # Redirect directly to DPO payment page
         return redirect(result["payment_url"])
     else:
-        # Token creation failed
+        # Token creation failed — check if DPO says already paid (940)
+        result_code = result.get("result_code", "")
+        if result_code == "940" and payment.dpo_trans_token:
+            logger.info(f"DPO 940 (already paid) for {payment.payment_reference}, verifying")
+            verification = dpo_service.verify_token(payment.dpo_trans_token)
+            payment.update_from_dpo_verification(verification)
+            db.session.commit()
+
+            if verification.get("success"):
+                success, msg = RegistrationService.process_payment_completion(
+                    payment_id=payment.id,
+                    transaction_id=verification.get("trans_ref", ""),
+                    payment_method=payment.payment_method,
+                )
+                flash("Payment completed successfully! Check your email for your badge.", "success")
+                return redirect(url_for("payments.success", ref=registration.reference_number))
+
         error_msg = result.get("error", "Unable to initiate payment")
         logger.error(f"DPO token creation failed: {error_msg}")
         flash(f"Payment initiation failed: {error_msg}", "error")
@@ -458,7 +474,23 @@ def dpo_initiate(ref):
             # Redirect to DPO payment page
             return redirect(result["payment_url"])
         else:
-            # Token creation failed
+            # Token creation failed — check if DPO says already paid (940)
+            result_code = result.get("result_code", "")
+            if result_code == "940" and payment.dpo_trans_token:
+                logger.info(f"DPO 940 (already paid) for {payment.payment_reference}, verifying")
+                verification = dpo_service.verify_token(payment.dpo_trans_token)
+                payment.update_from_dpo_verification(verification)
+                db.session.commit()
+
+                if verification.get("success"):
+                    success, msg = RegistrationService.process_payment_completion(
+                        payment_id=payment.id,
+                        transaction_id=verification.get("trans_ref", ""),
+                        payment_method=payment.payment_method,
+                    )
+                    flash("Payment completed successfully! Check your email for your badge.", "success")
+                    return redirect(url_for("payments.success", ref=registration.reference_number))
+
             error_msg = result.get("error", "Unable to initiate payment")
             logger.error(f"DPO token creation failed: {error_msg}")
             flash(f"Payment initiation failed: {error_msg}", "error")

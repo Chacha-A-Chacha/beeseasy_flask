@@ -323,22 +323,30 @@ class Payment(db.Model):
             else:
                 self.payment_method = PaymentMethod.MOBILE_MONEY
 
-        # Update payment status based on result code
+        # Update payment status based on DPO result code
+        # See: https://docs.dpopay.com/dpo-pay-by-network/reference/verify-token-response-codes
         result_code = verification_result.get("result_code", "")
 
-        if result_code == "000":  # Paid
+        if result_code == "000":  # Transaction paid
             self.payment_status = PaymentStatus.COMPLETED
             self.payment_completed_at = datetime.utcnow()
             if not self.receipt_number:
                 self.receipt_number = f"RCP{self.payment_reference[3:]}"
 
-        elif result_code == "001":  # Authorized (not charged yet)
+        elif result_code == "001":  # Authorized (not yet captured)
             self.payment_status = PaymentStatus.PROCESSING
+
+        elif result_code == "002":  # Overpaid/underpaid — needs admin review
+            self.payment_status = PaymentStatus.PROCESSING
+            self.failure_reason = "Amount mismatch — admin review required"
+
+        elif result_code == "007":  # Partially paid
+            self.payment_status = PaymentStatus.PARTIALLY_PAID
 
         elif result_code in ["003", "005", "900"]:  # Pending states
             self.payment_status = PaymentStatus.PENDING
 
-        elif result_code in ["901", "902", "903", "904"]:  # Failed/cancelled
+        elif result_code in ["901", "902", "903", "904"]:  # Declined/expired/cancelled
             self.payment_status = PaymentStatus.FAILED
             self.payment_failed_at = datetime.utcnow()
             self.failure_reason = verification_result.get("message", "Payment failed")
@@ -365,12 +373,14 @@ class Payment(db.Model):
 
         status_map = {
             "000": "Paid Successfully",
-            "001": "Authorized (Pending Charge)",
-            "002": "Amount Mismatch",
+            "001": "Authorized (Pending Capture)",
+            "002": "Amount Mismatch — Review Required",
             "003": "Pending Bank Confirmation",
             "005": "Authorization Queued",
+            "007": "Partially Paid",
             "900": "Not Paid Yet",
             "901": "Declined",
+            "902": "Data Mismatch",
             "903": "Expired",
             "904": "Cancelled by User",
         }

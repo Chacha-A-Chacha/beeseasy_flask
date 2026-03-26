@@ -580,16 +580,20 @@ def dpo_callback():
             f"Payment verification failed: {payment.payment_reference} - {message}"
         )
 
-        if payment.payment_status == PaymentStatus.PENDING:
+        if payment.payment_status in (
+            PaymentStatus.PENDING,
+            PaymentStatus.PROCESSING,
+            PaymentStatus.PARTIALLY_PAID,
+        ):
             flash(
-                "Payment is still pending. Please wait for confirmation or contact support.",
+                verification_result.get("message", "Payment is still being processed. Please wait or try again later."),
                 "info",
             )
             return redirect(
                 url_for("payments.pending", ref=registration.reference_number)
             )
         else:
-            flash(f"Payment failed: {message}", "error")
+            flash(f"Payment was not completed: {message}", "error")
             return redirect(
                 url_for("payments.cancelled", ref=registration.reference_number)
             )
@@ -638,7 +642,7 @@ def dpo_verify(ref):
         )
         return redirect(url_for("payments.success", ref=ref))
     else:
-        message = verification_result.get("error", "Payment not completed")
+        message = verification_result.get("message", "Payment not completed")
         flash(f"Payment status: {message}", "info")
         return redirect(url_for("payments.pending", ref=ref))
 

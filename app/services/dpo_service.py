@@ -299,41 +299,54 @@ class DPOService:
             api_response = result.get("API3G", {})
 
             result_code = api_response.get("Result", "")
+            status_explanation = api_response.get("ResultExplanation", "Unknown")
 
-            if result_code == "000":
-                # Payment successful
+            # Map DPO result codes to accurate statuses per DPO docs
+            STATUS_MAP = {
+                "000": ("Approved", "Payment successful", True),
+                "001": ("Authorized", "Payment authorized, pending capture", False),
+                "002": ("AmountMismatch", "Payment amount mismatch — review required", False),
+                "003": ("Pending", "Payment pending at bank", False),
+                "005": ("Pending", "Payment queued for authorization", False),
+                "007": ("PartiallyPaid", "Partial payment received", False),
+                "900": ("Pending", "Payment not yet completed", False),
+                "901": ("Declined", "Payment declined", False),
+                "902": ("Declined", "Data mismatch", False),
+                "903": ("Expired", "Payment time limit exceeded", False),
+                "904": ("Cancelled", "Payment cancelled by user", False),
+            }
+
+            status, message, success = STATUS_MAP.get(
+                result_code, ("Failed", status_explanation, False)
+            )
+
+            base_response = {
+                "success": success,
+                "result_code": result_code,
+                "status": status,
+                "message": message,
+                "error": "" if success else (status_explanation or message),
+                "full_response": api_response,
+            }
+
+            if success:
                 logger.info(f"Payment verified successfully: {trans_token}")
-
-                return {
-                    "success": True,
-                    "result_code": "000",
-                    "status": "Approved",
-                    "message": "Payment successful",
+                base_response.update({
                     "customer_name": api_response.get("CustomerName", ""),
                     "customer_phone": api_response.get("CustomerPhone", ""),
                     "payment_method": api_response.get("AccRef", ""),
                     "amount": float(api_response.get("TransactionAmount", 0)),
                     "currency": api_response.get("TransactionCurrency", self.currency),
                     "trans_ref": api_response.get("TransactionRef", ""),
-                    "full_response": api_response,
-                }
+                })
             else:
-                # Payment failed or pending
-                status_explanation = api_response.get("ResultExplanation", "Unknown")
-
-                logger.warning(
-                    f"Payment verification failed - Code: {result_code}, "
-                    f"Reason: {status_explanation}"
+                log_fn = logger.info if status in ("Pending", "Authorized", "PartiallyPaid") else logger.warning
+                log_fn(
+                    f"Payment verification - Code: {result_code}, "
+                    f"Status: {status}, Reason: {status_explanation}"
                 )
 
-                return {
-                    "success": False,
-                    "status": "Declined",
-                    "error": status_explanation,
-                    "message": status_explanation,
-                    "result_code": result_code,
-                    "full_response": api_response,
-                }
+            return base_response
 
         except requests.Timeout:
             logger.error("DPO verification timeout")

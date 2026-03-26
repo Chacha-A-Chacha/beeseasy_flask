@@ -90,6 +90,10 @@ class RegistrationService:
                         if enum_member.value == prof_cat_data:
                             professional_category = enum_member
                             break
+                    if professional_category is None:
+                        logger.warning(
+                            f"Unknown professional_category '{prof_cat_data}' for {email}"
+                        )
 
             # Create registration
             attendee = AttendeeRegistration(

@@ -255,5 +255,5 @@ Emailed checkout link flow:
 | 12 | MEDIUM | Bank transfer / invoice payments no expiry | Small | Fixed |
 | 13 | ~~MEDIUM~~ | ~~CSRF token mixed approach~~ | — | Cancelled |
 | 14 | LOW | Phone fallback country list inconsistency | Trivial | Fixed |
-| 15 | LOW | `professional_category` silent enum conversion | Small | Open |
+| 15 | LOW | `professional_category` silent enum conversion | Trivial | Fixed |
 | 16 | LOW | LSAPI file errors (infrastructure) | None | N/A |

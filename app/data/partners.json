@@ -1,6 +1,133 @@
 {
   "partners": [
     {
+      "slug": "saadit",
+      "name": "SAADIT",
+      "full_name": "Southern Africa Apiculture Development Initiative Trust",
+      "logo_file": "saadit.svg",
+      "alt_text": "SAADIT logo - Southern Africa Apiculture Development Initiative Trust, founding partner of Pollination Africa Summit",
+      "description": "The Southern Africa Apiculture Development Initiative Trust is the founding organization behind the Pollination Africa Summit. SAADIT works to advance apiculture development, pollinator conservation, and sustainable livelihoods across southern and eastern Africa through research, capacity building, and cross-border collaboration.",
+      "website": "",
+      "tier": "platinum",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 0,
+      "is_active": true,
+      "seo": {
+        "title": "SAADIT - Founding Partner | Pollination Africa Summit",
+        "keywords": [
+          "apiculture development",
+          "pollinator conservation",
+          "southern Africa",
+          "beekeeping",
+          "founding partner",
+          "Tanzania"
+        ],
+        "og_description": "SAADIT is the founding organization behind the Pollination Africa Summit, advancing apiculture development and pollinator conservation across Africa."
+      }
+    },
+    {
+      "slug": "ics",
+      "name": "ICS",
+      "full_name": "Innovative Community Solutions",
+      "logo_file": "ics.svg",
+      "alt_text": "Innovative Community Solutions (ICS) logo - Community-driven development and innovation partner",
+      "description": "Innovative Community Solutions is an organization focused on community-driven development, empowering local communities through innovative approaches to sustainable livelihoods, environmental stewardship, and social impact.",
+      "website": "",
+      "tier": "gold",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 0,
+      "is_active": true,
+      "seo": {
+        "title": "ICS - Innovative Community Solutions | Pollination Africa Summit Partner",
+        "keywords": [
+          "community development",
+          "innovation",
+          "sustainable livelihoods",
+          "social impact",
+          "Tanzania"
+        ],
+        "og_description": "Innovative Community Solutions empowers local communities through sustainable development, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "tphpa",
+      "name": "TPHPA",
+      "full_name": "The Tanzania Plant Health and Pesticides Authority",
+      "logo_file": "tphpa.png",
+      "alt_text": "TPHPA logo - The Tanzania Plant Health and Pesticides Authority regulating plant health and pesticide use",
+      "description": "The Tanzania Plant Health and Pesticides Authority is a government regulatory body responsible for plant health services and pesticide regulation in Tanzania. They oversee pest and disease management, pesticide registration, and promote safe agrochemical practices to protect crops and pollinators.",
+      "website": "",
+      "tier": "gold",
+      "category": "government_partner",
+      "country": "Tanzania",
+      "display_order": 1,
+      "is_active": true,
+      "seo": {
+        "title": "TPHPA - Tanzania Plant Health and Pesticides Authority | Pollination Africa Summit Partner",
+        "keywords": [
+          "plant health",
+          "pesticide regulation",
+          "Tanzania",
+          "crop protection",
+          "pollinator safety",
+          "government authority"
+        ],
+        "og_description": "The Tanzania Plant Health and Pesticides Authority regulates pesticide use and promotes pollinator-safe practices, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "sef",
+      "name": "SEF",
+      "full_name": "Sustainable Environment Foundation",
+      "logo_file": "sef.png",
+      "alt_text": "SEF logo - Sustainable Environment Foundation promoting environmental sustainability",
+      "description": "The Sustainable Environment Foundation works to promote environmental sustainability through conservation programs, community education, and advocacy for responsible natural resource management across Africa.",
+      "website": "",
+      "tier": "gold",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 2,
+      "is_active": true,
+      "seo": {
+        "title": "SEF - Sustainable Environment Foundation | Pollination Africa Summit Partner",
+        "keywords": [
+          "environmental sustainability",
+          "conservation",
+          "natural resources",
+          "community education",
+          "Africa"
+        ],
+        "og_description": "The Sustainable Environment Foundation promotes environmental sustainability and conservation, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "age-watch-tanzania",
+      "name": "Age Watch Tanzania",
+      "full_name": "Age Watch Tanzania",
+      "logo_file": "age-watch-tanzania.jpeg",
+      "alt_text": "Age Watch Tanzania logo - Supporting elderly communities and intergenerational development",
+      "description": "Age Watch Tanzania is an organization dedicated to supporting elderly communities, promoting intergenerational knowledge transfer, and advocating for the rights and well-being of older persons in Tanzania. They work on sustainable livelihoods and community resilience programs.",
+      "website": "",
+      "tier": "gold",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 3,
+      "is_active": true,
+      "seo": {
+        "title": "Age Watch Tanzania - Elderly Community Support | Pollination Africa Summit Partner",
+        "keywords": [
+          "elderly support",
+          "intergenerational development",
+          "community resilience",
+          "Tanzania",
+          "sustainable livelihoods"
+        ],
+        "og_description": "Age Watch Tanzania supports elderly communities and promotes intergenerational development, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
       "slug": "worker-bees-africa",
       "name": "Worker Bees Africa",
       "full_name": "Worker Bees Africa",
@@ -11,7 +138,7 @@
       "tier": "platinum",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 0,
+      "display_order": 5,
       "is_active": true,
       "seo": {
         "title": "Worker Bees Africa - Pollinator Conservation NGO | Pollination Africa Summit Partner",
@@ -38,7 +165,7 @@
       "tier": "gold",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 1,
+      "display_order": 6,
       "is_active": true,
       "seo": {
         "title": "TAPIDO - Tanzania Apiculture Development | Pollination Africa Summit Partner",
@@ -65,7 +192,7 @@
       "tier": "gold",
       "category": "corporate_sponsor",
       "country": "Nigeria",
-      "display_order": 2,
+      "display_order": 7,
       "is_active": true,
       "seo": {
         "title": "NAN Organik House - Beekeeping Agribusiness | Pollination Africa Summit Partner",
@@ -93,7 +220,7 @@
       "tier": "gold",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 3,
+      "display_order": 8,
       "is_active": true,
       "seo": {
         "title": "Green Rural Community - Sustainable Rural Development | Pollination Africa Summit Partner",
@@ -120,7 +247,7 @@
       "tier": "silver",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 4,
+      "display_order": 9,
       "is_active": true,
       "seo": {
         "title": "Female Guides Community Initiative - Women Empowerment in Tourism | Pollination Africa Summit Partner",
@@ -147,7 +274,7 @@
       "tier": "silver",
       "category": "corporate_sponsor",
       "country": "Mexico",
-      "display_order": 5,
+      "display_order": 10,
       "is_active": true,
       "seo": {
         "title": "NAT DMC - Destination Management Company | Pollination Africa Summit Partner",
@@ -173,7 +300,7 @@
       "tier": "silver",
       "category": "corporate_sponsor",
       "country": "Kenya",
-      "display_order": -1,
+      "display_order": 4,
       "is_active": true,
       "seo": {
         "title": "Chacha Technologies - Web Development Partner | Pollination Africa Summit",

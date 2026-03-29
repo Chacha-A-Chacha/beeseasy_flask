@@ -11,7 +11,7 @@
       "tier": "platinum",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 0,
+      "display_order": 4,
       "is_active": true,
       "seo": {
         "title": "SAADIT - Founding Partner | Pollination Africa Summit",
@@ -37,7 +37,7 @@
       "tier": "gold",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 0,
+      "display_order": 7,
       "is_active": true,
       "seo": {
         "title": "ICS - Innovative Community Solutions | Pollination Africa Summit Partner",
@@ -62,7 +62,7 @@
       "tier": "gold",
       "category": "government_partner",
       "country": "Tanzania",
-      "display_order": 1,
+      "display_order": 2,
       "is_active": true,
       "seo": {
         "title": "TPHPA - Tanzania Plant Health and Pesticides Authority | Pollination Africa Summit Partner",
@@ -88,7 +88,7 @@
       "tier": "gold",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 2,
+      "display_order": 10,
       "is_active": true,
       "seo": {
         "title": "SEF - Sustainable Environment Foundation | Pollination Africa Summit Partner",
@@ -113,7 +113,7 @@
       "tier": "gold",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 3,
+      "display_order": 9,
       "is_active": true,
       "seo": {
         "title": "Age Watch Tanzania - Elderly Community Support | Pollination Africa Summit Partner",
@@ -138,7 +138,7 @@
       "tier": "platinum",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 5,
+      "display_order": 4,
       "is_active": true,
       "seo": {
         "title": "Worker Bees Africa - Pollinator Conservation NGO | Pollination Africa Summit Partner",
@@ -192,8 +192,8 @@
       "tier": "gold",
       "category": "corporate_sponsor",
       "country": "Nigeria",
-      "display_order": 7,
-      "is_active": true,
+      "display_order": 99,
+      "is_active": false,
       "seo": {
         "title": "NAN Organik House - Beekeeping Agribusiness | Pollination Africa Summit Partner",
         "keywords": [
@@ -220,7 +220,7 @@
       "tier": "gold",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 8,
+      "display_order": 5,
       "is_active": true,
       "seo": {
         "title": "Green Rural Community - Sustainable Rural Development | Pollination Africa Summit Partner",
@@ -247,7 +247,7 @@
       "tier": "silver",
       "category": "development_partner",
       "country": "Tanzania",
-      "display_order": 9,
+      "display_order": 8,
       "is_active": true,
       "seo": {
         "title": "Female Guides Community Initiative - Women Empowerment in Tourism | Pollination Africa Summit Partner",
@@ -274,7 +274,7 @@
       "tier": "silver",
       "category": "corporate_sponsor",
       "country": "Mexico",
-      "display_order": 10,
+      "display_order": 5,
       "is_active": true,
       "seo": {
         "title": "NAT DMC - Destination Management Company | Pollination Africa Summit Partner",
@@ -314,6 +314,57 @@
           "tech solutions"
         ],
         "og_description": "Chacha Technologies provides web development and system integration services, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "beestar",
+      "name": "BeeSTAR",
+      "full_name": "BeeSTAR",
+      "logo_file": "beestar.png",
+      "alt_text": "BeeSTAR logo - Australian apiculture and bee research organization",
+      "description": "BeeSTAR is an Australian organization dedicated to bee research, apiculture innovation, and pollinator health, supporting sustainable beekeeping practices and scientific advancement.",
+      "website": "https://www.beestar.com.au/",
+      "tier": "platinum",
+      "category": "development_partner",
+      "country": "Australia",
+      "display_order": 3,
+      "is_active": true,
+      "seo": {
+        "title": "BeeSTAR - Apiculture Research Partner | Pollination Africa Summit",
+        "keywords": [
+          "bee research",
+          "apiculture",
+          "pollinator health",
+          "Australia",
+          "beekeeping innovation"
+        ],
+        "og_description": "BeeSTAR is an Australian apiculture organization partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
+      "slug": "wizara-ya-maliasili-na-utalii",
+      "name": "Wizara ya Maliasili na Utalii",
+      "full_name": "Wizara ya Maliasili na Utalii (Ministry of Natural Resources and Tourism)",
+      "logo_file": "tanzania-coat-of-arms.png",
+      "alt_text": "Coat of Arms of Tanzania - Ministry of Natural Resources and Tourism",
+      "description": "The Ministry of Natural Resources and Tourism of the United Republic of Tanzania oversees the conservation and sustainable use of natural resources, wildlife, forestry, and tourism development across the country.",
+      "website": "",
+      "tier": "platinum",
+      "category": "government_partner",
+      "country": "Tanzania",
+      "display_order": 1,
+      "is_active": true,
+      "seo": {
+        "title": "Ministry of Natural Resources and Tourism - Government Partner | Pollination Africa Summit",
+        "keywords": [
+          "Ministry of Natural Resources",
+          "Tanzania government",
+          "tourism",
+          "wildlife conservation",
+          "natural resources",
+          "forestry"
+        ],
+        "og_description": "The Ministry of Natural Resources and Tourism of Tanzania partners with Pollination Africa Summit 2026."
       }
     }
   ],

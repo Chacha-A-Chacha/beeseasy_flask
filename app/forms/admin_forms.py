@@ -31,6 +31,8 @@ from wtforms.validators import (
     ValidationError,
 )
 
+from app.utils.countries import get_country_choices
+
 # ============================================
 # USER MANAGEMENT FORMS
 # ============================================
@@ -96,6 +98,7 @@ class TicketPriceForm(FlaskForm):
         choices=[
             ("free", "Free"),
             ("standard", "Standard"),
+            ("african", "African"),
             ("vip", "VIP"),
             ("student", "Student"),
             ("group", "Group"),
@@ -142,7 +145,7 @@ class TicketPriceForm(FlaskForm):
             ("EUR", "EUR"),
             ("GBP", "GBP"),
         ],
-        default="TZS",
+        default="USD",
         validators=[DataRequired()],
         render_kw={"class": "form-select"},
     )
@@ -166,7 +169,7 @@ class TicketPriceForm(FlaskForm):
 
     max_quantity = IntegerField(
         "Maximum Quantity",
-        validators=[Optional(), NumberRange(min=0)],
+        validators=[Optional(), NumberRange(min=1)],
         render_kw={"placeholder": "Leave blank for unlimited", "class": "form-input"},
     )
 
@@ -188,6 +191,16 @@ class TicketPriceForm(FlaskForm):
     )
 
     submit = SubmitField("Save Ticket", render_kw={"class": "btn btn-primary"})
+
+    def validate_early_bird_price(self, field):
+        """Ensure early bird price and deadline are set together"""
+        if field.data and not self.early_bird_deadline.data:
+            raise ValidationError("Early bird deadline is required when setting an early bird price.")
+
+    def validate_early_bird_deadline(self, field):
+        """Ensure early bird deadline and price are set together"""
+        if field.data and not self.early_bird_price.data:
+            raise ValidationError("Early bird price is required when setting a deadline.")
 
 
 # ============================================
@@ -242,7 +255,7 @@ class ExhibitorPackageForm(FlaskForm):
             ("EUR", "EUR"),
             ("GBP", "GBP"),
         ],
-        default="TZS",
+        default="USD",
         validators=[DataRequired()],
         render_kw={"class": "form-select"},
     )
@@ -262,7 +275,7 @@ class ExhibitorPackageForm(FlaskForm):
 
     max_quantity = IntegerField(
         "Maximum Quantity",
-        validators=[Optional(), NumberRange(min=0)],
+        validators=[Optional(), NumberRange(min=1)],
         render_kw={"placeholder": "Leave blank for unlimited", "class": "form-input"},
     )
 
@@ -326,7 +339,7 @@ class AddOnItemForm(FlaskForm):
     currency = SelectField(
         "Currency",
         choices=[("TZS", "TZS"), ("USD", "USD"), ("KES", "KES")],
-        default="TZS",
+        default="USD",
         validators=[DataRequired()],
         render_kw={"class": "form-select"},
     )
@@ -708,11 +721,13 @@ class EditAttendeeForm(FlaskForm):
         validators=[Optional(), Length(max=150)],
         render_kw={"class": "form-input"},
     )
-    country = StringField(
+    country = SelectField(
         "Country",
-        validators=[Optional(), Length(max=100)],
-        render_kw={"class": "form-input"},
+        choices=[],
+        validators=[Optional()],
+        render_kw={"class": "form-select"},
     )
+
     city = StringField(
         "City",
         validators=[Optional(), Length(max=100)],
@@ -737,6 +752,10 @@ class EditAttendeeForm(FlaskForm):
     )
 
     submit = SubmitField("Update Attendee", render_kw={"class": "btn btn-primary"})
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.country.choices = get_country_choices()
 
 
 class EditExhibitorForm(FlaskForm):
@@ -766,11 +785,13 @@ class EditExhibitorForm(FlaskForm):
         validators=[DataRequired(), Length(max=255)],
         render_kw={"class": "form-input"},
     )
-    company_country = StringField(
+    company_country = SelectField(
         "Company Country",
-        validators=[DataRequired(), Length(max=100)],
-        render_kw={"class": "form-input"},
+        choices=[],
+        validators=[DataRequired()],
+        render_kw={"class": "form-select"},
     )
+
     company_address = TextAreaField(
         "Company Address",
         validators=[DataRequired()],
@@ -827,6 +848,10 @@ class EditExhibitorForm(FlaskForm):
     )
 
     submit = SubmitField("Update Exhibitor", render_kw={"class": "btn btn-primary"})
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.company_country.choices = get_country_choices()
 
 
 # ============================================

@@ -386,18 +386,9 @@
             </p>
         </div>
 
-        {# Partner Logos Display - Fixed Height Layout #} {# All logos display
-        at same height with variable width #} {# Logos show in full color with
-        subtle hover effects #}
         <div class="mt-16">
-            {% set style = 'fixed-height' %} {% include
-            'components/partner_logos.html' %}
+            {% include 'components/partner_logos.html' %}
         </div>
-
-        {# Alternative layouts available in component: #} {# - 'fixed-width':
-        All logos same width, variable height #} {# - 'contained': Bordered card
-        boxes, premium look #} {# - 'flexible': Modern grid with fixed aspect
-        ratio #} {# - 'masonry': Pinterest-style columns #}
 
         <div class="mt-16 flex justify-center">
             <p

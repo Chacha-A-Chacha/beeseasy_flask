@@ -15,7 +15,7 @@ Key Features:
 import re
 import secrets
 import string
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from enum import Enum
 from typing import Any, Dict, List, Optional
@@ -254,7 +254,7 @@ class TicketPrice(db.Model):
     def get_current_price(self) -> Decimal:
         """Get current price based on early bird deadline"""
         if self.early_bird_price and self.early_bird_deadline:
-            if datetime.now() < self.early_bird_deadline:
+            if datetime.now(timezone.utc) < self.early_bird_deadline.replace(tzinfo=timezone.utc):
                 return Decimal(str(self.early_bird_price))
         return Decimal(str(self.price))
 

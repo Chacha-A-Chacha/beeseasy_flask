@@ -18,6 +18,7 @@ from app.models.registration import (
     AttendeeTicketType,
     ExhibitorPackage,
     ExhibitorRegistration,
+    PaymentStatus,
     Registration,
     RegistrationStatus,
     TicketPrice,
@@ -355,7 +356,22 @@ def api_cancel_registration(id):
         if registration.status == RegistrationStatus.CANCELLED:
             return jsonify({"success": False, "error": "Already cancelled"}), 400
 
+        # Release ticket/package inventory
+        if isinstance(registration, AttendeeRegistration) and registration.ticket_price:
+            quantity = registration.group_size if registration.group_size else 1
+            registration.ticket_price.release_tickets(quantity=quantity)
+        elif isinstance(registration, ExhibitorRegistration) and registration.package_price:
+            registration.package_price.release_package()
+
         registration.status = RegistrationStatus.CANCELLED
+        registration.updated_at = datetime.now()
+
+        # Mark pending payments as failed
+        for p in registration.payments:
+            if p.payment_status in (PaymentStatus.PENDING, PaymentStatus.PROCESSING):
+                p.payment_status = PaymentStatus.FAILED
+                p.failure_reason = f"Registration cancelled by {current_user.name}"
+
         db.session.commit()
 
         return jsonify(

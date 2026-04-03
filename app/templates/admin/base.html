@@ -8,6 +8,13 @@
             {% block title %}Admin Dashboard{% endblock %} - {{ event_name }}
         </title>
 
+        <!-- Favicon -->
+        <link rel="icon" href="{{ url_for('static', filename='favicon_io/favicon.ico') }}" sizes="any" />
+        <link rel="icon" href="{{ url_for('static', filename='favicon_io/favicon-32x32.png') }}" type="image/png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon_io/apple-touch-icon.png') }}" />
+        <link rel="manifest" href="{{ url_for('static', filename='favicon_io/site.webmanifest') }}" />
+        <meta name="theme-color" content="#14532d" />
+
         <!-- Tailwind CSS -->
         <script src="https://cdn.tailwindcss.com"></script>
 
@@ -343,5 +350,12 @@
         </div>
 
         {% block extra_js %}{% endblock %}
+
+        <!-- Service Worker Registration -->
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}", { scope: "/" });
+            }
+        </script>
     </body>
 </html>

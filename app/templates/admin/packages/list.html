@@ -33,7 +33,8 @@
                         <tr>
                             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Package</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Booth Size</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Benefits</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sold / Capacity</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Passes</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
                             <th scope="col" class="py-3.5 pl-3 pr-4 sm:pr-6">
@@ -47,8 +48,11 @@
                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                 {{ package.name }}
                             </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ package.booth_size }}</td>
-                            <td class="px-3 py-4 text-sm text-gray-500 max-w-xs truncate">{{ package.description or '—' }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ package.booth_size or '—' }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                {{ package.current_quantity or 0 }} / {{ package.max_quantity if package.max_quantity else '&infin;'|safe }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ package.included_passes or 0 }}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{ package.currency }} {{ "{:,.0f}".format(package.price) }}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {% if package.is_active %}
@@ -63,7 +67,7 @@
                         </tr>
                         {% else %}
                         <tr>
-                            <td colspan="6" class="px-3 py-12 text-center text-sm text-gray-500">
+                            <td colspan="8" class="px-3 py-12 text-center text-sm text-gray-500">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                 </svg>

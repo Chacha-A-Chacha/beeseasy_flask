@@ -490,6 +490,123 @@ class RegistrationService:
             return False, "Failed to apply promo code"
 
     # ---------------------------------------------------------
+    # TICKET CHANGE
+    # ---------------------------------------------------------
+
+    @staticmethod
+    def change_ticket(
+        registration: "AttendeeRegistration", new_ticket_type_str: str, new_group_size: int = None
+    ) -> Tuple[bool, str]:
+        """
+        Change ticket type on a PENDING registration.
+        Handles inventory, payment recalculation, and promo re-validation.
+        """
+        try:
+            # Only allow changes on PENDING registrations
+            if registration.status != RegistrationStatus.PENDING:
+                return False, "Ticket can only be changed before payment is completed."
+
+            # Check payment hasn't been sent to a gateway
+            payment = registration.payments[0] if registration.payments else None
+            if not payment or payment.payment_status not in (
+                PaymentStatus.PENDING, PaymentStatus.FAILED
+            ):
+                return False, "Cannot change ticket after payment has been initiated."
+
+            # Resolve new ticket
+            try:
+                new_ticket_enum = AttendeeTicketType(new_ticket_type_str)
+            except ValueError:
+                return False, "Invalid ticket type."
+
+            # Same ticket — no change needed
+            if registration.ticket_type == new_ticket_enum:
+                return False, "You already have this ticket type selected."
+
+            new_ticket = TicketPrice.query.filter_by(
+                ticket_type=new_ticket_enum, is_active=True
+            ).first()
+
+            if not new_ticket:
+                return False, "This ticket type is not currently available."
+
+            if not new_ticket.is_available():
+                return False, "This ticket type is sold out."
+
+            # Validate group size for GROUP tickets
+            if new_ticket_enum == AttendeeTicketType.GROUP:
+                if not new_group_size or not (5 <= new_group_size <= 10):
+                    return False, "Group tickets require a group size between 5 and 10."
+            else:
+                new_group_size = None
+
+            old_ticket = registration.ticket_price
+            old_quantity = registration.group_size if registration.group_size else 1
+            new_quantity = new_group_size if new_group_size else 1
+
+            # Claim new ticket FIRST (if this fails, nothing changes)
+            try:
+                new_ticket.claim_tickets(quantity=new_quantity)
+            except ValueError:
+                return False, "Not enough tickets available for this type."
+
+            # Release old ticket
+            if old_ticket:
+                old_ticket.release_tickets(quantity=old_quantity)
+
+            # Update registration
+            registration.ticket_type = new_ticket_enum
+            registration.ticket_price_id = new_ticket.id
+            registration.group_size = new_group_size
+            registration.updated_at = datetime.now()
+
+            # Recalculate payment
+            new_price = new_ticket.get_current_price()
+            payment.subtotal = new_price
+            payment.currency = new_ticket.currency
+
+            # Re-validate promo code if one was applied
+            if payment.discount_amount and payment.discount_amount > 0:
+                promo_usage = PromoCodeUsage.query.filter_by(
+                    registration_id=registration.id
+                ).first()
+
+                if promo_usage:
+                    promo = PromoCode.query.get(promo_usage.promo_code_id)
+                    promo_still_valid = True
+
+                    if promo and promo.applicable_ticket_types:
+                        if new_ticket_enum.value not in promo.applicable_ticket_types:
+                            promo_still_valid = False
+
+                    if promo_still_valid and promo:
+                        discount = promo.calculate_discount(new_price)
+                        payment.discount_amount = discount
+                        promo_usage.discount_amount = discount
+                        promo_usage.original_amount = new_price
+                        promo_usage.final_amount = new_price - discount
+                    else:
+                        # Invalidate promo
+                        payment.discount_amount = Decimal("0.00")
+                        db.session.delete(promo_usage)
+
+            payment.total_amount = payment.subtotal - (payment.discount_amount or Decimal("0.00"))
+
+            db.session.commit()
+
+            logger.info(
+                f"Ticket changed for registration {registration.reference_number}: "
+                f"{old_ticket.ticket_type.value if old_ticket else 'none'} -> {new_ticket_enum.value}"
+            )
+
+            return True, f"Ticket changed to {new_ticket.name} successfully."
+
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error changing ticket: {str(e)}", exc_info=True)
+            return False, "Could not change ticket. Please try again."
+
+    # ---------------------------------------------------------
     # EMAIL NOTIFICATIONS
     # ---------------------------------------------------------
 

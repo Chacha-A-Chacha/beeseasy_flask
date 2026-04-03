@@ -39,13 +39,8 @@ def seed_ticket_prices():
 
     early_bird_deadline = datetime(2026, 4, 15, 23, 59, 59)
 
-    # All tickets share the same base inclusions:
-    # - Full 3-day access to all summit sessions
-    # - Catering (breakfast, lunch, and refreshment breaks)
-    # - Summit materials and delegate kit
-    # - Simultaneous interpretation (English, French, Arabic)
+    # Shared inclusions for all ticket types
     shared_inclusions = {
-        "currency": "USD",
         "includes_lunch": True,
         "includes_materials": True,
         "includes_certificate": True,
@@ -59,34 +54,74 @@ def seed_ticket_prices():
             "name": "International Delegate Pass",
             "description": "Full summit access for international delegates. Open to all participants outside the African Union.",
             "price": Decimal("300.00"),
+            "currency": "USD",
             "early_bird_price": Decimal("240.00"),
             "early_bird_deadline": early_bird_deadline,
             **shared_inclusions,
         },
         {
             "ticket_type": AttendeeTicketType.AFRICAN,
-            "name": "Africa-Based Delegate Pass",
-            "description": "Full summit access for delegates residing in or affiliated with African Union member states.",
-            "price": Decimal("250.00"),
-            "early_bird_price": Decimal("200.00"),
+            "name": "Africa Delegate Pass",
+            "description": (
+                "Full summit access for delegates residing in or affiliated with African Union member states. "
+                "Proof of residence may be required."
+            ),
+            "price": Decimal("200.00"),
+            "currency": "USD",
+            "early_bird_price": Decimal("130.00"),
+            "early_bird_deadline": early_bird_deadline,
+            **shared_inclusions,
+        },
+        {
+            "ticket_type": AttendeeTicketType.TANZANIA,
+            "name": "Tanzania Access Pass",
+            "description": (
+                "Exclusive pass for Tanzania-based delegates. "
+                "Limited to 250 delegates only."
+            ),
+            "price": Decimal("250000.00"),
+            "currency": "TZS",
+            "early_bird_price": Decimal("200000.00"),
+            "early_bird_deadline": early_bird_deadline,
+            "max_quantity": 250,
+            **shared_inclusions,
+        },
+        {
+            "ticket_type": AttendeeTicketType.SPEAKER,
+            "name": "PhD/Presenter Pass",
+            "description": (
+                "For accepted presenters and PhD researchers. "
+                "Only approved abstracts qualify. Do not register if your abstract has not been confirmed by the secretariat."
+            ),
+            "price": Decimal("145.00"),
+            "currency": "USD",
+            "early_bird_price": Decimal("116.00"),
             "early_bird_deadline": early_bird_deadline,
             **shared_inclusions,
         },
         {
             "ticket_type": AttendeeTicketType.STUDENT,
             "name": "Student Pass (Africa-Based Institutions)",
-            "description": "Full summit access for students enrolled at Africa-based institutions. Valid student ID required at check-in.",
-            "price": Decimal("180.00"),
-            "early_bird_price": Decimal("145.00"),
+            "description": (
+                "Full summit access for students enrolled at Africa-based institutions. "
+                "Must provide proof of current student status. Valid student ID required at check-in."
+            ),
+            "price": Decimal("60.00"),
+            "currency": "USD",
+            "early_bird_price": Decimal("48.00"),
             "early_bird_deadline": early_bird_deadline,
             **shared_inclusions,
         },
         {
             "ticket_type": AttendeeTicketType.GROUP,
-            "name": "Farmer Groups Pass (5-10 members)",
-            "description": "Group registration for farmer cooperatives and agricultural groups. Covers 5 to 10 members under a single registration.",
-            "price": Decimal("1500.00"),
-            "early_bird_price": Decimal("1200.00"),
+            "name": "Farmer Group Pass (5-10 Participants)",
+            "description": (
+                "Group registration for farmer cooperatives and agricultural groups. "
+                "Covers 5 to 10 members. Requires group registration with designated group leader details."
+            ),
+            "price": Decimal("1300000.00"),
+            "currency": "TZS",
+            "early_bird_price": Decimal("1040000.00"),
             "early_bird_deadline": early_bird_deadline,
             **shared_inclusions,
         },

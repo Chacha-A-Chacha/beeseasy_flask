@@ -163,14 +163,14 @@
                             >{{ ticket.currency }}</span
                         >
                         <span class="text-4xl font-bold text-accent-orange">
-                            {{ "%.2f"|format(ticket.get_current_price()) }}
+                            {{ "{:,.0f}".format(ticket.get_current_price()) }}
                         </span>
                     </div>
                     {% if ticket.early_bird_price and ticket.early_bird_price <
                     ticket.price %}
                     <div class="mt-2">
                         <span class="text-sm text-gray-500 line-through">
-                            {{ ticket.currency }} {{ "%.2f"|format(ticket.price)
+                            {{ ticket.currency }} {{ "{:,.0f}".format(ticket.price)
                             }}
                         </span>
                         <span

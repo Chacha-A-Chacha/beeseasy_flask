@@ -4,6 +4,8 @@ Single-page forms with AJAX validation
 """
 
 import logging
+import secrets
+from datetime import datetime, timedelta
 from decimal import Decimal
 
 from flask import (
@@ -14,21 +16,25 @@ from flask import (
     redirect,
     render_template,
     request,
+    session,
     url_for,
 )
 
 from app.extensions import db
 from app.forms import AttendeeRegistrationForm, ExhibitorRegistrationForm
 from app.models import (
+    AttendeeRegistration,
     AttendeeTicketType,
     ExhibitorPackage,
     ExhibitorPackagePrice,
+    PaymentStatus,
     PromoCode,
     Registration,
     RegistrationStatus,
     TicketPrice,
 )
 from app.services.registration_service import RegistrationService
+from app.utils.enhanced_email import EnhancedEmailService
 
 logger = logging.getLogger(__name__)
 
@@ -242,6 +248,210 @@ def confirmation(ref):
         registration=registration,
         payment=payment,
         balance_due=balance_due,
+    )
+
+
+# ============================================
+# RESUME REGISTRATION (Email OTP)
+# ============================================
+
+
+def _generate_otp():
+    """Generate a 6-digit numeric OTP"""
+    return "".join(secrets.choice("0123456789") for _ in range(6))
+
+
+@register_bp.route("/resume", methods=["GET", "POST"])
+def resume_registration():
+    """Enter email to receive OTP and resume a pending registration"""
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+
+        if not email:
+            flash("Please enter your email address.", "error")
+            return render_template("register/resume_email.html")
+
+        # Find pending registration
+        registration = Registration.query.filter(
+            db.func.lower(Registration.email) == email,
+            Registration.is_deleted == False,
+            Registration.status.in_([
+                RegistrationStatus.PENDING,
+                RegistrationStatus.CONFIRMED,
+            ]),
+        ).order_by(Registration.created_at.desc()).first()
+
+        if not registration:
+            flash("No registration found for this email address.", "error")
+            return render_template("register/resume_email.html")
+
+        # Generate OTP
+        otp = _generate_otp()
+        registration.resume_otp = otp
+        registration.resume_otp_expires = datetime.now() + timedelta(minutes=10)
+        registration.resume_otp_attempts = 0
+        db.session.commit()
+
+        # Send OTP email
+        try:
+            email_service = EnhancedEmailService(current_app)
+
+            ticket_name = ""
+            if hasattr(registration, "ticket_price") and registration.ticket_price:
+                ticket_name = registration.ticket_price.name
+            elif hasattr(registration, "package_price") and registration.package_price:
+                ticket_name = registration.package_price.name
+
+            email_service.send_notification(
+                recipient=registration.email,
+                template="resume_otp",
+                subject="Your Verification Code - Pollination Africa Summit",
+                template_context={
+                    "first_name": registration.first_name,
+                    "otp_code": otp,
+                    "reference_number": registration.reference_number,
+                    "ticket_name": ticket_name,
+                    "email": registration.email,
+                },
+                priority=0,  # High priority
+            )
+        except Exception as e:
+            logger.error(f"Failed to send OTP email: {str(e)}")
+
+        # Store email in session for the verify step
+        session["resume_email"] = email
+        flash("A verification code has been sent to your email.", "success")
+        return redirect(url_for("register.verify_otp"))
+
+    return render_template("register/resume_email.html")
+
+
+@register_bp.route("/resume/verify", methods=["GET", "POST"])
+def verify_otp():
+    """Verify OTP and redirect to confirmation page"""
+    email = session.get("resume_email")
+    if not email:
+        flash("Please enter your email first.", "warning")
+        return redirect(url_for("register.resume_registration"))
+
+    if request.method == "POST":
+        otp_input = request.form.get("otp", "").strip()
+
+        if not otp_input or len(otp_input) != 6:
+            flash("Please enter the 6-digit code.", "error")
+            return render_template("register/resume_verify.html", email=email)
+
+        registration = Registration.query.filter(
+            db.func.lower(Registration.email) == email.lower(),
+            Registration.is_deleted == False,
+            Registration.resume_otp.isnot(None),
+        ).order_by(Registration.created_at.desc()).first()
+
+        if not registration:
+            flash("No pending verification found. Please try again.", "error")
+            return redirect(url_for("register.resume_registration"))
+
+        # Check attempts
+        if registration.resume_otp_attempts >= 5:
+            registration.resume_otp = None
+            registration.resume_otp_expires = None
+            db.session.commit()
+            flash("Too many attempts. Please request a new code.", "error")
+            return redirect(url_for("register.resume_registration"))
+
+        # Check expiry
+        if registration.resume_otp_expires and datetime.now() > registration.resume_otp_expires:
+            registration.resume_otp = None
+            db.session.commit()
+            flash("Code has expired. Please request a new one.", "error")
+            return redirect(url_for("register.resume_registration"))
+
+        # Verify OTP
+        registration.resume_otp_attempts = (registration.resume_otp_attempts or 0) + 1
+
+        if otp_input != registration.resume_otp:
+            db.session.commit()
+            remaining = 5 - registration.resume_otp_attempts
+            flash(f"Invalid code. {remaining} attempts remaining.", "error")
+            return render_template("register/resume_verify.html", email=email)
+
+        # Success — clear OTP and mark session as verified
+        registration.resume_otp = None
+        registration.resume_otp_expires = None
+        registration.resume_otp_attempts = 0
+        db.session.commit()
+
+        session["verified_ref"] = registration.reference_number
+        session.pop("resume_email", None)
+
+        return redirect(url_for("register.confirmation", ref=registration.reference_number))
+
+    return render_template("register/resume_verify.html", email=email)
+
+
+# ============================================
+# CHANGE TICKET TYPE
+# ============================================
+
+
+@register_bp.route("/change-ticket/<ref>", methods=["GET", "POST"])
+def change_ticket(ref):
+    """Allow user to change ticket type before payment"""
+    registration = Registration.query.filter_by(
+        reference_number=ref, is_deleted=False
+    ).first_or_404()
+
+    # Security: must have verified via OTP or be the same session
+    verified_ref = session.get("verified_ref")
+    if verified_ref != ref:
+        flash("Please verify your identity first.", "warning")
+        return redirect(url_for("register.resume_registration"))
+
+    # Only attendees can change tickets
+    if not isinstance(registration, AttendeeRegistration):
+        flash("Ticket changes are only available for attendee registrations.", "error")
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    # Only PENDING registrations
+    if registration.status != RegistrationStatus.PENDING:
+        flash("Ticket can only be changed before payment is completed.", "error")
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    # Check payment status
+    payment = registration.payments[0] if registration.payments else None
+    if payment and payment.payment_status not in (PaymentStatus.PENDING, PaymentStatus.FAILED):
+        flash("Cannot change ticket after payment has been initiated.", "error")
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    tickets = TicketPrice.query.filter_by(is_active=True).order_by(TicketPrice.price).all()
+
+    if request.method == "POST":
+        new_ticket_type = request.form.get("ticket_type")
+        new_group_size = request.form.get("group_size")
+
+        if new_group_size:
+            try:
+                new_group_size = int(new_group_size)
+            except ValueError:
+                new_group_size = None
+
+        success, message = RegistrationService.change_ticket(
+            registration, new_ticket_type, new_group_size
+        )
+
+        if success:
+            flash(message, "success")
+        else:
+            flash(message, "error")
+
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    return render_template(
+        "register/change_ticket.html",
+        registration=registration,
+        tickets=tickets,
+        current_ticket=registration.ticket_price,
+        payment=payment,
     )
 
 

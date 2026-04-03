@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" class="h-full bg-white">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Verify Code - Pollination Africa Summit</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='src/output.css') }}" />
+        <link rel="icon" href="{{ url_for('static', filename='images/logo.svg') }}" type="image/svg+xml" />
+        <style>
+            .otp-input {
+                width: 3rem;
+                height: 3.5rem;
+                text-align: center;
+                font-size: 1.5rem;
+                font-weight: 700;
+                letter-spacing: 0;
+            }
+            .otp-input:focus {
+                border-color: transparent;
+            }
+        </style>
+    </head>
+    <body class="h-full">
+        <div class="flex min-h-full">
+            <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+                <div class="mx-auto w-full max-w-sm lg:w-96">
+                    <div>
+                        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Pollination Africa Summit" class="h-20 w-auto" />
+                        <h2 class="mt-8 text-2xl/9 font-bold tracking-tight text-gray-900">
+                            Enter verification code
+                        </h2>
+                        <p class="mt-2 text-sm/6 text-gray-500">
+                            We sent a 6-digit code to <strong class="text-gray-700">{{ email }}</strong>
+                        </p>
+                    </div>
+
+                    <div class="mt-10">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div class="mb-6 space-y-3">
+                            {% for category, message in messages %}
+                            <div class="rounded-md p-4 {% if category == 'error' %}bg-red-50 text-red-800 border border-red-200{% elif category == 'warning' %}bg-yellow-50 text-yellow-800 border border-yellow-200{% else %}bg-green-50 text-green-800 border border-green-200{% endif %}">
+                                <p class="text-sm">{{ message }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+
+                        <form action="{{ url_for('register.verify_otp') }}" method="POST" class="space-y-6" id="otp-form">
+                            <div>
+                                <label for="otp" class="block text-sm/6 font-medium text-gray-900">Verification code</label>
+                                <div class="mt-3 flex justify-between gap-2">
+                                    {% for i in range(6) %}
+                                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                                        class="otp-input rounded-md bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-green-600"
+                                        data-index="{{ i }}" autocomplete="off" />
+                                    {% endfor %}
+                                </div>
+                                <input type="hidden" name="otp" id="otp-hidden" />
+                                <p class="mt-3 text-xs text-gray-500">
+                                    Code expires in 10 minutes.
+                                </p>
+                            </div>
+
+                            <div>
+                                <button type="submit"
+                                    class="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                                    Verify and continue
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-6 text-center space-y-3">
+                            <p class="text-sm text-gray-600">
+                                Didn't receive the code?
+                                <a href="{{ url_for('register.resume_registration') }}" class="font-medium text-green-600 hover:text-green-500">Send again</a>
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                <a href="{{ url_for('register.resume_registration') }}" class="font-medium text-gray-500 hover:text-gray-400">Use a different email</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative hidden w-0 flex-1 lg:block">
+                <img class="absolute inset-0 size-full object-cover"
+                    src="{{ url_for('static', filename='images/hero-bg.jpg') }}"
+                    alt="Pollination Africa Summit" />
+            </div>
+        </div>
+
+        <script>
+            // OTP input auto-advance and paste support
+            const inputs = document.querySelectorAll('.otp-input');
+            const hiddenInput = document.getElementById('otp-hidden');
+            const form = document.getElementById('otp-form');
+
+            function updateHidden() {
+                hiddenInput.value = Array.from(inputs).map(i => i.value).join('');
+            }
+
+            inputs.forEach((input, idx) => {
+                input.addEventListener('input', (e) => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    e.target.value = val.slice(0, 1);
+                    updateHidden();
+                    if (val && idx < inputs.length - 1) {
+                        inputs[idx + 1].focus();
+                    }
+                    if (hiddenInput.value.length === 6) {
+                        form.submit();
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+                        inputs[idx - 1].focus();
+                    }
+                });
+
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const paste = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+                    paste.split('').forEach((char, i) => {
+                        if (inputs[i]) inputs[i].value = char;
+                    });
+                    updateHidden();
+                    if (paste.length === 6) {
+                        form.submit();
+                    } else if (inputs[paste.length]) {
+                        inputs[paste.length].focus();
+                    }
+                });
+            });
+
+            // Auto-focus first input
+            inputs[0].focus();
+        </script>
+    </body>
+</html>

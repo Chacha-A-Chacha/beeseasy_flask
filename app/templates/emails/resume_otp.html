@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Your Verification Code</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.6;
+                color: #212529;
+                background-color: #f8f9fa;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            table { border-collapse: collapse; width: 100%; }
+            img { border: 0; height: auto; max-width: 100%; }
+
+            .email-wrapper {
+                width: 100%;
+                background-color: #f8f9fa;
+                padding: 20px 0;
+            }
+
+            .email-container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .email-header {
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 40px 30px;
+                text-align: center;
+            }
+
+            .email-header h1 {
+                margin: 0 0 8px;
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 1.3;
+            }
+
+            .email-header p {
+                margin: 0;
+                font-size: 15px;
+                opacity: 0.9;
+            }
+
+            .email-content {
+                padding: 30px;
+            }
+
+            .email-content p {
+                margin: 0 0 16px;
+                color: #212529;
+            }
+
+            .otp-box {
+                background-color: #fff9e6;
+                border: 2px solid #e8b030;
+                border-radius: 8px;
+                padding: 24px;
+                margin: 24px 0;
+                text-align: center;
+            }
+
+            .otp-code {
+                font-size: 36px;
+                font-weight: 700;
+                letter-spacing: 8px;
+                color: #2c5f2d;
+                font-family: "Courier New", monospace;
+                margin: 8px 0;
+            }
+
+            .otp-label {
+                font-size: 13px;
+                color: #6c757d;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+            }
+
+            .info-callout {
+                background-color: #e7f3ff;
+                border-left: 3px solid #0d6efd;
+                padding: 16px;
+                margin: 20px 0;
+                font-size: 15px;
+            }
+
+            .reference-box {
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+                border-radius: 6px;
+                padding: 12px 16px;
+                margin: 16px 0;
+                font-size: 14px;
+            }
+
+            .reference-box strong {
+                color: #2c5f2d;
+            }
+
+            .email-footer {
+                background-color: #2c5f2d;
+                color: #ffffff;
+                padding: 30px;
+                text-align: center;
+            }
+
+            .email-footer p {
+                margin: 0 0 8px;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .email-footer a {
+                color: #e8b030;
+                text-decoration: none;
+            }
+
+            .footer-links { margin: 16px 0; }
+            .footer-divider {
+                height: 1px;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin: 20px 0;
+            }
+
+            .footer-small {
+                font-size: 12px;
+                opacity: 0.8;
+                margin-top: 16px;
+            }
+
+            .branding {
+                margin-top: 20px;
+                opacity: 0.7;
+            }
+
+            .branding-logo {
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .branding-logo img { height: 18px; margin-right: 8px; }
+            .branding-text {
+                color: #e8b030;
+                font-weight: 600;
+                font-size: 13px;
+            }
+
+            @media only screen and (max-width: 600px) {
+                .email-wrapper { padding: 10px 0; }
+                .email-header { padding: 30px 20px; }
+                .email-header h1 { font-size: 22px; }
+                .email-content { padding: 20px; }
+                .otp-code { font-size: 28px; letter-spacing: 6px; }
+                .email-footer { padding: 24px 20px; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-wrapper">
+            <div class="email-container">
+                <div class="email-header">
+                    <h1>Your Verification Code</h1>
+                    <p>Pollination Africa Summit</p>
+                </div>
+
+                <div class="email-content">
+                    <p>
+                        Dear <strong>{{ first_name }}</strong>,
+                    </p>
+
+                    <p>
+                        You requested to access your registration. Use the
+                        verification code below to continue:
+                    </p>
+
+                    <div class="otp-box">
+                        <div class="otp-label">Verification Code</div>
+                        <div class="otp-code">{{ otp_code }}</div>
+                    </div>
+
+                    <div class="reference-box">
+                        <strong>Reference:</strong> {{ reference_number }}<br />
+                        <strong>Ticket:</strong> {{ ticket_name }}
+                    </div>
+
+                    <div class="info-callout">
+                        <strong>Note:</strong> This code expires in
+                        <strong>10 minutes</strong>. If you did not request
+                        this, you can safely ignore this email.
+                    </div>
+
+                    <p style="margin-top: 24px">
+                        Best regards,<br />
+                        <strong>Pollination Africa Summit Team</strong>
+                    </p>
+                </div>
+
+                <div class="email-footer">
+                    <p><strong>Pollination Africa Summit</strong></p>
+
+                    <div class="footer-links">
+                        <a href="https://pollinationafrica.com">Visit Website</a> |
+                        <a href="https://pollinationafrica.com/contact">Contact Us</a>
+                    </div>
+
+                    <div class="footer-divider"></div>
+
+                    <p class="footer-small">
+                        This email was sent to {{ email }} regarding your
+                        registration access request.
+                    </p>
+
+                    <div class="branding">
+                        <p style="font-size: 11px; margin-bottom: 8px">Powered by</p>
+                        <a href="https://chach-a.com" target="_blank" class="branding-logo">
+                            <img src="https://www.chach-a.com/logoMark.svg" alt="Chacha Technologies" />
+                            <span class="branding-text">Chacha Technologies</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

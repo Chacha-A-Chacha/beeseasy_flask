@@ -540,6 +540,11 @@ class Registration(db.Model):
     admin_notes = db.Column(db.Text)
     internal_tags = db.Column(JSON)  # For admin categorization
 
+    # Resume OTP (for returning to registration without login)
+    resume_otp = db.Column(db.String(6))
+    resume_otp_expires = db.Column(db.DateTime)
+    resume_otp_attempts = db.Column(db.Integer, default=0)
+
     # Soft delete
     is_deleted = db.Column(db.Boolean, default=False, nullable=False, index=True)
     deleted_at = db.Column(db.DateTime)

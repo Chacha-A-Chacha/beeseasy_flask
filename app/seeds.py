@@ -8,14 +8,12 @@ Ticket structure:
 - Student Pass (Africa-Based Institutions): $180 USD
 - Farmer Groups Pass (5-10 members): $1,500 USD
 
-Early bird: 20% off all attendee tickets (before March 15, 2026)
+Early bird: 20% off all attendee tickets (before April 15, 2026)
 
 All tickets include:
-- Access to all summit sessions (3 days)
-- International breakfast and lunch buffet
-- Tea/coffee and networking breaks
+- Full 3-day access to all summit sessions
+- Catering (breakfast, lunch, and refreshment breaks)
 - Summit materials and delegate kit
-- Exhibition and technology showcase access
 - Simultaneous interpretation (English, French, Arabic)
 """
 
@@ -39,14 +37,12 @@ def seed_ticket_prices():
     """Seed delegate ticket pricing for Pollination Africa Summit 2026"""
     print("🎫 Seeding delegate ticket prices for Pollination Africa Summit 2026...")
 
-    early_bird_deadline = datetime(2026, 3, 15, 23, 59, 59)
+    early_bird_deadline = datetime(2026, 4, 15, 23, 59, 59)
 
-    # All tickets share the same inclusions:
-    # - Access to all summit sessions (3 days)
-    # - International breakfast and lunch buffet
-    # - Tea/coffee and networking breaks
+    # All tickets share the same base inclusions:
+    # - Full 3-day access to all summit sessions
+    # - Catering (breakfast, lunch, and refreshment breaks)
     # - Summit materials and delegate kit
-    # - Exhibition and technology showcase access
     # - Simultaneous interpretation (English, French, Arabic)
     shared_inclusions = {
         "currency": "USD",
@@ -61,7 +57,7 @@ def seed_ticket_prices():
         {
             "ticket_type": AttendeeTicketType.STANDARD,
             "name": "International Delegate Pass",
-            "description": "Full summit access for international delegates. Includes 3-day access to all sessions, international breakfast and lunch buffet, tea/coffee and networking breaks, summit materials and delegate kit, exhibition and technology showcase access, and simultaneous interpretation (English, French, Arabic).",
+            "description": "Full summit access for international delegates. Open to all participants outside the African Union.",
             "price": Decimal("300.00"),
             "early_bird_price": Decimal("240.00"),
             "early_bird_deadline": early_bird_deadline,
@@ -70,7 +66,7 @@ def seed_ticket_prices():
         {
             "ticket_type": AttendeeTicketType.AFRICAN,
             "name": "Africa-Based Delegate Pass",
-            "description": "Full summit access for delegates based in African Union member states. Includes 3-day access to all sessions, international breakfast and lunch buffet, tea/coffee and networking breaks, summit materials and delegate kit, exhibition and technology showcase access, and simultaneous interpretation (English, French, Arabic). Delegate rates are determined by country of residence or institutional affiliation, in line with standard practice for Pan-African conferences to ensure equitable access.",
+            "description": "Full summit access for delegates residing in or affiliated with African Union member states.",
             "price": Decimal("250.00"),
             "early_bird_price": Decimal("200.00"),
             "early_bird_deadline": early_bird_deadline,
@@ -79,7 +75,7 @@ def seed_ticket_prices():
         {
             "ticket_type": AttendeeTicketType.STUDENT,
             "name": "Student Pass (Africa-Based Institutions)",
-            "description": "Full summit access for students enrolled at Africa-based institutions. Valid student ID required at check-in. Includes 3-day access to all sessions, international breakfast and lunch buffet, tea/coffee and networking breaks, summit materials and delegate kit, exhibition and technology showcase access, and simultaneous interpretation (English, French, Arabic). Prices may be lowered if sponsorships are secured by the secretariat.",
+            "description": "Full summit access for students enrolled at Africa-based institutions. Valid student ID required at check-in.",
             "price": Decimal("180.00"),
             "early_bird_price": Decimal("145.00"),
             "early_bird_deadline": early_bird_deadline,
@@ -88,7 +84,7 @@ def seed_ticket_prices():
         {
             "ticket_type": AttendeeTicketType.GROUP,
             "name": "Farmer Groups Pass (5-10 members)",
-            "description": "Group registration for farmer cooperatives and agricultural groups. Covers 5 to 10 group members. Includes 3-day access to all sessions, international breakfast and lunch buffet, tea/coffee and networking breaks, summit materials and delegate kit, exhibition and technology showcase access, and simultaneous interpretation (English, French, Arabic). Sponsorship for farmer groups may be available if funding is secured.",
+            "description": "Group registration for farmer cooperatives and agricultural groups. Covers 5 to 10 members under a single registration.",
             "price": Decimal("1500.00"),
             "early_bird_price": Decimal("1200.00"),
             "early_bird_deadline": early_bird_deadline,

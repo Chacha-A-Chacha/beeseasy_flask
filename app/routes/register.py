@@ -114,6 +114,9 @@ def register_attendee_form():
         success, message, attendee = RegistrationService.register_attendee(form_data)
 
         if success:
+            # Grant verified access so user can change ticket without OTP
+            session["verified_ref"] = attendee.reference_number
+            session["verified_ref_at"] = datetime.now().isoformat()
             flash(message, "success")
             return redirect(
                 url_for("register.confirmation", ref=attendee.reference_number)
@@ -382,6 +385,7 @@ def verify_otp():
         db.session.commit()
 
         session["verified_ref"] = registration.reference_number
+        session["verified_ref_at"] = datetime.now().isoformat()
         session.pop("resume_email", None)
 
         return redirect(url_for("register.confirmation", ref=registration.reference_number))
@@ -404,8 +408,21 @@ def change_ticket(ref):
     # Security: must have verified via OTP or be the same session
     verified_ref = session.get("verified_ref")
     if verified_ref != ref:
-        flash("Please verify your identity first.", "warning")
+        flash("Please verify your identity to change your ticket.", "warning")
         return redirect(url_for("register.resume_registration"))
+
+    # Check verification hasn't expired (30 min window)
+    verified_at = session.get("verified_ref_at")
+    if verified_at:
+        try:
+            verified_time = datetime.fromisoformat(verified_at)
+            if datetime.now() - verified_time > timedelta(minutes=30):
+                session.pop("verified_ref", None)
+                session.pop("verified_ref_at", None)
+                flash("Your session has expired. Please verify again.", "warning")
+                return redirect(url_for("register.resume_registration"))
+        except (ValueError, TypeError):
+            pass
 
     # Only attendees can change tickets
     if not isinstance(registration, AttendeeRegistration):

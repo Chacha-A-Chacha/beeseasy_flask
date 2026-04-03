@@ -1265,8 +1265,10 @@ def edit_ticket(id):
     ticket = TicketPrice.query.get_or_404(id)
     form = TicketPriceForm(obj=ticket)
 
-    # Fix enum→string so the SelectField displays the correct value
-    if request.method == "GET" and ticket.ticket_type:
+    # Fix enum→string so the SelectField displays the correct value.
+    # On GET: populate for display. On POST: disabled fields aren't submitted,
+    # so we must restore the value before validation.
+    if ticket.ticket_type:
         form.ticket_type.data = ticket.ticket_type.value
 
     if form.validate_on_submit():

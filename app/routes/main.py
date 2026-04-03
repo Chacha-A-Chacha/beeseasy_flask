@@ -4,6 +4,7 @@ from pathlib import Path
 
 from flask import (
     Blueprint,
+    Response,
     abort,
     current_app,
     flash,
@@ -403,3 +404,56 @@ def test_email_config():
                 "message": f"Email configuration test failed: {str(e)}",
             }
         ), 500
+
+
+@main_bp.route("/robots.txt")
+def robots_txt():
+    """Serve robots.txt for search engine crawlers"""
+    sitemap_url = url_for("main.sitemap_xml", _external=True)
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin/\n"
+        "Disallow: /auth/\n"
+        "Disallow: /register/api/\n"
+        "Disallow: /register/confirmation/\n"
+        "\n"
+        f"Sitemap: {sitemap_url}\n"
+    )
+    return Response(content, mimetype="text/plain")
+
+
+@main_bp.route("/sitemap.xml")
+def sitemap_xml():
+    """Generate sitemap.xml dynamically"""
+    base_url = request.url_root.rstrip("/")
+    pages = [
+        {"loc": "/", "priority": "1.0", "changefreq": "weekly"},
+        {"loc": "/about", "priority": "0.8", "changefreq": "monthly"},
+        {"loc": "/speakers", "priority": "0.8", "changefreq": "weekly"},
+        {"loc": "/partners", "priority": "0.7", "changefreq": "monthly"},
+        {"loc": "/agenda", "priority": "0.8", "changefreq": "weekly"},
+        # {"loc": "/news", "priority": "0.7", "changefreq": "weekly"},
+        {"loc": "/contact", "priority": "0.6", "changefreq": "monthly"},
+        {"loc": "/become-exhibitor", "priority": "0.8", "changefreq": "monthly"},
+        {"loc": "/register/attendee", "priority": "0.9", "changefreq": "monthly"},
+        {"loc": "/register/exhibitor", "priority": "0.9", "changefreq": "monthly"},
+    ]
+
+    xml_entries = []
+    for page in pages:
+        xml_entries.append(
+            f"  <url>\n"
+            f"    <loc>{base_url}{page['loc']}</loc>\n"
+            f"    <changefreq>{page['changefreq']}</changefreq>\n"
+            f"    <priority>{page['priority']}</priority>\n"
+            f"  </url>"
+        )
+
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(xml_entries)
+        + "\n</urlset>"
+    )
+    return Response(xml, mimetype="application/xml")

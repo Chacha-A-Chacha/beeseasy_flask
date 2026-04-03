@@ -573,20 +573,22 @@ class RegistrationService:
 
                 if promo_usage:
                     promo = PromoCode.query.get(promo_usage.promo_code_id)
-                    promo_still_valid = True
+                    promo_still_valid = False
 
-                    if promo and promo.applicable_ticket_types:
-                        if new_ticket_enum.value not in promo.applicable_ticket_types:
-                            promo_still_valid = False
+                    if promo:
+                        promo_still_valid = True
+                        if promo.applicable_ticket_types:
+                            if new_ticket_enum.value not in promo.applicable_ticket_types:
+                                promo_still_valid = False
 
-                    if promo_still_valid and promo:
+                    if promo_still_valid:
                         discount = promo.calculate_discount(new_price)
                         payment.discount_amount = discount
                         promo_usage.discount_amount = discount
                         promo_usage.original_amount = new_price
                         promo_usage.final_amount = new_price - discount
                     else:
-                        # Invalidate promo
+                        # Promo invalid for new ticket or deleted — remove discount
                         payment.discount_amount = Decimal("0.00")
                         db.session.delete(promo_usage)
 

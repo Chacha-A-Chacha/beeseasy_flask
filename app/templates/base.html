@@ -3,18 +3,127 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+        <title>{% block title %}{{ event_name }}{% endblock %}</title>
+
+        <!-- SEO Meta Tags -->
         <meta
             name="description"
-            content="{{ event_name }} - {{ event_theme }}. {{ event_date }}, {{ event_location }}."
+            content="{% block meta_description %}{{ event_name }} - {{ event_theme }}. {{ event_date }}, {{ event_location }}.{% endblock %}"
         />
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <title>{% block title %}{{ event_name }}{% endblock %}</title>
+        <meta
+            name="keywords"
+            content="{% block meta_keywords %}pollination, africa, summit, bees, butterflies, biodiversity, food security, conservation, pollinators, arusha, tanzania, conference 2026{% endblock %}"
+        />
+        <meta name="author" content="{{ organization_name }}" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="{{ request.url }}" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="{{ request.url }}" />
+        <meta
+            property="og:title"
+            content="{% block og_title %}{{ self.title() }}{% endblock %}"
+        />
+        <meta
+            property="og:description"
+            content="{{ self.meta_description() }}"
+        />
+        <meta
+            property="og:image"
+            content="{{ url_for('static', filename='favicon_io/android-chrome-512x512.png', _external=True) }}"
+        />
+        <meta property="og:site_name" content="{{ event_name }}" />
+        <meta property="og:locale" content="en_US" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ self.og_title() }}" />
+        <meta
+            name="twitter:description"
+            content="{{ self.meta_description() }}"
+        />
+        <meta
+            name="twitter:image"
+            content="{{ url_for('static', filename='favicon_io/android-chrome-512x512.png', _external=True) }}"
+        />
+
+        <!-- Favicon & PWA -->
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='favicon_io/favicon.ico') }}"
+            sizes="any"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='favicon_io/favicon-32x32.png') }}"
+            type="image/png"
+            sizes="32x32"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='favicon_io/favicon-16x16.png') }}"
+            type="image/png"
+            sizes="16x16"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/logo.svg') }}"
+            type="image/svg+xml"
+        />
+        <link
+            rel="apple-touch-icon"
+            href="{{ url_for('static', filename='favicon_io/apple-touch-icon.png') }}"
+        />
+        <link
+            rel="manifest"
+            href="{{ url_for('static', filename='favicon_io/site.webmanifest') }}"
+        />
+        <meta name="theme-color" content="#14532d" />
+
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Event",
+                "name": "{{ event_name }}",
+                "description": "{{ event_theme }}",
+                "startDate": "2026-06-03",
+                "endDate": "2026-06-05",
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "eventStatus": "https://schema.org/EventScheduled",
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event_venue }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "Arusha",
+                        "addressCountry": "TZ"
+                    }
+                },
+                "organizer": {
+                    "@type": "Organization",
+                    "name": "{{ organization_name }}",
+                    "url": "{{ website_url }}"
+                },
+                "image": "{{ url_for('static', filename='favicon_io/android-chrome-512x512.png', _external=True) }}"
+            }
+        </script>
+        {% block extra_structured_data %}{% endblock %}
 
         <!-- Tailwind CSS -->
         <link
             rel="stylesheet"
             href="{{ url_for('static', filename='src/output.css') }}"
         />
+
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
 
         <!-- Tailwind Plus Elements (for advanced components) -->
         <script
@@ -32,13 +141,6 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        />
-
-        <!-- Favicon -->
-        <link
-            rel="icon"
-            href="{{ url_for('static', filename='images/logo.svg') }}"
-            type="image/svg+xml"
         />
 
         <!-- International Telephone Input CSS -->
@@ -484,7 +586,7 @@
             </el-dialog>
         </header>
 
-        <!-- Main Content Area (with top padding for fixed header) -->
+        <!-- Main Content Area -->
         <main class="flex-grow pt-10">
             <!-- Flash Messages with Alpine.js -->
             {% with messages = get_flashed_messages(with_categories=true) %} {%
@@ -691,8 +793,7 @@
                             />
                         </svg>
                     </a>
-                    #}
-                    {# YouTube – uncomment when real link is available
+                    #} {# YouTube – uncomment when real link is available
                     <a
                         href="https://youtube.com/@pollinationafrica"
                         target="_blank"
@@ -731,8 +832,7 @@
                     <!-- Copyright -->
                     <p class="text-center text-sm/6 text-gray-300">
                         &copy; {{ now.year if now else '2025' }} {{ event_name
-                        }}. Organized by SAADIT and partners. All rights
-                        reserved.
+                        }}. Founded by SAADIT and partners. All rights reserved.
                     </p>
 
                     <!-- Location & Date -->
@@ -763,15 +863,141 @@
                     </p>
                     <!-- Admin/Staff portal links -->
                     <p class="mt-4 text-center space-x-4">
-                        <a href="{{ url_for('admin.dashboard') }}" class="text-xs text-gray-500 hover:text-primary-yellow transition-colors">Dashboard</a>
-                        <a href="{{ url_for('checkin.dashboard') }}" class="text-xs text-gray-500 hover:text-primary-yellow transition-colors">Check-in</a>
-                        {% if current_user is defined and current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.logout') }}" class="text-xs text-gray-500 hover:text-red-400 transition-colors">Logout</a>
+                        <a
+                            href="{{ url_for('admin.dashboard') }}"
+                            class="text-xs text-gray-500 hover:text-primary-yellow transition-colors"
+                            >Dashboard</a
+                        >
+                        <a
+                            href="{{ url_for('checkin.dashboard') }}"
+                            class="text-xs text-gray-500 hover:text-primary-yellow transition-colors"
+                            >Check-in</a
+                        >
+                        {% if current_user is defined and
+                        current_user.is_authenticated %}
+                        <a
+                            href="{{ url_for('auth.logout') }}"
+                            class="text-xs text-gray-500 hover:text-red-400 transition-colors"
+                            >Logout</a
+                        >
                         {% endif %}
                     </p>
                 </div>
             </div>
         </footer>
+
+        <!-- Registration Promo Popup -->
+        <div
+            x-data="{
+                open: false,
+                earlyBird: false,
+                earlyBirdDeadline: new Date('2026-04-15T23:59:59Z').getTime(),
+                init() {
+                    if (window.location.pathname.startsWith('/register/')) return;
+                    const dismissed = localStorage.getItem('promo_dismissed_at');
+                    if (dismissed && (Date.now() - parseInt(dismissed, 10)) < 86400000) return;
+                    this.earlyBird = Date.now() < this.earlyBirdDeadline;
+                    setTimeout(() => {
+                        this.open = true;
+                        document.body.style.overflow = 'hidden';
+                        this.$nextTick(() => this.$refs.closeBtn?.focus());
+                    }, 3000);
+                },
+                dismiss() {
+                    this.open = false;
+                    document.body.style.overflow = '';
+                    localStorage.setItem('promo_dismissed_at', String(Date.now()));
+                }
+            }"
+            x-show="open"
+            x-cloak
+            @keydown.escape.window="if (open) dismiss()"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Registration promotion"
+            class="fixed inset-0 z-[60] flex items-center justify-center"
+        >
+            <!-- Backdrop -->
+            <div
+                class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                x-show="open"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                @click="dismiss()"
+            ></div>
+
+            <!-- Card -->
+            <div
+                class="relative w-full max-w-md mx-4 rounded-2xl bg-white shadow-2xl overflow-hidden"
+                x-show="open"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+            >
+                <!-- Close button -->
+                <button
+                    x-ref="closeBtn"
+                    @click="dismiss()"
+                    aria-label="Close"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <!-- Top accent strip (primary-dark, subtle) -->
+                <div class="bg-primary-dark px-6 py-5 text-center">
+                    <p class="text-xs font-semibold tracking-widest uppercase text-accent-yellow/80">{{ event_short_name }}</p>
+                    <h3 class="mt-1 text-lg font-bold text-white">Registration is Open</h3>
+                    <p class="mt-1 text-sm text-gray-400">{{ event_date }} &middot; {{ event_venue }}</p>
+                </div>
+
+                <!-- Body -->
+                <div class="px-6 pt-5 pb-6">
+                    <!-- Early bird promo (shown only before deadline) -->
+                    <template x-if="earlyBird">
+                        <div class="mb-5 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-center">
+                            <p class="text-sm text-gray-700">
+                                Early Bird &mdash;
+                                <strong class="text-accent-orange">20% off</strong>
+                                all attendee tickets
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">Offer ends April 15, 2026</p>
+                        </div>
+                    </template>
+
+                    <!-- Default message (shown after early bird expires) -->
+                    <template x-if="!earlyBird">
+                        <p class="mb-5 text-sm text-gray-600 text-center">
+                            Secure your spot at Africa's premier pollination summit.
+                        </p>
+                    </template>
+
+                    <div class="flex gap-3">
+                        <a
+                            href="{{ url_for('register.attendee_index') }}"
+                            class="flex-1 rounded-lg bg-accent-orange px-4 py-2.5 text-sm font-semibold text-white text-center shadow-sm hover:bg-accent-yellow hover:text-primary-dark transition-all duration-200"
+                        >
+                            Register as Attendee
+                        </a>
+                        <a
+                            href="{{ url_for('register.exhibitor_index') }}"
+                            class="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 text-center hover:border-primary-dark hover:text-primary-dark transition-all duration-200"
+                        >
+                            Exhibit
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Announcement Banner (Bottom Sticky) -->
         <div
@@ -795,8 +1021,37 @@
             x-init="tick(); setInterval(() => tick(), 1000)"
             class="pointer-events-none fixed inset-x-0 bottom-0 z-50 sm:px-6 sm:pb-5 lg:px-8"
         >
+            <style>
+                @keyframes coin-bounce {
+                    0% {
+                        transform: translateY(0);
+                    }
+                    8% {
+                        transform: translateY(-12px);
+                    }
+                    16% {
+                        transform: translateY(0);
+                    }
+                    22% {
+                        transform: translateY(-6px);
+                    }
+                    28% {
+                        transform: translateY(0);
+                    }
+                    32% {
+                        transform: translateY(-2px);
+                    }
+                    36% {
+                        transform: translateY(0);
+                    }
+                    100% {
+                        transform: translateY(0);
+                    }
+                }
+            </style>
             <div
                 class="pointer-events-auto relative isolate mx-auto max-w-7xl overflow-hidden bg-primary-dark px-4 py-2.5 shadow-2xl ring-1 ring-accent-yellow/40 sm:rounded-xl sm:px-6 sm:py-3"
+                style="animation: coin-bounce 6s ease-in-out infinite"
             >
                 <!-- Radial gradient glows at 25% and 75% -->
                 <svg
@@ -854,15 +1109,12 @@
                         >
                             <circle r="1" cx="1" cy="1" />
                         </svg>
-                        Save
+                        Get
                         <strong class="text-accent-yellow font-bold"
-                            >30%</strong
+                            >20% off</strong
                         >
-                        with code
-                        <span
-                            class="inline-flex items-center rounded-md bg-accent-yellow/15 px-2 py-0.5 font-mono text-xs font-bold text-accent-yellow ring-1 ring-inset ring-accent-yellow/30 sm:text-sm"
-                            >EARLYBIRD2026</span
-                        >
+                        all delegate tickets — valid until
+                        <strong class="text-white">April 15, 2026</strong>
                     </p>
 
                     <!-- Countdown -->
@@ -870,16 +1122,28 @@
                         x-show="!finished"
                         class="flex items-center gap-1 text-xs font-mono sm:text-sm"
                     >
-                        <span class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold" x-text="String(days).padStart(2,'0')"></span>
+                        <span
+                            class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold"
+                            x-text="String(days).padStart(2,'0')"
+                        ></span>
                         <span class="text-gray-500">d</span>
                         <span class="text-gray-500">:</span>
-                        <span class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold" x-text="String(hours).padStart(2,'0')"></span>
+                        <span
+                            class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold"
+                            x-text="String(hours).padStart(2,'0')"
+                        ></span>
                         <span class="text-gray-500">h</span>
                         <span class="text-gray-500">:</span>
-                        <span class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold" x-text="String(minutes).padStart(2,'0')"></span>
+                        <span
+                            class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold"
+                            x-text="String(minutes).padStart(2,'0')"
+                        ></span>
                         <span class="text-gray-500">m</span>
                         <span class="text-gray-500">:</span>
-                        <span class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold" x-text="String(seconds).padStart(2,'0')"></span>
+                        <span
+                            class="rounded bg-white/10 px-1.5 py-0.5 text-accent-yellow font-bold"
+                            x-text="String(seconds).padStart(2,'0')"
+                        ></span>
                         <span class="text-gray-500">s</span>
                     </div>
 
@@ -1060,5 +1324,15 @@
 
         <!-- Page-specific scripts -->
         {% block extra_js %}{% endblock %}
+
+        <!-- Service Worker Registration -->
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register(
+                    "{{ url_for('static', filename='sw.js') }}",
+                    { scope: "/" },
+                );
+            }
+        </script>
     </body>
 </html>

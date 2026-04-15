@@ -222,26 +222,27 @@ class BadgeService:
     @classmethod
     def _build_header_band(cls, styles) -> Table:
         """
-        Dark-green header band: circular logo (20mm) on the left,
+        Dark-green header band: circular logo (14mm) on the left,
         event name and date/location in white on the right.
+        Measured height: ~19mm (logo 14mm + 2.5mm padding top/bottom).
         """
-        logo = cls._get_logo_element(size_mm=20)
+        logo = cls._get_logo_element(size_mm=14)
 
         s_name = ParagraphStyle(
             "HdrName",
             parent=styles["Normal"],
-            fontSize=11,
+            fontSize=9,
             fontName="Helvetica-Bold",
             textColor=colors.white,
-            leading=13,
+            leading=11,
         )
         s_detail = ParagraphStyle(
             "HdrDetail",
             parent=styles["Normal"],
-            fontSize=8,
+            fontSize=7,
             textColor=colors.HexColor("#c8e6c9"),
-            leading=10,
-            spaceBefore=1.5 * mm,
+            leading=9,
+            spaceBefore=1 * mm,
         )
 
         text_cell = [
@@ -252,7 +253,7 @@ class BadgeService:
 
         if logo:
             cell_data = [[logo, text_cell]]
-            col_widths = [24 * mm, 61 * mm]
+            col_widths = [18 * mm, 67 * mm]
         else:
             cell_data = [[text_cell]]
             col_widths = [cls.CONTENT_WIDTH]
@@ -262,8 +263,8 @@ class BadgeService:
             ("BACKGROUND",    (0, 0), (-1, -1), cls.COLOR_PRIMARY_DARK),
             ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
             ("ALIGN",         (0, 0), (0, -1),  "CENTER"),
-            ("TOPPADDING",    (0, 0), (-1, -1), 5 * mm),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 5 * mm),
+            ("TOPPADDING",    (0, 0), (-1, -1), 2.5 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5 * mm),
             ("LEFTPADDING",   (0, 0), (0, -1),  2 * mm),
             ("LEFTPADDING",   (1, 0), (1, -1),  3 * mm),
             ("RIGHTPADDING",  (0, 0), (-1, -1), 2 * mm),
@@ -280,10 +281,11 @@ class BadgeService:
         """
         styles = getSampleStyleSheet()
 
+        # font=11pt, leading=13 → 2-line para = 2×13pt=26pt=9.2mm + 2.5mm pad×2 = ~14mm
         if sub_label:
             markup = (
                 f'<b>{label}</b>'
-                f'<br/><font size="8"><i>{sub_label}</i></font>'
+                f'<br/><font size="7"><i>{sub_label}</i></font>'
             )
         else:
             markup = f'<b>{label}</b>'
@@ -291,10 +293,10 @@ class BadgeService:
         s_banner = ParagraphStyle(
             "BannerText",
             parent=styles["Normal"],
-            fontSize=14,
+            fontSize=11,
             textColor=colors.white,
             alignment=TA_CENTER,
-            leading=18,
+            leading=13,
         )
 
         table = Table(
@@ -305,8 +307,8 @@ class BadgeService:
             ("BACKGROUND",    (0, 0), (-1, -1), banner_color),
             ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
             ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
-            ("TOPPADDING",    (0, 0), (-1, -1), 6 * mm),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 6 * mm),
+            ("TOPPADDING",    (0, 0), (-1, -1), 2.5 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5 * mm),
         ]))
         return table
 
@@ -321,6 +323,8 @@ class BadgeService:
         name_size: int = 20,
     ) -> None:
         """Append name / org / title paragraphs to elements list."""
+        # name leading = name_size+3 → single line height = leading pt
+        # org 9pt leading 11 + 0.5mm after; title 8pt leading 10
         s_name = ParagraphStyle(
             "BadgeName",
             parent=styles["Normal"],
@@ -328,26 +332,26 @@ class BadgeService:
             fontName="Helvetica-Bold",
             textColor=cls.COLOR_PRIMARY_DARK,
             alignment=TA_CENTER,
-            leading=name_size + 4,
-            spaceAfter=2 * mm,
+            leading=name_size + 3,
+            spaceAfter=1.5 * mm,
         )
         s_org = ParagraphStyle(
             "BadgeOrg",
             parent=styles["Normal"],
-            fontSize=10,
+            fontSize=9,
             fontName="Helvetica-Bold",
             textColor=cls.COLOR_ACCENT_ORANGE,
             alignment=TA_CENTER,
-            leading=13,
-            spaceAfter=1 * mm,
+            leading=11,
+            spaceAfter=0.5 * mm,
         )
         s_title = ParagraphStyle(
             "BadgeTitle",
             parent=styles["Normal"],
-            fontSize=9,
+            fontSize=8,
             textColor=colors.HexColor("#555555"),
             alignment=TA_CENTER,
-            leading=11,
+            leading=10,
         )
 
         elements.append(Paragraph(name.upper(), s_name))
@@ -391,23 +395,26 @@ class BadgeService:
 
     @classmethod
     def _build_footer(cls, elements: list, styles) -> None:
-        """Append a thin divider + 'Powered by' + CC logo to elements."""
-        elements.append(Spacer(1, 2 * mm))
+        """
+        Thin divider + 'Powered by' + CC logo.
+        Measured total: ~8mm (spacer 1.5mm + HR 0.7mm + text 2mm + logo ~4mm).
+        """
+        elements.append(Spacer(1, 1.5 * mm))
         elements.append(HRFlowable(
             width="100%",
             thickness=0.5,
             color=colors.HexColor("#cccccc"),
             spaceBefore=0,
-            spaceAfter=1.5 * mm,
+            spaceAfter=0.5 * mm,
         ))
 
         s_powered = ParagraphStyle(
             "PoweredBy",
             parent=styles["Normal"],
-            fontSize=6,
-            textColor=colors.HexColor("#999999"),
+            fontSize=5,
+            textColor=colors.HexColor("#aaaaaa"),
             alignment=TA_CENTER,
-            spaceAfter=1 * mm,
+            spaceAfter=0.5 * mm,
         )
         elements.append(Paragraph("Powered by", s_powered))
 
@@ -418,7 +425,7 @@ class BadgeService:
             )
             if logo_path.exists():
                 drawing = svg2rlg(str(logo_path))
-                target_w = 22 * mm
+                target_w = 18 * mm
                 scale = target_w / drawing.width
                 drawing.width = target_w
                 drawing.height = drawing.height * scale
@@ -440,7 +447,7 @@ class BadgeService:
         s_cc = ParagraphStyle(
             "CCText",
             parent=styles["Normal"],
-            fontSize=6,
+            fontSize=5,
             textColor=colors.HexColor("#3db54a"),
             alignment=TA_CENTER,
             fontName="Helvetica-Bold",
@@ -482,32 +489,32 @@ class BadgeService:
             elements = []
             styles = getSampleStyleSheet()
 
-            # Header band
+            # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 2 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
-            # Type banner — yellow, ticket type as sub-label
+            # Type banner (~14mm) — yellow, ticket type as sub-label
             ticket_label = attendee.ticket_type.value.replace("_", " ").title()
             elements.append(
                 cls._build_type_banner(
                     "ATTENDEE", cls.COLOR_ACCENT_YELLOW, sub_label=ticket_label
                 )
             )
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
-            # Name / org / title
+            # Name / org / title (~16mm)
             cls._build_name_block(
                 elements, styles,
                 name=f"{attendee.first_name} {attendee.last_name}",
                 org=attendee.organization,
                 title=attendee.job_title,
-                name_size=20,
+                name_size=16,
             )
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
-            # QR code + reference
+            # QR code + reference (38mm)
             cls._build_qr_section(
-                elements, styles, qr_buffer, attendee.reference_number, qr_size_mm=45
+                elements, styles, qr_buffer, attendee.reference_number, qr_size_mm=38
             )
 
             # Footer
@@ -541,30 +548,30 @@ class BadgeService:
             elements = []
             styles = getSampleStyleSheet()
 
-            # Header band
+            # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 2 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
-            # Type banner — red, media outlet as sub-label
+            # Type banner (~14mm) — red, media outlet as sub-label
             sub = attendee.organization or "Press"
             elements.append(
                 cls._build_type_banner("MEDIA PASS", cls.COLOR_MEDIA, sub_label=sub)
             )
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
-            # Name / org / title
+            # Name / org / title (~16mm)
             cls._build_name_block(
                 elements, styles,
                 name=f"{attendee.first_name} {attendee.last_name}",
                 org=attendee.organization,
                 title=attendee.job_title,
-                name_size=20,
+                name_size=16,
             )
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
-            # QR code + reference
+            # QR code + reference (38mm)
             cls._build_qr_section(
-                elements, styles, qr_buffer, attendee.reference_number, qr_size_mm=45
+                elements, styles, qr_buffer, attendee.reference_number, qr_size_mm=38
             )
 
             # Footer
@@ -598,32 +605,32 @@ class BadgeService:
             elements = []
             styles = getSampleStyleSheet()
 
-            # Header band
+            # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 2 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
-            # Type banner — dark green, booth number as sub-label
+            # Type banner (~14mm) — dark green, booth number as sub-label
             sub = f"Booth {exhibitor.booth_number}" if exhibitor.booth_number else "Exhibitor"
             elements.append(
                 cls._build_type_banner(
                     "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
             )
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
-            # Name / company / title
+            # Name / company / title (~16mm)
             cls._build_name_block(
                 elements, styles,
                 name=f"{exhibitor.first_name} {exhibitor.last_name}",
                 org=exhibitor.company_legal_name,
                 title=exhibitor.job_title,
-                name_size=18,
+                name_size=15,
             )
             elements.append(Spacer(1, 3 * mm))
 
-            # QR code + reference
+            # QR code + reference (36mm)
             cls._build_qr_section(
-                elements, styles, qr_buffer, exhibitor.reference_number, qr_size_mm=42
+                elements, styles, qr_buffer, exhibitor.reference_number, qr_size_mm=36
             )
 
             # Footer
@@ -664,11 +671,11 @@ class BadgeService:
             elements = []
             styles = getSampleStyleSheet()
 
-            # Header band
+            # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 2 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
-            # Type banner — dark green, booth / badge number as sub-label
+            # Type banner (~14mm) — dark green, booth / badge number as sub-label
             sub_parts = []
             if exhibitor.booth_number:
                 sub_parts.append(f"Booth {exhibitor.booth_number}")
@@ -682,23 +689,23 @@ class BadgeService:
                     "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
             )
-            elements.append(Spacer(1, 4 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
-            # Name / company / role
+            # Name / company / role (~16mm)
             cls._build_name_block(
                 elements, styles,
                 name=member_name,
                 org=exhibitor.company_legal_name,
                 title=member_role,
-                name_size=18,
+                name_size=15,
             )
             elements.append(Spacer(1, 3 * mm))
 
-            # QR code + reference (exhibitor ref + TEAM marker)
+            # QR code + reference (36mm)
             cls._build_qr_section(
                 elements, styles, qr_buffer,
                 f"{exhibitor.reference_number} — TEAM",
-                qr_size_mm=42,
+                qr_size_mm=36,
             )
 
             # Footer

@@ -27,9 +27,23 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def index():
-    # You might want to pass featured speakers, news, etc. to home
-    # e.g., latest news posts, top speakers
-    return render_template("index.html")
+    featured_partners = []
+    try:
+        json_path = os.path.join(os.path.dirname(__file__), "..", "data", "partners.json")
+        with open(json_path, "r", encoding="utf-8") as f:
+            partners_data = json.load(f)
+        sorted_partners = sorted(
+            [p for p in partners_data["partners"] if p.get("is_active")],
+            key=lambda x: x["display_order"],
+        )
+        for partner in sorted_partners:
+            partner["logo_url"] = url_for(
+                "static", filename=f"images/partners/{partner['logo_file']}"
+            )
+        featured_partners = sorted_partners[:10]
+    except Exception:
+        pass
+    return render_template("index.html", featured_partners=featured_partners)
 
 
 @main_bp.route("/about")

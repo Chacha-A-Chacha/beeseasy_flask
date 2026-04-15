@@ -122,6 +122,15 @@ def register_attendee_form():
                 url_for("register.confirmation", ref=attendee.reference_number)
             )
         else:
+            # If duplicate email, re-render form with modal auto-open
+            if "already registered" in message.lower():
+                return render_template(
+                    "register/attendee.html",
+                    form=form,
+                    tickets=tickets,
+                    selected_ticket=selected_ticket,
+                    show_resume_modal=True,
+                )
             flash(message, "error")
 
     return render_template(
@@ -217,6 +226,15 @@ def register_exhibitor_form():
                 url_for("register.confirmation", ref=exhibitor.reference_number)
             )
         else:
+            # If duplicate email, re-render form with modal auto-open
+            if "already registered" in message.lower():
+                return render_template(
+                    "register/exhibitor.html",
+                    form=form,
+                    packages=packages,
+                    selected_package=selected_package,
+                    show_resume_modal=True,
+                )
             flash(message, "error")
 
     return render_template(
@@ -479,7 +497,7 @@ def change_ticket(ref):
 
 @register_bp.route("/api/validate-email", methods=["POST"])
 def validate_email():
-    """Check email availability"""
+    """Check email availability — returns resume info for existing registrations"""
     email = request.json.get("email", "").lower()
     registration_type = request.json.get("type", "attendee")
 
@@ -490,17 +508,155 @@ def validate_email():
         db.func.lower(Registration.email) == email,
         Registration.registration_type == registration_type,
         Registration.is_deleted == False,
-    ).first()
+        Registration.status.notin_([
+            RegistrationStatus.EXPIRED,
+            RegistrationStatus.CANCELLED,
+        ]),
+    ).order_by(Registration.created_at.desc()).first()
 
     if existing:
+        resume_url = url_for("register.resume_registration", _external=True)
+
         return jsonify(
             {
                 "valid": False,
+                "existing": True,
+                "resume_url": resume_url,
                 "message": f"This email is already registered as {registration_type}",
             }
         )
 
     return jsonify({"valid": True, "message": "Email available"})
+
+
+@register_bp.route("/api/send-otp", methods=["POST"])
+def api_send_otp():
+    """Send OTP for existing registration (AJAX version of resume flow)"""
+    email = request.json.get("email", "").strip().lower()
+    registration_type = request.json.get("type", "attendee")
+
+    if not email:
+        return jsonify({"success": False, "message": "Email is required"})
+
+    registration = Registration.query.filter(
+        db.func.lower(Registration.email) == email,
+        Registration.registration_type == registration_type,
+        Registration.is_deleted == False,
+        Registration.status.in_([
+            RegistrationStatus.PENDING,
+            RegistrationStatus.CONFIRMED,
+        ]),
+    ).order_by(Registration.created_at.desc()).first()
+
+    if not registration:
+        return jsonify({"success": False, "message": "No registration found for this email."})
+
+    # Generate and store OTP
+    otp = _generate_otp()
+    registration.resume_otp = otp
+    registration.resume_otp_expires = datetime.now() + timedelta(minutes=10)
+    registration.resume_otp_attempts = 0
+    db.session.commit()
+
+    # Send OTP email
+    try:
+        email_service = EnhancedEmailService(current_app)
+
+        ticket_name = ""
+        if hasattr(registration, "ticket_price") and registration.ticket_price:
+            ticket_name = registration.ticket_price.name
+        elif hasattr(registration, "package_price") and registration.package_price:
+            ticket_name = registration.package_price.name
+
+        email_service.send_notification(
+            recipient=registration.email,
+            template="resume_otp",
+            subject="Your Verification Code - Pollination Africa Summit",
+            template_context={
+                "first_name": registration.first_name,
+                "otp_code": otp,
+                "reference_number": registration.reference_number,
+                "ticket_name": ticket_name,
+                "email": registration.email,
+            },
+            priority=0,
+        )
+    except Exception as e:
+        logger.error(f"Failed to send OTP email: {str(e)}")
+
+    session["resume_email"] = email
+    return jsonify({"success": True, "message": "Verification code sent to your email."})
+
+
+@register_bp.route("/api/verify-otp", methods=["POST"])
+def api_verify_otp():
+    """Verify OTP and return redirect URL (AJAX version of verify flow)"""
+    from app.utils.checkout_tokens import generate_checkout_token
+
+    email = request.json.get("email", "").strip().lower()
+    otp_input = request.json.get("otp", "").strip()
+
+    if not email or not otp_input or len(otp_input) != 6:
+        return jsonify({"success": False, "message": "Please enter the 6-digit code."})
+
+    registration = Registration.query.filter(
+        db.func.lower(Registration.email) == email,
+        Registration.is_deleted == False,
+        Registration.resume_otp.isnot(None),
+    ).order_by(Registration.created_at.desc()).first()
+
+    if not registration:
+        return jsonify({"success": False, "message": "No pending verification found."})
+
+    # Check attempts
+    if registration.resume_otp_attempts >= 5:
+        registration.resume_otp = None
+        registration.resume_otp_expires = None
+        db.session.commit()
+        return jsonify({"success": False, "locked": True, "message": "Too many attempts. Please request a new code."})
+
+    # Check expiry
+    if registration.resume_otp_expires and datetime.now() > registration.resume_otp_expires:
+        registration.resume_otp = None
+        db.session.commit()
+        return jsonify({"success": False, "expired": True, "message": "Code has expired. Please request a new one."})
+
+    # Verify OTP
+    registration.resume_otp_attempts = (registration.resume_otp_attempts or 0) + 1
+
+    if otp_input != registration.resume_otp:
+        db.session.commit()
+        remaining = 5 - registration.resume_otp_attempts
+        return jsonify({"success": False, "message": f"Invalid code. {remaining} attempts remaining."})
+
+    # Success — clear OTP and mark session as verified
+    registration.resume_otp = None
+    registration.resume_otp_expires = None
+    registration.resume_otp_attempts = 0
+    db.session.commit()
+
+    session["verified_ref"] = registration.reference_number
+    session["verified_ref_at"] = datetime.now().isoformat()
+    session.pop("resume_email", None)
+
+    # Build the appropriate redirect URL
+    is_paid = registration.is_fully_paid()
+    if is_paid:
+        redirect_url = url_for("register.confirmation", ref=registration.reference_number)
+    else:
+        payment = registration.payments[0] if registration.payments else None
+        if payment:
+            token = generate_checkout_token(registration.reference_number)
+            redirect_url = url_for("payments.checkout", ref=registration.reference_number, t=token)
+        else:
+            redirect_url = url_for("register.confirmation", ref=registration.reference_number)
+
+    return jsonify({
+        "success": True,
+        "redirect_url": redirect_url,
+        "is_paid": is_paid,
+        "message": "Verified successfully!",
+    })
 
 
 @register_bp.route("/api/validate-promo", methods=["POST"])

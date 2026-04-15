@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Invoice Request - {{ event_name }}{%
+{% extends "base.html" %} {% block title %}Proforma Invoice - {{ event_name }}{%
 endblock %} {% block content %}
 
 <!-- ============================================ -->
@@ -70,7 +70,7 @@ endblock %} {% block content %}
             <h1
                 class="text-5xl font-semibold tracking-tight text-white sm:text-7xl"
             >
-                Invoice Request
+                Proforma Invoice
             </h1>
             <p
                 class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl/8"
@@ -78,8 +78,7 @@ endblock %} {% block content %}
                 {{ event_name }}
             </p>
             <p class="mt-4 text-base text-gray-300">
-                Your invoice request has been received and will be processed
-                shortly.
+                Your proforma invoice has been generated and sent to your email.
             </p>
         </div>
     </div>
@@ -120,7 +119,7 @@ endblock %} {% block content %}
                         </svg>
                     </div>
                     <span class="ml-2 font-semibold text-primary-dark"
-                        >Invoice Requested</span
+                        >Invoice Sent</span
                     >
                 </div>
                 <div class="flex-1 h-0.5 bg-gray-200 mx-4"></div>
@@ -164,12 +163,12 @@ endblock %} {% block content %}
             <h2
                 class="mt-6 text-3xl font-semibold tracking-tight text-gray-900"
             >
-                Invoice Request Received
+                Proforma Invoice Sent
             </h2>
             <p class="mt-3 text-lg text-gray-600">
-                Your invoice will be sent to
-                <strong class="font-semibold">{{ registration.email }}</strong>
-                within 24 hours.
+                Your proforma invoice has been sent to
+                <strong class="font-semibold">{{ registration.email }}</strong>.
+                Please check your inbox.
             </p>
         </div>
 
@@ -191,12 +190,13 @@ endblock %} {% block content %}
                 </div>
                 <div>
                     <h3 class="text-base font-semibold text-green-900">
-                        Invoice request submitted successfully
+                        Proforma invoice sent successfully
                     </h3>
                     <p class="mt-1 text-sm text-green-800">
-                        The invoice will include payment instructions and bank
-                        details. Once payment is received and verified, you will
-                        receive your registration confirmation and event badge.
+                        The invoice with payment instructions and bank details
+                        has been sent to your email. Once payment is received
+                        and verified, you will receive your registration
+                        confirmation and event badge.
                     </p>
                 </div>
             </div>

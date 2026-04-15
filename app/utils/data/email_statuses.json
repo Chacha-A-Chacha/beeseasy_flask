@@ -1,16 +1,16 @@
 {
-  "registration_received_attendee_1773229839_chachaalex.c": {
-    "task_id": "registration_received_attendee_1773229839_chachaalex.c",
-    "recipient": "chachaalex.c@gmail.com",
-    "subject": "Registration Received - Complete Payment",
-    "group_id": "notification_registration_received_attendee",
-    "batch_id": "single_registration_received_attendee_1773229839",
+  "invoice_request_confirmation_1776175368_calex.chacha": {
+    "task_id": "invoice_request_confirmation_1776175368_calex.chacha",
+    "recipient": "calex.chacha@outlook.com",
+    "subject": "Proforma Invoice - Pollination Africa Summit 2026",
+    "group_id": "notification_invoice_request_confirmation",
+    "batch_id": "single_invoice_request_confirmation_1776175368",
     "status": "sent",
     "attempts": 1,
     "max_attempts": 3,
-    "timestamp": "2026-03-11T14:50:39.759892",
-    "last_attempt": "2026-03-11T14:50:39.759892",
-    "sent_time": "2026-03-11T14:50:49.420897",
+    "timestamp": "2026-04-14T17:02:48.951208",
+    "last_attempt": "2026-04-14T17:02:48.951304",
+    "sent_time": "2026-04-14T17:02:58.111210",
     "error": null,
     "priority": 1
   }

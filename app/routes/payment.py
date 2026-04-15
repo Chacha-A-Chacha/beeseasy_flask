@@ -4,6 +4,7 @@ Handles checkout, payment processing, and webhooks
 """
 
 import logging
+import os
 from datetime import datetime, timedelta
 
 import stripe
@@ -11,6 +12,7 @@ from flask import (
     Blueprint,
     current_app,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -62,15 +64,6 @@ def checkout(ref):
 
     if not payment:
         flash("Payment record not found. Please contact support.", "error")
-        return redirect(url_for("register.confirmation", ref=ref))
-
-    # Check if payment has expired
-    if (
-        payment.payment_due_date
-        and payment.payment_due_date < datetime.now()
-        and payment.payment_status in (PaymentStatus.PENDING, PaymentStatus.FAILED)
-    ):
-        flash("This payment link has expired. Please register again or contact support.", "warning")
         return redirect(url_for("register.confirmation", ref=ref))
 
     form = PaymentMethodForm()
@@ -707,12 +700,44 @@ def invoice_request(ref):
         flash("Payment record not found.", "error")
         return redirect(url_for("register.confirmation", ref=ref))
 
+    # Check if already paid
+    if registration.is_fully_paid():
+        flash("This registration is already paid.", "info")
+        return redirect(url_for("register.confirmation", ref=ref))
+
+    # Idempotency: if invoice already generated and sent, just show the page
+    if (
+        payment.payment_method == PaymentMethod.INVOICE
+        and payment.payment_status == PaymentStatus.PENDING
+        and payment.invoice_generated
+        and payment.invoice_sent
+    ):
+        return render_template(
+            "payments/invoice.html", registration=registration, payment=payment
+        )
+
     # Update payment method
     payment.payment_method = PaymentMethod.INVOICE
     payment.payment_status = PaymentStatus.PENDING
     db.session.commit()
 
-    # Send invoice request confirmation email
+    # Generate proforma invoice PDF
+    invoice_path = None
+    try:
+        from app.services.invoice_service import InvoiceService
+
+        success, msg, invoice_url = InvoiceService.generate_invoice(payment.id)
+        if success and invoice_url:
+            invoice_path = os.path.join(
+                current_app.root_path, invoice_url.lstrip("/")
+            )
+            logger.info(f"Invoice PDF generated: {invoice_url}")
+        else:
+            logger.error(f"Invoice PDF generation failed: {msg}")
+    except Exception as e:
+        logger.error(f"Invoice PDF generation error: {str(e)}", exc_info=True)
+
+    # Send invoice email with PDF attachment
     try:
         from app.utils.enhanced_email import EnhancedEmailService
 
@@ -724,7 +749,7 @@ def invoice_request(ref):
             "amount_due": float(payment.total_amount),
             "currency": payment.currency,
             "event_name": current_app.config.get(
-                "EVENT_NAME", "Pollination Africa Symposium 2026"
+                "EVENT_NAME", "Pollination Africa Summit 2026"
             ),
             "event_date": current_app.config.get("EVENT_DATE", "3-5 June 2026"),
             "event_location": current_app.config.get(
@@ -745,21 +770,33 @@ def invoice_request(ref):
             ),
         }
 
+        attachments = []
+        if invoice_path and os.path.exists(invoice_path):
+            invoice_filename = f"Proforma_Invoice_{registration.reference_number}.pdf"
+            attachments.append({"path": invoice_path, "filename": invoice_filename})
+
         email_service.send_notification(
             recipient=registration.email,
             template="invoice_request_confirmation",
-            subject="Invoice Request Received - Pollination Africa Symposium 2026",
+            subject=f"Proforma Invoice - {current_app.config.get('EVENT_NAME', 'Pollination Africa Summit 2026')}",
             template_context=context,
             priority=1,
+            attachments=attachments if attachments else None,
         )
 
-        logger.info(f"Invoice request confirmation email sent to {registration.email}")
+        # Mark invoice as sent
+        if invoice_path and os.path.exists(invoice_path):
+            payment.invoice_sent = True
+            payment.invoice_sent_at = datetime.now()
+            db.session.commit()
+
+        logger.info(f"Invoice email sent to {registration.email}")
 
     except Exception as e:
-        logger.error(f"Failed to send invoice request email: {str(e)}", exc_info=True)
+        logger.error(f"Failed to send invoice email: {str(e)}", exc_info=True)
 
     flash(
-        "Invoice request received. An invoice will be sent to your email within 24 hours.",
+        "Your proforma invoice has been generated and sent to your email.",
         "success",
     )
     return render_template(
@@ -1010,22 +1047,3 @@ def create_payment_intent():
 
 
 # ============================================
-# INVOICE DOWNLOAD
-# ============================================
-
-
-@payments_bp.route("/invoice/download/<ref>")
-def download_invoice(ref):
-    """Download invoice PDF"""
-    registration = Registration.query.filter_by(
-        reference_number=ref, is_deleted=False
-    ).first_or_404()
-
-    payment = registration.payments[0] if registration.payments else None
-
-    if not payment:
-        abort(404)
-
-    # TODO: Generate PDF invoice
-    # For now, redirect to invoice page
-    return redirect(url_for("payments.invoice_request", ref=ref))

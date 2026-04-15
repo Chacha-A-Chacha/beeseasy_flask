@@ -156,6 +156,8 @@ class Config:
     BANK_ACCOUNT_NUMBER: str | None = os.getenv("BANK_ACCOUNT_NUMBER")
     BANK_SWIFT: str | None = os.getenv("BANK_SWIFT")
     BANK_BRANCH: str = os.getenv("BANK_BRANCH", "Main Branch")
+    BANK_BRANCH_CODE: str | None = os.getenv("BANK_BRANCH_CODE")
+    BANK_ADDRESS: str | None = os.getenv("BANK_ADDRESS")
 
     # --- Event Configuration ---
     EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Summit 2026")

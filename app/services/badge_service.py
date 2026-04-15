@@ -2,13 +2,12 @@
 Enhanced Badge Generation Service for Pollination Africa 2026
 Generates PDF badges with embedded QR codes for:
 - Attendees (yellow banner)
-- Media Pass (orange/red banner)
+- Media Pass (red banner)
 - Exhibitors (green banner)
 - Exhibitor Team Members (green banner with team designation)
 """
 
 import logging
-import os
 import secrets
 from datetime import datetime
 from io import BytesIO
@@ -17,13 +16,13 @@ from typing import Optional, Tuple
 
 import qrcode
 from flask import current_app
-from reportlab.graphics import renderPDF
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A6
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
+    HRFlowable,
     Image,
     Paragraph,
     SimpleDocTemplate,
@@ -48,21 +47,20 @@ logger = logging.getLogger(__name__)
 class BadgeService:
     """Service for generating event badges with QR codes"""
 
-    # Badge dimensions (A6 = 105mm x 148mm)
-    BADGE_SIZE = A6  # Portrait orientation
-
-    # Storage configuration
+    # Badge dimensions (A6 = 105mm x 148mm portrait)
+    BADGE_SIZE = A6
     STORAGE_BASE = "storage/badges"
 
-    # Badge colors - Theme consistent with base.html
-    COLOR_PRIMARY_DARK = colors.HexColor("#142601")  # Very Dark Green - Text/Background
-    COLOR_PRIMARY_MEDIUM = colors.HexColor(
-        "#25400a"
-    )  # Dark Forest Green - Alt background
-    COLOR_ACCENT_YELLOW = colors.HexColor("#f2c12e")  # Golden Yellow - Attendee badge
-    COLOR_ACCENT_ORANGE = colors.HexColor("#bf7e04")  # Orange/Amber - Secondary accent
-    COLOR_ACCENT_BROWN = colors.HexColor("#8c5c03")  # Brown - Borders/Details
-    COLOR_MEDIA = colors.HexColor("#DC2626")  # Red - Media Pass (kept for distinction)
+    # Content width: A6 105mm - 10mm left - 10mm right margins
+    CONTENT_WIDTH = 85 * mm
+
+    # Brand colors
+    COLOR_PRIMARY_DARK   = colors.HexColor("#142601")
+    COLOR_PRIMARY_MEDIUM = colors.HexColor("#25400a")
+    COLOR_ACCENT_YELLOW  = colors.HexColor("#f2c12e")
+    COLOR_ACCENT_ORANGE  = colors.HexColor("#bf7e04")
+    COLOR_ACCENT_BROWN   = colors.HexColor("#8c5c03")
+    COLOR_MEDIA          = colors.HexColor("#DC2626")
 
     # ============================================
     # MAIN BADGE GENERATION
@@ -73,39 +71,28 @@ class BadgeService:
         cls, registration_id: int, force_regenerate: bool = False
     ) -> Tuple[bool, str, Optional[str]]:
         """
-        Generate badge for a registration (attendee, media, or exhibitor)
-
-        Args:
-            registration_id: Registration ID
-            force_regenerate: Force regenerate even if exists
+        Generate badge for a registration (attendee, media, or exhibitor).
 
         Returns:
             Tuple of (success, message, badge_url)
         """
         try:
-            # Get registration
             registration = Registration.query.get(registration_id)
-
             if not registration:
                 return False, "Registration not found", None
 
-            # Check if already generated and not forcing regenerate
             if registration.qr_code_image_url and not force_regenerate:
                 return True, "Badge already exists", registration.qr_code_image_url
 
-            # Generate QR code data if not exists
             if not registration.qr_code_data:
                 registration.qr_code_data = (
                     f"POLLINATION2026-{registration.id}-{registration.reference_number}"
                 )
                 db.session.commit()
 
-            # Generate QR code image
             qr_buffer = cls._generate_qr_code(registration.qr_code_data)
 
-            # Determine badge type and create appropriate badge
             if isinstance(registration, AttendeeRegistration):
-                # Check if media pass
                 if (
                     registration.professional_category
                     == ProfessionalCategory.MEDIA_JOURNALIST
@@ -113,9 +100,7 @@ class BadgeService:
                     success, filename = cls._create_media_pass(registration, qr_buffer)
                     badge_type = "media"
                 else:
-                    success, filename = cls._create_attendee_badge(
-                        registration, qr_buffer
-                    )
+                    success, filename = cls._create_attendee_badge(registration, qr_buffer)
                     badge_type = "attendee"
             elif isinstance(registration, ExhibitorRegistration):
                 success, filename = cls._create_exhibitor_badge(registration, qr_buffer)
@@ -126,18 +111,14 @@ class BadgeService:
             if not success:
                 return False, f"Failed to create badge: {filename}", None
 
-            # Generate URL path
             year = datetime.now().year
             badge_url = f"/{cls.STORAGE_BASE}/{year}/{badge_type}/{filename}"
-
-            # Update registration with badge URL
             registration.qr_code_image_url = badge_url
             db.session.commit()
 
             logger.info(
                 f"Badge generated: {registration.reference_number} (Type: {badge_type})"
             )
-
             return True, "Badge generated successfully", badge_url
 
         except Exception as e:
@@ -154,31 +135,20 @@ class BadgeService:
         member_number: int = None,
     ) -> Tuple[bool, str, Optional[str]]:
         """
-        Generate additional badge for exhibitor team member
-        Called by admin to create team badges after registration
-
-        Args:
-            exhibitor_id: Exhibitor registration ID
-            member_name: Team member full name
-            member_role: Team member job title/role
-            member_number: Badge number (e.g., 2 for "Badge 2 of 5")
+        Generate additional badge for exhibitor team member.
 
         Returns:
             Tuple of (success, message, badge_url)
         """
         try:
-            # Get exhibitor registration
             exhibitor = ExhibitorRegistration.query.get(exhibitor_id)
-
             if not exhibitor:
                 return False, "Exhibitor registration not found", None
 
-            # Generate unique QR code for team member
             team_id = secrets.token_hex(4).upper()
             qr_data = f"POLLINATION2026-{exhibitor_id}-TEAM-{team_id}"
             qr_buffer = cls._generate_qr_code(qr_data)
 
-            # Create team member badge
             success, filename = cls._create_team_member_badge(
                 exhibitor=exhibitor,
                 member_name=member_name,
@@ -191,14 +161,11 @@ class BadgeService:
             if not success:
                 return False, f"Failed to create team badge: {filename}", None
 
-            # Generate URL path
             year = datetime.now().year
             badge_url = f"/{cls.STORAGE_BASE}/{year}/exhibitor/{filename}"
-
             logger.info(
                 f"Team badge generated for exhibitor {exhibitor.reference_number}: {member_name}"
             )
-
             return True, "Team badge generated successfully", badge_url
 
         except Exception as e:
@@ -211,16 +178,7 @@ class BadgeService:
 
     @classmethod
     def _generate_qr_code(cls, data: str, size: int = 300) -> BytesIO:
-        """
-        Generate QR code image
-
-        Args:
-            data: Data to encode in QR code
-            size: Size of QR code in pixels
-
-        Returns:
-            BytesIO object containing PNG image
-        """
+        """Generate QR code image as a PNG in a BytesIO buffer."""
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -229,99 +187,265 @@ class BadgeService:
         )
         qr.add_data(data)
         qr.make(fit=True)
-
         img = qr.make_image(fill_color="black", back_color="white")
-
-        # Save to BytesIO
-        img_buffer = BytesIO()
-        img.save(img_buffer, format="PNG")
-        img_buffer.seek(0)
-
-        return img_buffer
+        buf = BytesIO()
+        img.save(buf, format="PNG")
+        buf.seek(0)
+        return buf
 
     # ============================================
-    # ATTRIBUTION FOOTER
+    # SHARED DESIGN HELPERS
     # ============================================
 
     @classmethod
-    def _add_attribution_footer(cls, elements: list, styles) -> None:
+    def _get_logo_element(cls, size_mm: float = 20):
         """
-        Add Chacha Technologies attribution footer to badge
-
-        Args:
-            elements: List of PDF elements to append to
-            styles: ReportLab styles object
+        Load the circular Pollination Africa logo SVG scaled to size_mm.
+        Returns a ReportLab Drawing or None if unavailable.
         """
         try:
-            # Add minimal spacing before footer (reduced from 3mm to 2mm)
-            elements.append(Spacer(1, 2 * mm))
-
-            # Attribution text style
-            footer_style = ParagraphStyle(
-                "FooterStyle",
-                parent=styles["Normal"],
-                fontSize=6,
-                textColor=colors.HexColor("#666666"),
-                alignment=TA_CENTER,
-                spaceAfter=0.2 * mm,
+            logo_path = (
+                Path(current_app.root_path) / "static" / "images" / "logo.svg"
             )
-
-            # Powered by text
-            elements.append(Paragraph("Powered by", footer_style))
-
-            # Try to load SVG logo
-            try:
-                logo_path = (
-                    Path(current_app.root_path)
-                    / "static"
-                    / "external"
-                    / "CC_logo_full.svg"
-                )
-                if logo_path.exists():
-                    drawing = svg2rlg(str(logo_path))
-                    # Scale to appropriate size (25mm width)
-                    scale_factor = (25 * mm) / drawing.width
-                    drawing.width = 25 * mm
-                    drawing.height = drawing.height * scale_factor
-                    drawing.scale(scale_factor, scale_factor)
-
-                    # Center the logo using a table
-                    logo_table = Table([[drawing]], colWidths=[85 * mm])
-                    logo_table.setStyle(
-                        TableStyle(
-                            [
-                                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                            ]
-                        )
-                    )
-                    elements.append(logo_table)
-                else:
-                    # Fallback to text if logo not found
-                    logo_style = ParagraphStyle(
-                        "LogoStyle",
-                        parent=styles["Normal"],
-                        fontSize=6,
-                        textColor=colors.HexColor("#3db54a"),
-                        alignment=TA_CENTER,
-                        fontName="Helvetica-Bold",
-                    )
-                    elements.append(Paragraph("Chacha Technologies", logo_style))
-            except Exception as e:
-                logger.warning(f"Could not load SVG logo: {str(e)}")
-                # Fallback to text
-                logo_style = ParagraphStyle(
-                    "LogoStyle",
-                    parent=styles["Normal"],
-                    fontSize=6,
-                    textColor=colors.HexColor("#3db54a"),
-                    alignment=TA_CENTER,
-                    fontName="Helvetica-Bold",
-                )
-                elements.append(Paragraph("Chacha Technologies", logo_style))
-
+            if logo_path.exists():
+                drawing = svg2rlg(str(logo_path))
+                target = size_mm * mm
+                scale = target / drawing.width
+                drawing.width = target
+                drawing.height = target
+                drawing.scale(scale, scale)
+                return drawing
         except Exception as e:
-            logger.warning(f"Error adding attribution footer: {str(e)}")
+            logger.warning(f"Could not load badge logo: {e}")
+        return None
+
+    @classmethod
+    def _build_header_band(cls, styles) -> Table:
+        """
+        Dark-green header band: circular logo (20mm) on the left,
+        event name and date/location in white on the right.
+        """
+        logo = cls._get_logo_element(size_mm=20)
+
+        s_name = ParagraphStyle(
+            "HdrName",
+            parent=styles["Normal"],
+            fontSize=11,
+            fontName="Helvetica-Bold",
+            textColor=colors.white,
+            leading=13,
+        )
+        s_detail = ParagraphStyle(
+            "HdrDetail",
+            parent=styles["Normal"],
+            fontSize=8,
+            textColor=colors.HexColor("#c8e6c9"),
+            leading=10,
+            spaceBefore=1.5 * mm,
+        )
+
+        text_cell = [
+            Paragraph("POLLINATION AFRICA", s_name),
+            Paragraph("SUMMIT 2026", s_name),
+            Paragraph("Arusha, Tanzania  •  June 3–5", s_detail),
+        ]
+
+        if logo:
+            cell_data = [[logo, text_cell]]
+            col_widths = [24 * mm, 61 * mm]
+        else:
+            cell_data = [[text_cell]]
+            col_widths = [cls.CONTENT_WIDTH]
+
+        table = Table(cell_data, colWidths=col_widths)
+        table.setStyle(TableStyle([
+            ("BACKGROUND",    (0, 0), (-1, -1), cls.COLOR_PRIMARY_DARK),
+            ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+            ("ALIGN",         (0, 0), (0, -1),  "CENTER"),
+            ("TOPPADDING",    (0, 0), (-1, -1), 5 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 5 * mm),
+            ("LEFTPADDING",   (0, 0), (0, -1),  2 * mm),
+            ("LEFTPADDING",   (1, 0), (1, -1),  3 * mm),
+            ("RIGHTPADDING",  (0, 0), (-1, -1), 2 * mm),
+        ]))
+        return table
+
+    @classmethod
+    def _build_type_banner(
+        cls, label: str, banner_color, sub_label: str = None
+    ) -> Table:
+        """
+        Colored type banner (ATTENDEE / MEDIA PASS / EXHIBITOR) spanning
+        full content width. Optional sub_label shown below in smaller italic.
+        """
+        styles = getSampleStyleSheet()
+
+        if sub_label:
+            markup = (
+                f'<b>{label}</b>'
+                f'<br/><font size="8"><i>{sub_label}</i></font>'
+            )
+        else:
+            markup = f'<b>{label}</b>'
+
+        s_banner = ParagraphStyle(
+            "BannerText",
+            parent=styles["Normal"],
+            fontSize=14,
+            textColor=colors.white,
+            alignment=TA_CENTER,
+            leading=18,
+        )
+
+        table = Table(
+            [[Paragraph(markup, s_banner)]],
+            colWidths=[cls.CONTENT_WIDTH],
+        )
+        table.setStyle(TableStyle([
+            ("BACKGROUND",    (0, 0), (-1, -1), banner_color),
+            ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
+            ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+            ("TOPPADDING",    (0, 0), (-1, -1), 6 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 6 * mm),
+        ]))
+        return table
+
+    @classmethod
+    def _build_name_block(
+        cls,
+        elements: list,
+        styles,
+        name: str,
+        org: str = None,
+        title: str = None,
+        name_size: int = 20,
+    ) -> None:
+        """Append name / org / title paragraphs to elements list."""
+        s_name = ParagraphStyle(
+            "BadgeName",
+            parent=styles["Normal"],
+            fontSize=name_size,
+            fontName="Helvetica-Bold",
+            textColor=cls.COLOR_PRIMARY_DARK,
+            alignment=TA_CENTER,
+            leading=name_size + 4,
+            spaceAfter=2 * mm,
+        )
+        s_org = ParagraphStyle(
+            "BadgeOrg",
+            parent=styles["Normal"],
+            fontSize=10,
+            fontName="Helvetica-Bold",
+            textColor=cls.COLOR_ACCENT_ORANGE,
+            alignment=TA_CENTER,
+            leading=13,
+            spaceAfter=1 * mm,
+        )
+        s_title = ParagraphStyle(
+            "BadgeTitle",
+            parent=styles["Normal"],
+            fontSize=9,
+            textColor=colors.HexColor("#555555"),
+            alignment=TA_CENTER,
+            leading=11,
+        )
+
+        elements.append(Paragraph(name.upper(), s_name))
+        if org:
+            elements.append(Paragraph(org, s_org))
+        if title:
+            elements.append(Paragraph(title, s_title))
+
+    @classmethod
+    def _build_qr_section(
+        cls,
+        elements: list,
+        styles,
+        qr_buffer: BytesIO,
+        reference: str,
+        qr_size_mm: float = 45,
+    ) -> None:
+        """Append a centered QR code image and reference number to elements."""
+        qr_img = Image(qr_buffer, width=qr_size_mm * mm, height=qr_size_mm * mm)
+
+        qr_table = Table([[qr_img]], colWidths=[cls.CONTENT_WIDTH])
+        qr_table.setStyle(TableStyle([
+            ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
+            ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+            ("TOPPADDING",    (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING",  (0, 0), (-1, -1), 0),
+        ]))
+        elements.append(qr_table)
+        elements.append(Spacer(1, 2 * mm))
+
+        s_ref = ParagraphStyle(
+            "RefStyle",
+            parent=styles["Normal"],
+            fontSize=7,
+            textColor=colors.HexColor("#888888"),
+            alignment=TA_CENTER,
+        )
+        elements.append(Paragraph(reference, s_ref))
+
+    @classmethod
+    def _build_footer(cls, elements: list, styles) -> None:
+        """Append a thin divider + 'Powered by' + CC logo to elements."""
+        elements.append(Spacer(1, 2 * mm))
+        elements.append(HRFlowable(
+            width="100%",
+            thickness=0.5,
+            color=colors.HexColor("#cccccc"),
+            spaceBefore=0,
+            spaceAfter=1.5 * mm,
+        ))
+
+        s_powered = ParagraphStyle(
+            "PoweredBy",
+            parent=styles["Normal"],
+            fontSize=6,
+            textColor=colors.HexColor("#999999"),
+            alignment=TA_CENTER,
+            spaceAfter=1 * mm,
+        )
+        elements.append(Paragraph("Powered by", s_powered))
+
+        try:
+            logo_path = (
+                Path(current_app.root_path)
+                / "static" / "external" / "CC_logo_full.svg"
+            )
+            if logo_path.exists():
+                drawing = svg2rlg(str(logo_path))
+                target_w = 22 * mm
+                scale = target_w / drawing.width
+                drawing.width = target_w
+                drawing.height = drawing.height * scale
+                drawing.scale(scale, scale)
+
+                logo_table = Table([[drawing]], colWidths=[cls.CONTENT_WIDTH])
+                logo_table.setStyle(TableStyle([
+                    ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
+                    ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+                    ("TOPPADDING",    (0, 0), (-1, -1), 0),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ]))
+                elements.append(logo_table)
+                return
+        except Exception as e:
+            logger.warning(f"Could not load CC logo for badge footer: {e}")
+
+        # Fallback to text
+        s_cc = ParagraphStyle(
+            "CCText",
+            parent=styles["Normal"],
+            fontSize=6,
+            textColor=colors.HexColor("#3db54a"),
+            alignment=TA_CENTER,
+            fontName="Helvetica-Bold",
+        )
+        elements.append(Paragraph("Chacha Technologies", s_cc))
 
     # ============================================
     # STORAGE PATH MANAGEMENT
@@ -329,24 +453,12 @@ class BadgeService:
 
     @classmethod
     def _get_storage_path(cls, badge_type: str, year: str = None) -> Path:
-        """
-        Get storage path for badges
-
-        Args:
-            badge_type: 'attendee', 'media', or 'exhibitor'
-            year: Year (defaults to current year)
-
-        Returns:
-            Path object for storage directory
-        """
         if year is None:
             year = datetime.now().year
-
         storage_path = (
             Path(current_app.root_path) / cls.STORAGE_BASE / str(year) / badge_type
         )
         storage_path.mkdir(parents=True, exist_ok=True)
-
         return storage_path
 
     # ============================================
@@ -357,143 +469,55 @@ class BadgeService:
     def _create_attendee_badge(
         cls, attendee: AttendeeRegistration, qr_buffer: BytesIO
     ) -> Tuple[bool, str]:
-        """
-        Create PDF badge for attendee
-
-        Args:
-            attendee: AttendeeRegistration object
-            qr_buffer: BytesIO containing QR code image
-
-        Returns:
-            Tuple of (success, filename)
-        """
         try:
-            # Determine storage path and filename
             storage_path = cls._get_storage_path("attendee")
             filename = f"{attendee.reference_number}.pdf"
             full_path = storage_path / filename
 
-            # Create PDF
             doc = SimpleDocTemplate(
-                str(full_path),
-                pagesize=cls.BADGE_SIZE,
-                rightMargin=10 * mm,
-                leftMargin=10 * mm,
-                topMargin=10 * mm,
-                bottomMargin=10 * mm,
+                str(full_path), pagesize=cls.BADGE_SIZE,
+                rightMargin=10*mm, leftMargin=10*mm,
+                topMargin=10*mm, bottomMargin=10*mm,
             )
-
             elements = []
             styles = getSampleStyleSheet()
 
-            # Custom styles
-            style_title = ParagraphStyle(
-                "CustomTitle",
-                parent=styles["Heading1"],
-                fontSize=16,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-                fontName="Helvetica-Bold",
-            )
+            # Header band
+            elements.append(cls._build_header_band(styles))
+            elements.append(Spacer(1, 2 * mm))
 
-            style_name = ParagraphStyle(
-                "CustomName",
-                parent=styles["Heading2"],
-                fontSize=20,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=2 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_detail = ParagraphStyle(
-                "CustomDetail",
-                parent=styles["Normal"],
-                fontSize=10,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-            )
-
-            style_type = ParagraphStyle(
-                "CustomType",
-                parent=styles["Normal"],
-                fontSize=12,
-                textColor=colors.white,
-                alignment=TA_CENTER,
-                fontName="Helvetica-Bold",
-            )
-
-            # Event title
-            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
-            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 1 * mm))
-
-            # Attendee type badge
-            type_table = Table(
-                [[Paragraph("ATTENDEE", style_type)]], colWidths=[80 * mm]
-            )
-            type_table.setStyle(
-                TableStyle(
-                    [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_ACCENT_YELLOW),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 2),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-                    ]
+            # Type banner — yellow, ticket type as sub-label
+            ticket_label = attendee.ticket_type.value.replace("_", " ").title()
+            elements.append(
+                cls._build_type_banner(
+                    "ATTENDEE", cls.COLOR_ACCENT_YELLOW, sub_label=ticket_label
                 )
             )
-            elements.append(type_table)
-            elements.append(Spacer(1, 1 * mm))
+            elements.append(Spacer(1, 4 * mm))
 
-            # Attendee name
-            full_name = f"{attendee.first_name} {attendee.last_name}"
-            elements.append(Paragraph(full_name.upper(), style_name))
-
-            # Organization
-            if attendee.organization:
-                elements.append(Paragraph(attendee.organization, style_detail))
-
-            # Job title
-            if attendee.job_title:
-                elements.append(Paragraph(attendee.job_title, style_detail))
-
-            elements.append(Spacer(1, 2 * mm))
-
-            # Ticket type
-            ticket_type = attendee.ticket_type.value.replace("_", " ").title()
-            elements.append(Paragraph(f"<b>{ticket_type}</b>", style_detail))
-
-            elements.append(Spacer(1, 3 * mm))
-
-            # QR Code
-            qr_img = Image(qr_buffer, width=50 * mm, height=50 * mm)
-            elements.append(qr_img)
-
-            elements.append(Spacer(1, 2 * mm))
-
-            # Reference number
-            ref_style = ParagraphStyle(
-                "RefStyle",
-                parent=styles["Normal"],
-                fontSize=8,
-                textColor=colors.grey,
-                alignment=TA_CENTER,
+            # Name / org / title
+            cls._build_name_block(
+                elements, styles,
+                name=f"{attendee.first_name} {attendee.last_name}",
+                org=attendee.organization,
+                title=attendee.job_title,
+                name_size=20,
             )
-            # elements.append(Paragraph(attendee.reference_number, ref_style))
+            elements.append(Spacer(1, 4 * mm))
 
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
+            # QR code + reference
+            cls._build_qr_section(
+                elements, styles, qr_buffer, attendee.reference_number, qr_size_mm=45
+            )
 
-            # Build PDF
+            # Footer
+            cls._build_footer(elements, styles)
+
             doc.build(elements)
-
             return True, filename
 
         except Exception as e:
-            logger.error(f"Error creating attendee badge: {str(e)}", exc_info=True)
+            logger.error(f"Error creating attendee badge: {e}", exc_info=True)
             return False, str(e)
 
     # ============================================
@@ -504,146 +528,53 @@ class BadgeService:
     def _create_media_pass(
         cls, attendee: AttendeeRegistration, qr_buffer: BytesIO
     ) -> Tuple[bool, str]:
-        """
-        Create PDF badge for media/press attendee
-
-        Args:
-            attendee: AttendeeRegistration object
-            qr_buffer: BytesIO containing QR code image
-
-        Returns:
-            Tuple of (success, filename)
-        """
         try:
-            # Determine storage path and filename
             storage_path = cls._get_storage_path("media")
             filename = f"{attendee.reference_number}.pdf"
             full_path = storage_path / filename
 
-            # Create PDF
             doc = SimpleDocTemplate(
-                str(full_path),
-                pagesize=cls.BADGE_SIZE,
-                rightMargin=10 * mm,
-                leftMargin=10 * mm,
-                topMargin=10 * mm,
-                bottomMargin=10 * mm,
+                str(full_path), pagesize=cls.BADGE_SIZE,
+                rightMargin=10*mm, leftMargin=10*mm,
+                topMargin=10*mm, bottomMargin=10*mm,
             )
-
             elements = []
             styles = getSampleStyleSheet()
 
-            # Custom styles
-            style_title = ParagraphStyle(
-                "CustomTitle",
-                parent=styles["Heading1"],
-                fontSize=16,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_name = ParagraphStyle(
-                "CustomName",
-                parent=styles["Heading2"],
-                fontSize=20,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=2 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_detail = ParagraphStyle(
-                "CustomDetail",
-                parent=styles["Normal"],
-                fontSize=10,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-            )
-
-            style_type = ParagraphStyle(
-                "CustomType",
-                parent=styles["Normal"],
-                fontSize=12,
-                textColor=colors.white,
-                alignment=TA_CENTER,
-                fontName="Helvetica-Bold",
-            )
-
-            # Event title
-            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
-            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 1 * mm))
-
-            # Media pass badge (RED banner)
-            type_table = Table(
-                [[Paragraph("MEDIA PASS", style_type)]], colWidths=[80 * mm]
-            )
-            type_table.setStyle(
-                TableStyle(
-                    [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_MEDIA),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 2),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-                    ]
-                )
-            )
-            elements.append(type_table)
-            elements.append(Spacer(1, 1 * mm))
-
-            # Media name
-            full_name = f"{attendee.first_name} {attendee.last_name}"
-            elements.append(Paragraph(full_name.upper(), style_name))
-
-            # Media organization
-            if attendee.organization:
-                org_style = ParagraphStyle(
-                    "OrgStyle",
-                    parent=styles["Normal"],
-                    fontSize=12,
-                    textColor=cls.COLOR_MEDIA,
-                    alignment=TA_CENTER,
-                    fontName="Helvetica-Bold",
-                    spaceAfter=1 * mm,
-                )
-                elements.append(Paragraph(attendee.organization, org_style))
-
-            # Job title
-            if attendee.job_title:
-                elements.append(Paragraph(attendee.job_title, style_detail))
-
-            elements.append(Spacer(1, 3 * mm))
-
-            # QR Code
-            qr_img = Image(qr_buffer, width=50 * mm, height=50 * mm)
-            elements.append(qr_img)
-
+            # Header band
+            elements.append(cls._build_header_band(styles))
             elements.append(Spacer(1, 2 * mm))
 
-            # Reference number
-            ref_style = ParagraphStyle(
-                "RefStyle",
-                parent=styles["Normal"],
-                fontSize=8,
-                textColor=colors.grey,
-                alignment=TA_CENTER,
+            # Type banner — red, media outlet as sub-label
+            sub = attendee.organization or "Press"
+            elements.append(
+                cls._build_type_banner("MEDIA PASS", cls.COLOR_MEDIA, sub_label=sub)
             )
-            # elements.append(Paragraph(attendee.reference_number, ref_style))
+            elements.append(Spacer(1, 4 * mm))
 
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
+            # Name / org / title
+            cls._build_name_block(
+                elements, styles,
+                name=f"{attendee.first_name} {attendee.last_name}",
+                org=attendee.organization,
+                title=attendee.job_title,
+                name_size=20,
+            )
+            elements.append(Spacer(1, 4 * mm))
 
-            # Build PDF
+            # QR code + reference
+            cls._build_qr_section(
+                elements, styles, qr_buffer, attendee.reference_number, qr_size_mm=45
+            )
+
+            # Footer
+            cls._build_footer(elements, styles)
+
             doc.build(elements)
-
             return True, filename
 
         except Exception as e:
-            logger.error(f"Error creating media pass: {str(e)}", exc_info=True)
+            logger.error(f"Error creating media pass: {e}", exc_info=True)
             return False, str(e)
 
     # ============================================
@@ -654,163 +585,55 @@ class BadgeService:
     def _create_exhibitor_badge(
         cls, exhibitor: ExhibitorRegistration, qr_buffer: BytesIO
     ) -> Tuple[bool, str]:
-        """
-        Create PDF badge for exhibitor (main contact)
-
-        Args:
-            exhibitor: ExhibitorRegistration object
-            qr_buffer: BytesIO containing QR code image
-
-        Returns:
-            Tuple of (success, filename)
-        """
         try:
-            # Determine storage path and filename
             storage_path = cls._get_storage_path("exhibitor")
             filename = f"{exhibitor.reference_number}.pdf"
             full_path = storage_path / filename
 
-            # Create PDF
             doc = SimpleDocTemplate(
-                str(full_path),
-                pagesize=cls.BADGE_SIZE,
-                rightMargin=10 * mm,
-                leftMargin=10 * mm,
-                topMargin=10 * mm,
-                bottomMargin=10 * mm,
+                str(full_path), pagesize=cls.BADGE_SIZE,
+                rightMargin=10*mm, leftMargin=10*mm,
+                topMargin=10*mm, bottomMargin=10*mm,
             )
-
             elements = []
             styles = getSampleStyleSheet()
 
-            # Custom styles
-            style_title = ParagraphStyle(
-                "CustomTitle",
-                parent=styles["Heading1"],
-                fontSize=16,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_name = ParagraphStyle(
-                "CustomName",
-                parent=styles["Heading2"],
-                fontSize=18,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=2 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_detail = ParagraphStyle(
-                "CustomDetail",
-                parent=styles["Normal"],
-                fontSize=9,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-            )
-
-            style_type = ParagraphStyle(
-                "CustomType",
-                parent=styles["Normal"],
-                fontSize=12,
-                textColor=colors.white,
-                alignment=TA_CENTER,
-                fontName="Helvetica-Bold",
-            )
-
-            # Event title
-            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
-            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 1 * mm))
-
-            # Exhibitor type badge (GREEN banner)
-            type_table = Table(
-                [[Paragraph("EXHIBITOR", style_type)]], colWidths=[80 * mm]
-            )
-            type_table.setStyle(
-                TableStyle(
-                    [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_PRIMARY_MEDIUM),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 2),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-                    ]
-                )
-            )
-            elements.append(type_table)
-            elements.append(Spacer(1, 1 * mm))
-
-            # Contact person name
-            full_name = f"{exhibitor.first_name} {exhibitor.last_name}"
-            elements.append(Paragraph(full_name.upper(), style_name))
-
-            # Job title
-            if exhibitor.job_title:
-                elements.append(Paragraph(exhibitor.job_title, style_detail))
-
+            # Header band
+            elements.append(cls._build_header_band(styles))
             elements.append(Spacer(1, 2 * mm))
 
-            # Company name (prominent)
-            company_style = ParagraphStyle(
-                "CompanyStyle",
-                parent=styles["Normal"],
-                fontSize=12,
-                textColor=cls.COLOR_ACCENT_ORANGE,
-                alignment=TA_CENTER,
-                fontName="Helvetica-Bold",
-                spaceAfter=1 * mm,
-            )
+            # Type banner — dark green, booth number as sub-label
+            sub = f"Booth {exhibitor.booth_number}" if exhibitor.booth_number else "Exhibitor"
             elements.append(
-                Paragraph(exhibitor.company_legal_name.upper(), company_style)
+                cls._build_type_banner(
+                    "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
+                )
             )
+            elements.append(Spacer(1, 4 * mm))
 
-            # Booth number (if assigned)
-            if exhibitor.booth_number:
-                booth_style = ParagraphStyle(
-                    "BoothStyle",
-                    parent=styles["Normal"],
-                    fontSize=11,
-                    textColor=cls.COLOR_PRIMARY_DARK,
-                    alignment=TA_CENTER,
-                    fontName="Helvetica-Bold",
-                )
-                elements.append(
-                    Paragraph(f"BOOTH: {exhibitor.booth_number}", booth_style)
-                )
-
+            # Name / company / title
+            cls._build_name_block(
+                elements, styles,
+                name=f"{exhibitor.first_name} {exhibitor.last_name}",
+                org=exhibitor.company_legal_name,
+                title=exhibitor.job_title,
+                name_size=18,
+            )
             elements.append(Spacer(1, 3 * mm))
 
-            # QR Code
-            qr_img = Image(qr_buffer, width=45 * mm, height=45 * mm)
-            elements.append(qr_img)
-
-            elements.append(Spacer(1, 2 * mm))
-
-            # Reference number
-            ref_style = ParagraphStyle(
-                "RefStyle",
-                parent=styles["Normal"],
-                fontSize=8,
-                textColor=colors.grey,
-                alignment=TA_CENTER,
+            # QR code + reference
+            cls._build_qr_section(
+                elements, styles, qr_buffer, exhibitor.reference_number, qr_size_mm=42
             )
-            # elements.append(Paragraph(exhibitor.reference_number, ref_style))
 
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
+            # Footer
+            cls._build_footer(elements, styles)
 
-            # Build PDF
             doc.build(elements)
-
             return True, filename
 
         except Exception as e:
-            logger.error(f"Error creating exhibitor badge: {str(e)}", exc_info=True)
+            logger.error(f"Error creating exhibitor badge: {e}", exc_info=True)
             return False, str(e)
 
     # ============================================
@@ -827,175 +650,65 @@ class BadgeService:
         qr_buffer: BytesIO,
         qr_data: str,
     ) -> Tuple[bool, str]:
-        """
-        Create PDF badge for exhibitor team member
-
-        Args:
-            exhibitor: ExhibitorRegistration object (parent)
-            member_name: Team member full name
-            member_role: Team member job title/role
-            member_number: Badge number (optional)
-            qr_buffer: BytesIO containing QR code image
-            qr_data: QR code data string
-
-        Returns:
-            Tuple of (success, filename)
-        """
         try:
-            # Determine storage path and filename
             storage_path = cls._get_storage_path("exhibitor")
-            team_id = qr_data.split("-")[-1]  # Extract unique ID
+            team_id = qr_data.split("-")[-1]
             filename = f"{exhibitor.reference_number}-team-{team_id}.pdf"
             full_path = storage_path / filename
 
-            # Create PDF
             doc = SimpleDocTemplate(
-                str(full_path),
-                pagesize=cls.BADGE_SIZE,
-                rightMargin=10 * mm,
-                leftMargin=10 * mm,
-                topMargin=10 * mm,
-                bottomMargin=10 * mm,
+                str(full_path), pagesize=cls.BADGE_SIZE,
+                rightMargin=10*mm, leftMargin=10*mm,
+                topMargin=10*mm, bottomMargin=10*mm,
             )
-
             elements = []
             styles = getSampleStyleSheet()
 
-            # Custom styles (similar to exhibitor)
-            style_title = ParagraphStyle(
-                "CustomTitle",
-                parent=styles["Heading1"],
-                fontSize=16,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_name = ParagraphStyle(
-                "CustomName",
-                parent=styles["Heading2"],
-                fontSize=18,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=2 * mm,
-                fontName="Helvetica-Bold",
-            )
-
-            style_detail = ParagraphStyle(
-                "CustomDetail",
-                parent=styles["Normal"],
-                fontSize=9,
-                textColor=cls.COLOR_PRIMARY_DARK,
-                alignment=TA_CENTER,
-                spaceAfter=1 * mm,
-            )
-
-            style_type = ParagraphStyle(
-                "CustomType",
-                parent=styles["Normal"],
-                fontSize=12,
-                textColor=colors.white,
-                alignment=TA_CENTER,
-                fontName="Helvetica-Bold",
-            )
-
-            # Event title
-            elements.append(Paragraph("POLLINATION AFRICA 2026", style_title))
-            elements.append(Paragraph("Arusha, Tanzania • June 3-5", style_detail))
-            elements.append(Spacer(1, 1 * mm))
-
-            # Exhibitor type badge (GREEN banner)
-            type_table = Table(
-                [[Paragraph("EXHIBITOR", style_type)]], colWidths=[80 * mm]
-            )
-            type_table.setStyle(
-                TableStyle(
-                    [
-                        ("BACKGROUND", (0, 0), (-1, -1), cls.COLOR_PRIMARY_MEDIUM),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 2),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-                    ]
-                )
-            )
-            elements.append(type_table)
-            elements.append(Spacer(1, 1 * mm))
-
-            # Team member name
-            elements.append(Paragraph(member_name.upper(), style_name))
-
-            # Team member role
-            if member_role:
-                elements.append(Paragraph(member_role, style_detail))
-
+            # Header band
+            elements.append(cls._build_header_band(styles))
             elements.append(Spacer(1, 2 * mm))
 
-            # Company name (prominent)
-            company_style = ParagraphStyle(
-                "CompanyStyle",
-                parent=styles["Normal"],
-                fontSize=12,
-                textColor=cls.COLOR_ACCENT_ORANGE,
-                alignment=TA_CENTER,
-                fontName="Helvetica-Bold",
-                spaceAfter=1 * mm,
-            )
-            elements.append(
-                Paragraph(exhibitor.company_legal_name.upper(), company_style)
-            )
-
-            # Booth number and badge number
-            booth_info = []
+            # Type banner — dark green, booth / badge number as sub-label
+            sub_parts = []
             if exhibitor.booth_number:
-                booth_info.append(f"BOOTH: {exhibitor.booth_number}")
-
+                sub_parts.append(f"Booth {exhibitor.booth_number}")
             if member_number and exhibitor.exhibitor_badges_needed:
-                booth_info.append(
+                sub_parts.append(
                     f"Badge {member_number} of {exhibitor.exhibitor_badges_needed}"
                 )
-
-            if booth_info:
-                booth_style = ParagraphStyle(
-                    "BoothStyle",
-                    parent=styles["Normal"],
-                    fontSize=9,
-                    textColor=cls.COLOR_PRIMARY_DARK,
-                    alignment=TA_CENTER,
+            sub = "  |  ".join(sub_parts) if sub_parts else "Team Member"
+            elements.append(
+                cls._build_type_banner(
+                    "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
-                elements.append(Paragraph(" | ".join(booth_info), booth_style))
+            )
+            elements.append(Spacer(1, 4 * mm))
 
+            # Name / company / role
+            cls._build_name_block(
+                elements, styles,
+                name=member_name,
+                org=exhibitor.company_legal_name,
+                title=member_role,
+                name_size=18,
+            )
             elements.append(Spacer(1, 3 * mm))
 
-            # QR Code
-            qr_img = Image(qr_buffer, width=45 * mm, height=45 * mm)
-            elements.append(qr_img)
-
-            elements.append(Spacer(1, 2 * mm))
-
-            # Team badge identifier
-            ref_style = ParagraphStyle(
-                "RefStyle",
-                parent=styles["Normal"],
-                fontSize=8,
-                textColor=colors.grey,
-                alignment=TA_CENTER,
+            # QR code + reference (exhibitor ref + TEAM marker)
+            cls._build_qr_section(
+                elements, styles, qr_buffer,
+                f"{exhibitor.reference_number} — TEAM",
+                qr_size_mm=42,
             )
-            # elements.append(
-            #     Paragraph(f"{exhibitor.reference_number} - TEAM", ref_style)
-            # )
 
-            # Add attribution footer
-            cls._add_attribution_footer(elements, styles)
+            # Footer
+            cls._build_footer(elements, styles)
 
-            # Build PDF
             doc.build(elements)
-
             return True, filename
 
         except Exception as e:
-            logger.error(f"Error creating team member badge: {str(e)}", exc_info=True)
+            logger.error(f"Error creating team member badge: {e}", exc_info=True)
             return False, str(e)
 
     # ============================================
@@ -1005,18 +718,15 @@ class BadgeService:
     @classmethod
     def verify_qr_code(cls, qr_data: str) -> Tuple[bool, str, Optional[Registration]]:
         """
-        Verify and decode QR code data for check-in
-
-        Args:
-            qr_data: Scanned QR code data
+        Verify and decode QR code data for check-in.
 
         Returns:
             Tuple of (valid, message, registration)
         """
         try:
             # Expected format: POLLINATION2026-{id}-{reference_number}
-            # Or for team: POLLINATION2026-{exhibitor_id}-TEAM-{unique_id}
-            # Support legacy BEEASY2025 format for backwards compatibility
+            # Team format:     POLLINATION2026-{exhibitor_id}-TEAM-{unique_id}
+            # Legacy support:  BEEASY2025-...
             if not (
                 qr_data.startswith("POLLINATION2026-")
                 or qr_data.startswith("BEEASY2025-")
@@ -1024,31 +734,25 @@ class BadgeService:
                 return False, "Invalid QR code format", None
 
             parts = qr_data.split("-")
-
             if len(parts) < 3:
                 return False, "Invalid QR code format", None
 
-            # Check if it's a team badge
+            # Team badge
             if len(parts) >= 4 and parts[2] == "TEAM":
                 exhibitor_id = parts[1]
                 registration = Registration.query.filter_by(
                     id=int(exhibitor_id), is_deleted=False
                 ).first()
-
                 if not registration:
                     return False, "Exhibitor registration not found", None
-
-                # Team badges are valid for check-in
                 return (
                     True,
                     f"Valid team badge for {registration.computed_full_name}",
                     registration,
                 )
 
-            # Regular badge - extract reference number
+            # Regular badge
             reference_number = "-".join(parts[2:])
-
-            # Find registration
             registration = Registration.query.filter_by(
                 reference_number=reference_number, is_deleted=False
             ).first()
@@ -1056,11 +760,9 @@ class BadgeService:
             if not registration:
                 return False, "Registration not found", None
 
-            # Verify QR data matches
             if registration.qr_code_data != qr_data:
                 return False, "QR code mismatch", None
 
-            # Check registration status
             if registration.status != RegistrationStatus.CONFIRMED:
                 return (
                     False,
@@ -1068,7 +770,6 @@ class BadgeService:
                     registration,
                 )
 
-            # Check payment
             if not registration.is_fully_paid():
                 return False, "Payment incomplete", registration
 
@@ -1083,29 +784,21 @@ class BadgeService:
         cls, qr_data: str, checked_in_by: str
     ) -> Tuple[bool, str, Optional[Registration]]:
         """
-        Check in attendee/exhibitor using QR code for today
-
-        Args:
-            qr_data: Scanned QR code data
-            checked_in_by: User/staff who performed check-in
+        Check in attendee/exhibitor using QR code for today.
 
         Returns:
             Tuple of (success, message, registration)
         """
         from datetime import date
 
-        # Verify QR code
         valid, message, registration = cls.verify_qr_code(qr_data)
-
         if not valid:
             return False, message, registration
 
         today = date.today()
 
-        # Check if already checked in today
         if isinstance(registration, AttendeeRegistration):
             if registration.is_checked_in_for_day(today):
-                # Get today's check-in time
                 todays_checkin = next(
                     (c for c in registration.daily_checkins if c.event_date == today),
                     None,
@@ -1121,20 +814,18 @@ class BadgeService:
                     registration,
                 )
 
-            # Perform check-in for today
             registration.check_in_for_day(
-                event_date=today, checked_in_by=checked_in_by, check_in_method="qr_code"
+                event_date=today,
+                checked_in_by=checked_in_by,
+                check_in_method="qr_code",
             )
             db.session.commit()
-
             logger.info(
                 f"Attendee checked in: {registration.reference_number} for {today}"
             )
-
             return True, f"Welcome, {registration.first_name}!", registration
 
         elif isinstance(registration, ExhibitorRegistration):
-            # Check in exhibitor for today
             if not registration.is_checked_in_for_day(today):
                 registration.check_in_for_day(
                     event_date=today,
@@ -1145,7 +836,6 @@ class BadgeService:
                 logger.info(
                     f"Exhibitor checked in: {registration.reference_number} for {today}"
                 )
-
             return (
                 True,
                 f"Welcome, {registration.first_name} from {registration.company_legal_name}",

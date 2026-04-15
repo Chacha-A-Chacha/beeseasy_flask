@@ -222,8 +222,10 @@ class BadgeService:
     @classmethod
     def _build_header_band(cls, styles) -> Table:
         """
-        Dark-green header band: circular logo (14mm) on the left,
-        event name and date/location in white on the right.
+        Dark-green header band with logo + event name centered as a unit.
+
+        Layout: [12mm flank | 16mm logo | 3mm gap | 42mm text | 12mm flank]
+        Total inner content = 61mm, centered in 85mm content width.
         Measured height: ~19mm (logo 14mm + 2.5mm padding top/bottom).
         """
         logo = cls._get_logo_element(size_mm=14)
@@ -248,26 +250,49 @@ class BadgeService:
         text_cell = [
             Paragraph("POLLINATION AFRICA", s_name),
             Paragraph("SUMMIT 2026", s_name),
-            Paragraph("Arusha, Tanzania  •  June 3–5", s_detail),
+            Paragraph("Arusha, Tanzania • June 3–5", s_detail),
         ]
 
-        if logo:
-            cell_data = [[logo, text_cell]]
-            col_widths = [18 * mm, 67 * mm]
-        else:
-            cell_data = [[text_cell]]
-            col_widths = [cls.CONTENT_WIDTH]
+        # Inner table: logo (16mm) | text (45mm), gap via right-padding on logo cell
+        LOGO_COL  = 16 * mm
+        TEXT_COL  = 45 * mm
+        INNER_W   = LOGO_COL + TEXT_COL          # 61mm
+        FLANK     = (cls.CONTENT_WIDTH - INNER_W) / 2  # 12mm each side
 
-        table = Table(cell_data, colWidths=col_widths)
+        if logo:
+            inner = Table([[logo, text_cell]], colWidths=[LOGO_COL, TEXT_COL])
+            inner.setStyle(TableStyle([
+                ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+                ("ALIGN",         (0, 0), (0, -1),  "CENTER"),
+                ("TOPPADDING",    (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ("LEFTPADDING",   (0, 0), (0, -1),  0),
+                ("RIGHTPADDING",  (0, 0), (0, -1),  3 * mm),   # gap between logo and text
+                ("LEFTPADDING",   (1, 0), (1, -1),  0),
+                ("RIGHTPADDING",  (1, 0), (1, -1),  0),
+            ]))
+            outer_data = [["", inner, ""]]
+            outer_cols = [FLANK, INNER_W, FLANK]
+        else:
+            # No logo — center just the text
+            s_name_c = ParagraphStyle("HdrNameC", parent=s_name, alignment=TA_CENTER)
+            s_detail_c = ParagraphStyle("HdrDetailC", parent=s_detail, alignment=TA_CENTER)
+            text_centered = [
+                Paragraph("POLLINATION AFRICA", s_name_c),
+                Paragraph("SUMMIT 2026", s_name_c),
+                Paragraph("Arusha, Tanzania • June 3–5", s_detail_c),
+            ]
+            outer_data = [[text_centered]]
+            outer_cols = [cls.CONTENT_WIDTH]
+
+        table = Table(outer_data, colWidths=outer_cols)
         table.setStyle(TableStyle([
             ("BACKGROUND",    (0, 0), (-1, -1), cls.COLOR_PRIMARY_DARK),
             ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
-            ("ALIGN",         (0, 0), (0, -1),  "CENTER"),
             ("TOPPADDING",    (0, 0), (-1, -1), 2.5 * mm),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5 * mm),
-            ("LEFTPADDING",   (0, 0), (0, -1),  2 * mm),
-            ("LEFTPADDING",   (1, 0), (1, -1),  3 * mm),
-            ("RIGHTPADDING",  (0, 0), (-1, -1), 2 * mm),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING",  (0, 0), (-1, -1), 0),
         ]))
         return table
 
@@ -397,9 +422,9 @@ class BadgeService:
     def _build_footer(cls, elements: list, styles) -> None:
         """
         Thin divider + 'Powered by' + CC logo.
-        Measured total: ~10mm (spacer 4mm + HR 0.7mm + text 2mm + logo ~4mm).
+        Measured total: ~8mm (spacer 1.5mm + HR 0.7mm + text 2mm + logo ~4mm).
         """
-        elements.append(Spacer(1, 4 * mm))
+        elements.append(Spacer(1, 1.5 * mm))
         elements.append(HRFlowable(
             width="100%",
             thickness=0.5,
@@ -491,7 +516,7 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 3.5 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
             # Type banner (~14mm) — yellow, ticket type as sub-label
             ticket_label = attendee.ticket_type.value.replace("_", " ").title()
@@ -500,7 +525,7 @@ class BadgeService:
                     "DELEGATE", cls.COLOR_ACCENT_YELLOW, sub_label=ticket_label
                 )
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # Name / org / title (~16mm)
             cls._build_name_block(
@@ -510,7 +535,7 @@ class BadgeService:
                 title=attendee.job_title,
                 name_size=16,
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR code + reference (38mm)
             cls._build_qr_section(
@@ -550,14 +575,14 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 3.5 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
             # Type banner (~14mm) — red, media outlet as sub-label
             sub = attendee.organization or "Press"
             elements.append(
                 cls._build_type_banner("MEDIA PASS", cls.COLOR_MEDIA, sub_label=sub)
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # Name / org / title (~16mm)
             cls._build_name_block(
@@ -567,7 +592,7 @@ class BadgeService:
                 title=attendee.job_title,
                 name_size=16,
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR code + reference (38mm)
             cls._build_qr_section(
@@ -607,7 +632,7 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 3.5 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
             # Type banner (~14mm) — dark green, booth number as sub-label
             sub = f"Booth {exhibitor.booth_number}" if exhibitor.booth_number else "Exhibitor"
@@ -616,7 +641,7 @@ class BadgeService:
                     "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # Name / company / title (~16mm)
             cls._build_name_block(
@@ -626,7 +651,7 @@ class BadgeService:
                 title=exhibitor.job_title,
                 name_size=15,
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR code + reference (36mm)
             cls._build_qr_section(
@@ -673,7 +698,7 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 3.5 * mm))
+            elements.append(Spacer(1, 1.5 * mm))
 
             # Type banner (~14mm) — dark green, booth / badge number as sub-label
             sub_parts = []
@@ -689,7 +714,7 @@ class BadgeService:
                     "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # Name / company / role (~16mm)
             cls._build_name_block(
@@ -699,7 +724,7 @@ class BadgeService:
                 title=member_role,
                 name_size=15,
             )
-            elements.append(Spacer(1, 6.5 * mm))
+            elements.append(Spacer(1, 3 * mm))
 
             # QR code + reference (36mm)
             cls._build_qr_section(

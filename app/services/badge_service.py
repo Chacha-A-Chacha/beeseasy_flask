@@ -397,9 +397,9 @@ class BadgeService:
     def _build_footer(cls, elements: list, styles) -> None:
         """
         Thin divider + 'Powered by' + CC logo.
-        Measured total: ~8mm (spacer 1.5mm + HR 0.7mm + text 2mm + logo ~4mm).
+        Measured total: ~10mm (spacer 4mm + HR 0.7mm + text 2mm + logo ~4mm).
         """
-        elements.append(Spacer(1, 1.5 * mm))
+        elements.append(Spacer(1, 4 * mm))
         elements.append(HRFlowable(
             width="100%",
             thickness=0.5,
@@ -491,16 +491,16 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 1.5 * mm))
+            elements.append(Spacer(1, 3.5 * mm))
 
             # Type banner (~14mm) — yellow, ticket type as sub-label
             ticket_label = attendee.ticket_type.value.replace("_", " ").title()
             elements.append(
                 cls._build_type_banner(
-                    "ATTENDEE", cls.COLOR_ACCENT_YELLOW, sub_label=ticket_label
+                    "DELEGATE", cls.COLOR_ACCENT_YELLOW, sub_label=ticket_label
                 )
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # Name / org / title (~16mm)
             cls._build_name_block(
@@ -510,7 +510,7 @@ class BadgeService:
                 title=attendee.job_title,
                 name_size=16,
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # QR code + reference (38mm)
             cls._build_qr_section(
@@ -550,14 +550,14 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 1.5 * mm))
+            elements.append(Spacer(1, 3.5 * mm))
 
             # Type banner (~14mm) — red, media outlet as sub-label
             sub = attendee.organization or "Press"
             elements.append(
                 cls._build_type_banner("MEDIA PASS", cls.COLOR_MEDIA, sub_label=sub)
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # Name / org / title (~16mm)
             cls._build_name_block(
@@ -567,7 +567,7 @@ class BadgeService:
                 title=attendee.job_title,
                 name_size=16,
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # QR code + reference (38mm)
             cls._build_qr_section(
@@ -607,7 +607,7 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 1.5 * mm))
+            elements.append(Spacer(1, 3.5 * mm))
 
             # Type banner (~14mm) — dark green, booth number as sub-label
             sub = f"Booth {exhibitor.booth_number}" if exhibitor.booth_number else "Exhibitor"
@@ -616,7 +616,7 @@ class BadgeService:
                     "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # Name / company / title (~16mm)
             cls._build_name_block(
@@ -626,7 +626,7 @@ class BadgeService:
                 title=exhibitor.job_title,
                 name_size=15,
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # QR code + reference (36mm)
             cls._build_qr_section(
@@ -673,7 +673,7 @@ class BadgeService:
 
             # Header band (~19mm)
             elements.append(cls._build_header_band(styles))
-            elements.append(Spacer(1, 1.5 * mm))
+            elements.append(Spacer(1, 3.5 * mm))
 
             # Type banner (~14mm) — dark green, booth / badge number as sub-label
             sub_parts = []
@@ -689,7 +689,7 @@ class BadgeService:
                     "EXHIBITOR", cls.COLOR_PRIMARY_MEDIUM, sub_label=sub
                 )
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # Name / company / role (~16mm)
             cls._build_name_block(
@@ -699,7 +699,7 @@ class BadgeService:
                 title=member_role,
                 name_size=15,
             )
-            elements.append(Spacer(1, 3 * mm))
+            elements.append(Spacer(1, 6.5 * mm))
 
             # QR code + reference (36mm)
             cls._build_qr_section(

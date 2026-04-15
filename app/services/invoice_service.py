@@ -18,6 +18,7 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
     HRFlowable,
+    Image,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -497,18 +498,14 @@ class InvoiceService:
 
     @classmethod
     def _get_logo_element(cls):
-        """Load the Pollination Africa logo SVG for the header."""
+        """Load the circular Pollination Africa logo PNG for the header."""
         try:
-            logo_path = Path(current_app.root_path) / "static" / "images" / "logo.svg"
+            logo_path = (
+                Path(current_app.root_path) / "static" / "images" / "logo_circle.png"
+            )
             if logo_path.exists():
-                drawing = svg2rlg(str(logo_path))
-                # Circular badge — scale to 18mm
                 target_size = 18 * mm
-                scale_factor = target_size / drawing.width
-                drawing.width = target_size
-                drawing.height = target_size
-                drawing.scale(scale_factor, scale_factor)
-                return drawing
+                return Image(str(logo_path), width=target_size, height=target_size)
         except Exception as e:
             logger.warning(f"Could not load logo: {str(e)}")
         return None

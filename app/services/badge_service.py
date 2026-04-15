@@ -200,21 +200,16 @@ class BadgeService:
     @classmethod
     def _get_logo_element(cls, size_mm: float = 20):
         """
-        Load the circular Pollination Africa logo SVG scaled to size_mm.
-        Returns a ReportLab Drawing or None if unavailable.
+        Load the circular Pollination Africa logo PNG scaled to size_mm.
+        Returns a ReportLab Image or None if unavailable.
         """
         try:
             logo_path = (
-                Path(current_app.root_path) / "static" / "images" / "logo.svg"
+                Path(current_app.root_path) / "static" / "images" / "logo_circle.png"
             )
             if logo_path.exists():
-                drawing = svg2rlg(str(logo_path))
                 target = size_mm * mm
-                scale = target / drawing.width
-                drawing.width = target
-                drawing.height = target
-                drawing.scale(scale, scale)
-                return drawing
+                return Image(str(logo_path), width=target, height=target)
         except Exception as e:
             logger.warning(f"Could not load badge logo: {e}")
         return None
@@ -247,10 +242,14 @@ class BadgeService:
             spaceBefore=1 * mm,
         )
 
+        config = current_app.config
+        venue   = config.get("EVENT_LOCATION", "AICC, Arusha, Tanzania")
+        dates   = config.get("EVENT_DATE",     "3-5 June 2026")
+
         text_cell = [
             Paragraph("POLLINATION AFRICA", s_name),
             Paragraph("SUMMIT 2026", s_name),
-            Paragraph("Arusha, Tanzania • June 3–5", s_detail),
+            Paragraph(f"{venue}  •  {dates}", s_detail),
         ]
 
         # Inner table: logo (16mm) | text (45mm), gap via right-padding on logo cell
@@ -280,7 +279,7 @@ class BadgeService:
             text_centered = [
                 Paragraph("POLLINATION AFRICA", s_name_c),
                 Paragraph("SUMMIT 2026", s_name_c),
-                Paragraph("Arusha, Tanzania • June 3–5", s_detail_c),
+                Paragraph(f"{venue}  •  {dates}", s_detail_c),
             ]
             outer_data = [[text_centered]]
             outer_cols = [cls.CONTENT_WIDTH]
@@ -306,11 +305,11 @@ class BadgeService:
         """
         styles = getSampleStyleSheet()
 
-        # font=11pt, leading=13 → 2-line para = 2×13pt=26pt=9.2mm + 2.5mm pad×2 = ~14mm
+        # Main label 11pt (leading 13) + sub-label 9pt (leading 11) + 1.5mm pad×2 ≈ 14mm
         if sub_label:
             markup = (
                 f'<b>{label}</b>'
-                f'<br/><font size="7"><i>{sub_label}</i></font>'
+                f'<br/><font size="9">{sub_label}</font>'
             )
         else:
             markup = f'<b>{label}</b>'
@@ -332,8 +331,8 @@ class BadgeService:
             ("BACKGROUND",    (0, 0), (-1, -1), banner_color),
             ("ALIGN",         (0, 0), (-1, -1), "CENTER"),
             ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
-            ("TOPPADDING",    (0, 0), (-1, -1), 2.5 * mm),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5 * mm),
+            ("TOPPADDING",    (0, 0), (-1, -1), 1.5 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5 * mm),
         ]))
         return table
 

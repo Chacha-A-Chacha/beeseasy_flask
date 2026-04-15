@@ -1,5 +1,7 @@
-{% extends "base.html" %} {% block title %}Delegate Registration - {{ event_name
-}}{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Delegate Registration - {{ event_name }}{% endblock %}
+{% block meta_description %}Register as a delegate for Pollination Africa Summit 2026. Choose from Standard, Student and other ticket categories. Join us in Arusha, Tanzania, 3–5 June.{% endblock %}
+{% block og_image %}{{ url_for('static', filename='images/og/register.png', _external=True) }}{% endblock %}
+{% block content %}
 <!-- Hero Section -->
 <div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <div
@@ -430,4 +432,45 @@
         </a>
     </div>
 </div>
-#} {% endblock %}
+{% endblock %}
+
+{% block extra_structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "{{ event_name }}",
+  "startDate": "{{ event_start_date }}",
+  "endDate": "{{ event_end_date }}",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "location": {
+    "@type": "Place",
+    "name": "{{ event_venue }}",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Arusha",
+      "addressCountry": "TZ"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "{{ organization_name }}",
+    "url": "{{ website_url }}"
+  },
+  "offers": [
+    {% for ticket in tickets %}
+    {
+      "@type": "Offer",
+      "name": "{{ ticket.name }}",
+      "price": "{{ ticket.get_current_price() }}",
+      "priceCurrency": "{{ ticket.currency }}",
+      "availability": "{% if ticket.is_available() %}https://schema.org/InStock{% else %}https://schema.org/SoldOut{% endif %}",
+      "url": "{{ url_for('register.register_attendee_form', ticket_type=ticket.ticket_type.value, _external=True) }}"{% if ticket.early_bird_deadline %},
+      "priceValidUntil": "{{ ticket.early_bird_deadline.strftime('%Y-%m-%d') }}"{% endif %}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}

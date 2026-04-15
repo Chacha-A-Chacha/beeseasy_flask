@@ -1,5 +1,7 @@
-{% extends "base.html" %} {% block title %}Speakers - {{ event_name }}{%
-endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Speakers - {{ event_name }}{% endblock %}
+{% block meta_description %}Meet the expert speakers at Pollination Africa Summit 2026 — scientists, policymakers and entrepreneurs shaping the future of African pollinator conservation.{% endblock %}
+{% block og_image %}{{ url_for('static', filename='images/og/speakers.png', _external=True) }}{% endblock %}
+{% block content %}
 
 <!-- ============================================ -->
 <!-- SECTION 1: HERO - HEADER -->
@@ -797,5 +799,38 @@ document: Guest of Honor is TBC ============================================ #}
             });
         }
     });
+</script>
+{% endblock %}
+
+{% block extra_structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ event_name }} Speakers",
+  "description": "Expert speakers at {{ event_name }}, {{ event_date }}, {{ event_location }}",
+  "numberOfItems": {{ speakers | length }},
+  "itemListElement": [
+    {% for speaker in speakers %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "item": {
+        "@type": "Person",
+        "name": {{ speaker.full_name | tojson }}{% if speaker.position %},
+        "jobTitle": {{ speaker.position | tojson }}{% endif %}{% if speaker.organization %},
+        "worksFor": {
+          "@type": "Organization",
+          "name": {{ speaker.organization | tojson }}
+        }{% endif %}{% if speaker.photo_url %},
+        "image": "{{ request.host_url.rstrip('/') }}{{ speaker.photo_url }}"{% endif %}{% if speaker.bio %},
+        "description": {{ speaker.bio | tojson }}{% endif %}{% if speaker.expertise %},
+        "knowsAbout": {{ speaker.expertise | tojson }}{% endif %},
+        "url": "{{ url_for('main.speakers', _external=True) }}#{{ speaker.slug }}"
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
 </script>
 {% endblock %}

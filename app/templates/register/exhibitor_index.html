@@ -1,5 +1,7 @@
-{% extends "base.html" %} {% block title %}Exhibitor Registration - {{
-event_name }}{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Exhibitor Registration - {{ event_name }}{% endblock %}
+{% block meta_description %}Exhibit at Pollination Africa Summit 2026. Showcase your innovation to 500+ conservation leaders, researchers and policymakers in Arusha, Tanzania.{% endblock %}
+{% block og_image %}{{ url_for('static', filename='images/og/register.png', _external=True) }}{% endblock %}
+{% block content %}
 <!-- Hero Section -->
 <div class="relative isolate overflow-hidden bg-white py-24 sm:py-32">
     <div

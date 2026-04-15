@@ -81,6 +81,33 @@
       }
     },
     {
+      "slug": "taha",
+      "name": "TAHA",
+      "full_name": "Tanzania Horticulture Association",
+      "logo_file": "taha.jpeg",
+      "logo_scale": 1.0,
+      "alt_text": "TAHA logo - Tanzania Horticulture Association, Horticulture for Health and Wealth",
+      "description": "The Tanzania Horticulture Association (TAHA) is a private sector-led organization that promotes the development of the horticulture industry in Tanzania. TAHA advocates for sustainable horticultural practices, supports farmers and agribusinesses, and facilitates market access for horticultural products.",
+      "website": "",
+      "tier": "gold",
+      "category": "development_partner",
+      "country": "Tanzania",
+      "display_order": 2.5,
+      "is_active": true,
+      "seo": {
+        "title": "TAHA - Tanzania Horticulture Association | Pollination Africa Summit Partner",
+        "keywords": [
+          "horticulture",
+          "Tanzania",
+          "agribusiness",
+          "sustainable farming",
+          "market access",
+          "horticultural development"
+        ],
+        "og_description": "The Tanzania Horticulture Association promotes sustainable horticulture development and farmer empowerment, partnering with Pollination Africa Summit 2026."
+      }
+    },
+    {
       "slug": "sef",
       "name": "SEF",
       "full_name": "Sustainable Environment Foundation",

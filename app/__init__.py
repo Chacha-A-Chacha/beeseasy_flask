@@ -193,6 +193,8 @@ def create_app(config_name=None):
             support_whatsapp=app.config.get("SUPPORT_WHATSAPP", "+255 767 727 619"),
             website_url=app.config.get("WEBSITE_URL", "https://pollination.africa"),
             registration_open=app.config.get("REGISTRATION_OPEN", False),
+            event_start_date=app.config.get("EVENT_START_DATE", "2026-06-03"),
+            event_end_date=app.config.get("EVENT_END_DATE", "2026-06-05"),
         )
 
     # --- Error Handlers ---

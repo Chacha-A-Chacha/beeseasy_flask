@@ -1,88 +1,21 @@
 {% extends "base.html" %} {% block title %} {% if registration.status.value ==
 'confirmed' %} Registration Confirmed - {{ event_name }} {% else %} Complete
 Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
+
 <!-- Hero Section -->
 <div
-    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-16 sm:py-20"
+    class="relative isolate overflow-hidden bg-gradient-to-r from-primary-dark to-primary-medium py-12 sm:py-16"
 >
-    <!-- Decorative background elements -->
-    <div
-        aria-hidden="true"
-        class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
-    >
-        <div
-            style="
-                clip-path: polygon(
-                    74.1% 44.1%,
-                    100% 61.6%,
-                    97.5% 26.9%,
-                    85.5% 0.1%,
-                    80.7% 2%,
-                    72.5% 32.5%,
-                    60.2% 62.4%,
-                    52.4% 68.1%,
-                    47.5% 58.3%,
-                    45.2% 34.5%,
-                    27.5% 76.7%,
-                    0.1% 64.9%,
-                    17.9% 100%,
-                    27.6% 76.8%,
-                    76.1% 97.7%,
-                    74.1% 44.1%
-                );
-            "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
-        ></div>
-    </div>
-    <div
-        aria-hidden="true"
-        class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0"
-    >
-        <div
-            style="
-                clip-path: polygon(
-                    74.1% 44.1%,
-                    100% 61.6%,
-                    97.5% 26.9%,
-                    85.5% 0.1%,
-                    80.7% 2%,
-                    72.5% 32.5%,
-                    60.2% 62.4%,
-                    52.4% 68.1%,
-                    47.5% 58.3%,
-                    45.2% 34.5%,
-                    27.5% 76.7%,
-                    0.1% 64.9%,
-                    17.9% 100%,
-                    27.6% 76.8%,
-                    76.1% 97.7%,
-                    74.1% 44.1%
-                );
-            "
-            class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#FFD700] to-[#FFA500] opacity-20"
-        ></div>
-    </div>
-
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-3xl text-center">
             <!-- Status Badge -->
-            <div class="mb-6">
+            <div class="mb-4">
                 {% if registration.status.value == 'confirmed' %}
                 <span
                     class="inline-flex items-center gap-x-2 rounded-full bg-green-500/20 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-green-500/30"
                 >
-                    <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     REGISTRATION CONFIRMED
                 </span>
@@ -90,48 +23,35 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
                 <span
                     class="inline-flex items-center gap-x-2 rounded-full bg-yellow-500/20 px-4 py-2 text-sm font-semibold text-yellow-200 ring-1 ring-inset ring-yellow-500/30"
                 >
-                    <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     PAYMENT PENDING
                 </span>
                 {% endif %}
             </div>
 
-            <!-- Main Heading -->
-            <h1
-                class="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
-            >
-                {% if registration.status.value == 'confirmed' %} You're All
-                Set! {% else %} Almost There! {% endif %}
+            <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                {% if registration.status.value == 'confirmed' %}
+                    You're All Set!
+                {% else %}
+                    Almost There!
+                {% endif %}
             </h1>
 
-            <!-- Event Details -->
-            <p class="mt-4 text-lg text-[#F5C342]">
-                3-5 June 2026 • Arusha, Tanzania
+            <p class="mt-3 text-lg text-[#F5C342]">
+                {{ event_date }} &bull; {{ event_location }}
             </p>
 
-            <!-- Description -->
-            <p class="mt-4 text-lg text-white/90">
-                {% if registration.status.value == 'confirmed' %} Your
-                registration for Pollination Africa Symposium 2026 is complete.
-                Your event badge has been sent to
-                <span class="font-semibold text-accent-yellow"
-                    >{{ registration.email }}</span
-                >
-                {% else %} Complete your payment to receive your event badge and
-                full confirmation for Pollination Africa Symposium 2026 {% endif
-                %}
+            <p class="mt-3 text-base text-white/90">
+                {% if registration.status.value == 'confirmed' %}
+                    Your registration for {{ event_name }} is complete.
+                    Your event badge has been sent to
+                    <span class="font-semibold text-accent-yellow">{{ registration.email }}</span>.
+                {% else %}
+                    Complete your payment to receive your event badge and
+                    confirmation for {{ event_name }}.
+                {% endif %}
             </p>
         </div>
     </div>
@@ -139,50 +59,28 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
 
 <!-- Progress Indicator -->
 <div class="bg-green-50 border-b border-gray-200">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6 lg:px-8">
-        <div class="mx-auto max-w-3xl overflow-x-auto">
-            <div
-                class="flex items-center justify-between text-xs sm:text-sm min-w-max sm:min-w-0"
-            >
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 py-4 lg:px-8">
+        <div class="mx-auto max-w-3xl">
+            <div class="flex items-center justify-between text-xs sm:text-sm">
                 <div class="flex items-center">
-                    <div
-                        class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white"
-                    >
-                        ✓
-                    </div>
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">✓</div>
                     <span class="ml-2 text-gray-600">Registration</span>
                 </div>
-                <div
-                    class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-accent-yellow{% endif %} mx-4"
-                ></div>
+                <div class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-accent-yellow{% endif %} mx-4"></div>
                 <div class="flex items-center">
-                    <div
-                        class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-accent-yellow text-primary-dark font-bold{% endif %}"
-                    >
-                        {% if registration.status.value == 'confirmed' %}✓{%
-                        else %}2{% endif %}
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-accent-yellow text-primary-dark font-bold{% endif %}">
+                        {% if registration.status.value == 'confirmed' %}✓{% else %}2{% endif %}
                     </div>
-                    <span
-                        class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}font-semibold text-primary-dark{% endif %}"
-                    >
-                        {% if payment and payment.total_amount > 0 %}Payment{%
-                        else %}Confirmation{% endif %}
+                    <span class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}font-semibold text-primary-dark{% endif %}">
+                        {% if payment and payment.total_amount > 0 %}Payment{% else %}Confirmation{% endif %}
                     </span>
                 </div>
-                <div
-                    class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-gray-200{% endif %} mx-4"
-                ></div>
+                <div class="flex-1 h-0.5 {% if registration.status.value == 'confirmed' %}bg-green-500{% else %}bg-gray-200{% endif %} mx-4"></div>
                 <div class="flex items-center">
-                    <div
-                        class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-400{% endif %}"
-                    >
-                        {% if registration.status.value == 'confirmed' %}✓{%
-                        else %}3{% endif %}
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full {% if registration.status.value == 'confirmed' %}bg-green-500 text-white{% else %}bg-gray-200 text-gray-400{% endif %}">
+                        {% if registration.status.value == 'confirmed' %}✓{% else %}3{% endif %}
                     </div>
-                    <span
-                        class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}text-gray-400{% endif %}"
-                        >Complete</span
-                    >
+                    <span class="ml-2 {% if registration.status.value == 'confirmed' %}text-gray-600{% else %}text-gray-400{% endif %}">Complete</span>
                 </div>
             </div>
         </div>
@@ -190,730 +88,281 @@ Payment - {{ event_name }} {% endif %} {% endblock %} {% block content %}
 </div>
 
 <!-- Main Content -->
-<div class="bg-green-50 py-8 sm:py-12 lg:py-16">
+<div class="bg-green-50 py-8 sm:py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-4xl">
-            <!-- ========================================== -->
-            <!-- CONFIRMED STATUS (Free Attendees Only) -->
-            <!-- ========================================== -->
-            {% if registration.status.value == 'confirmed' %}
 
-            <!-- Success Alert -->
-            <div
-                class="bg-white rounded-2xl p-8 mb-8 shadow-lg ring-1 ring-gray-900/5"
-            >
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100"
-                        >
-                            <svg
-                                class="h-6 w-6 text-green-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M5 13l4 4L19 7"
-                                ></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">
-                            You're All Set!
-                        </h2>
-                        <p class="text-gray-700 text-lg mb-3">
-                            Your registration is complete. Welcome to
-                            Pollination Africa Symposium 2026!
-                        </p>
-                        <div
-                            class="flex items-center text-sm text-gray-600 bg-green-50 rounded-lg p-3"
-                        >
-                            <svg
-                                class="w-5 h-5 text-green-600 mr-2 flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                ></path>
-                            </svg>
-                            <span
-                                >Your event badge has been sent to
-                                <strong class="text-gray-900"
-                                    >{{ registration.email }}</strong
-                                ></span
-                            >
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Badge Download -->
-            {% if registration.qr_code_image_url %}
-            <div
-                class="bg-white rounded-lg shadow-lg p-8 mb-8 text-center border-2 border-green-200"
-            >
-                <h3 class="text-xl font-bold text-primary-dark mb-4">
-                    Your Event Badge
-                </h3>
-                <p class="text-gray-600 mb-6">
-                    Didn't receive the email? Download your badge here as a
-                    backup.
-                </p>
+            <!-- Badge Download (confirmed only) -->
+            {% if registration.status.value == 'confirmed' and registration.qr_code_image_url %}
+            <div class="bg-white rounded-2xl shadow-lg p-8 mb-6 text-center ring-1 ring-green-200">
+                <h3 class="text-xl font-bold text-primary-dark mb-2">Your Event Badge</h3>
+                <p class="text-gray-600 mb-6">Download your badge for event check-in.</p>
                 <a
                     href="{{ url_for('main.download_badge', reference=registration.reference_number) }}"
-                    class="inline-flex items-center px-8 py-4 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md hover:shadow-lg text-lg"
+                    class="inline-flex items-center px-8 py-4 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-md text-lg"
                 >
-                    <svg
-                        class="w-6 h-6 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                        ></path>
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
                     </svg>
                     Download Badge (PDF)
                 </a>
-                <p class="text-sm text-gray-500 mt-3">
-                    Print or save to your phone for event check-in
-                </p>
             </div>
             {% endif %}
 
-            <!-- ========================================== -->
-            <!-- PENDING STATUS (Paid Attendees & All Exhibitors) -->
-            <!-- ========================================== -->
-            {% else %}
-
-            <!-- Pending Payment Alert -->
-            <div
-                class="bg-white rounded-2xl p-8 mb-8 shadow-lg ring-1 ring-gray-900/5"
-            >
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100"
-                        >
-                            <svg
-                                class="h-6 w-6 text-yellow-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">
-                            Almost There!
-                        </h2>
-                        <p class="text-gray-700 text-lg mb-3">
-                            {% if registration.registration_type == 'attendee'
-                            %} Complete your payment to receive your event badge
-                            and confirmation {% else %} Complete your payment to
-                            receive your exhibitor badge and booth details {%
-                            endif %}
-                        </p>
-                        <div
-                            class="flex items-center text-sm text-gray-600 bg-yellow-50 rounded-lg p-3"
-                        >
-                            <svg
-                                class="w-5 h-5 text-yellow-600 mr-2 flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path>
-                            </svg>
-                            <span
-                                >Your registration has been saved. Badge will be
-                                emailed once payment is verified.</span
-                            >
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Payment Summary Card (Show FIRST for pending) -->
-            {% if payment and payment.total_amount > 0 %}
-            <div
-                class="bg-white rounded-lg shadow-lg p-6 mb-6 border-2 border-accent-orange"
-            >
-                <div class="border-b border-gray-200 pb-3 mb-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-bold text-primary-dark">
-                            Payment Summary
-                        </h3>
-                        {% if payment.payment_due_date %}
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800"
-                        >
-                            <svg
-                                class="w-3 h-3 mr-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path>
-                            </svg>
-                            Due {{ payment.payment_due_date.strftime('%b %d,
-                            %Y') }}
-                        </span>
-                        {% endif %}
-                    </div>
+            <!-- Payment Action (pending only) -->
+            {% if registration.status.value != 'confirmed' and payment and payment.total_amount > 0 %}
+            <div class="bg-white rounded-2xl p-6 mb-6 shadow-lg ring-1 ring-gray-900/5">
+                <!-- Payment Summary -->
+                <div class="border-b border-gray-200 pb-4 mb-4">
+                    <h3 class="text-lg font-bold text-primary-dark">Payment Summary</h3>
                 </div>
 
                 <div class="space-y-3">
-                    <!-- Original Price -->
                     <div class="flex justify-between items-center">
-                        <span class="text-sm sm:text-base text-gray-700">
-                            {% if registration.registration_type == 'attendee'
-                            %}Ticket Price{% else %}Package Price{% endif %}
+                        <span class="text-sm text-gray-700">
+                            {% if registration.registration_type == 'attendee' %}Ticket Price{% else %}Package Price{% endif %}
                         </span>
-                        <span
-                            class="text-base sm:text-lg font-semibold text-gray-900"
-                            >{{ payment.currency }} {{
-                            "%.2f"|format(payment.subtotal) }}</span
-                        >
+                        <span class="text-base font-semibold text-gray-900">
+                            {{ payment.currency }} {{ "%.2f"|format(payment.subtotal) }}
+                        </span>
                     </div>
 
-                    <!-- Show Discount if Applied -->
-                    {% if payment.discount_amount and payment.discount_amount >
-                    0 %}
-                    <div
-                        class="flex justify-between items-center bg-green-50 -mx-2 px-2 py-2 rounded"
-                    >
-                        <span
-                            class="text-sm sm:text-base text-green-700 font-medium flex items-center"
-                        >
-                            <svg
-                                class="w-4 h-4 mr-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M5 13l4 4L19 7"
-                                ></path>
-                            </svg>
-                            Discount Applied
+                    {% if payment.discount_amount and payment.discount_amount > 0 %}
+                    <div class="flex justify-between items-center bg-green-50 -mx-2 px-2 py-2 rounded">
+                        <span class="text-sm text-green-700 font-medium">Discount Applied</span>
+                        <span class="text-base font-semibold text-green-600">
+                            -{{ payment.currency }} {{ "%.2f"|format(payment.discount_amount) }}
                         </span>
-                        <span
-                            class="text-base sm:text-lg font-semibold text-green-600"
-                            >-{{ payment.currency }} {{
-                            "%.2f"|format(payment.discount_amount) }}</span
-                        >
                     </div>
                     {% endif %}
 
-                    <!-- Total Amount Due - Prominent Display -->
-                    <div
-                        class="pt-4 border-t-2 border-gray-200 bg-gradient-to-r from-red-50 to-orange-50 -mx-6 px-6 py-4 mt-4"
-                    >
+                    <div class="pt-4 border-t-2 border-gray-200 bg-gradient-to-r from-red-50 to-orange-50 -mx-6 px-6 py-4">
                         <div class="flex justify-between items-center">
-                            <span
-                                class="text-base sm:text-lg font-bold text-red-700"
-                            >
-                                Amount Due
-                            </span>
+                            <span class="text-base font-bold text-red-700">Amount Due</span>
                             <div class="text-right">
-                                <div class="text-xs text-gray-600">
-                                    {{ payment.currency }}
-                                </div>
-                                <div
-                                    class="text-3xl sm:text-4xl font-bold text-red-600"
-                                >
-                                    {{ "{:,.2f}".format(payment.total_amount) }}
-                                </div>
+                                <div class="text-xs text-gray-600">{{ payment.currency }}</div>
+                                <div class="text-3xl font-bold text-red-600">{{ "{:,.2f}".format(payment.total_amount) }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endif %}
 
-            <!-- Payment Button with Payment Methods -->
-            <div class="text-center mb-8">
-                <a
-                    href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
-                    class="inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg hover:shadow-xl text-lg sm:text-xl"
-                >
-                    <svg
-                        class="w-6 h-6 sm:w-7 sm:h-7 mr-2 sm:mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                <!-- Pay Button -->
+                <div class="mt-6 text-center">
+                    <a
+                        href="{{ url_for('payments.checkout', ref=registration.reference_number) }}"
+                        class="inline-flex items-center justify-center w-full px-8 py-4 bg-accent-orange text-white font-bold rounded-lg hover:bg-accent-yellow hover:text-primary-dark transition-all shadow-lg text-lg"
                     >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                        ></path>
-                    </svg>
-                    Complete Payment Now
-                </a>
-                <div
-                    class="mt-4 flex items-center justify-center gap-3 text-sm text-gray-600"
-                >
-                    <div class="flex items-center">
-                        <svg
-                            class="w-4 h-4 text-green-600 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                            ></path>
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                         </svg>
-                        Secure
-                    </div>
-                    <span class="text-gray-400">•</span>
-                    <div>Card, M-Pesa, Bank Transfer</div>
-                </div>
-                <p class="text-xs text-gray-500 mt-2">
-                    SSL encrypted payment processing via DPO
-                </p>
-
-                <!-- Change Ticket Option (only for pending attendee registrations with pending payment) -->
-                {% if registration.registration_type == 'attendee' and registration.status.value == 'pending' and payment and payment.payment_status.value in ('pending', 'failed') %}
-                <div class="mt-6 pt-4 border-t border-gray-200">
-                    <a href="{{ url_for('register.change_ticket', ref=registration.reference_number) }}"
-                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-accent-orange transition-colors">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182" />
-                        </svg>
-                        Change ticket type
+                        Complete Payment Now
                     </a>
-                </div>
-                {% endif %}
-            </div>
+                    <p class="text-xs text-gray-500 mt-2">Card, M-Pesa, Invoice &bull; SSL encrypted via DPO</p>
 
+                    {% if registration.registration_type == 'attendee' and registration.status.value == 'pending' and payment and payment.payment_status.value in ('pending', 'failed') %}
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <a href="{{ url_for('register.change_ticket', ref=registration.reference_number) }}"
+                            class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-accent-orange transition-colors">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182" />
+                            </svg>
+                            Change ticket type
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
             {% endif %}
 
-            <!-- Registration Details Card -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <!-- Payment Summary for confirmed (paid) -->
+            {% if registration.status.value == 'confirmed' and payment and payment.total_amount > 0 %}
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 ring-1 ring-gray-900/5">
                 <div class="border-b border-gray-200 pb-3 mb-4">
-                    <h3 class="text-lg font-bold text-primary-dark">
-                        Registration Summary
-                    </h3>
+                    <h3 class="text-lg font-bold text-primary-dark">Payment Summary</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-700">
+                            {% if registration.registration_type == 'attendee' %}Ticket Price{% else %}Package Price{% endif %}
+                        </span>
+                        <span class="text-base font-semibold text-gray-900">
+                            {{ payment.currency }} {{ "%.2f"|format(payment.subtotal) }}
+                        </span>
+                    </div>
+                    {% if payment.discount_amount and payment.discount_amount > 0 %}
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-green-600 font-medium">Discount Applied</span>
+                        <span class="text-base font-semibold text-green-600">
+                            -{{ payment.currency }} {{ "%.2f"|format(payment.discount_amount) }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-200">
+                        <span class="text-base font-semibold text-green-600">Paid in Full</span>
+                        <span class="text-xl font-bold text-green-600">
+                            {{ payment.currency }} {{ "%.2f"|format(payment.total_amount) }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Registration Details -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 ring-1 ring-gray-900/5">
+                <div class="border-b border-gray-200 pb-3 mb-4">
+                    <h3 class="text-lg font-bold text-primary-dark">Registration Details</h3>
                 </div>
 
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-3 sm:gap-y-4"
-                >
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Reference Number
-                        </p>
+                        <p class="text-xs text-gray-500 mb-1">Reference Number</p>
                         <div class="flex items-center gap-2">
-                            <p
-                                id="refNumber"
-                                class="font-bold text-primary-dark font-mono text-sm sm:text-base break-all"
-                            >
+                            <p id="refNumber" class="font-bold text-primary-dark font-mono text-sm break-all">
                                 {{ registration.reference_number }}
                             </p>
                             <button
                                 onclick="copyReference()"
-                                class="flex-shrink-0 p-2 text-gray-500 hover:text-accent-orange hover:bg-gray-100 rounded transition-colors"
-                                title="Copy reference number"
+                                class="flex-shrink-0 p-1.5 text-gray-400 hover:text-accent-orange rounded transition-colors"
+                                title="Copy"
                             >
-                                <svg
-                                    id="copyIcon"
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                    ></path>
+                                <svg id="copyIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                 </svg>
-                                <svg
-                                    id="copiedIcon"
-                                    class="w-4 h-4 hidden text-green-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M5 13l4 4L19 7"
-                                    ></path>
+                                <svg id="copiedIcon" class="w-4 h-4 hidden text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Status
-                        </p>
-                        <span
-                            class="inline-block px-3 py-1 rounded-full text-sm font-semibold {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800 {% else %}bg-yellow-100 text-yellow-800{% endif %}"
-                        >
+                        <p class="text-xs text-gray-500 mb-1">Status</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold {% if registration.status.value == 'confirmed' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
                             {{ registration.status.value|upper }}
                         </span>
                     </div>
 
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Name
-                        </p>
-                        <p
-                            class="text-sm sm:text-base font-semibold text-primary-dark"
-                        >
-                            {{ registration.first_name }} {{
-                            registration.last_name }}
+                        <p class="text-xs text-gray-500 mb-1">Name</p>
+                        <p class="text-sm font-semibold text-primary-dark">
+                            {{ registration.first_name }} {{ registration.last_name }}
                         </p>
                     </div>
 
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Email
-                        </p>
-                        <p
-                            class="text-sm sm:text-base font-semibold text-primary-dark break-all"
-                        >
-                            {{ registration.email }}
-                        </p>
+                        <p class="text-xs text-gray-500 mb-1">Email</p>
+                        <p class="text-sm font-semibold text-primary-dark break-all">{{ registration.email }}</p>
                     </div>
 
                     {% if registration.registration_type == 'attendee' %}
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Ticket Type
-                        </p>
-                        <p
-                            class="text-sm sm:text-base font-semibold text-primary-dark"
-                        >
-                            {{ registration.ticket_type.value|replace('_', '
-                            ')|title }}
+                        <p class="text-xs text-gray-500 mb-1">Ticket Type</p>
+                        <p class="text-sm font-semibold text-primary-dark">
+                            {{ registration.ticket_type.value|replace('_', ' ')|title }}
                         </p>
                     </div>
                     {% if registration.organization %}
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Organization
-                        </p>
-                        <p
-                            class="text-sm sm:text-base font-semibold text-primary-dark"
-                        >
-                            {{ registration.organization }}
-                        </p>
+                        <p class="text-xs text-gray-500 mb-1">Organization</p>
+                        <p class="text-sm font-semibold text-primary-dark">{{ registration.organization }}</p>
                     </div>
-                    {% endif %} {% else %}
+                    {% endif %}
+                    {% else %}
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Company
-                        </p>
-                        <p
-                            class="text-sm sm:text-base font-semibold text-primary-dark"
-                        >
-                            {{ registration.company_legal_name }}
-                        </p>
+                        <p class="text-xs text-gray-500 mb-1">Company</p>
+                        <p class="text-sm font-semibold text-primary-dark">{{ registration.company_legal_name }}</p>
                     </div>
                     <div>
-                        <p class="text-xs sm:text-sm text-gray-600 mb-1">
-                            Package
-                        </p>
-                        <p
-                            class="text-sm sm:text-base font-semibold text-primary-dark"
-                        >
-                            {{ registration.package_type.value|title }}
-                        </p>
+                        <p class="text-xs text-gray-500 mb-1">Package</p>
+                        <p class="text-sm font-semibold text-primary-dark">{{ registration.package_type.value|title }}</p>
                     </div>
                     {% endif %}
                 </div>
             </div>
 
-            <!-- Payment Summary Card for CONFIRMED status -->
-            {% if registration.status.value == 'confirmed' and payment and
-            payment.total_amount > 0 %}
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <div class="border-b border-gray-200 pb-3 mb-4">
-                    <h3 class="text-lg font-bold text-primary-dark">
-                        Payment Summary
-                    </h3>
-                </div>
-
-                <div class="space-y-3">
-                    <!-- Original Price -->
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm sm:text-base text-gray-700">
-                            {% if registration.registration_type == 'attendee'
-                            %}Ticket Price{% else %}Package Price{% endif %}
-                        </span>
-                        <span
-                            class="text-base sm:text-lg font-semibold text-gray-900"
-                            >{{ payment.currency }} {{
-                            "%.2f"|format(payment.subtotal) }}</span
-                        >
-                    </div>
-
-                    <!-- Show Discount if Applied -->
-                    {% if payment.discount_amount and payment.discount_amount >
-                    0 %}
-                    <div class="flex justify-between items-center">
-                        <span
-                            class="text-sm sm:text-base text-green-600 font-medium"
-                        >
-                            Discount Applied
-                        </span>
-                        <span
-                            class="text-base sm:text-lg font-semibold text-green-600"
-                            >-{{ payment.currency }} {{
-                            "%.2f"|format(payment.discount_amount) }}</span
-                        >
-                    </div>
-                    {% endif %}
-
-                    <!-- Total Amount - Paid -->
-                    <div
-                        class="flex justify-between items-center pt-3 border-t border-gray-200"
-                    >
-                        <span
-                            class="text-base sm:text-lg font-semibold text-green-600"
-                        >
-                            Paid in Full
-                        </span>
-                        <span
-                            class="text-xl sm:text-2xl font-bold text-green-600"
-                        >
-                            {{ payment.currency }} {{
-                            "%.2f"|format(payment.total_amount) }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Print Confirmation -->
-            <div class="text-center mb-6">
+            <!-- Footer Actions -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
                 <a
                     href="{{ url_for('payments.print_confirmation', ref=registration.reference_number) }}"
                     target="_blank"
-                    class="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 font-semibold rounded-full shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all text-sm"
+                    class="inline-flex items-center px-6 py-3 bg-white text-gray-700 font-semibold rounded-full shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 transition-all text-sm"
                 >
-                    <svg
-                        class="w-5 h-5 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-                        ></path>
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                     </svg>
                     Print Confirmation
                 </a>
             </div>
 
-            <!-- Email Confirmation Notice -->
-            <div
-                class="text-center bg-gray-50 rounded-lg p-6 border border-gray-200"
-            >
-                <svg
-                    class="w-12 h-12 text-gray-400 mx-auto mb-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    ></path>
-                </svg>
-                <p class="text-gray-700 font-medium mb-1">
-                    {% if registration.status.value == 'confirmed' %} Badge Sent
-                    to Your Email {% else %} Confirmation Email Sent {% endif %}
-                </p>
-                <p class="text-sm text-gray-600 mb-4">
-                    Check
-                    <span class="font-semibold">{{ registration.email }}</span>
-                    for {% if registration.status.value == 'confirmed' %}your
-                    badge and event details{% else %}payment instructions{%
-                    endif %}
-                </p>
-                <p class="text-xs text-gray-500 border-t border-gray-200 pt-4">
+            <!-- Contact -->
+            <div class="text-center text-sm text-gray-500">
+                <p>
                     Questions? Email
-                    <a
-                        href="mailto:info@pollination.africa"
-                        class="text-accent-orange hover:text-accent-yellow font-semibold"
-                        >info@pollination.africa</a
-                    >
+                    <a href="mailto:{{ contact_email }}" class="text-accent-orange hover:text-accent-yellow font-semibold">{{ contact_email }}</a>
                     or WhatsApp
-                    <a
-                        href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}"
-                        class="text-accent-orange hover:text-accent-yellow font-semibold"
-                        >{{ support_whatsapp }}</a
-                    >
+                    <a href="https://wa.me/{{ support_whatsapp.replace('+', '').replace(' ', '') }}" class="text-accent-orange hover:text-accent-yellow font-semibold">{{ support_whatsapp }}</a>
                 </p>
-                <p class="text-xs text-gray-400 mt-3">
-                    View our
-                    <a
-                        href="{{ url_for('legal.refund_policy') }}"
-                        target="_blank"
-                        class="text-accent-orange hover:text-accent-yellow font-semibold transition-colors underline"
-                        >Refund & Cancellation Policy</a
-                    >
-                    and
-                    <a
-                        href="{{ url_for('legal.terms') }}"
-                        target="_blank"
-                        class="text-accent-orange hover:text-accent-yellow font-semibold transition-colors underline"
-                        >Terms & Conditions</a
-                    >.
+                <p class="mt-2 text-xs text-gray-400">
+                    <a href="{{ url_for('legal.refund_policy') }}" target="_blank" class="text-accent-orange hover:text-accent-yellow underline">Refund Policy</a>
+                    &bull;
+                    <a href="{{ url_for('legal.terms') }}" target="_blank" class="text-accent-orange hover:text-accent-yellow underline">Terms & Conditions</a>
                 </p>
             </div>
+
         </div>
     </div>
-
-    <!-- Auto-refresh for pending payments with visual feedback -->
-    {% if registration.status.value != 'confirmed' %}
-    <div
-        id="paymentCheckIndicator"
-        class="hidden fixed bottom-4 right-4 bg-white rounded-lg shadow-lg px-4 py-3 border-l-4 border-accent-orange z-50"
-    >
-        <div class="flex items-center">
-            <svg
-                class="animate-spin h-5 w-5 text-accent-orange mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-            >
-                <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                ></circle>
-                <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-            </svg>
-            <span class="text-sm text-gray-700"
-                >Checking payment status...</span
-            >
-        </div>
-    </div>
-    <script>
-        // Copy reference number function
-        function copyReference() {
-            const refNumber = document
-                .getElementById("refNumber")
-                .textContent.trim();
-            const copyIcon = document.getElementById("copyIcon");
-            const copiedIcon = document.getElementById("copiedIcon");
-
-            navigator.clipboard
-                .writeText(refNumber)
-                .then(() => {
-                    copyIcon.classList.add("hidden");
-                    copiedIcon.classList.remove("hidden");
-
-                    setTimeout(() => {
-                        copyIcon.classList.remove("hidden");
-                        copiedIcon.classList.add("hidden");
-                    }, 2000);
-                })
-                .catch((err) => {
-                    console.error("Failed to copy:", err);
-                });
-        }
-    </script>
-    <script>
-        let checkCount = 0;
-        const maxChecks = 60; // Check for 5 minutes (60 checks × 5 seconds)
-
-        const indicator = document.getElementById("paymentCheckIndicator");
-
-        function checkPaymentStatus() {
-            if (checkCount >= maxChecks) {
-                console.log("Payment status check timeout");
-                indicator.classList.add("hidden");
-                return;
-            }
-
-            // Show indicator
-            indicator.classList.remove("hidden");
-
-            fetch(
-                "/register/api/payment-status/{{ registration.reference_number }}",
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.is_confirmed) {
-                        console.log("Payment confirmed! Reloading page...");
-                        indicator.innerHTML =
-                            '<div class="flex items-center"><svg class="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span class="text-sm text-green-700 font-semibold">Payment confirmed! Refreshing...</span></div>';
-                        setTimeout(() => location.reload(), 1000);
-                    } else {
-                        checkCount++;
-                        indicator.classList.add("hidden");
-                        setTimeout(checkPaymentStatus, 5000); // Check every 5 seconds
-                    }
-                })
-                .catch((error) => {
-                    console.error("Payment status check failed:", error);
-                    checkCount++;
-                    indicator.classList.add("hidden");
-                    setTimeout(checkPaymentStatus, 10000); // Retry after 10 seconds on error
-                });
-        }
-
-        // Start checking after 10 seconds (gives time for webhook to process)
-        setTimeout(checkPaymentStatus, 10000);
-    </script>
-    {% endif %} {% endblock %}
 </div>
+
+<!-- Payment status polling (pending only, 30s interval, 10 min timeout) -->
+{% if registration.status.value != 'confirmed' and payment and payment.total_amount > 0 %}
+<script>
+    function copyReference() {
+        const ref = document.getElementById("refNumber").textContent.trim();
+        navigator.clipboard.writeText(ref).then(function () {
+            document.getElementById("copyIcon").classList.add("hidden");
+            document.getElementById("copiedIcon").classList.remove("hidden");
+            setTimeout(function () {
+                document.getElementById("copyIcon").classList.remove("hidden");
+                document.getElementById("copiedIcon").classList.add("hidden");
+            }, 2000);
+        });
+    }
+
+    var checkCount = 0;
+    function checkPaymentStatus() {
+        if (checkCount >= 20) return;
+        fetch("/register/api/payment-status/{{ registration.reference_number }}")
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.is_confirmed) {
+                    location.reload();
+                } else {
+                    checkCount++;
+                    setTimeout(checkPaymentStatus, 30000);
+                }
+            })
+            .catch(function () {
+                checkCount++;
+                setTimeout(checkPaymentStatus, 30000);
+            });
+    }
+    setTimeout(checkPaymentStatus, 30000);
+</script>
+{% else %}
+<script>
+    function copyReference() {
+        const ref = document.getElementById("refNumber").textContent.trim();
+        navigator.clipboard.writeText(ref).then(function () {
+            document.getElementById("copyIcon").classList.add("hidden");
+            document.getElementById("copiedIcon").classList.remove("hidden");
+            setTimeout(function () {
+                document.getElementById("copyIcon").classList.remove("hidden");
+                document.getElementById("copiedIcon").classList.add("hidden");
+            }, 2000);
+        });
+    }
+</script>
+{% endif %}
+
+{% endblock %}

@@ -179,21 +179,21 @@ endblock %} {% block content %}
                                 <h4
                                     class="text-lg font-bold text-primary-dark mb-2"
                                 >
-                                    {% if registration.ticket %} {{
-                                    registration.ticket.name }} {% else %} {{
-                                    registration.ticket_type.value|replace('_',
+                                    {% if registration.ticket_price %} {{
+                                    registration.ticket_price.name }} {% else %} {{
+                                    registration.ticket_price_type.value|replace('_',
                                     ' ')|title }} Ticket {% endif %}
                                 </h4>
-                                {% if registration.ticket and
-                                registration.ticket.description %}
+                                {% if registration.ticket_price and
+                                registration.ticket_price.description %}
                                 <p class="text-sm text-gray-600 mb-3">
-                                    {{ registration.ticket.description }}
+                                    {{ registration.ticket_price.description }}
                                 </p>
                                 {% endif %}
                             </div>
 
                             <!-- Ticket Features -->
-                            {% if registration.ticket %}
+                            {% if registration.ticket_price %}
                             <div class="mb-4 p-3 bg-accent-yellow/5 rounded-lg">
                                 <p
                                     class="text-xs text-gray-600 font-semibold mb-2"
@@ -217,7 +217,7 @@ endblock %} {% block content %}
                                         </svg>
                                         Full summit access
                                     </li>
-                                    {% if registration.ticket.includes_lunch %}
+                                    {% if registration.ticket_price.includes_lunch %}
                                     <li
                                         class="flex items-start text-xs text-gray-700"
                                     >
@@ -235,7 +235,7 @@ endblock %} {% block content %}
                                         Lunch & refreshments
                                     </li>
                                     {% endif %} {% if
-                                    registration.ticket.includes_materials %}
+                                    registration.ticket_price.includes_materials %}
                                     <li
                                         class="flex items-start text-xs text-gray-700"
                                     >
@@ -253,7 +253,7 @@ endblock %} {% block content %}
                                         Conference materials
                                     </li>
                                     {% endif %} {% if
-                                    registration.ticket.includes_certificate %}
+                                    registration.ticket_price.includes_certificate %}
                                     <li
                                         class="flex items-start text-xs text-gray-700"
                                     >
@@ -279,22 +279,22 @@ endblock %} {% block content %}
                                 <h4
                                     class="text-lg font-bold text-primary-dark mb-2"
                                 >
-                                    {% if registration.package %} {{
-                                    registration.package.name }} {% else %} {{
-                                    registration.package_type.value|title }}
+                                    {% if registration.package_price %} {{
+                                    registration.package_price.name }} {% else %} {{
+                                    registration.package_price_type.value|title }}
                                     Package {% endif %}
                                 </h4>
-                                {% if registration.package and
-                                registration.package.description %}
+                                {% if registration.package_price and
+                                registration.package_price.description %}
                                 <p class="text-sm text-gray-600 mb-3">
-                                    {{ registration.package.description }}
+                                    {{ registration.package_price.description }}
                                 </p>
                                 {% endif %}
                             </div>
 
                             <!-- Booth Size -->
-                            {% if registration.package and
-                            registration.package.booth_size %}
+                            {% if registration.package_price and
+                            registration.package_price.booth_size %}
                             <div
                                 class="mb-4 p-3 bg-accent-orange/10 rounded-lg border border-accent-orange/20"
                             >
@@ -315,14 +315,14 @@ endblock %} {% block content %}
                                     <span
                                         class="font-semibold text-primary-dark"
                                         >Booth: {{
-                                        registration.package.booth_size }}</span
+                                        registration.package_price.booth_size }}</span
                                     >
                                 </div>
                             </div>
                             {% endif %}
 
                             <!-- Package Features -->
-                            {% if registration.package %}
+                            {% if registration.package_price %}
                             <div class="mb-4 p-3 bg-accent-orange/5 rounded-lg">
                                 <p
                                     class="text-xs text-gray-600 font-semibold mb-2"
@@ -344,11 +344,11 @@ endblock %} {% block content %}
                                                 clip-rule="evenodd"
                                             />
                                         </svg>
-                                        {{ registration.package.included_passes
+                                        {{ registration.package_price.included_passes
                                         }} exhibitor passes
                                     </li>
                                     {% if
-                                    registration.package.includes_electricity %}
+                                    registration.package_price.includes_electricity %}
                                     <li
                                         class="flex items-start text-xs text-gray-700"
                                     >
@@ -366,7 +366,7 @@ endblock %} {% block content %}
                                         Electricity connection
                                     </li>
                                     {% endif %} {% if
-                                    registration.package.includes_wifi %}
+                                    registration.package_price.includes_wifi %}
                                     <li
                                         class="flex items-start text-xs text-gray-700"
                                     >
@@ -384,7 +384,7 @@ endblock %} {% block content %}
                                         WiFi access
                                     </li>
                                     {% endif %} {% if
-                                    registration.package.includes_speaking_slot
+                                    registration.package_price.includes_speaking_slot
                                     %}
                                     <li
                                         class="flex items-start text-xs text-gray-700"
@@ -717,60 +717,41 @@ endblock %} {% block content %}
                                 </svg>
                             </label>
 
-                            <!-- Bank Transfer (Coming Soon) -->
+                            {# Bank Transfer — disabled for now
                             <div
                                 class="relative flex rounded-lg border-2 border-gray-200 bg-gray-50 p-4 shadow-sm opacity-60 cursor-not-allowed"
                             >
                                 <span class="flex flex-1">
                                     <span class="flex flex-col">
                                         <span class="flex items-center">
-                                            <svg
-                                                class="w-6 h-6 text-gray-400 mr-3"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
-                                                />
+                                            <svg class="w-6 h-6 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                                             </svg>
-                                            <span
-                                                class="block text-lg font-bold text-gray-400"
-                                                >Bank Transfer</span
-                                            >
-                                            <span
-                                                class="ml-3 inline-flex items-center rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500"
-                                                >Coming Soon</span
-                                            >
+                                            <span class="block text-lg font-bold text-gray-400">Bank Transfer</span>
+                                            <span class="ml-3 inline-flex items-center rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500">Coming Soon</span>
                                         </span>
-                                        <span
-                                            class="mt-2 flex items-center text-sm text-gray-400"
-                                        >
-                                            <span
-                                                >Direct bank deposit • All
-                                                currencies accepted</span
-                                            >
-                                        </span>
-                                        <span class="mt-1 text-xs text-gray-300"
-                                            >Processing time: 1-2 business
-                                            days</span
-                                        >
+                                        <span class="mt-2 flex items-center text-sm text-gray-400">Direct bank deposit</span>
                                     </span>
                                 </span>
                             </div>
+                            #}
 
-                            <!-- Invoice Request (Coming Soon) -->
-                            <div
-                                class="relative flex rounded-lg border-2 border-gray-200 bg-gray-50 p-4 shadow-sm opacity-60 cursor-not-allowed"
+                            <!-- Invoice Request -->
+                            <label
+                                class="payment-method-card relative flex cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-4 shadow-sm hover:border-accent-yellow transition-all focus:outline-none"
+                                data-method="invoice"
                             >
+                                <input
+                                    type="radio"
+                                    name="payment_method"
+                                    value="invoice"
+                                    class="sr-only"
+                                />
                                 <span class="flex flex-1">
                                     <span class="flex flex-col">
                                         <span class="flex items-center">
                                             <svg
-                                                class="w-6 h-6 text-gray-400 mr-3"
+                                                class="w-6 h-6 text-accent-orange mr-3"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -783,28 +764,35 @@ endblock %} {% block content %}
                                                 />
                                             </svg>
                                             <span
-                                                class="block text-lg font-bold text-gray-400"
+                                                class="block text-lg font-bold text-gray-900"
                                                 >Invoice Request</span
-                                            >
-                                            <span
-                                                class="ml-3 inline-flex items-center rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-500"
-                                                >Coming Soon</span
                                             >
                                         </span>
                                         <span
-                                            class="mt-2 flex items-center text-sm text-gray-400"
+                                            class="mt-2 flex items-center text-sm text-gray-600"
                                         >
                                             <span
                                                 >For company/institutional
                                                 payments</span
                                             >
                                         </span>
-                                        <span class="mt-1 text-xs text-gray-300"
-                                            >Invoice sent within 24 hours</span
+                                        <span class="mt-1 text-xs text-gray-500"
+                                            >Invoice sent to your email instantly</span
                                         >
                                     </span>
                                 </span>
-                            </div>
+                                <svg
+                                    class="h-5 w-5 text-accent-yellow payment-check hidden absolute top-4 right-4"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+                            </label>
                         </div>
 
                         <!-- Submit Buttons -->

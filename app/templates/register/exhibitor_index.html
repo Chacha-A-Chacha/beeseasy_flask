@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block title %}Exhibitor Registration - {{ event_name }}{% endblock %}
-{% block meta_description %}Exhibit at Pollination Africa Summit 2026. Showcase your innovation to 500+ conservation leaders, researchers and policymakers in Arusha, Tanzania.{% endblock %}
+{% block meta_description %}Exhibit at {{ event_name }}. Showcase your innovation to 500+ conservation leaders, researchers and policymakers in {{ event_city }}, {{ event_country }}.{% endblock %}
 {% block og_image %}{{ url_for('static', filename='images/og/register.png', _external=True) }}{% endblock %}
 {% block content %}
 <!-- Hero Section -->
@@ -437,11 +437,11 @@
                         Venue
                     </h4>
                     <p class="mt-2 font-semibold text-gray-900">
-                        Arusha International Conference Center (AICC)
+                        {{ event_venue }} ({{ event_venue_short }})
                     </p>
                     <p class="mt-1 text-sm text-gray-600">
-                        State-of-the-art exhibition facilities in Arusha,
-                        Tanzania
+                        State-of-the-art exhibition facilities in {{ event_city }},
+                        {{ event_country }}
                     </p>
                 </div>
                 <div
@@ -466,10 +466,10 @@
                         Exhibition Schedule
                     </h4>
                     <p class="mt-2 text-gray-900">
-                        <span class="font-semibold">3-5 June 2026</span>
+                        <span class="font-semibold">{{ event_date }}</span>
                     </p>
                     <p class="mt-1 text-sm text-gray-600">
-                        9:00 AM - 6:00 PM daily
+                        {{ event_time }}
                     </p>
                 </div>
             </div>

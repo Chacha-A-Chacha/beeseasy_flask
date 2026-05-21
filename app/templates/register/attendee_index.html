@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block title %}Delegate Registration - {{ event_name }}{% endblock %}
-{% block meta_description %}Register as a delegate for Pollination Africa Summit 2026. Choose from Standard, Student and other ticket categories. Join us in Arusha, Tanzania, 3–5 June.{% endblock %}
+{% block meta_description %}Register as a delegate for {{ event_name }}. Choose from Standard, Student and other ticket categories. Join us in {{ event_city }}, {{ event_country }}, {{ event_date }}.{% endblock %}
 {% block og_image %}{{ url_for('static', filename='images/og/register.png', _external=True) }}{% endblock %}
 {% block content %}
 <!-- Hero Section -->
@@ -414,6 +414,7 @@
         </div>
     </div>
 </div>
+#}
 
 <!-- Call to Action -->
 <div class="bg-primary-dark py-12">
@@ -449,8 +450,8 @@
     "name": "{{ event_venue }}",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Arusha",
-      "addressCountry": "TZ"
+      "addressLocality": "{{ event_city }}",
+      "addressCountry": "{{ event_country_code }}"
     }
   },
   "organizer": {

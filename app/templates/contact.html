@@ -1,6 +1,6 @@
 <!-- templates/contact.html -->
 {% extends "base.html" %} {% block title %}Contact Us - {{ event_name }}{% endblock %}
-{% block meta_description %}Get in touch with the Pollination Africa Summit 2026 team. Enquiries about registration, sponsorship, media, or logistics — we're here to help.{% endblock %}
+{% block meta_description %}Get in touch with the {{ event_name }} team. Enquiries about registration, sponsorship, media, or logistics — we're here to help.{% endblock %}
 {% block content %}
 
 <!-- ============================================ -->
@@ -115,14 +115,14 @@
                         <h3 class="font-semibold text-white">Email Us</h3>
                         <p class="mt-2 text-sm text-white">
                             <a
-                                href="mailto:info@pollination.africa"
+                                href="mailto:{{ contact_email }}"
                                 class="hover:text-accent-yellow transition-colors"
-                                >info@pollination.africa</a
+                                >{{ contact_email }}</a
                             ><br />
                             <a
-                                href="mailto:partnerships@pollination.africa"
+                                href="mailto:{{ partnerships_email }}"
                                 class="hover:text-accent-yellow transition-colors"
-                                >partnerships@pollination.africa</a
+                                >{{ partnerships_email }}</a
                             >
                         </p>
                     </div>
@@ -147,7 +147,7 @@
                         <p class="mt-2 text-sm text-white">
                             {{ support_phone }}<br />
                             <span class="text-xs text-white/80"
-                                >Mon-Fri: 9am-5pm EAT</span
+                                >{{ support_hours }}</span
                             >
                         </p>
                     </div>
@@ -170,8 +170,7 @@
                     <div class="text-base/7">
                         <h3 class="font-semibold text-white">Visit Us</h3>
                         <p class="mt-2 text-sm text-white">
-                            SAADIT Offices<br />
-                            Dar es Salaam, Tanzania
+                            {{ organization_address|join('<br />'|safe) }}
                         </p>
                     </div>
                 </div>
@@ -526,7 +525,7 @@
             </a>
 
             <a
-                href="mailto:press@pollination.africa"
+                href="mailto:{{ press_email }}"
                 class="block p-6 bg-gray-50 rounded-lg hover:bg-accent-yellow/10 transition-colors ring-1 ring-accent-brown/10"
             >
                 <h4 class="font-semibold text-primary-dark mb-2">

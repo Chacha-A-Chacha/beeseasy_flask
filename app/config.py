@@ -167,6 +167,10 @@ class Config:
     EVENT_VENUE: str = os.getenv(
         "EVENT_VENUE", "Arusha International Conference Centre"
     )
+    EVENT_VENUE_SHORT: str = os.getenv("EVENT_VENUE_SHORT", "AICC")
+    EVENT_CITY: str = os.getenv("EVENT_CITY", "Arusha")
+    EVENT_COUNTRY: str = os.getenv("EVENT_COUNTRY", "Tanzania")
+    EVENT_COUNTRY_CODE: str = os.getenv("EVENT_COUNTRY_CODE", "TZ")
     EVENT_TIME: str = os.getenv("EVENT_TIME", "Daily 9am-5pm")
     EVENT_DURATION: str = os.getenv("EVENT_DURATION", "3 Days")
     EVENT_THEME: str = os.getenv(
@@ -177,10 +181,52 @@ class Config:
         "EVENT_FORMAT", "Continental scientific, innovation & policy summit"
     )
     EVENT_GUEST_OF_HONOR: str = os.getenv("EVENT_GUEST_OF_HONOR", "TBC")
+
+    # ISO 8601 calendar dates for the first and last day of the programme.
+    EVENT_START_DATE: str = os.getenv("EVENT_START_DATE", "2026-06-03")
+    EVENT_END_DATE: str = os.getenv("EVENT_END_DATE", "2026-06-05")
+    # Local start time on day 1, used to build a full ISO datetime for countdowns.
+    EVENT_START_TIME: str = os.getenv("EVENT_START_TIME", "09:00:00+03:00")
+
+    # Pipe-separated themes, one per day. List length determines the number
+    # of programme days surfaced via the `event_days` context variable.
+    EVENT_DAY_THEMES: list[str] = [
+        t.strip()
+        for t in os.getenv(
+            "EVENT_DAY_THEMES",
+            "Science and Evidence"
+            "|Innovation, AI and Technology"
+            "|Policy, Investment and Green Enterprises",
+        ).split("|")
+        if t.strip()
+    ]
+
     ORGANIZATION_NAME: str = os.getenv("ORGANIZATION_NAME", "Pollination Africa")
+    # Multi-line address: separate lines with \n in the env var.
+    ORGANIZATION_ADDRESS: list[str] = [
+        line.strip()
+        for line in os.getenv(
+            "ORGANIZATION_ADDRESS",
+            "SAADIT Offices\nDar es Salaam, Tanzania",
+        ).split("\n")
+        if line.strip()
+    ]
+
+    # --- Contact Channels ---
     CONTACT_EMAIL: str = os.getenv("CONTACT_EMAIL", "info@pollination.africa")
+    PARTNERSHIPS_EMAIL: str = os.getenv(
+        "PARTNERSHIPS_EMAIL", "partnerships@pollination.africa"
+    )
+    PRESS_EMAIL: str = os.getenv("PRESS_EMAIL", "press@pollination.africa")
+    REGISTRATION_EMAIL: str = os.getenv(
+        "REGISTRATION_EMAIL", "registration@pollination.africa"
+    )
+    EXHIBITORS_EMAIL: str = os.getenv(
+        "EXHIBITORS_EMAIL", "exhibitors@pollination.africa"
+    )
     SUPPORT_PHONE: str = os.getenv("SUPPORT_PHONE", "+255 767 727 619")
     SUPPORT_WHATSAPP: str = os.getenv("SUPPORT_WHATSAPP", "+255 683 136 393")
+    SUPPORT_HOURS: str = os.getenv("SUPPORT_HOURS", "Mon-Fri: 9am-5pm EAT")
     WEBSITE_URL: str = os.getenv("WEBSITE_URL", "https://pollination.africa")
 
     # --- Registration Settings ---

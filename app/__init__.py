@@ -1,4 +1,5 @@
 import os
+from datetime import date, timedelta
 
 from flask import Flask, flash, redirect, render_template, request
 from flask_wtf.csrf import CSRFError, CSRFProtect
@@ -164,6 +165,26 @@ def create_app(config_name=None):
         Inject global variables (e.g. event name, organization info)
         into all templates and emails.
         """
+        start_date_str = app.config.get("EVENT_START_DATE", "2026-06-03")
+        start_time = app.config.get("EVENT_START_TIME", "09:00:00+03:00")
+        day_themes = app.config.get("EVENT_DAY_THEMES", [])
+
+        # Build a list of programme days: one entry per theme, dates derived
+        # from EVENT_START_DATE so a calendar shift only needs the start date.
+        try:
+            start = date.fromisoformat(start_date_str)
+            event_days = [
+                {
+                    "number": i + 1,
+                    "label": f"Day {i + 1}",
+                    "date": start + timedelta(days=i),
+                    "theme": theme,
+                }
+                for i, theme in enumerate(day_themes)
+            ]
+        except ValueError:
+            event_days = []
+
         return dict(
             event_name=app.config.get("EVENT_NAME", "Pollination Africa Summit 2026"),
             event_short_name=app.config.get(
@@ -177,6 +198,10 @@ def create_app(config_name=None):
             event_venue=app.config.get(
                 "EVENT_VENUE", "Arusha International Conference Centre"
             ),
+            event_venue_short=app.config.get("EVENT_VENUE_SHORT", "AICC"),
+            event_city=app.config.get("EVENT_CITY", "Arusha"),
+            event_country=app.config.get("EVENT_COUNTRY", "Tanzania"),
+            event_country_code=app.config.get("EVENT_COUNTRY_CODE", "TZ"),
             event_time=app.config.get("EVENT_TIME", "Daily 9am-5pm"),
             event_duration=app.config.get("EVENT_DURATION", "3 Days"),
             event_theme=app.config.get(
@@ -187,14 +212,32 @@ def create_app(config_name=None):
                 "EVENT_FORMAT", "Continental scientific, innovation & policy summit"
             ),
             event_guest_of_honor=app.config.get("EVENT_GUEST_OF_HONOR", "TBC"),
+            event_start_date=start_date_str,
+            event_end_date=app.config.get("EVENT_END_DATE", "2026-06-05"),
+            event_start_time=start_time,
+            event_start_iso=f"{start_date_str}T{start_time}",
+            event_days=event_days,
             organization_name=app.config.get("ORGANIZATION_NAME", "Pollination Africa"),
+            organization_address=app.config.get(
+                "ORGANIZATION_ADDRESS",
+                ["SAADIT Offices", "Dar es Salaam, Tanzania"],
+            ),
             contact_email=app.config.get("CONTACT_EMAIL", "info@pollination.africa"),
+            partnerships_email=app.config.get(
+                "PARTNERSHIPS_EMAIL", "partnerships@pollination.africa"
+            ),
+            press_email=app.config.get("PRESS_EMAIL", "press@pollination.africa"),
+            registration_email=app.config.get(
+                "REGISTRATION_EMAIL", "registration@pollination.africa"
+            ),
+            exhibitors_email=app.config.get(
+                "EXHIBITORS_EMAIL", "exhibitors@pollination.africa"
+            ),
             support_phone=app.config.get("SUPPORT_PHONE", "+255 767 727 619"),
             support_whatsapp=app.config.get("SUPPORT_WHATSAPP", "+255 767 727 619"),
+            support_hours=app.config.get("SUPPORT_HOURS", "Mon-Fri: 9am-5pm EAT"),
             website_url=app.config.get("WEBSITE_URL", "https://pollination.africa"),
             registration_open=app.config.get("REGISTRATION_OPEN", False),
-            event_start_date=app.config.get("EVENT_START_DATE", "2026-06-03"),
-            event_end_date=app.config.get("EVENT_END_DATE", "2026-06-05"),
         )
 
     # --- Error Handlers ---

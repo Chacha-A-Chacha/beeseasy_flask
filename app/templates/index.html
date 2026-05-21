@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}{{ event_name }} - {{ event_theme
 }}{% endblock %}
-{% block meta_description %}Join the Pollination Africa Summit 2026 — Africa's premier event on pollinators, food security &amp; biodiversity. 3–5 June, Arusha, Tanzania. Register now.{% endblock %}
+{% block meta_description %}Join the {{ event_name }} — Africa's premier event on pollinators, food security &amp; biodiversity. {{ event_date }}, {{ event_city }}, {{ event_country }}. Register now.{% endblock %}
 {% block content %}
 
 <!-- ============================================ -->
@@ -624,10 +624,10 @@
                     class="rounded-3xl bg-primary-dark p-8 ring-1 ring-accent-brown/10"
                 >
                     <h3 class="text-xl font-bold text-accent-orange mb-2">
-                        Day 1
+                        {{ event_days[0].label }}
                     </h3>
                     <h4 class="text-lg font-semibold text-white mb-4">
-                        Science and Evidence
+                        {{ event_days[0].theme }}
                     </h4>
                     <p class="text-sm text-gray-300 leading-relaxed">
                         Examining the state of pollinators in Africa through
@@ -642,10 +642,10 @@
                     class="rounded-3xl bg-primary-dark p-8 ring-1 ring-accent-brown/10"
                 >
                     <h3 class="text-xl font-bold text-accent-orange mb-2">
-                        Day 2
+                        {{ event_days[1].label }}
                     </h3>
                     <h4 class="text-lg font-semibold text-white mb-4">
-                        Innovation, AI and Technology
+                        {{ event_days[1].theme }}
                     </h4>
                     <p class="text-sm text-gray-300 leading-relaxed">
                         Showcasing cutting-edge innovations in AI, robotics, and
@@ -661,10 +661,10 @@
                     class="rounded-3xl bg-primary-dark p-8 ring-1 ring-accent-brown/10"
                 >
                     <h3 class="text-xl font-bold text-accent-orange mb-2">
-                        Day 3
+                        {{ event_days[2].label }}
                     </h3>
                     <h4 class="text-lg font-semibold text-white mb-4">
-                        Policy, Investment and Green Enterprises
+                        {{ event_days[2].theme }}
                     </h4>
                     <p class="text-sm text-gray-300 leading-relaxed">
                         Advancing policy frameworks, investment pathways, and
@@ -743,10 +743,10 @@
                         <h3
                             class="mt-3 text-lg/6 font-semibold text-primary-dark"
                         >
-                            {{ event_venue }} (AICC)
+                            {{ event_venue }} ({{ event_venue_short }})
                         </h3>
                         <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">
-                            Centrally located in the heart of Arusha, Tanzania.
+                            Centrally located in the heart of {{ event_city }}, {{ event_country }}.
                             A world-class venue with state-of-the-art facilities
                             for international conferences and events.
                         </p>
@@ -1025,8 +1025,8 @@
                     >
                         <dd class="mt-2 pr-12">
                             <p class="text-base/7 text-gray-600">
-                                The summit is scheduled for 3-5 June 2026 in
-                                Arusha, Tanzania. Detailed session times will be
+                                The summit is scheduled for {{ event_date }} in
+                                {{ event_city }}, {{ event_country }}. Detailed session times will be
                                 announced closer to the event.
                             </p>
                         </dd>
@@ -1204,10 +1204,10 @@
                     >
                         <dd class="mt-2 pr-12">
                             <p class="text-base/7 text-gray-600">
-                                The Pollination Africa Summit 2026 will be held
-                                in Arusha, Tanzania. The specific venue will be
-                                announced soon. Arusha is centrally located with
-                                easy access from hotels and the airport.
+                                The {{ event_name }} will be held at
+                                {{ event_venue }} ({{ event_venue_short }}) in {{ event_city }}, {{ event_country }}.
+                                {{ event_city }} is centrally located with easy access from
+                                hotels and the airport.
                             </p>
                         </dd>
                     </el-disclosure>
@@ -1288,7 +1288,7 @@
                 Our Partners
             </h2>
             <p class="mt-3 text-base text-gray-600">
-                Proud organisations supporting the Pollination Africa Summit 2026
+                Proud organisations supporting the {{ event_name }}
             </p>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -1352,9 +1352,9 @@
             <p class="mt-8 text-sm text-gray-600">
                 Questions? Contact us at
                 <a
-                    href="mailto:info@pollination.africa"
+                    href="mailto:{{ contact_email }}"
                     class="font-semibold text-accent-orange hover:text-accent-orange transition-colors"
-                    >info@pollination.africa</a
+                    >{{ contact_email }}</a
                 >
             </p>
         </div>

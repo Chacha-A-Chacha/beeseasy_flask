@@ -85,7 +85,7 @@ The {{ event_name }} Exhibition Team
 EXHIBITOR SUPPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Email: exhibitors@pollination.africa
+Email: {{ exhibitors_email }}
 Phone: {{ support_phone }}
 WhatsApp: {{ support_whatsapp }}
 

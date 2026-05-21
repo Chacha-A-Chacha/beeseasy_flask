@@ -249,7 +249,7 @@ Symposium{% endblock %} {% block content %}
                 class="flex flex-col sm:flex-row justify-center items-center gap-4 text-white text-sm"
             >
                 <a
-                    href="mailto:info@pollination.africa"
+                    href="mailto:{{ contact_email }}"
                     class="hover:underline flex items-center"
                 >
                     <svg
@@ -265,7 +265,7 @@ Symposium{% endblock %} {% block content %}
                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                     </svg>
-                    info@pollination.africa
+                    {{ contact_email }}
                 </a>
                 <span class="hidden sm:inline text-gray-300">|</span>
                 <a

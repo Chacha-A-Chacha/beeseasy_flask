@@ -101,8 +101,8 @@
                     "name": "{{ event_venue }}",
                     "address": {
                         "@type": "PostalAddress",
-                        "addressLocality": "Arusha",
-                        "addressCountry": "TZ"
+                        "addressLocality": "{{ event_city }}",
+                        "addressCountry": "{{ event_country_code }}"
                     }
                 },
                 "organizer": {
@@ -1006,7 +1006,7 @@
             x-data="{
                 days: 0, hours: 0, minutes: 0, seconds: 0,
                 finished: false,
-                target: new Date('2026-06-03T09:00:00+03:00').getTime(),
+                target: new Date('{{ event_start_iso }}').getTime(),
                 tick() {
                     const now = Date.now();
                     const diff = this.target - now;

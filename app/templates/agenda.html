@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block title %}Agenda - {{ event_name }}{% endblock %}
-{% block meta_description %}Explore the full 3-day programme for Pollination Africa Summit 2026. Keynotes, workshops &amp; policy sessions in Arusha, Tanzania. 3–5 June 2026.{% endblock %}
+{% block meta_description %}Explore the full {{ event_duration|lower }} programme for {{ event_name }}. Keynotes, workshops &amp; policy sessions in {{ event_city }}, {{ event_country }}. {{ event_date }}.{% endblock %}
 {% block content %}
 
 <!-- ============================================ -->
@@ -119,7 +119,7 @@
             >
                 <img
                     src="{{ url_for('static', filename='images/science_and_evidence.jpg') }}"
-                    alt="Day 1 - Science and Evidence"
+                    alt="{{ event_days[0].label }} - {{ event_days[0].theme }}"
                     class="absolute inset-0 size-full object-cover opacity-30"
                 />
                 <div class="relative">
@@ -127,12 +127,12 @@
                         <div
                             class="rounded-full bg-accent-yellow px-3 py-1 text-sm font-semibold text-white"
                         >
-                            Day 1
+                            {{ event_days[0].label }}
                         </div>
-                        <time class="text-sm text-gray-300">3 June 2026</time>
+                        <time class="text-sm text-gray-300">{{ event_days[0].date.day }} {{ event_days[0].date.strftime('%B %Y') }}</time>
                     </div>
                     <h3 class="mt-6 text-3xl font-semibold text-white">
-                        Science and Evidence
+                        {{ event_days[0].theme }}
                     </h3>
                     <p class="mt-4 text-base text-gray-300">
                         Examining the state of pollinators in Africa through
@@ -169,7 +169,7 @@
             >
                 <img
                     src="{{ url_for('static', filename='images/innovation_ai_and_technology.jpg') }}"
-                    alt="Day 2 - Innovation, AI and Technology"
+                    alt="{{ event_days[1].label }} - {{ event_days[1].theme }}"
                     class="absolute inset-0 size-full object-cover opacity-30"
                 />
                 <div class="relative">
@@ -177,12 +177,12 @@
                         <div
                             class="rounded-full bg-accent-orange px-3 py-1 text-sm font-semibold text-white"
                         >
-                            Day 2
+                            {{ event_days[1].label }}
                         </div>
-                        <time class="text-sm text-gray-300">4 June 2026</time>
+                        <time class="text-sm text-gray-300">{{ event_days[1].date.day }} {{ event_days[1].date.strftime('%B %Y') }}</time>
                     </div>
                     <h3 class="mt-6 text-3xl font-semibold text-white">
-                        Innovation, AI and Technology
+                        {{ event_days[1].theme }}
                     </h3>
                     <p class="mt-4 text-base text-gray-300">
                         Showcasing cutting-edge innovations in AI, robotics, and
@@ -211,7 +211,7 @@
             >
                 <img
                     src="{{ url_for('static', filename='images/policy_investment_and_green_enterprises.jpg') }}"
-                    alt="Day 3 - Policy, Investment and Green Enterprises"
+                    alt="{{ event_days[2].label }} - {{ event_days[2].theme }}"
                     class="absolute inset-0 size-full object-cover opacity-30"
                 />
                 <div class="relative">
@@ -219,12 +219,12 @@
                         <div
                             class="rounded-full bg-primary-dark px-3 py-1 text-sm font-semibold text-white"
                         >
-                            Day 3
+                            {{ event_days[2].label }}
                         </div>
-                        <time class="text-sm text-gray-300">5 June 2026</time>
+                        <time class="text-sm text-gray-300">{{ event_days[2].date.day }} {{ event_days[2].date.strftime('%B %Y') }}</time>
                     </div>
                     <h3 class="mt-6 text-3xl font-semibold text-white">
-                        Policy, Investment and Green Enterprises
+                        {{ event_days[2].theme }}
                     </h3>
                     <p class="mt-4 text-base text-gray-300">
                         Advancing policy frameworks, investment pathways, and

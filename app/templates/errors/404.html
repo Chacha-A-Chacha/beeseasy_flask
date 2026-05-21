@@ -5,11 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
             name="description"
-            content="Pollination Africa Symposium 2026 - Celebrating All Pollinators for Food Security, Biodiversity and Livelihoods. 3-5 June 2026, Arusha, Tanzania."
+            content="{{ event_name }} - {{ event_theme }}. {{ event_date }}, {{ event_city }}, {{ event_country }}."
         />
         <title>
-            {% block title %}Pollination Africa Symposium 2026 - 404 Page Not
-            Found{% endblock %}
+            {% block title %}{{ event_name }} - 404 Page Not Found{% endblock %}
         </title>
 
         <!-- Tailwind CSS -->
@@ -167,9 +166,9 @@
                     <p class="text-white text-sm">
                         Need help? Contact us at
                         <a
-                            href="mailto:info@pollination.africa"
+                            href="mailto:{{ contact_email }}"
                             class="font-semibold hover:underline"
-                            >info@pollination.africa</a
+                            >{{ contact_email }}</a
                         >
                     </p>
                 </div>

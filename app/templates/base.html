@@ -349,6 +349,11 @@
     </head>
 
     <body class="flex min-h-full flex-col bg-primary-dark">
+        <!-- Top Announcement Bar (optional, controlled by ANNOUNCEMENT_ENABLED) -->
+        {% if announcement.enabled and announcement.message %}
+        {% include 'components/announcement_banner.html' %}
+        {% endif %}
+
         <!-- Header with Scroll Effect -->
         <header
             x-data="{
@@ -363,7 +368,8 @@
             }
         }"
             :class="showHeader ? 'header-visible' : 'header-hidden'"
-            class="fixed top-0 z-50 w-full bg-primary-dark shadow-lg border-b border-accent-brown"
+            class="fixed z-50 w-full bg-primary-dark shadow-lg border-b border-accent-brown"
+            style="top: var(--announce-h, 0px);"
         >
             <nav
                 aria-label="Global"

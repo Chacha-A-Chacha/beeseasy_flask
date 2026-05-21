@@ -743,7 +743,7 @@
                         <h3
                             class="mt-3 text-lg/6 font-semibold text-primary-dark"
                         >
-                            {{ event_venue }} ({{ event_venue_short }})
+                            {{ event_venue }}{% if event_venue_short %} ({{ event_venue_short }}){% endif %}
                         </h3>
                         <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">
                             Centrally located in the heart of {{ event_city }}, {{ event_country }}.
@@ -1205,7 +1205,7 @@
                         <dd class="mt-2 pr-12">
                             <p class="text-base/7 text-gray-600">
                                 The {{ event_name }} will be held at
-                                {{ event_venue }} ({{ event_venue_short }}) in {{ event_city }}, {{ event_country }}.
+                                {{ event_venue }}{% if event_venue_short %} ({{ event_venue_short }}){% endif %} in {{ event_city }}, {{ event_country }}.
                                 {{ event_city }} is centrally located with easy access from
                                 hotels and the airport.
                             </p>

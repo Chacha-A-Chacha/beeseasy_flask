@@ -437,7 +437,7 @@
                         Venue
                     </h4>
                     <p class="mt-2 font-semibold text-gray-900">
-                        {{ event_venue }} ({{ event_venue_short }})
+                        {{ event_venue }}{% if event_venue_short %} ({{ event_venue_short }}){% endif %}
                     </p>
                     <p class="mt-1 text-sm text-gray-600">
                         State-of-the-art exhibition facilities in {{ event_city }},

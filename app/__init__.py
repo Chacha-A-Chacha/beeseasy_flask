@@ -238,6 +238,10 @@ def create_app(config_name=None):
             support_hours=app.config.get("SUPPORT_HOURS", "Mon-Fri: 9am-5pm EAT"),
             website_url=app.config.get("WEBSITE_URL", "https://pollination.africa"),
             registration_open=app.config.get("REGISTRATION_OPEN", False),
+            announcement={
+                "enabled": app.config.get("ANNOUNCEMENT_ENABLED", False),
+                "message": app.config.get("ANNOUNCEMENT_MESSAGE", ""),
+            },
         )
 
     # --- Error Handlers ---

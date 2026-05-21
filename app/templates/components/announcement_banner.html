@@ -1,0 +1,62 @@
+{# Site-wide announcement bar.
+   Fixed at the top of the viewport above the header.
+   - Dismissal persists for 30 days in localStorage.
+   - Sets a CSS variable --announce-h on <html> so the header can offset itself
+     while the bar is visible, then resets to 0px on dismiss.
+   - To retire the banner permanently, set ANNOUNCEMENT_ENABLED=False. #}
+<div
+    x-data="{
+        open: false,
+        init() {
+            const dismissed = localStorage.getItem('announcement_dismissed_at');
+            if (dismissed && (Date.now() - parseInt(dismissed, 10)) < 2592000000) return;
+            this.open = true;
+            this.$nextTick(() => {
+                document.documentElement.style.setProperty(
+                    '--announce-h',
+                    this.$el.offsetHeight + 'px'
+                );
+            });
+        },
+        dismiss() {
+            this.open = false;
+            localStorage.setItem('announcement_dismissed_at', String(Date.now()));
+            document.documentElement.style.setProperty('--announce-h', '0px');
+        }
+    }"
+    x-show="open"
+    x-cloak
+    role="region"
+    aria-label="Site announcement"
+    class="fixed inset-x-0 top-0 z-[60] bg-accent-yellow text-primary-dark shadow-md"
+>
+    <div class="mx-auto flex max-w-7xl items-center gap-x-3 px-4 py-2 sm:px-6 lg:px-8">
+        <svg
+            class="hidden h-5 w-5 shrink-0 sm:block"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+        </svg>
+        <p class="flex-1 text-center text-sm font-semibold leading-snug sm:text-left sm:text-base">
+            {{ announcement.message }}
+        </p>
+        <button
+            type="button"
+            @click="dismiss()"
+            aria-label="Dismiss announcement"
+            class="shrink-0 rounded p-1 hover:bg-primary-dark/10 focus:outline-none focus:ring-2 focus:ring-primary-dark"
+        >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+</div>

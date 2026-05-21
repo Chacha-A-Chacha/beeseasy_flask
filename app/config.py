@@ -162,12 +162,10 @@ class Config:
     # --- Event Configuration ---
     EVENT_NAME: str = os.getenv("EVENT_NAME", "Pollination Africa Summit 2026")
     EVENT_SHORT_NAME: str = os.getenv("EVENT_SHORT_NAME", "Pollination Africa 2026")
-    EVENT_DATE: str = os.getenv("EVENT_DATE", "3-5 June 2026")
-    EVENT_LOCATION: str = os.getenv("EVENT_LOCATION", "AICC, Arusha, Tanzania")
-    EVENT_VENUE: str = os.getenv(
-        "EVENT_VENUE", "Arusha International Conference Centre"
-    )
-    EVENT_VENUE_SHORT: str = os.getenv("EVENT_VENUE_SHORT", "AICC")
+    EVENT_DATE: str = os.getenv("EVENT_DATE", "29 September - 1 October 2026")
+    EVENT_LOCATION: str = os.getenv("EVENT_LOCATION", "Arusha, Tanzania")
+    EVENT_VENUE: str = os.getenv("EVENT_VENUE", "Venue to be announced")
+    EVENT_VENUE_SHORT: str = os.getenv("EVENT_VENUE_SHORT", "")
     EVENT_CITY: str = os.getenv("EVENT_CITY", "Arusha")
     EVENT_COUNTRY: str = os.getenv("EVENT_COUNTRY", "Tanzania")
     EVENT_COUNTRY_CODE: str = os.getenv("EVENT_COUNTRY_CODE", "TZ")
@@ -183,8 +181,8 @@ class Config:
     EVENT_GUEST_OF_HONOR: str = os.getenv("EVENT_GUEST_OF_HONOR", "TBC")
 
     # ISO 8601 calendar dates for the first and last day of the programme.
-    EVENT_START_DATE: str = os.getenv("EVENT_START_DATE", "2026-06-03")
-    EVENT_END_DATE: str = os.getenv("EVENT_END_DATE", "2026-06-05")
+    EVENT_START_DATE: str = os.getenv("EVENT_START_DATE", "2026-09-29")
+    EVENT_END_DATE: str = os.getenv("EVENT_END_DATE", "2026-10-01")
     # Local start time on day 1, used to build a full ISO datetime for countdowns.
     EVENT_START_TIME: str = os.getenv("EVENT_START_TIME", "09:00:00+03:00")
 
@@ -231,6 +229,17 @@ class Config:
 
     # --- Registration Settings ---
     REGISTRATION_OPEN: bool = os.getenv("REGISTRATION_OPEN", "True").lower() == "true"
+
+    # --- Site-wide Announcement Bar ---
+    # Toggle to retire the banner without removing the markup.
+    ANNOUNCEMENT_ENABLED: bool = (
+        os.getenv("ANNOUNCEMENT_ENABLED", "True").lower() == "true"
+    )
+    ANNOUNCEMENT_MESSAGE: str = os.getenv(
+        "ANNOUNCEMENT_MESSAGE",
+        "New event dates — the summit has moved to 29 September – 1 October 2026. "
+        "Same city, venue to be announced.",
+    )
 
     # --- Other Options ---
     DEBUG_TB_INTERCEPT_REDIRECTS: bool = False
